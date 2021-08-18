@@ -1,15 +1,18 @@
 {
-    "name": "sylius/plugin-skeleton",
+    "name": "bitbag/graphql-plugin",
     "type": "sylius-plugin",
-    "description": "Acme example plugin for Sylius.",
+    "description": "GraphQL Plugin on top of ApiPlatform for Sylius",
     "keywords": [
         "sylius",
-        "sylius-plugin"
+        "sylius-plugin",
+        "graphql",
+        "api-platform"
     ],
     "license": "MIT",
     "require": {
         "php": "^7.4 || ^8.0",
-        "sylius/sylius": "~1.9.0 || ~1.10.0@beta"
+        "sylius/sylius": "^1.10",
+        "webonyx/graphql-php": "^14.6"
     },
     "require-dev": {
         "behat/behat": "^3.6.1",
@@ -51,8 +54,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Acme\\SyliusExamplePlugin\\": "src/",
-            "Tests\\Acme\\SyliusExamplePlugin\\": "tests/"
+            "BitBag\\SyliusGraphqlPlugin\\": "src/",
+            "Tests\\BitBag\\SyliusGraphqlPlugin\\": "tests/"
         }
     },
     "autoload-dev": {
