@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults public="true" />
+
+        <service id="bitbag_sylius_graphql_plugin.context.graphql"
+                 class="Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\GraphqlApiPlatformContext">
+            <argument type="service" id="tests.bit_bag.sylius_graphql_plugin.behat.client.graphql_client" />
+            <argument type="service" id="sylius.behat.shared_storage" />
+        </service>
+
+    </services>
+</container>
