@@ -1,0 +1,12 @@
+default:
+    suites:
+        graphql_adding_product_to_cart:
+            contexts:
+                - sylius.behat.context.api_platform.graphql
+                - sylius.behat.context.hook.doctrine_orm
+                - sylius.behat.context.setup.channel
+                - sylius.behat.context.setup.product
+                - sylius.behat.context.transform.lexical
+                - sylius.behat.context.transform.shared_storage
+            filters:
+                tags: "@shopping_cart && @graphql"
