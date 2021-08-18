@@ -1,10 +1,7 @@
-# Put your Behat suites definitions here
-
-default:
-    suites:
-        greeting_customer:
-            contexts:
-                - acme_sylius_example.context.ui.shop.welcome
-
-            filters:
-                tags: "@greeting_customer"
+imports:
+    - suites/cart/adding_product_to_cart.yaml
+    - suites/cart/chosing_shipping_method.yaml
+    - suites/cart/chosing_payment_method.yaml
+    - suites/cart/adding_promotion.yaml
+    - suites/account/creating_account.yaml
+    - suites/account/changing_password.yaml

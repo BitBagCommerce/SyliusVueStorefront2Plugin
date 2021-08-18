@@ -9,6 +9,6 @@ sylius_shop_payum:
 
 sylius_shop_default_locale:
     path: /
-    methods: [GET]
+    methods: [ GET ]
     defaults:
         _controller: sylius.controller.shop.locale_switch:switchAction

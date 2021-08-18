@@ -41,7 +41,7 @@ const adminConfig = Encore.getWebpackConfig();
 adminConfig.resolve.alias['sylius/ui'] = uiBundleScripts;
 adminConfig.resolve.alias['sylius/ui-resources'] = uiBundleResources;
 adminConfig.resolve.alias['sylius/bundle'] = syliusBundles;
-adminConfig.externals = Object.assign({}, adminConfig.externals, { window: 'window', document: 'document' });
+adminConfig.externals = Object.assign({}, adminConfig.externals, {window: 'window', document: 'document'});
 adminConfig.name = 'admin';
 
 module.exports = [shopConfig, adminConfig];

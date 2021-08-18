@@ -22,7 +22,7 @@ security:
             id: sylius.shop_user_provider.email_or_name_based
         sylius_api_chain_provider:
             chain:
-                providers: [sylius_api_shop_user_provider, sylius_api_admin_user_provider]
+                providers: [ sylius_api_shop_user_provider, sylius_api_admin_user_provider ]
 
     encoders:
         Sylius\Component\User\Model\UserInterface: argon2i
@@ -124,13 +124,13 @@ security:
             anonymous: true
 
         dev:
-            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
     access_control:
-        - { path: "%sylius.security.admin_regex%/_partial", role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: "%sylius.security.admin_regex%/_partial", role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [ 127.0.0.1, ::1 ] }
         - { path: "%sylius.security.admin_regex%/_partial", role: ROLE_NO_ACCESS }
-        - { path: "%sylius.security.shop_regex%/_partial", role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: "%sylius.security.shop_regex%/_partial", role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [ 127.0.0.1, ::1 ] }
         - { path: "%sylius.security.shop_regex%/_partial", role: ROLE_NO_ACCESS }
 
         - { path: "%sylius.security.admin_regex%/login", role: IS_AUTHENTICATED_ANONYMOUSLY }
