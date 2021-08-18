@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ This file is part of the Sylius package.
+ (c) Paweł Jędrzejewski
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+-->
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults autowire="false" autoconfigure="false" public="false" />
+
+        <service id="sylius.api.product_slug_filter" parent="api_platform.doctrine.orm.search_filter">
+            <argument type="collection">
+                <argument key="translations.slug">exact</argument>
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
+
+        <service id="sylius.api.product_price_filter" parent="api_platform.doctrine.orm.range_filter">
+            <argument type="collection">
+                <argument key="variants.channelPricings.price" />
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
+
+        <service id="sylius.api.product_taxon_slug_filter" parent="api_platform.doctrine.orm.search_filter">
+            <argument type="collection">
+                <argument key="productTaxons.taxon.translations.slug">exact</argument>
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
+
+        <service id="sylius.api.taxa_translation_slug_filter" parent="api_platform.doctrine.orm.search_filter">
+            <argument type="collection">
+                <argument key="translations.name">partial</argument>
+                <argument key="translations.slug">partial</argument>
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
+
+        <service id="sylius.api.taxa_date_filter" parent="api_platform.doctrine.orm.order_filter">
+            <argument type="collection">
+                <argument key="createdAt" />
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
+
+        <service id="sylius.api.shipping_method_enabled_filter" parent="api_platform.doctrine.orm.boolean_filter">
+            <argument type="collection">
+                <argument key="enabled" />
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
+
+        <service id="sylius.api.payment_method_enabled_filter" parent="api_platform.doctrine.orm.boolean_filter">
+            <argument type="collection">
+                <argument key="enabled" />
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
+    </services>
+</container>
