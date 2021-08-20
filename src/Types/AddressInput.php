@@ -7,7 +7,7 @@ namespace BitBag\SyliusGraphqlPlugin\Types;
 use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\Type;
 
-class BillingAddress extends InputObjectType
+class AddressInput extends InputObjectType
 {
     /**
      * @return string
@@ -19,16 +19,20 @@ class BillingAddress extends InputObjectType
 
     public function __construct()
     {
-        $this->name = 'BillingAddress';
-        $this->description = 'The `BillingAddress` object type.';
+        $this->name = 'AddressInput';
+        $this->description = 'The `Address` object type.';
         $config = [
             'fields' => [
                 'id' => Type::id(),
                 'firstName' => Type::string(),
                 'lastName' => Type::string(),
+                'fullName' => Type::string(),
                 'countryCode' => Type::string(),
+                'provinceCode' => Type::string(),
+                'phoneNumber' => Type::string(),
                 'street' => Type::string(),
                 'city' => Type::string(),
+                'company' => Type::string(),
                 'postcode' => Type::string()
             ]
         ];

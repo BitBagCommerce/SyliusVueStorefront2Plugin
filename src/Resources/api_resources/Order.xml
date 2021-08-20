@@ -17,6 +17,16 @@
 >
     <resource class="%sylius.model.order.class%" shortName="Order">
         <graphql>
+
+            <operation name="item_query">
+                <attribute name="method">GET</attribute>
+                <attribute name="args">
+                    <attribute name="tokenValue">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+
             <operation name="shop_post">
                 <attribute name="method">POST</attribute>
                 <attribute name="messenger">input</attribute>
@@ -26,15 +36,6 @@
                         <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="localeCode">
-                        <attribute name="type">String</attribute>
-                    </attribute>
-                </attribute>
-            </operation>
-
-            <operation name="item_query">
-                <attribute name="method">GET</attribute>
-                <attribute name="args">
-                    <attribute name="tokenValue">
                         <attribute name="type">String</attribute>
                     </attribute>
                 </attribute>
@@ -101,7 +102,10 @@
                         <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="billingAddress">
-                        <attribute name="type">BillingAddress</attribute>
+                        <attribute name="type">AddressInput</attribute>
+                    </attribute>
+                    <attribute name="shippingAddress">
+                        <attribute name="type">AddressInput</attribute>
                     </attribute>
                 </attribute>
             </operation>

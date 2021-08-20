@@ -7,8 +7,8 @@
     <services>
         <defaults autowire="false" autoconfigure="false" public="false" />
 
-        <service id="bit_bag.sylius_graphql_plugin.types.billing_address"
-                 class="BitBag\SyliusGraphqlPlugin\Types\BillingAddress">
+        <service id="bit_bag.sylius_graphql_plugin.types.address"
+                 class="BitBag\SyliusGraphqlPlugin\Types\AddressInput">
             <tag name="api_platform.graphql.type" />
         </service>
     </services>

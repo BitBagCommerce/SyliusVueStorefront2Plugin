@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Sylius\Component\Core\Model\ShopUser;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use BitBag\SyliusGraphqlPlugin\Model\ShopUserToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class LoginMutationResolver implements MutationResolverInterface
@@ -52,9 +53,11 @@ class LoginMutationResolver implements MutationResolverInterface
 
         if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
             $token = $this->jwtManager->create($user);
-            $user->setToken($token);
-            return $user;
-
+            $shopUserToken = new ShopUserToken();
+            $shopUserToken->setId($user->getId());
+            $shopUserToken->setToken($token);
+            $shopUserToken->setUser($user);
+            return $shopUserToken;
         }
         return null;
     }
