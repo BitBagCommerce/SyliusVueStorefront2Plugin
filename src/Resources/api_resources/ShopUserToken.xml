@@ -19,13 +19,6 @@ an email on mikolaj.krol@bitbag.pl.
             <operation name="shop_login">
                 <attribute name="mutation">api_platform.login_mutation_resolver</attribute>
                 <attribute name="write">false</attribute>
-<!--                <attribute name="denormalize">false</attribute>-->
-<!--                <attribute name="normalization_context">-->
-<!--                    <attribute name="groups">shop:user_login:read</attribute>-->
-<!--                </attribute>-->
-<!--                <attribute name="denormalization_context">-->
-<!--                    <attribute name="groups">shop:user_login:read</attribute>-->
-<!--                </attribute>-->
                 <attribute name="args">
                     <attribute name="username">
                         <attribute name="type">String</attribute>
@@ -38,7 +31,6 @@ an email on mikolaj.krol@bitbag.pl.
         </graphql>
 
         <property name="id" identifier="true" readable="true" />
-        <property name="userIdentifier" identifier="true" readable="true" />
         <property name="token"  description="JWT Token" />
         <property name="user" description="User" readable="true">
             <subresource resourceClass="%sylius.model.shop_user.class%" maxDepth="3"/>
