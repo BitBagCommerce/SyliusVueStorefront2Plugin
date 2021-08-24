@@ -27,7 +27,6 @@ final class ApiSecurityService implements SecurityServiceInterface
     /** @var SharedStorageInterface */
     private $sharedStorage;
 
-
     public function __construct(GraphqlClientInterface $client, SharedStorageInterface $sharedStorage)
     {
         $this->client = $client;
@@ -37,7 +36,7 @@ final class ApiSecurityService implements SecurityServiceInterface
     public function logIn(UserInterface $user): void
     {
         //TODO::
-        $token = "";
+        $token = '';
         $this->sharedStorage->set('token', $token);
     }
 
@@ -56,6 +55,6 @@ final class ApiSecurityService implements SecurityServiceInterface
 
     public function restoreToken(TokenInterface $token): void
     {
-        $this->sharedStorage->set('token', (string)$token);
+        $this->sharedStorage->set('token', (string) $token);
     }
 }

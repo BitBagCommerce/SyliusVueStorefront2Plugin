@@ -24,8 +24,7 @@ final class RegistrationContext implements Context
     public function __construct(
         GraphqlClientInterface $client,
         SharedStorageInterface $sharedStorage
-    )
-    {
+    ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
     }
