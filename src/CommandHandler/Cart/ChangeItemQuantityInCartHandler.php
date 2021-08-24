@@ -25,15 +25,16 @@ use Webmozart\Assert\Assert;
 final class ChangeItemQuantityInCartHandler implements MessageHandlerInterface
 {
     private OrderItemRepositoryInterface $orderItemRepository;
+
     private OrderItemQuantityModifierInterface $orderItemQuantityModifier;
+
     private OrderProcessorInterface $orderProcessor;
 
     public function __construct(
         OrderItemRepositoryInterface $orderItemRepository,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         OrderProcessorInterface $orderProcessor
-    )
-    {
+    ) {
         $this->orderItemRepository = $orderItemRepository;
         $this->orderItemQuantityModifier = $orderItemQuantityModifier;
         $this->orderProcessor = $orderProcessor;

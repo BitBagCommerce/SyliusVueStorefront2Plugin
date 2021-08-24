@@ -1,17 +1,14 @@
 <?php
 
+declare(strict_types=1);
 
 namespace BitBag\SyliusGraphqlPlugin\Types;
-
 
 use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\Type;
 
 class AddressInput extends InputObjectType
 {
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
@@ -33,10 +30,9 @@ class AddressInput extends InputObjectType
                 'street' => Type::string(),
                 'city' => Type::string(),
                 'company' => Type::string(),
-                'postcode' => Type::string()
-            ]
+                'postcode' => Type::string(),
+            ],
         ];
         parent::__construct($config);
     }
 }
-

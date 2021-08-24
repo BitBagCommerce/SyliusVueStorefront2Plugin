@@ -45,8 +45,7 @@ final class ChoosePaymentMethodHandler implements MessageHandlerInterface
         PaymentRepositoryInterface $paymentRepository,
         FactoryInterface $stateMachineFactory,
         PaymentMethodChangerInterface $paymentMethodChanger
-    )
-    {
+    ) {
         $this->orderRepository = $orderRepository;
         $this->paymentMethodRepository = $paymentMethodRepository;
         $this->paymentRepository = $paymentRepository;
@@ -55,8 +54,6 @@ final class ChoosePaymentMethodHandler implements MessageHandlerInterface
     }
 
     /**
-     * @param ChoosePaymentMethod $choosePaymentMethod
-     * @return OrderInterface
      * @throws SMException
      */
     public function __invoke(ChoosePaymentMethod $choosePaymentMethod): OrderInterface

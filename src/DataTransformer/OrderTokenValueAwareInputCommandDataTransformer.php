@@ -22,12 +22,11 @@ final class OrderTokenValueAwareInputCommandDataTransformer implements CommandDa
 {
     public function transform($object, string $to, array $context = [])
     {
-        /** @var OrderInterface $cart */
-
-        if (key_exists('object_to_populate', $context)) {
+        if (array_key_exists('object_to_populate', $context)) {
+            /** @var OrderInterface $cart */
             $cart = $context['object_to_populate'];
             $tokenValue = $cart->getTokenValue();
-        } else if (property_exists($object, 'orderTokenValue')) {
+        } elseif (property_exists($object, 'orderTokenValue')) {
             $tokenValue = $object->orderTokenValue;
         } else {
             throw new Exception('Token value could not be found');

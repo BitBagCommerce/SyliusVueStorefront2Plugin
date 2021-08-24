@@ -18,9 +18,9 @@ final class ShopUserToken
 {
     private int $id;
 
-    protected ?string $token;
+    private ?string $token;
 
-    public ?ShopUserInterface $user;
+    private ?ShopUserInterface $user;
 
     public function getToken(): ?string
     {
@@ -51,5 +51,4 @@ final class ShopUserToken
     {
         $this->user = $user;
     }
-
 }

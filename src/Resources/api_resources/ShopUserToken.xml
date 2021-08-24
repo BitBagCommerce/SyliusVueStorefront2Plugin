@@ -14,11 +14,18 @@ an email on mikolaj.krol@bitbag.pl.
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
 >
-    <resource class="BitBag\SyliusGraphqlPlugin\Model\ShopUserToken" shortName="ShopUser">
+    <resource class="BitBag\SyliusGraphqlPlugin\Model\ShopUserToken" shortName="ShopUserToken">
         <graphql>
             <operation name="shop_login">
                 <attribute name="mutation">api_platform.login_mutation_resolver</attribute>
                 <attribute name="write">false</attribute>
+<!--                <attribute name="denormalize">false</attribute>-->
+<!--                <attribute name="normalization_context">-->
+<!--                    <attribute name="groups">shop:user_login:read</attribute>-->
+<!--                </attribute>-->
+<!--                <attribute name="denormalization_context">-->
+<!--                    <attribute name="groups">shop:user_login:read</attribute>-->
+<!--                </attribute>-->
                 <attribute name="args">
                     <attribute name="username">
                         <attribute name="type">String</attribute>
@@ -30,10 +37,11 @@ an email on mikolaj.krol@bitbag.pl.
             </operation>
         </graphql>
 
-        <property name="id" identifier="true" writable="false" />
-        <property name="token" identifier="false" writable="false" description="JWT Token" />
-        <property name="user" readable="true" writable="true" description="User">
-            <subresource resourceClass="%sylius.model.shop_user.class%" />
+        <property name="id" identifier="true" readable="true" />
+        <property name="userIdentifier" identifier="true" readable="true" />
+        <property name="token"  description="JWT Token" />
+        <property name="user" description="User" readable="true">
+            <subresource resourceClass="%sylius.model.shop_user.class%" maxDepth="3"/>
         </property>
 
     </resource>

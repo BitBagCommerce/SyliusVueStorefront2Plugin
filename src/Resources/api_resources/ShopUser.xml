@@ -41,6 +41,8 @@ an email on mikolaj.krol@bitbag.pl.
                     </attribute>
                 </attribute>
             </operation>
+
+            <operation name="item_query"/>
         </graphql>
 
         <property name="id" identifier="true" writable="false" />

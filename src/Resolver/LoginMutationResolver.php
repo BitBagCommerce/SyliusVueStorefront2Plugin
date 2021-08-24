@@ -1,20 +1,19 @@
 <?php
 
+declare(strict_types=1);
 
 namespace BitBag\SyliusGraphqlPlugin\Resolver;
 
-
 use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
+use BitBag\SyliusGraphqlPlugin\Model\ShopUserToken;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Sylius\Component\Core\Model\ShopUser;
 use Sylius\Component\Core\Model\ShopUserInterface;
-use BitBag\SyliusGraphqlPlugin\Model\ShopUserToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 class LoginMutationResolver implements MutationResolverInterface
 {
-
     /** @var EncoderFactoryInterface */
     private $encoderFactory;
 
@@ -28,8 +27,7 @@ class LoginMutationResolver implements MutationResolverInterface
         EntityManagerInterface $entityManager,
         JWTTokenManagerInterface $jwtManager,
         EncoderFactoryInterface $encoderFactory
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->jwtManager = $jwtManager;
         $this->encoderFactory = $encoderFactory;
@@ -57,10 +55,10 @@ class LoginMutationResolver implements MutationResolverInterface
             $shopUserToken->setId($user->getId());
             $shopUserToken->setToken($token);
             $shopUserToken->setUser($user);
+
             return $shopUserToken;
         }
+
         return null;
     }
-
-
 }

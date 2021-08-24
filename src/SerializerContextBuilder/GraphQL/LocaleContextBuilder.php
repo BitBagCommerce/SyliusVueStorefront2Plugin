@@ -29,8 +29,7 @@ final class LocaleContextBuilder implements SerializerContextBuilderInterface
     public function __construct(
         SerializerContextBuilderInterface $decoratedContextBuilder,
         LocaleContextInterface $localeContext
-    )
-    {
+    ) {
         $this->decoratedContextBuilder = $decoratedContextBuilder;
         $this->localeContext = $localeContext;
     }
@@ -40,8 +39,7 @@ final class LocaleContextBuilder implements SerializerContextBuilderInterface
         string $operationName,
         array $resolverContext,
         bool $normalization
-    ): array
-    {
+    ): array {
         $context = $this->decoratedContextBuilder->create(
             $resourceClass,
             $operationName,

@@ -43,8 +43,7 @@ final class ChooseShippingMethodHandler implements MessageHandlerInterface
         ShipmentRepositoryInterface $shipmentRepository,
         ShippingMethodEligibilityCheckerInterface $eligibilityChecker,
         FactoryInterface $stateMachineFactory
-    )
-    {
+    ) {
         $this->orderRepository = $orderRepository;
         $this->shippingMethodRepository = $shippingMethodRepository;
         $this->shipmentRepository = $shipmentRepository;

@@ -17,15 +17,6 @@ an email on mikolaj.krol@bitbag.pl.
     <resource class="%sylius.model.customer.class%" shortName="Customer">
         <graphql>
             <operation name="item_query" />
-            <operation name="collection_query" />
-<!--                <attribute name="method">GET</attribute>-->
-<!--                <attribute name="security">is_granted('ROLE_USER')</attribute>-->
-<!--                <attribute name="normalization_context">-->
-<!--                    <attribute name="groups">-->
-<!--                        <attribute>shop:customer:read</attribute>-->
-<!--                    </attribute>-->
-<!--                </attribute>-->
-<!--            </operation>-->
 
             <operation name="shop_post">
                 <attribute name="method">POST</attribute>
@@ -56,6 +47,38 @@ an email on mikolaj.krol@bitbag.pl.
                     </attribute>
                 </attribute>
             </operation>
+
+
+            <operation name="shop_add_address">
+                <attribute name="method">POST</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:customer:create</attribute>
+                </attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">Sylius\Bundle\ApiBundle\Command\RegisterShopUser</attribute>
+                <attribute name="output">false</attribute>
+                <attribute name="args">
+                    <attribute name="firstName">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="lastName">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="email">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="password">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="phoneNumber">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="subscribedToNewsletter">
+                        <attribute name="type">Boolean</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+
 
             <operation name="shop_password_update">
                 <attribute name="method">PUT</attribute>
