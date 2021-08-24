@@ -44,8 +44,7 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
         UserContextInterface $userContext,
         QueryNameGeneratorInterface $queryNameGenerator,
         iterable $collectionExtensions
-    )
-    {
+    ) {
         $this->taxonRepository = $taxonRepository;
         $this->paginationExtension = $paginationExtension;
         $this->userContext = $userContext;

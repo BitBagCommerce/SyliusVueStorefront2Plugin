@@ -2,12 +2,11 @@
 
 <!--
 
- This file is part of the Sylius package.
-
- (c) Paweł Jędrzejewski
-
- For the full copyright and license information, please view the LICENSE
- file that was distributed with this source code.
+This file has been created by developers from BitBag.
+Feel free to contact us once you face any issues or want to start
+another great project.
+You can find more information about us on https://bitbag.shop and write us
+an email on mikolaj.krol@bitbag.pl.
 
 -->
 
@@ -17,22 +16,10 @@
 >
     <resource class="%sylius.model.customer.class%" shortName="Customer">
         <graphql>
-            <operation name="shop_get">
-                <attribute name="method">GET</attribute>
-                <attribute name="path">/shop/customers/{id}</attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">
-                        <attribute>shop:customer:read</attribute>
-                    </attribute>
-                </attribute>
-            </operation>
+            <operation name="item_query" />
 
             <operation name="shop_post">
                 <attribute name="method">POST</attribute>
-                <attribute name="path">/shop/customers</attribute>
-                <attribute name="openapi_context">
-                    <attribute name="summary">Registers a new customer</attribute>
-                </attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:customer:create</attribute>
                 </attribute>
@@ -60,6 +47,38 @@
                     </attribute>
                 </attribute>
             </operation>
+
+
+            <operation name="shop_add_address">
+                <attribute name="method">POST</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:customer:create</attribute>
+                </attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">Sylius\Bundle\ApiBundle\Command\RegisterShopUser</attribute>
+                <attribute name="output">false</attribute>
+                <attribute name="args">
+                    <attribute name="firstName">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="lastName">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="email">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="password">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="phoneNumber">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="subscribedToNewsletter">
+                        <attribute name="type">Boolean</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+
 
             <operation name="shop_password_update">
                 <attribute name="method">PUT</attribute>
@@ -153,5 +172,8 @@
         <property name="defaultAddress" writable="true" />
         <property name="subscribedToNewsletter" writable="true" />
         <property name="user" readable="true" />
+        <property name="orders" writable="false" readable="true" required="false">
+            <subresource resourceClass="%sylius.model.order.class%" />
+        </property>
     </resource>
 </resources>

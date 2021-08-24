@@ -2,12 +2,11 @@
 
 <!--
 
- This file is part of the Sylius package.
-
- (c) Paweł Jędrzejewski
-
- For the full copyright and license information, please view the LICENSE
- file that was distributed with this source code.
+This file has been created by developers from BitBag.
+Feel free to contact us once you face any issues or want to start
+another great project.
+You can find more information about us on https://bitbag.shop and write us
+an email on mikolaj.krol@bitbag.pl.
 
 -->
 
@@ -15,21 +14,9 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
 >
+
     <resource class="%sylius.model.shop_user.class%" shortName="User">
         <graphql>
-            <operation name="shop_login">
-                <attribute name="mutation">api_platform.login_mutation_resolver</attribute>
-                <attribute name="write">false</attribute>
-                <attribute name="args">
-                    <attribute name="username">
-                        <attribute name="type">String</attribute>
-                    </attribute>
-                    <attribute name="password">
-                        <attribute name="type">String</attribute>
-                    </attribute>
-                </attribute>
-            </operation>
-
             <operation name="shop_register">
                 <attribute name="messenger">input</attribute>
                 <attribute name="input">Sylius\Bundle\ApiBundle\Command\RegisterShopUser</attribute>
@@ -54,6 +41,8 @@
                     </attribute>
                 </attribute>
             </operation>
+
+            <operation name="item_query"/>
         </graphql>
 
         <property name="id" identifier="true" writable="false" />

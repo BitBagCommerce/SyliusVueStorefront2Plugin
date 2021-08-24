@@ -29,8 +29,7 @@ final class ChannelContextBuilder implements SerializerContextBuilderInterface
     public function __construct(
         SerializerContextBuilderInterface $decoratedContextBuilder,
         ChannelContextInterface $channelContext
-    )
-    {
+    ) {
         $this->decoratedContextBuilder = $decoratedContextBuilder;
         $this->channelContext = $channelContext;
     }
@@ -40,8 +39,7 @@ final class ChannelContextBuilder implements SerializerContextBuilderInterface
         string $operationName,
         array $resolverContext,
         bool $normalization
-    ): array
-    {
+    ): array {
         $context = $this->decoratedContextBuilder->create(
             $resourceClass,
             $operationName,

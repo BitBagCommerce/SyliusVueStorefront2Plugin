@@ -43,8 +43,7 @@ final class AddressOrderHandler implements MessageHandlerInterface
         FactoryInterface $customerFactory,
         ObjectManager $manager,
         StateMachineFactoryInterface $stateMachineFactory
-    )
-    {
+    ) {
         $this->orderRepository = $orderRepository;
         $this->customerRepository = $customerRepository;
         $this->customerFactory = $customerFactory;

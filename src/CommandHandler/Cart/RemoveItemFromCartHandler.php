@@ -30,8 +30,7 @@ final class RemoveItemFromCartHandler implements MessageHandlerInterface
     public function __construct(
         OrderItemRepositoryInterface $orderItemRepository,
         OrderModifierInterface $orderModifier
-    )
-    {
+    ) {
         $this->orderItemRepository = $orderItemRepository;
         $this->orderModifier = $orderModifier;
     }

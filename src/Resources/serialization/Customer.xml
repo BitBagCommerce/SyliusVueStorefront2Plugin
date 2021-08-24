@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+
+<!--
+
+This file has been created by developers from BitBag.
+Feel free to contact us once you face any issues or want to start
+another great project.
+You can find more information about us on https://bitbag.shop and write us
+an email on mikolaj.krol@bitbag.pl.
+
+-->
+
+<serializer xmlns="http://symfony.com/schema/dic/serializer-mapping"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping https://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
+>
+    <class name="Sylius\Component\Core\Model\Customer">
+        <attribute name="id">
+            <group>admin:customer:read</group>
+        </attribute>
+
+        <attribute name="email">
+            <group>admin:customer:read</group>
+            <group>shop:customer:read</group>
+            <group>shop:customer:update</group>
+        </attribute>
+
+        <attribute name="firstName">
+            <group>admin:customer:read</group>
+            <group>shop:customer:read</group>
+            <group>shop:customer:update</group>
+        </attribute>
+
+        <attribute name="lastName">
+            <group>admin:customer:read</group>
+            <group>shop:customer:read</group>
+            <group>shop:customer:update</group>
+        </attribute>
+
+        <attribute name="fullName">
+            <group>admin:customer:read</group>
+            <group>shop:customer:read</group>
+        </attribute>
+
+        <attribute name="defaultAddress">
+            <group>admin:customer:read</group>
+            <group>shop:customer:read</group>
+            <group>shop:customer:update</group>
+        </attribute>
+
+        <attribute name="subscribedToNewsletter">
+            <group>shop:customer:read</group>
+            <group>shop:customer:update</group>
+        </attribute>
+
+        <attribute name="user">
+            <group>shop:customer:read</group>
+        </attribute>
+    </class>
+</serializer>

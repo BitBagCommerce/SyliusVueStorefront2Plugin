@@ -24,7 +24,6 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class RemoveCouponFromCartHandler implements MessageHandlerInterface
 {
-
     private OrderRepositoryInterface $orderRepository;
 
     private PromotionCouponRepositoryInterface $promotionCouponRepository;
@@ -35,8 +34,7 @@ final class RemoveCouponFromCartHandler implements MessageHandlerInterface
         OrderRepositoryInterface $orderRepository,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         OrderProcessorInterface $orderProcessor
-    )
-    {
+    ) {
         $this->orderRepository = $orderRepository;
         $this->promotionCouponRepository = $promotionCouponRepository;
         $this->orderProcessor = $orderProcessor;
