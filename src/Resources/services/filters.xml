@@ -85,6 +85,5 @@ an email on mikolaj.krol@bitbag.pl.
             </argument>
             <tag name="api_platform.filter" />
         </service>
-
     </services>
 </container>
