@@ -21,6 +21,9 @@ an email on mikolaj.krol@bitbag.pl.
         <attribute name="token">
             <group>shop:user_login:read</group>
         </attribute>
+        <attribute name="refreshToken">
+            <group>shop:user_login:read</group>
+        </attribute>
         <attribute name="user">
             <group>shop:user_login:read</group>
         </attribute>
