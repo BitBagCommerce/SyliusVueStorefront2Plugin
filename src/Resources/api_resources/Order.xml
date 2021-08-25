@@ -608,5 +608,6 @@ an email on mikolaj.krol@bitbag.pl.
         <property name="billingAddress" writable="true" />
         <property name="shippingAddress" writable="false" />
         <property name="localeCode" writable="true" />
+        <property name="createdAt" writable="false" />
     </resource>
 </resources>
