@@ -14,52 +14,27 @@ an email on mikolaj.krol@bitbag.pl.
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
 >
-    <resource class="%sylius.model.promotion.class%" shortName="Promotion">
+    <resource class="Sylius\InvoicingPlugin\Entity\Invoice" shortName="Invoice">
         <graphql>
             <operation name="collection_query">
                 <attribute name="pagination_type">page</attribute>
+                <attribute name="filters">
+                    <attribute>bit_bag.sylius_graphql_plugin.api.invoice_order_id</attribute>
+                </attribute>
             </operation>
 
             <operation name="item_query" />
         </graphql>
 
-        <attribute name="route_prefix">admin</attribute>
-
-        <attribute name="validation_groups">sylius</attribute>
-
-        <collectionOperations>
-            <collectionOperation name="admin_get">
-                <attribute name="method">GET</attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">admin:promotion:read</attribute>
-                </attribute>
-            </collectionOperation>
-        </collectionOperations>
-
-        <itemOperations>
-            <itemOperation name="admin_get">
-                <attribute name="method">GET</attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">admin:promotion:read</attribute>
-                </attribute>
-            </itemOperation>
-            <itemOperation name="admin_delete">
-                <attribute name="method">DELETE</attribute>
-            </itemOperation>
-        </itemOperations>
-
         <property name="id" identifier="true" writable="false" />
-        <property name="name" readable="true" />
-        <property name="description" readable="true" />
-        <property name="priority" readable="true" />
-        <property name="exclusive" readable="true" />
-        <property name="usageLimit" readable="true" />
-        <property name="startsAt" readable="true" />
-        <property name="endsAt" readable="true" />
-        <property name="couponBased" readable="true" />
-        <property name="coupons" readable="true" />
-        <property name="rules" readable="true" />
-        <property name="actions" readable="true" />
-        <property name="channels" readable="true" />
+        <property name="billingData" readable="true" />
+        <property name="shopBillingData" readable="true" />
+        <property name="channel" readable="true" />
+        <property name="order" readable="true" />
+        <property name="number" readable="true" />
+        <property name="issuedAt" readable="true" />
+        <property name="currencyCode" readable="true" />
+        <property name="localeCode" readable="true" />
+        <property name="total" readable="true" />
     </resource>
 </resources>

@@ -34,7 +34,12 @@ an email on mikolaj.krol@bitbag.pl.
 
             <operation name="shop_refresh">
                 <attribute name="messenger">controller</attribute>
-<!--                <attribute name="input">gesdinet.jwtrefreshtoken:refresh</attribute>-->
+                <attribute name="controller">gesdinet.jwtrefreshtoken:refresh</attribute>
+                <attribute name="args">
+                    <attribute name="refreshToken">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                </attribute>
             </operation>
         </graphql>
 
