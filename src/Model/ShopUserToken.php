@@ -54,17 +54,11 @@ final class ShopUserToken
         $this->user = $user;
     }
 
-    /**
-     * @return string|null
-     */
     public function getRefreshToken(): ?string
     {
         return $this->refreshToken;
     }
 
-    /**
-     * @param string|null $refreshToken
-     */
     public function setRefreshToken(?string $refreshToken): void
     {
         $this->refreshToken = $refreshToken;

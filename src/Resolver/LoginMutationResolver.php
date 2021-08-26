@@ -15,7 +15,7 @@ use Sylius\Component\Core\Model\ShopUser;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-class LoginMutationResolver implements MutationResolverInterface
+final class LoginMutationResolver implements MutationResolverInterface
 {
     private EncoderFactoryInterface $encoderFactory;
 
@@ -46,8 +46,8 @@ class LoginMutationResolver implements MutationResolverInterface
         /** @var array $input */
         $input = $context['args']['input'];
 
-        $username = (string)$input['username'];
-        $password = (string)$input['password'];
+        $username = (string) $input['username'];
+        $password = (string) $input['password'];
 
         $shopUserRepository = $this->entityManager->getRepository(ShopUser::class);
 
@@ -59,7 +59,7 @@ class LoginMutationResolver implements MutationResolverInterface
         if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
             $token = $this->jwtManager->create($user);
             $refreshToken = $this->refreshJwtManager->create();
-dump($refreshToken);
+
             $shopUserToken = new ShopUserToken();
             $shopUserToken->setId($user->getId());
             $shopUserToken->setToken($token);
@@ -74,20 +74,16 @@ dump($refreshToken);
         return null;
     }
 
-    /**
-     * @param array $input
-     * @param ShopUserInterface $user
-     */
     public function applyOrder(array $input, ShopUserInterface $user): void
     {
-        if (key_exists("orderTokenValue", $input)) {
-            $tokenValue = (string)$input['orderTokenValue'];
+        if (array_key_exists('orderTokenValue', $input)) {
+            $tokenValue = (string) $input['orderTokenValue'];
             $orderRepository = $this->entityManager->getRepository(Order::class);
 
             /** @var OrderInterface|null $order */
-            $order = $orderRepository->findOneBy(["tokenValue" => $tokenValue]);
+            $order = $orderRepository->findOneBy(['tokenValue' => $tokenValue]);
 
-            if($order === null){
+            if ($order === null) {
                 return;
             }
 

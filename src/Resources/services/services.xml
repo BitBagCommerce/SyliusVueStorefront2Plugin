@@ -26,7 +26,7 @@ an email on mikolaj.krol@bitbag.pl.
             id="bit_bag.sylius_graphql_plugin.service.refresh_token_manager"
             class="BitBag\SyliusGraphqlPlugin\Service\RefreshTokenManager"
         >
-            <argument type="service" id="sylius.manager.taxon"/>
+            <argument type="service" id="doctrine.orm.default_entity_manager"/>
             <argument type="string">Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken</argument>
         </service>
     </services>

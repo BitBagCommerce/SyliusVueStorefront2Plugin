@@ -74,7 +74,7 @@ final class ShippingAddressOrderHandler implements MessageHandlerInterface
             $order->setShippingAddress($addressOrder->shippingAddress);
         }
 
-        if($order->getBillingAddress() !== null){
+        if ($order->getBillingAddress() !== null) {
             $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_ADDRESS);
         }
 
