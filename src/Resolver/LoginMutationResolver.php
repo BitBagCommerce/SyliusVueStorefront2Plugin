@@ -7,30 +7,34 @@ namespace BitBag\SyliusGraphqlPlugin\Resolver;
 use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
 use BitBag\SyliusGraphqlPlugin\Model\ShopUserToken;
 use Doctrine\ORM\EntityManagerInterface;
+use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use Sylius\Component\Core\Model\Order;
+use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ShopUser;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-class LoginMutationResolver implements MutationResolverInterface
+final class LoginMutationResolver implements MutationResolverInterface
 {
-    /** @var EncoderFactoryInterface */
-    private $encoderFactory;
+    private EncoderFactoryInterface $encoderFactory;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
-    /** @var JWTTokenManagerInterface */
-    private $jwtManager;
+    private JWTTokenManagerInterface $jwtManager;
+
+    private RefreshTokenManagerInterface $refreshJwtManager;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         JWTTokenManagerInterface $jwtManager,
-        EncoderFactoryInterface $encoderFactory
+        EncoderFactoryInterface $encoderFactory,
+        RefreshTokenManagerInterface $refreshJwtManager
     ) {
         $this->entityManager = $entityManager;
         $this->jwtManager = $jwtManager;
         $this->encoderFactory = $encoderFactory;
+        $this->refreshJwtManager = $refreshJwtManager;
     }
 
     public function __invoke($item, $context)
@@ -39,8 +43,11 @@ class LoginMutationResolver implements MutationResolverInterface
             return null;
         }
 
-        $username = $context['args']['input']['username'];
-        $password = $context['args']['input']['password'];
+        /** @var array $input */
+        $input = $context['args']['input'];
+
+        $username = (string) $input['username'];
+        $password = (string) $input['password'];
 
         $shopUserRepository = $this->entityManager->getRepository(ShopUser::class);
 
@@ -51,14 +58,39 @@ class LoginMutationResolver implements MutationResolverInterface
 
         if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
             $token = $this->jwtManager->create($user);
+            $refreshToken = $this->refreshJwtManager->create();
+
             $shopUserToken = new ShopUserToken();
             $shopUserToken->setId($user->getId());
             $shopUserToken->setToken($token);
+            $shopUserToken->setRefreshToken($refreshToken->getRefreshToken());
             $shopUserToken->setUser($user);
+
+            $this->applyOrder($input, $user);
 
             return $shopUserToken;
         }
 
         return null;
+    }
+
+    public function applyOrder(array $input, ShopUserInterface $user): void
+    {
+        if (array_key_exists('orderTokenValue', $input)) {
+            $tokenValue = (string) $input['orderTokenValue'];
+            $orderRepository = $this->entityManager->getRepository(Order::class);
+
+            /** @var OrderInterface|null $order */
+            $order = $orderRepository->findOneBy(['tokenValue' => $tokenValue]);
+
+            if ($order === null) {
+                return;
+            }
+
+            $order->setCustomer($user->getCustomer());
+
+            $this->entityManager->persist($order);
+            $this->entityManager->flush();
+        }
     }
 }

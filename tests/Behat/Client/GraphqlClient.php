@@ -12,13 +12,13 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Client;
 
+use const JSON_ERROR_NONE;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 use Sylius\Behat\Client\RequestInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\HttpFoundation\Response;
-use const JSON_ERROR_NONE;
 
 final class GraphqlClient implements GraphqlClientInterface
 {
@@ -38,8 +38,7 @@ final class GraphqlClient implements GraphqlClientInterface
         AbstractBrowser $client,
         SharedStorageInterface $sharedStorage,
         string $authorizationHeader
-    )
-    {
+    ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
         $this->authorizationHeader = $authorizationHeader;
@@ -102,7 +101,6 @@ final class GraphqlClient implements GraphqlClientInterface
         );
     }
 
-
     /** @param string|int $value */
     public function setRequestInput(string $key, $value): void
     {
@@ -140,7 +138,7 @@ final class GraphqlClient implements GraphqlClientInterface
         return $this->sharedStorage->has('token') ? $this->sharedStorage->get('token') : null;
     }
 
-    function request(RequestInterface $request): Response
+    public function request(RequestInterface $request): Response
     {
         if ($this->sharedStorage->has('hostname')) {
             $this->client->setServerParameter('HTTP_HOST', $this->sharedStorage->get('hostname'));
@@ -160,11 +158,10 @@ final class GraphqlClient implements GraphqlClientInterface
         $this->saveLastResponse($response);
     }
 
-
     /**
      * @return mixed|null
      */
-    function getJsonFromResponse(string $response)
+    public function getJsonFromResponse(string $response)
     {
         $jsonData = json_decode($response, true);
         if (json_last_error() === JSON_ERROR_NONE) {

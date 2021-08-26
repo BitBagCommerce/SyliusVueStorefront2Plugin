@@ -20,6 +20,8 @@ final class ShopUserToken
 
     private ?string $token;
 
+    private ?string $refreshToken;
+
     private ?ShopUserInterface $user;
 
     public function getToken(): ?string
@@ -50,5 +52,15 @@ final class ShopUserToken
     public function setUser(?ShopUserInterface $user): void
     {
         $this->user = $user;
+    }
+
+    public function getRefreshToken(): ?string
+    {
+        return $this->refreshToken;
+    }
+
+    public function setRefreshToken(?string $refreshToken): void
+    {
+        $this->refreshToken = $refreshToken;
     }
 }

@@ -8,6 +8,7 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Element\DocumentElement;
+use const DIRECTORY_SEPARATOR;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -15,14 +16,12 @@ use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
-use const DIRECTORY_SEPARATOR;
 
 /**
  * Context for GraphQL.
  */
 final class GraphqlApiPlatformContext implements Context
 {
-
     private GraphqlClientInterface $client;
 
     private SharedStorageInterface $sharedStorage;
@@ -203,15 +202,15 @@ final class GraphqlApiPlatformContext implements Context
     public function iShouldSeeFollowingErrorMessage(string $message): bool
     {
         $flatLastResponse = $this->flattenArray($this->lastResponse);
-        if (!key_exists("errors.0.message", $flatLastResponse)) {
-            throw new Exception("No errors were produced.");
+        if (!array_key_exists('errors.0.message', $flatLastResponse)) {
+            throw new Exception('No errors were produced.');
         }
-        if ($flatLastResponse["errors.0.message"] !== $message) {
-            throw new Exception("The error message is different then expected.");
+        if ($flatLastResponse['errors.0.message'] !== $message) {
+            throw new Exception('The error message is different then expected.');
         }
+
         return true;
     }
-
 
     private function sendGraphqlRequest(string $method = self::METHOD_POST): DocumentElement
     {
@@ -228,7 +227,7 @@ final class GraphqlApiPlatformContext implements Context
     private function getJsonFromResponse(string $response)
     {
         $jsonData = json_decode($response, true);
-        if (json_last_error() === JSON_ERROR_NONE) {
+        if (json_last_error() === \JSON_ERROR_NONE) {
             return $jsonData;
         }
 

@@ -21,10 +21,23 @@ an email on mikolaj.krol@bitbag.pl.
                 <attribute name="write">false</attribute>
                 <attribute name="args">
                     <attribute name="username">
-                        <attribute name="type">String</attribute>
+                        <attribute name="type">String!</attribute>
                     </attribute>
                     <attribute name="password">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="orderTokenValue">
                         <attribute name="type">String</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+
+            <operation name="shop_refresh">
+                <attribute name="messenger">controller</attribute>
+                <attribute name="controller">gesdinet.jwtrefreshtoken:refresh</attribute>
+                <attribute name="args">
+                    <attribute name="refreshToken">
+                        <attribute name="type">String!</attribute>
                     </attribute>
                 </attribute>
             </operation>
@@ -32,6 +45,7 @@ an email on mikolaj.krol@bitbag.pl.
 
         <property name="id" identifier="true" readable="true" />
         <property name="token"  description="JWT Token" />
+        <property name="refreshToken"  description="JWT Refresh Token" />
         <property name="user" description="User" readable="true">
             <subresource resourceClass="%sylius.model.shop_user.class%" maxDepth="3"/>
         </property>

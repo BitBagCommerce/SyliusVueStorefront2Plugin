@@ -16,7 +16,7 @@ use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 use Sylius\Component\Addressing\Model\AddressInterface;
 
 /** @experimental */
-class AddressOrder implements OrderTokenValueAwareInterface
+final class BillingAddressOrder implements OrderTokenValueAwareInterface
 {
     public ?string $orderTokenValue;
 
@@ -24,16 +24,16 @@ class AddressOrder implements OrderTokenValueAwareInterface
     public ?string $email;
 
     /** @psalm-immutable */
-    public AddressInterface $billingAddress;
+    public ?AddressInterface $billingAddress;
 
-    /** @psalm-immutable */
-    public ?AddressInterface $shippingAddress;
-
-    public function __construct(?string $email, AddressInterface $billingAddress, ?AddressInterface $shippingAddress = null)
-    {
+    public function __construct(
+        ?string $email,
+        ?string $orderTokenValue,
+        ?AddressInterface $billingAddress = null
+    ) {
         $this->email = $email;
+        $this->orderTokenValue = $orderTokenValue;
         $this->billingAddress = $billingAddress;
-        $this->shippingAddress = $shippingAddress;
     }
 
     public function getOrderTokenValue(): ?string

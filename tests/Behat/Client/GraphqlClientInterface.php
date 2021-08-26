@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 interface GraphqlClientInterface
 {
-
     public function post(?RequestInterface $request = null): Response;
 
     public function put(): Response;
@@ -42,11 +41,10 @@ interface GraphqlClientInterface
 
     public function getToken(): ?string;
 
-    function request(RequestInterface $request): Response;
+    public function request(RequestInterface $request): Response;
 
     /**
      * @return mixed|null
      */
-    function getJsonFromResponse(string $response);
-
+    public function getJsonFromResponse(string $response);
 }

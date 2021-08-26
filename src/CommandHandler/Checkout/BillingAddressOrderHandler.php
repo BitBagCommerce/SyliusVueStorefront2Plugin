@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout;
 
-use BitBag\SyliusGraphqlPlugin\Command\Checkout\AddressOrder;
+use BitBag\SyliusGraphqlPlugin\Command\Checkout\BillingAddressOrder;
 use Doctrine\Persistence\ObjectManager;
 use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
 use Sylius\Component\Core\Model\CustomerInterface;
@@ -25,7 +25,7 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Webmozart\Assert\Assert;
 
 /** @experimental */
-final class AddressOrderHandler implements MessageHandlerInterface
+final class BillingAddressOrderHandler implements MessageHandlerInterface
 {
     private OrderRepositoryInterface $orderRepository;
 
@@ -51,7 +51,7 @@ final class AddressOrderHandler implements MessageHandlerInterface
         $this->stateMachineFactory = $stateMachineFactory;
     }
 
-    public function __invoke(AddressOrder $addressOrder): OrderInterface
+    public function __invoke(BillingAddressOrder $addressOrder): OrderInterface
     {
         $tokenValue = $addressOrder->orderTokenValue;
 
@@ -70,10 +70,13 @@ final class AddressOrderHandler implements MessageHandlerInterface
             $order->setCustomer($this->provideCustomerByEmail($addressOrder->email));
         }
 
-        $order->setBillingAddress($addressOrder->billingAddress);
-        $order->setShippingAddress($addressOrder->shippingAddress ?? clone $addressOrder->billingAddress);
+        if ($addressOrder->billingAddress !== null) {
+            $order->setBillingAddress($addressOrder->billingAddress);
+        }
 
-        $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_ADDRESS);
+        if ($order->getShippingAddress() !== null) {
+            $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_ADDRESS);
+        }
 
         $this->manager->persist($order);
 

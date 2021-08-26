@@ -17,31 +17,74 @@ an email on mikolaj.krol@bitbag.pl.
     <resource class="%sylius.model.address.class%" shortName="Address">
         <graphql>
             <operation name="item_query" />
+            <operation name="collection_query">
+                <attribute name="pagination_type">page</attribute>
+            </operation>
 
             <operation name="shop_post">
                 <attribute name="method">POST</attribute>
-                <attribute name="messenger">input</attribute>
-                <!--                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\AddAddress</attribute>-->
-                <attribute name="normalization_context">
-                    <attribute name="groups">shop:address:create</attribute>
-                </attribute>
                 <attribute name="args">
                     <attribute name="firstName">
-                        <attribute name="type">String</attribute>
+                        <attribute name="type">String!</attribute>
                     </attribute>
                     <attribute name="lastName">
-                        <attribute name="type">String</attribute>
+                        <attribute name="type">String!</attribute>
                     </attribute>
-                    <attribute name="countryCode">
+                    <attribute name="company">
                         <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="street">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="countryCode">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="provinceName">
                         <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="city">
-                        <attribute name="type">String</attribute>
+                        <attribute name="type">String!</attribute>
                     </attribute>
                     <attribute name="postcode">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="phoneNumber">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+
+            <operation name="shop_put">
+                <attribute name="method">PUT</attribute>
+                <attribute name="args">
+                    <attribute name="id">
+                        <attribute name="type">ID!</attribute>
+                    </attribute>
+                    <attribute name="firstName">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="lastName">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="company">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="street">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="countryCode">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="provinceName">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="city">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="postcode">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="phoneNumber">
                         <attribute name="type">String</attribute>
                     </attribute>
                 </attribute>

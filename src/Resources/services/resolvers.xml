@@ -20,6 +20,7 @@ an email on mikolaj.krol@bitbag.pl.
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="lexik_jwt_authentication.jwt_manager" />
             <argument type="service" id="security.encoder_factory" />
+            <argument type="service" id="bit_bag.sylius_graphql_plugin.service.refresh_token_manager" />
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
     </services>

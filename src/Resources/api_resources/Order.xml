@@ -86,25 +86,36 @@ an email on mikolaj.krol@bitbag.pl.
                 </attribute>
             </operation>
 
-            <operation name="shop_address">
+            <operation name="shop_add_shipping_address">
                 <attribute name="method">PATCH</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\AddressOrder</attribute>
+                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\ShippingAddressOrder</attribute>
                 <attribute name="args">
-                    <attribute name="id">
+                    <attribute name="email">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="orderTokenValue">
                         <attribute name="type">String</attribute>
                     </attribute>
+                    <attribute name="shippingAddress">
+                        <attribute name="type">AddressInput!</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+
+            <operation name="shop_add_billing_address">
+                <attribute name="method">PATCH</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\BillingAddressOrder</attribute>
+                <attribute name="args">
                     <attribute name="email">
-                        <attribute name="type">String</attribute>
+                        <attribute name="type">String!</attribute>
                     </attribute>
                     <attribute name="orderTokenValue">
                         <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="billingAddress">
-                        <attribute name="type">AddressInput</attribute>
-                    </attribute>
-                    <attribute name="shippingAddress">
-                        <attribute name="type">AddressInput</attribute>
+                        <attribute name="type">AddressInput!</attribute>
                     </attribute>
                 </attribute>
             </operation>
@@ -597,5 +608,6 @@ an email on mikolaj.krol@bitbag.pl.
         <property name="billingAddress" writable="true" />
         <property name="shippingAddress" writable="false" />
         <property name="localeCode" writable="true" />
+        <property name="createdAt" writable="false" />
     </resource>
 </resources>
