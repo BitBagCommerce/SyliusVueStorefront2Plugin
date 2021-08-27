@@ -92,7 +92,7 @@ an email on mikolaj.krol@bitbag.pl.
                 <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\ShippingAddressOrder</attribute>
                 <attribute name="args">
                     <attribute name="email">
-                        <attribute name="type">String!</attribute>
+                        <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="orderTokenValue">
                         <attribute name="type">String</attribute>
@@ -109,7 +109,7 @@ an email on mikolaj.krol@bitbag.pl.
                 <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\BillingAddressOrder</attribute>
                 <attribute name="args">
                     <attribute name="email">
-                        <attribute name="type">String!</attribute>
+                        <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="orderTokenValue">
                         <attribute name="type">String</attribute>
@@ -604,6 +604,9 @@ an email on mikolaj.krol@bitbag.pl.
         <property name="taxTotal" readable="true" />
         <property name="adjustments" writable="false">
             <subresource resourceClass="%sylius.model.adjustment.class%" />
+        </property>
+        <property name="promotions" writable="false">
+            <subresource resourceClass="%sylius.model.promotion.class%" />
         </property>
         <property name="billingAddress" writable="true" />
         <property name="shippingAddress" writable="false" />

@@ -16,7 +16,7 @@ use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 use Sylius\Component\Addressing\Model\AddressInterface;
 
 /** @experimental */
-final class BillingAddressOrder implements OrderTokenValueAwareInterface
+class BillingAddressOrder implements OrderTokenValueAwareInterface
 {
     public ?string $orderTokenValue;
 

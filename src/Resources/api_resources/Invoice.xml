@@ -14,7 +14,7 @@ an email on mikolaj.krol@bitbag.pl.
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
 >
-    <resource class="%btibag_graphql.model.invoice.class%" shortName="Invoice">
+    <resource class="%bitbag_graphql.model.invoice.class%" shortName="Invoice">
         <graphql>
             <operation name="collection_query">
                 <attribute name="pagination_type">page</attribute>
