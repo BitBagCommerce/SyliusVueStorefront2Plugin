@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace BitBag\SyliusGraphqlPlugin\Resolver\Mutation;
 
 use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
+use BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactoryInterface;
 use BitBag\SyliusGraphqlPlugin\Model\ShopUserToken;
 use Doctrine\ORM\EntityManagerInterface;
+use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Sylius\Component\Core\Model\Order;
@@ -18,23 +20,17 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 final class LoginResolver implements MutationResolverInterface
 {
     private EncoderFactoryInterface $encoderFactory;
-
     private EntityManagerInterface $entityManager;
-
-    private JWTTokenManagerInterface $jwtManager;
-
-    private RefreshTokenManagerInterface $refreshJwtManager;
+    private ShopUserTokenFactoryInterface $tokenFactory;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        JWTTokenManagerInterface $jwtManager,
         EncoderFactoryInterface $encoderFactory,
-        RefreshTokenManagerInterface $refreshJwtManager
+        ShopUserTokenFactoryInterface $tokenFactory
     ) {
         $this->entityManager = $entityManager;
-        $this->jwtManager = $jwtManager;
         $this->encoderFactory = $encoderFactory;
-        $this->refreshJwtManager = $refreshJwtManager;
+        $this->tokenFactory = $tokenFactory;
     }
 
     public function __invoke($item, $context)
@@ -57,17 +53,10 @@ final class LoginResolver implements MutationResolverInterface
         $encoder = $this->encoderFactory->getEncoder($user);
 
         if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
-            $token = $this->jwtManager->create($user);
-            $refreshToken = $this->refreshJwtManager->create();
+            $refreshToken = $this->tokenFactory->getRefreshToken($user);
 
-            $shopUserToken = new ShopUserToken();
-            $shopUserToken->setId($user->getId());
-            $shopUserToken->setToken($token);
-            $shopUserToken->setRefreshToken($refreshToken->getRefreshToken());
-            $shopUserToken->setUser($user);
-
+            $shopUserToken = $this->tokenFactory->create($user,$refreshToken);
             $this->applyOrder($input, $user);
-
             return $shopUserToken;
         }
 

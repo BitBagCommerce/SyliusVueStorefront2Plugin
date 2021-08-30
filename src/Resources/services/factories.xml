@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+This file has been created by developers from BitBag.
+Feel free to contact us once you face any issues or want to start
+another great project.
+You can find more information about us on https://bitbag.shop and write us
+an email on mikolaj.krol@bitbag.pl.
+
+-->
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults autowire="false" autoconfigure="false" public="false" />
+
+        <service
+            id="bit_bag.sylius_graphql_plugin.factory.shop_user_token_factory"
+            class="BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactory"
+        >
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="lexik_jwt_authentication.jwt_manager" />
+            <argument type="service" id="bit_bag.sylius_graphql_plugin.service.refresh_token_manager" />
+        </service>
+
+    </services>
+</container>
