@@ -28,14 +28,16 @@ final class InvoiceItemDataProvider implements RestrictedDataProviderInterface, 
     private UserContextInterface $userContext;
 
     private ObjectRepository $invoiceRepository;
+    private string $invoiceClass;
 
     public function __construct(
-        UserContextInterface $userContext,
         EntityManagerInterface $entityManager,
+        UserContextInterface $userContext,
         string $invoiceClass
     )
     {
         $this->userContext = $userContext;
+        $this->invoiceClass = $invoiceClass;
         $this->invoiceRepository = $entityManager->getRepository($invoiceClass);
     }
 
@@ -43,7 +45,7 @@ final class InvoiceItemDataProvider implements RestrictedDataProviderInterface, 
     {
         /** @var ShopUserInterface|null $user */
         $user = $this->userContext->getUser();
-
+die('sad');
         $invoice = $this->invoiceRepository->find($id);
         /** @var OrderInterface $order */
         $order = $invoice->order();
@@ -59,6 +61,6 @@ final class InvoiceItemDataProvider implements RestrictedDataProviderInterface, 
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
-        return is_a($resourceClass, CustomerInterface::class, true);
+        return is_a($resourceClass, $this->invoiceClass, true);
     }
 }

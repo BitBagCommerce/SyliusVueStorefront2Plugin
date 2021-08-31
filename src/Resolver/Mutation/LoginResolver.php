@@ -1,16 +1,20 @@
 <?php
 
+/*
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * another great project.
+ * You can find more information about us on https://bitbag.shop and write us
+ * an email on mikolaj.krol@bitbag.pl.
+ */
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusGraphqlPlugin\Resolver\Mutation;
 
 use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
 use BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactoryInterface;
-use BitBag\SyliusGraphqlPlugin\Model\ShopUserToken;
 use Doctrine\ORM\EntityManagerInterface;
-use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
-use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Sylius\Component\Core\Model\Order;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ShopUser;

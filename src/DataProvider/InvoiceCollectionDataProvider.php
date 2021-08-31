@@ -18,58 +18,63 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensio
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use BitBag\SyliusGraphqlPlugin\Doctrine\Repository\TaxonRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use Sylius\Bundle\ApiBundle\Context\UserContextInterface;
 use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
-use Sylius\Component\Core\Model\TaxonInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Webmozart\Assert\Assert;
 
 /** @experimental */
-final class TaxonCollectionDataProvider implements CollectionDataProviderInterface, RestrictedDataProviderInterface
+final class InvoiceCollectionDataProvider implements CollectionDataProviderInterface, RestrictedDataProviderInterface
 {
-    private TaxonRepositoryInterface $taxonRepository;
 
     private PaginationExtension $paginationExtension;
-
+    private EntityManagerInterface $entityManager;
     private UserContextInterface $userContext;
-
     /** @see QueryCollectionExtensionInterface */
     private iterable $collectionExtensions;
-
     private QueryNameGeneratorInterface $queryNameGenerator;
+    private ObjectRepository $invoiceRepository;
+    private string $invoiceClass;
 
     public function __construct(
-        TaxonRepositoryInterface $taxonRepository,
+        EntityManagerInterface $entityManager,
         PaginationExtension $paginationExtension,
         UserContextInterface $userContext,
         QueryNameGeneratorInterface $queryNameGenerator,
-        iterable $collectionExtensions
+        iterable $collectionExtensions,
+        string $invoiceClass
     ) {
-        $this->taxonRepository = $taxonRepository;
         $this->paginationExtension = $paginationExtension;
         $this->userContext = $userContext;
         $this->queryNameGenerator = $queryNameGenerator;
         $this->collectionExtensions = $collectionExtensions;
+        $this->invoiceClass = $invoiceClass;
+        $this->entityManager = $entityManager;
+        $this->invoiceRepository = $entityManager->getRepository($invoiceClass);
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
-        return is_a($resourceClass, TaxonInterface::class, true);
+        return is_a($resourceClass, $this->invoiceClass, true);
     }
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
         Assert::keyExists($context, ContextKeys::CHANNEL);
-        $channelMenuTaxon = $context[ContextKeys::CHANNEL]->getMenuTaxon();
 
         $user = $this->userContext->getUser();
         if ($user !== null && in_array('ROLE_API_ACCESS', $user->getRoles())) {
-            return $this->taxonRepository->findAll();
+            return $this->invoiceRepository->findAll();
         }
 
-        $queryBuilder = $this->taxonRepository->createChildrenByChannelMenuTaxonQueryBuilder(
-            $channelMenuTaxon
-        );
+        if(null === $user){
+            throw new AuthenticationException("You are not authenticated to view this resource.");
+        }
+
+        $queryBuilder = $this->invoiceRepository->createInvoiceByUserQueryBuilder($user);
+
         foreach ($this->collectionExtensions as $extension) {
             $extension->applyToCollection($queryBuilder, $this->queryNameGenerator, $resourceClass, $operationName, $context);
 
@@ -77,7 +82,7 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
                 return $extension->getResult($queryBuilder, $resourceClass, $operationName, $context);
             }
         }
-
+        Assert::keyExists($context, ContextKeys::CHANNEL);
         return $this->paginationExtension->getResult(
             $queryBuilder,
             $resourceClass,

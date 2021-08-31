@@ -5,22 +5,19 @@ declare(strict_types=1);
 namespace BitBag\SyliusGraphqlPlugin\Doctrine\Repository;
 
 use Doctrine\ORM\QueryBuilder;
-use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository as BaseTaxonRepository;
-use Sylius\Component\Taxonomy\Model\TaxonInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\InvoicingPlugin\Doctrine\ORM\InvoiceRepository as BaseInvoiceRepository;
+use Sylius\InvoicingPlugin\Doctrine\ORM\InvoiceRepositoryInterface;
 
-final class TaxonRepository extends BaseTaxonRepository implements TaxonRepositoryInterface
+final class InvoiceRepository extends BaseInvoiceRepository implements InvoiceRepositoryInterface
 {
-    public function createChildrenByChannelMenuTaxonQueryBuilder(
-        ?TaxonInterface $menuTaxon = null,
-        ?string $locale = null
-    ): QueryBuilder {
-        return $this->createTranslationBasedQueryBuilder($locale)
-            ->addSelect('child')
-            ->innerJoin('o.parent', 'parent')
-            ->leftJoin('o.children', 'child')
-            ->andWhere('o.enabled = true')
-            ->andWhere('parent.code = :parentCode')
-            ->addOrderBy('o.position')
-            ->setParameter('parentCode', ($menuTaxon !== null) ? $menuTaxon->getCode() : 'category');
+    public function createInvoiceByUserQueryBuilder(ShopUserInterface $user): QueryBuilder
+    {
+        return $this
+            ->createQueryBuilder('o')
+            ->innerJoin('o.order', 'ord')
+            ->where('ord.customer = :customer')
+            ->setParameter('customer', $user->getCustomer());
+
     }
 }

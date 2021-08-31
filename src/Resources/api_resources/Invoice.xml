@@ -24,6 +24,17 @@ an email on mikolaj.krol@bitbag.pl.
             </operation>
 
             <operation name="item_query" />
+
+            <operation name="get_order">
+                <attribute name="mutation">bit_bag.sylius_graphql_plugin.resolver.mutation.order_invoices_list_resolver</attribute>
+                <attribute name="write">false</attribute>
+                <attribute name="args">
+                    <attribute name="orderId">
+                        <attribute name="type">Int!</attribute>
+                    </attribute>
+                </attribute>
+                <attribute name="description">This mutation will return a list of link for fetching related order invoices</attribute>
+            </operation>
         </graphql>
 
         <property name="id" identifier="true" writable="false" />
@@ -36,5 +47,6 @@ an email on mikolaj.krol@bitbag.pl.
         <property name="currencyCode" readable="true" />
         <property name="localeCode" readable="true" />
         <property name="total" readable="true" />
+        <property name="url" readable="true" />
     </resource>
 </resources>
