@@ -1,40 +1,40 @@
 <?php
 
+/*
+ * This file has been created by developers from BitBag.
+ * Feel free to contact us once you face any issues or want to start
+ * another great project.
+ * You can find more information about us on https://bitbag.shop and write us
+ * an email on mikolaj.krol@bitbag.pl.
+ */
+
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Resolver;
+namespace BitBag\SyliusGraphqlPlugin\Resolver\Mutation;
 
 use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
-use BitBag\SyliusGraphqlPlugin\Model\ShopUserToken;
+use BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Sylius\Component\Core\Model\Order;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ShopUser;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-final class LoginMutationResolver implements MutationResolverInterface
+final class LoginResolver implements MutationResolverInterface
 {
     private EncoderFactoryInterface $encoderFactory;
-
     private EntityManagerInterface $entityManager;
-
-    private JWTTokenManagerInterface $jwtManager;
-
-    private RefreshTokenManagerInterface $refreshJwtManager;
+    private ShopUserTokenFactoryInterface $tokenFactory;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        JWTTokenManagerInterface $jwtManager,
         EncoderFactoryInterface $encoderFactory,
-        RefreshTokenManagerInterface $refreshJwtManager
+        ShopUserTokenFactoryInterface $tokenFactory
     ) {
         $this->entityManager = $entityManager;
-        $this->jwtManager = $jwtManager;
         $this->encoderFactory = $encoderFactory;
-        $this->refreshJwtManager = $refreshJwtManager;
+        $this->tokenFactory = $tokenFactory;
     }
 
     public function __invoke($item, $context)
@@ -57,17 +57,10 @@ final class LoginMutationResolver implements MutationResolverInterface
         $encoder = $this->encoderFactory->getEncoder($user);
 
         if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
-            $token = $this->jwtManager->create($user);
-            $refreshToken = $this->refreshJwtManager->create();
+            $refreshToken = $this->tokenFactory->getRefreshToken($user);
 
-            $shopUserToken = new ShopUserToken();
-            $shopUserToken->setId($user->getId());
-            $shopUserToken->setToken($token);
-            $shopUserToken->setRefreshToken($refreshToken->getRefreshToken());
-            $shopUserToken->setUser($user);
-
+            $shopUserToken = $this->tokenFactory->create($user,$refreshToken);
             $this->applyOrder($input, $user);
-
             return $shopUserToken;
         }
 
@@ -76,21 +69,22 @@ final class LoginMutationResolver implements MutationResolverInterface
 
     public function applyOrder(array $input, ShopUserInterface $user): void
     {
-        if (array_key_exists('orderTokenValue', $input)) {
-            $tokenValue = (string) $input['orderTokenValue'];
-            $orderRepository = $this->entityManager->getRepository(Order::class);
-
-            /** @var OrderInterface|null $order */
-            $order = $orderRepository->findOneBy(['tokenValue' => $tokenValue]);
-
-            if ($order === null) {
-                return;
-            }
-
-            $order->setCustomer($user->getCustomer());
-
-            $this->entityManager->persist($order);
-            $this->entityManager->flush();
+        if (!array_key_exists('orderTokenValue', $input)) {
+            return;
         }
+        $tokenValue = (string) $input['orderTokenValue'];
+        $orderRepository = $this->entityManager->getRepository(Order::class);
+
+        /** @var OrderInterface|null $order */
+        $order = $orderRepository->findCartByTokenValue($tokenValue);
+
+        if ($order === null) {
+            return;
+        }
+
+        $order->setCustomer($user->getCustomer());
+
+        $this->entityManager->flush();
+
     }
 }

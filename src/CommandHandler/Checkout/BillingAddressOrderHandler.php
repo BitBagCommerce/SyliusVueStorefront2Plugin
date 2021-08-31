@@ -13,14 +13,11 @@ declare(strict_types=1);
 namespace BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout;
 
 use BitBag\SyliusGraphqlPlugin\Command\Checkout\BillingAddressOrder;
+use BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolverInterface;
 use Doctrine\Persistence\ObjectManager;
-use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
-use Sylius\Component\Core\Model\CustomerInterface;
+use Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface;
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Core\OrderCheckoutTransitions;
-use Sylius\Component\Core\Repository\CustomerRepositoryInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Webmozart\Assert\Assert;
 
@@ -29,26 +26,23 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
 {
     private OrderRepositoryInterface $orderRepository;
 
-    private CustomerRepositoryInterface $customerRepository;
-
-    private FactoryInterface $customerFactory;
-
     private ObjectManager $manager;
 
-    private StateMachineFactoryInterface $stateMachineFactory;
+    private CustomerProviderInterface $customerProvider;
+
+    private OrderAddressStateResolverInterface $addressStateResolver;
 
     public function __construct(
         OrderRepositoryInterface $orderRepository,
-        CustomerRepositoryInterface $customerRepository,
-        FactoryInterface $customerFactory,
         ObjectManager $manager,
-        StateMachineFactoryInterface $stateMachineFactory
-    ) {
+        CustomerProviderInterface $customerProvider,
+        OrderAddressStateResolverInterface $addressStateResolver
+    )
+    {
         $this->orderRepository = $orderRepository;
-        $this->customerRepository = $customerRepository;
-        $this->customerFactory = $customerFactory;
         $this->manager = $manager;
-        $this->stateMachineFactory = $stateMachineFactory;
+        $this->customerProvider = $customerProvider;
+        $this->addressStateResolver = $addressStateResolver;
     }
 
     public function __invoke(BillingAddressOrder $addressOrder): OrderInterface
@@ -56,45 +50,22 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
         $tokenValue = $addressOrder->orderTokenValue;
 
         /** @var OrderInterface|null $order */
-        $order = $this->orderRepository->findOneBy(['tokenValue' => $tokenValue]);
+        $order = $this->orderRepository->findCartByTokenValue($tokenValue);
         Assert::notNull($order, sprintf('Order with %s token has not been found.', $tokenValue));
 
-        $stateMachine = $this->stateMachineFactory->get($order, OrderCheckoutTransitions::GRAPH);
-
-        Assert::true(
-            $stateMachine->can(OrderCheckoutTransitions::TRANSITION_ADDRESS),
-            sprintf('Order with %s token cannot be addressed.', $tokenValue)
-        );
-
-        if (null === $order->getCustomer()) {
-            $order->setCustomer($this->provideCustomerByEmail($addressOrder->email));
+        if (null === $order->getCustomer() || null !== $addressOrder->email) {
+            $order->setCustomer($this->customerProvider->provide($addressOrder->email));
         }
 
         if ($addressOrder->billingAddress !== null) {
             $order->setBillingAddress($addressOrder->billingAddress);
         }
 
-        if ($order->getShippingAddress() !== null) {
-            $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_ADDRESS);
-        }
+        $this->addressStateResolver->resolve($order);
 
         $this->manager->persist($order);
 
         return $order;
     }
 
-    private function provideCustomerByEmail(?string $email): CustomerInterface
-    {
-        Assert::notNull($email, sprintf('Visitor should provide an email.'));
-
-        $customer = $this->customerRepository->findOneBy(['email' => $email]);
-        if (null === $customer) {
-            /** @var CustomerInterface $customer */
-            $customer = $this->customerFactory->createNew();
-            $customer->setEmail($email);
-            $this->manager->persist($customer);
-        }
-
-        return $customer;
-    }
 }

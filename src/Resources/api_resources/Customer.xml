@@ -50,6 +50,32 @@ an email on mikolaj.krol@bitbag.pl.
 
             <operation name="shop_put">
                 <attribute name="method">PUT</attribute>
+                <attribute name="args">
+                    <attribute name="id">
+                        <attribute name="type">ID!</attribute>
+                    </attribute>
+                    <attribute name="firstName">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="lastName">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="email">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="password">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="phoneNumber">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="gender">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="subscribedToNewsletter">
+                        <attribute name="type">Boolean</attribute>
+                    </attribute>
+                </attribute>
             </operation>
 
             <operation name="shop_set_default_address">

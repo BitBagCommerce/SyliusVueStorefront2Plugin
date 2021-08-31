@@ -17,7 +17,7 @@ an email on mikolaj.krol@bitbag.pl.
     <resource class="BitBag\SyliusGraphqlPlugin\Model\ShopUserToken" shortName="ShopUserToken">
         <graphql>
             <operation name="shop_login">
-                <attribute name="mutation">api_platform.login_mutation_resolver</attribute>
+                <attribute name="mutation">bit_bag.sylius_graphql_plugin.resolver.mutation.login_resolver</attribute>
                 <attribute name="write">false</attribute>
                 <attribute name="args">
                     <attribute name="username">
@@ -33,8 +33,8 @@ an email on mikolaj.krol@bitbag.pl.
             </operation>
 
             <operation name="shop_refresh">
-                <attribute name="messenger">controller</attribute>
-                <attribute name="controller">gesdinet.jwtrefreshtoken:refresh</attribute>
+                <attribute name="mutation">bit_bag.sylius_graphql_plugin.resolver.mutation.refresh_token_resolver</attribute>
+                <attribute name="write">false</attribute>
                 <attribute name="args">
                     <attribute name="refreshToken">
                         <attribute name="type">String!</attribute>
@@ -44,10 +44,10 @@ an email on mikolaj.krol@bitbag.pl.
         </graphql>
 
         <property name="id" identifier="true" readable="true" />
-        <property name="token"  description="JWT Token" />
-        <property name="refreshToken"  description="JWT Refresh Token" />
+        <property name="token" description="JWT Token" />
+        <property name="refreshToken" description="JWT Refresh Token" />
         <property name="user" description="User" readable="true">
-            <subresource resourceClass="%sylius.model.shop_user.class%" maxDepth="3"/>
+            <subresource resourceClass="%sylius.model.shop_user.class%" maxDepth="3" />
         </property>
 
     </resource>

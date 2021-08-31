@@ -88,9 +88,10 @@ an email on mikolaj.krol@bitbag.pl.
 
         <service id="bit_bag.sylius_graphql_plugin.api.invoice_order_id" parent="api_platform.doctrine.orm.search_filter">
             <argument type="collection">
-                <argument key="orders.id">exact</argument>
+                <argument key="order.tokenValue">partial</argument>
             </argument>
             <tag name="api_platform.filter" />
         </service>
+
     </services>
 </container>

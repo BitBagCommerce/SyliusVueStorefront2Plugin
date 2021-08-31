@@ -14,7 +14,7 @@ an email on mikolaj.krol@bitbag.pl.
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
 >
-    <resource class="%btibag_graphql.model.invoice.class%" shortName="Invoice">
+    <resource class="%bitbag_graphql.model.invoice.class%" shortName="Invoice">
         <graphql>
             <operation name="collection_query">
                 <attribute name="pagination_type">page</attribute>
@@ -24,6 +24,17 @@ an email on mikolaj.krol@bitbag.pl.
             </operation>
 
             <operation name="item_query" />
+
+            <operation name="get_order">
+                <attribute name="mutation">bit_bag.sylius_graphql_plugin.resolver.mutation.order_invoices_list_resolver</attribute>
+                <attribute name="write">false</attribute>
+                <attribute name="args">
+                    <attribute name="orderId">
+                        <attribute name="type">Int!</attribute>
+                    </attribute>
+                </attribute>
+                <attribute name="description">This mutation will return a list of link for fetching related order invoices</attribute>
+            </operation>
         </graphql>
 
         <property name="id" identifier="true" writable="false" />
@@ -36,5 +47,6 @@ an email on mikolaj.krol@bitbag.pl.
         <property name="currencyCode" readable="true" />
         <property name="localeCode" readable="true" />
         <property name="total" readable="true" />
+        <property name="url" readable="true" />
     </resource>
 </resources>
