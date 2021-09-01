@@ -1,17 +1,14 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
 
 declare(strict_types=1);
 
 namespace BitBag\SyliusGraphqlPlugin\Resolver\Mutation;
-
 
 use BitBag\SyliusGraphqlPlugin\Model\InvoiceUrl;
 use Doctrine\ORM\EntityManagerInterface;
@@ -37,17 +34,16 @@ class OrderInvoicesListResolver
         UserContextInterface $userContext,
         UrlGeneratorInterface $urlGenerator,
         string $invoiceClass
-    )
-    {
+    ) {
         $this->orderRepository = $orderRepository;
         $this->userContext = $userContext;
         $this->urlGenerator = $urlGenerator;
         $this->invoiceRepository = $entityManager->getRepository($invoiceClass);
     }
 
-    public function __invoke($item, $context)
+    public function __invoke($item, array $context)
     {
-        if (!is_array($context) || !isset($context['args']['input'])) {
+        if (!isset($context['args']['input'])) {
             return null;
         }
 
@@ -59,21 +55,21 @@ class OrderInvoicesListResolver
         /** @var OrderInterface|null $order */
         $order = $this->orderRepository->findOneByTokenValue($orderToken);
 
-        if(null === $order){
-            throw new NotFoundHttpException(sprintf("Order for given token %s has not been found", $orderToken));
+        if (null === $order) {
+            throw new NotFoundHttpException(sprintf('Order for given token %s has not been found', $orderToken));
         }
 
         $user = $this->userContext->getUser();
         if ($user === null || $user->getUsername() !== $order->getUser()->getUsername()) {
-            throw new AuthenticationException("You are not authenticated to view this resource.");
+            throw new AuthenticationException('You are not authenticated to view this resource.');
         }
 
         /** @var InvoiceInterface $invoice */
         $invoice = $this->invoiceRepository->findOneByOrder($order);
 
         $invoiceModel = new InvoiceUrl();
-        $url = $this->urlGenerator->generate("sylius_invoicing_plugin_shop_invoice_download", [
-            "id" => $invoice->id()
+        $url = $this->urlGenerator->generate('sylius_invoicing_plugin_shop_invoice_download', [
+            'id' => $invoice->id(),
         ]);
         $invoiceModel->addUrl($url);
         $invoiceModel->setId($order->getId());

@@ -1,17 +1,14 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
 
 declare(strict_types=1);
 
 namespace BitBag\SyliusGraphqlPlugin\Resolver;
-
 
 use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -20,7 +17,6 @@ use Webmozart\Assert\Assert;
 
 final class OrderAddressStateResolver implements OrderAddressStateResolverInterface
 {
-
     private StateMachineFactoryInterface $stateMachineFactory;
 
     public function __construct(StateMachineFactoryInterface $stateMachineFactory)
@@ -41,5 +37,4 @@ final class OrderAddressStateResolver implements OrderAddressStateResolverInterf
             $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_ADDRESS);
         }
     }
-
 }
