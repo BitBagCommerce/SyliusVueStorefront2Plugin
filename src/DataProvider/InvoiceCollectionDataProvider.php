@@ -30,7 +30,6 @@ final class InvoiceCollectionDataProvider implements CollectionDataProviderInter
 {
 
     private PaginationExtension $paginationExtension;
-    private EntityManagerInterface $entityManager;
     private UserContextInterface $userContext;
     /** @see QueryCollectionExtensionInterface */
     private iterable $collectionExtensions;
@@ -51,7 +50,6 @@ final class InvoiceCollectionDataProvider implements CollectionDataProviderInter
         $this->queryNameGenerator = $queryNameGenerator;
         $this->collectionExtensions = $collectionExtensions;
         $this->invoiceClass = $invoiceClass;
-        $this->entityManager = $entityManager;
         $this->invoiceRepository = $entityManager->getRepository($invoiceClass);
     }
 
@@ -82,7 +80,7 @@ final class InvoiceCollectionDataProvider implements CollectionDataProviderInter
                 return $extension->getResult($queryBuilder, $resourceClass, $operationName, $context);
             }
         }
-        Assert::keyExists($context, ContextKeys::CHANNEL);
+
         return $this->paginationExtension->getResult(
             $queryBuilder,
             $resourceClass,

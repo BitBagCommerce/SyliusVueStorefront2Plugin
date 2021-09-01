@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+
+<!--
+
+This file has been created by developers from BitBag.
+Feel free to contact us once you face any issues or want to start
+another great project.
+You can find more information about us on https://bitbag.shop and write us
+an email on mikolaj.krol@bitbag.pl.
+
+-->
+
+<resources xmlns="https://api-platform.com/schema/metadata"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
+>
+    <resource class="BitBag\SyliusGraphqlPlugin\Model\InvoiceUrl" shortName="InvoiceUrl">
+        <graphql>
+
+            <operation name="get_order">
+                <attribute name="mutation">bit_bag.sylius_graphql_plugin.resolver.mutation.order_invoices_list_resolver</attribute>
+                <attribute name="write">false</attribute>
+                <attribute name="args">
+                    <attribute name="orderToken">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                </attribute>
+                <attribute name="description">This mutation will return a list of link for fetching related order invoices</attribute>
+            </operation>
+        </graphql>
+
+        <property name="id" identifier="true" writable="false" />
+        <property name="urls" readable="true" />
+    </resource>
+</resources>

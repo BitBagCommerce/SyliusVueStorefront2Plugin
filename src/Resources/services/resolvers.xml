@@ -34,7 +34,11 @@ an email on mikolaj.krol@bitbag.pl.
 
         <service id="bit_bag.sylius_graphql_plugin.resolver.mutation.order_invoices_list_resolver"
                  class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\OrderInvoicesListResolver">
+            <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="sylius.api.context.user" />
+            <argument type="service" id="api_platform.router" />
+            <argument type="string" >%bitbag_graphql.model.invoice.class%</argument>
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 

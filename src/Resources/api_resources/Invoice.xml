@@ -19,23 +19,15 @@ an email on mikolaj.krol@bitbag.pl.
             <operation name="collection_query">
                 <attribute name="pagination_type">page</attribute>
                 <attribute name="filters">
-                    <attribute>bit_bag.sylius_graphql_plugin.api.invoice_order_id</attribute>
+                    <attribute>bit_bag.sylius_graphql_plugin.api.invoice_order_token_filter</attribute>
                 </attribute>
             </operation>
 
-            <operation name="item_query" />
-
-            <operation name="get_order">
-                <attribute name="mutation">bit_bag.sylius_graphql_plugin.resolver.mutation.order_invoices_list_resolver</attribute>
-                <attribute name="write">false</attribute>
-                <attribute name="args">
-                    <attribute name="orderId">
-                        <attribute name="type">Int!</attribute>
-                    </attribute>
-                </attribute>
-                <attribute name="description">This mutation will return a list of link for fetching related order invoices</attribute>
-            </operation>
         </graphql>
+
+        <attribute name="filters">
+            <attribute>bit_bag.sylius_graphql_plugin.api.invoice_order_token_filter</attribute>
+        </attribute>
 
         <property name="id" identifier="true" writable="false" />
         <property name="billingData" readable="true" />
