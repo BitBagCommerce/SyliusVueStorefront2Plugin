@@ -11,24 +11,24 @@ We are hiring developers from all over the world. Join us and start your new, ex
     <services>
         <defaults autowire="false" autoconfigure="false" public="false" />
 
-        <service id="bit_bag.sylius_graphql_plugin.resolver.mutation.login_resolver"
+        <service id="bitbag.sylius_graphql_plugin.resolver.mutation.login_resolver"
                  class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\LoginResolver">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="security.encoder_factory" />
-            <argument type="service" id="bit_bag.sylius_graphql_plugin.factory.shop_user_token_factory" />
-            <argument type="service" id="bit_bag.sylius_graphql_plugin.service.refresh_token_manager" />
+            <argument type="service" id="bitbag.sylius_graphql_plugin.factory.shop_user_token_factory" />
+            <argument type="service" id="bitbag.sylius_graphql_plugin.service.refresh_token_manager" />
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 
-        <service id="bit_bag.sylius_graphql_plugin.resolver.mutation.refresh_token_resolver"
+        <service id="bitbag.sylius_graphql_plugin.resolver.mutation.refresh_token_resolver"
                  class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\RefreshTokenResolver">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="bit_bag.sylius_graphql_plugin.factory.shop_user_token_factory" />
+            <argument type="service" id="bitbag.sylius_graphql_plugin.factory.shop_user_token_factory" />
             <argument type="string" >%bitbag_graphql.model.refresh_token.class%</argument>
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 
-        <service id="bit_bag.sylius_graphql_plugin.resolver.mutation.order_invoices_list_resolver"
+        <service id="bitbag.sylius_graphql_plugin.resolver.mutation.order_invoices_list_resolver"
                  class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\OrderInvoicesListResolver">
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="doctrine.orm.entity_manager" />
@@ -38,7 +38,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 
-        <service id="bit_bag.sylius_graphql_plugin.resolver.order_address_state_resolver"
+        <service id="bitbag.sylius_graphql_plugin.resolver.order_address_state_resolver"
                  class="BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolver">
             <argument type="service" id="sm.factory" />
         </service>

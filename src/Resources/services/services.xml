@@ -19,7 +19,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         />
 
         <service
-            id="bit_bag.sylius_graphql_plugin.service.refresh_token_manager"
+            id="bitbag.sylius_graphql_plugin.service.refresh_token_manager"
             class="BitBag\SyliusGraphqlPlugin\Service\RefreshTokenManager"
         >
             <argument type="service" id="doctrine.orm.default_entity_manager"/>

@@ -14,7 +14,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <graphql>
 
             <operation name="get_order">
-                <attribute name="mutation">bit_bag.sylius_graphql_plugin.resolver.mutation.order_invoices_list_resolver</attribute>
+                <attribute name="mutation">bitbag.sylius_graphql_plugin.resolver.mutation.order_invoices_list_resolver</attribute>
                 <attribute name="write">false</attribute>
                 <attribute name="args">
                     <attribute name="orderToken">
