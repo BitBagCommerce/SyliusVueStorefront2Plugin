@@ -16,7 +16,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="security.encoder_factory" />
             <argument type="service" id="bitbag.sylius_graphql_plugin.factory.shop_user_token_factory" />
-            <argument type="service" id="bitbag.sylius_graphql_plugin.service.refresh_token_manager" />
+            <argument type="service" id="gesdinet.jwtrefreshtoken.refresh_token_manager" />
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 

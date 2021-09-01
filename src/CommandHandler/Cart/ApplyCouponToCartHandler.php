@@ -40,7 +40,7 @@ final class ApplyCouponToCartHandler implements MessageHandlerInterface
 
     public function __invoke(ApplyCouponToCart $command): OrderInterface
     {
-        /** @var OrderInterface $cart */
+        /** @var OrderInterface|null $cart */
         $cart = $this->orderRepository->findCartByTokenValue($command->getOrderTokenValue());
 
         Assert::notNull($cart, 'Cart doesn\'t exist');
@@ -59,7 +59,7 @@ final class ApplyCouponToCartHandler implements MessageHandlerInterface
             return null;
         }
 
-        /** @var PromotionCouponInterface $promotionCoupon */
+        /** @var PromotionCouponInterface|null $promotionCoupon */
         $promotionCoupon = $this->promotionCouponRepository->findOneBy(['code' => $code]);
 
         Assert::notNull($promotionCoupon);

@@ -27,11 +27,16 @@ use Webmozart\Assert\Assert;
 final class InvoiceCollectionDataProvider implements CollectionDataProviderInterface, RestrictedDataProviderInterface
 {
     private PaginationExtension $paginationExtension;
+
     private UserContextInterface $userContext;
+
     /** @see QueryCollectionExtensionInterface */
     private iterable $collectionExtensions;
+
     private QueryNameGeneratorInterface $queryNameGenerator;
+
     private ObjectRepository $invoiceRepository;
+
     private string $invoiceClass;
 
     public function __construct(
@@ -55,7 +60,7 @@ final class InvoiceCollectionDataProvider implements CollectionDataProviderInter
         return is_a($resourceClass, $this->invoiceClass, true);
     }
 
-    public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
+    public function getCollection(string $resourceClass, string $operationName = null, array $context = []): iterable
     {
         Assert::keyExists($context, ContextKeys::CHANNEL);
 

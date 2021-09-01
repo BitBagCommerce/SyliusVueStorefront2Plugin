@@ -50,7 +50,7 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
         $order = $this->orderRepository->findCartByTokenValue($tokenValue);
         Assert::notNull($order, sprintf('Order with %s token has not been found.', $tokenValue));
 
-        if (null === $order->getCustomer() || null !== $addressOrder->email) {
+        if (null === $order->getCustomer() && null !== $addressOrder->email) {
             $order->setCustomer($this->customerProvider->provide($addressOrder->email));
         }
 

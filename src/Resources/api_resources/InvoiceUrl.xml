@@ -12,7 +12,6 @@ We are hiring developers from all over the world. Join us and start your new, ex
 >
     <resource class="BitBag\SyliusGraphqlPlugin\Model\InvoiceUrl" shortName="InvoiceUrl">
         <graphql>
-
             <operation name="get_order">
                 <attribute name="mutation">bitbag.sylius_graphql_plugin.resolver.mutation.order_invoices_list_resolver</attribute>
                 <attribute name="write">false</attribute>

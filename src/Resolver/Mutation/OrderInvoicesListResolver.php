@@ -16,16 +16,21 @@ use Doctrine\Persistence\ObjectRepository;
 use Sylius\Bundle\ApiBundle\Context\UserContextInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
+use Sylius\InvoicingPlugin\Doctrine\ORM\InvoiceRepositoryInterface;
 use Sylius\InvoicingPlugin\Entity\InvoiceInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
-class OrderInvoicesListResolver
+final class OrderInvoicesListResolver
 {
     private OrderRepositoryInterface $orderRepository;
+
+    /** @var ObjectRepository|InvoiceRepositoryInterface $invoiceRepository */
     private ObjectRepository $invoiceRepository;
+
     private UserContextInterface $userContext;
+
     private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(
@@ -41,7 +46,7 @@ class OrderInvoicesListResolver
         $this->invoiceRepository = $entityManager->getRepository($invoiceClass);
     }
 
-    public function __invoke($item, array $context)
+    public function __invoke($item, array $context): ?InvoiceUrl
     {
         if (!isset($context['args']['input'])) {
             return null;

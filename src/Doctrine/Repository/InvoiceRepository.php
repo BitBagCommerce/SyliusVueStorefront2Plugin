@@ -25,7 +25,8 @@ final class InvoiceRepository extends BaseInvoiceRepository implements InvoiceRe
             ->createQueryBuilder('o')
             ->innerJoin('o.order', 'ord')
             ->where('ord.customer = :customer')
-            ->setParameter('customer', $user->getCustomer());
+            ->setParameter('customer', $user->getCustomer())
+            ;
     }
 
     /**

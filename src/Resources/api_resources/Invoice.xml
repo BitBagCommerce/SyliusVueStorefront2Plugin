@@ -18,7 +18,6 @@ We are hiring developers from all over the world. Join us and start your new, ex
                     <attribute>bitbag.sylius_graphql_plugin.api.invoice_order_token_filter</attribute>
                 </attribute>
             </operation>
-
         </graphql>
 
         <attribute name="filters">

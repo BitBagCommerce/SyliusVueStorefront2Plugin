@@ -12,6 +12,7 @@ namespace BitBag\SyliusGraphqlPlugin\Resolver\Mutation;
 
 use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
 use BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactoryInterface;
+use BitBag\SyliusGraphqlPlugin\Model\ShopUserTokenInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use Sylius\Component\Core\Model\ShopUser;
@@ -21,7 +22,9 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 final class RefreshTokenResolver implements MutationResolverInterface
 {
     private EntityManagerInterface $entityManager;
+
     private ShopUserTokenFactoryInterface $tokenFactory;
+
     private string $refreshTokenClass;
 
     public function __construct(
@@ -34,7 +37,7 @@ final class RefreshTokenResolver implements MutationResolverInterface
         $this->refreshTokenClass = $refreshTokenClass;
     }
 
-    public function __invoke($item, array $context)
+    public function __invoke($item, array $context): ?ShopUserTokenInterface
     {
         if (!isset($context['args']['input'])) {
             return null;

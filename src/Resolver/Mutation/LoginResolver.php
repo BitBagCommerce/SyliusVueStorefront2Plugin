@@ -12,17 +12,21 @@ namespace BitBag\SyliusGraphqlPlugin\Resolver\Mutation;
 
 use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
 use BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactoryInterface;
+use BitBag\SyliusGraphqlPlugin\Model\ShopUserTokenInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\Order;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ShopUser;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 final class LoginResolver implements MutationResolverInterface
 {
     private EncoderFactoryInterface $encoderFactory;
+
     private EntityManagerInterface $entityManager;
+
     private ShopUserTokenFactoryInterface $tokenFactory;
 
     public function __construct(
@@ -35,7 +39,7 @@ final class LoginResolver implements MutationResolverInterface
         $this->tokenFactory = $tokenFactory;
     }
 
-    public function __invoke($item, array $context)
+    public function __invoke($item, array $context): ?ShopUserTokenInterface
     {
         if (!isset($context['args']['input'])) {
             return null;
@@ -72,6 +76,7 @@ final class LoginResolver implements MutationResolverInterface
             return;
         }
         $tokenValue = (string) $input['orderTokenValue'];
+        /** @var OrderRepositoryInterface $orderRepository */
         $orderRepository = $this->entityManager->getRepository(Order::class);
 
         /** @var OrderInterface|null $order */
