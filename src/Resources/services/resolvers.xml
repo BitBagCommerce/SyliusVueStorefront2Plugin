@@ -35,6 +35,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="sylius.api.context.user" />
             <argument type="service" id="api_platform.router" />
             <argument type="string" >%bitbag_graphql.model.invoice.class%</argument>
+            <argument type="string" >%bitbag_graphql.invoice.download_route_name%</argument>
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 

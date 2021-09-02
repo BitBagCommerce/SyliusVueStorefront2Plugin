@@ -11,19 +11,10 @@ declare(strict_types=1);
 namespace BitBag\SyliusGraphqlPlugin\Doctrine\Repository;
 
 use Doctrine\ORM\QueryBuilder;
-use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
 
-final class InvoiceRepository extends EntityRepository implements InvoiceRepositoryInterface
+interface InvoiceRepositoryInterface extends RepositoryInterface
 {
-    public function createInvoiceByUserQueryBuilder(ShopUserInterface $user): QueryBuilder
-    {
-        return $this
-            ->createQueryBuilder('o')
-            ->innerJoin('o.order', 'ord')
-            ->where('ord.customer = :customer')
-            ->setParameter('customer', $user->getCustomer())
-            ;
-    }
-
+    public function createInvoiceByUserQueryBuilder(ShopUserInterface $user): QueryBuilder;
 }

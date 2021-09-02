@@ -16,8 +16,6 @@ use Doctrine\Persistence\ObjectRepository;
 use Sylius\Bundle\ApiBundle\Context\UserContextInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
-use Sylius\InvoicingPlugin\Doctrine\ORM\InvoiceRepositoryInterface;
-use Sylius\InvoicingPlugin\Entity\InvoiceInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -26,24 +24,27 @@ final class OrderInvoicesListResolver
 {
     private OrderRepositoryInterface $orderRepository;
 
-    /** @var ObjectRepository|InvoiceRepositoryInterface $invoiceRepository */
     private ObjectRepository $invoiceRepository;
 
     private UserContextInterface $userContext;
 
     private UrlGeneratorInterface $urlGenerator;
 
+    private string $invoiceDownloadUrlName;
+
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         EntityManagerInterface $entityManager,
         UserContextInterface $userContext,
         UrlGeneratorInterface $urlGenerator,
-        string $invoiceClass
+        string $invoiceClass,
+        string $invoiceDownloadUrlName
     ) {
         $this->orderRepository = $orderRepository;
         $this->userContext = $userContext;
         $this->urlGenerator = $urlGenerator;
         $this->invoiceRepository = $entityManager->getRepository($invoiceClass);
+        $this->invoiceDownloadUrlName = $invoiceDownloadUrlName;
     }
 
     public function __invoke($item, array $context): ?InvoiceUrl
@@ -69,11 +70,10 @@ final class OrderInvoicesListResolver
             throw new AuthenticationException('You are not authenticated to view this resource.');
         }
 
-        /** @var InvoiceInterface $invoice */
-        $invoice = $this->invoiceRepository->findOneByOrder($order);
+        $invoice = $this->invoiceRepository->findOneBy(['order' => $order]);
 
         $invoiceModel = new InvoiceUrl();
-        $url = $this->urlGenerator->generate('sylius_invoicing_plugin_shop_invoice_download', [
+        $url = $this->urlGenerator->generate($this->invoiceDownloadUrlName, [
             'id' => $invoice->id(),
         ]);
         $invoiceModel->addUrl($url);
