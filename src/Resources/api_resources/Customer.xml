@@ -38,6 +38,9 @@ We are hiring developers from all over the world. Join us and start your new, ex
                     <attribute name="gender">
                         <attribute name="type">String</attribute>
                     </attribute>
+                    <attribute name="birthday">
+                        <attribute name="type">String</attribute>
+                    </attribute>
                     <attribute name="subscribedToNewsletter">
                         <attribute name="type">Boolean</attribute>
                     </attribute>

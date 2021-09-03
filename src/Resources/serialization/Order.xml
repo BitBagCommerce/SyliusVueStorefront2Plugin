@@ -50,6 +50,11 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <group>admin:order:read</group>
         </attribute>
 
+        <attribute name="promotions">
+            <group>shop:order:account:read</group>
+            <group>shop:cart:read</group>
+        </attribute>
+
         <attribute name="checkoutState">
             <group>shop:order:account:read</group>
             <group>shop:cart:read</group>

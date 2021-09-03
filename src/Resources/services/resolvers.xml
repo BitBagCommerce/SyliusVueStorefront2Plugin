@@ -28,17 +28,6 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 
-        <service id="bitbag.sylius_graphql_plugin.resolver.mutation.order_invoices_list_resolver"
-                 class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\OrderInvoicesListResolver">
-            <argument type="service" id="sylius.repository.order" />
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="sylius.api.context.user" />
-            <argument type="service" id="api_platform.router" />
-            <argument type="string" >%bitbag_graphql.model.invoice.class%</argument>
-            <argument type="string" >%bitbag_graphql.invoice.download_route_name%</argument>
-            <tag name="api_platform.graphql.mutation_resolver" />
-        </service>
-
         <service id="bitbag.sylius_graphql_plugin.resolver.order_address_state_resolver"
                  class="BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolver">
             <argument type="service" id="sm.factory" />
