@@ -10,6 +10,10 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Client;
 
+use Exception;
+use Symfony\Component\HttpFoundation\Request;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequest;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 use const JSON_ERROR_NONE;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
@@ -20,17 +24,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class GraphqlClient implements GraphqlClientInterface
 {
-    /** @var AbstractBrowser */
-    private $client;
 
-    /** @var SharedStorageInterface */
-    private $sharedStorage;
+    public static string $LAST_GRAPHQL_RESPONSE = "lastGraphqlResponse";
 
-    /** @var string */
-    private $authorizationHeader;
+    private AbstractBrowser $client;
 
-    /** @var RequestInterface */
-    private $request;
+    private SharedStorageInterface $sharedStorage;
+
+    private string $authorizationHeader;
+
+    private RequestInterface $request;
 
     public function __construct(
         AbstractBrowser $client,
@@ -42,101 +45,53 @@ final class GraphqlClient implements GraphqlClientInterface
         $this->authorizationHeader = $authorizationHeader;
     }
 
-    public function post(?RequestInterface $request = null): Response
+    public function prepareOperation(string $mutationName, string $formattedExpectedData): OperationRequestInterface
     {
-        return $this->request($request ?? $this->request);
+        $mutation = '
+        mutation <name> ($input: <name>Input!) {
+            <name>(input: $input){
+            <expectedData>
+          }
+        }';
+
+        $mutation = str_replace("<name>", $mutationName, $mutation);
+        $mutation = str_replace("<expectedData>", $formattedExpectedData, $mutation);
+
+        return new OperationRequest($mutationName, $mutation);
     }
 
-    public function put(): Response
+    /**
+     * @throws Exception
+     */
+    public function prepareRequest(
+        OperationRequestInterface $request,
+        string $method = Request::METHOD_POST,
+        ?bool $auth = false
+    ): Request
     {
-        return $this->request($this->request);
-    }
+        if(!in_array($method, [
+            Request::METHOD_POST, Request::METHOD_PATCH, Request::METHOD_DELETE, Request::METHOD_PUT
+        ])){
+            throw new Exception(sprintf("Provided method %s does not match available ones.", $method));
+        }
 
-    public function patch(): Response
-    {
-        return $this->request($this->request);
-    }
+        $requestData = Request::create("",$method, $request->getFormatted());
+        $token = $this->getToken();
 
-    public function delete(string $id): Response
-    {
-        return $this->request(Request::delete(
-            $this->section,
-            $this->resource,
-            $id,
-            $this->authorizationHeader,
-            $this->getToken()
-        ));
-    }
-
-    public function buildCreateRequest(): void
-    {
-        $this->request = Request::create($this->section, $this->resource, $this->authorizationHeader);
-        $this->request->authorize($this->getToken(), $this->authorizationHeader);
-    }
-
-    public function buildUpdateRequest(string $id): void
-    {
-        $this->show($id);
-
-        $this->request = Request::update(
-            $this->section,
-            $this->resource,
-            $id,
-            $this->authorizationHeader,
-            $this->getToken()
-        );
-        $this->request->setContent(json_decode($this->client->getResponse()->getContent(), true));
-    }
-
-    public function buildCustomUpdateRequest(string $id, string $customSuffix): void
-    {
-        $this->request = Request::update(
-            $this->section,
-            $this->resource,
-            sprintf('%s/%s', $id, $customSuffix),
-            $this->authorizationHeader,
-            $this->getToken()
-        );
-    }
-
-    /** @param string|int $value */
-    public function setRequestInput(string $key, $value): void
-    {
-        $this->request->updateParameters([$key => $value]);
-    }
-
-    public function setRequestData(array $content): void
-    {
-        $this->request->setContent($content);
-    }
-
-    public function clearParameters(): void
-    {
-        $this->request->clearParameters();
-    }
-
-    /** @param string|int|array $value */
-    public function addRequestData(string $key, $value): void
-    {
-        $this->request->updateContent([$key => $value]);
-    }
-
-    public function updateRequestData(array $data): void
-    {
-        $this->request->updateContent($data);
-    }
-
-    public function getLastResponse(): Response
-    {
-        return $this->client->getResponse();
+        if($auth && null !== $token ){
+            $requestData->server->add([
+                "Authorization" => sprintf('%s %s',$this->authorizationHeader, $token)
+            ]);
+        }
+        return $requestData;
     }
 
     public function getToken(): ?string
     {
-        return $this->sharedStorage->has('token') ? $this->sharedStorage->get('token') : null;
+        return $this->sharedStorage->has('token') ? (string)$this->sharedStorage->get('token') : null;
     }
 
-    public function request(RequestInterface $request): Response
+    public function send(Request $request): Response
     {
         if ($this->sharedStorage->has('hostname')) {
             $this->client->setServerParameter('HTTP_HOST', $this->sharedStorage->get('hostname'));
@@ -145,8 +100,8 @@ final class GraphqlClient implements GraphqlClientInterface
         $this->client->request(
             $request->method(),
             '/api/v2/graphql',
-            $request->parameters(),
-            $request->files(),
+            [],
+            [],
             $request->headers(),
             $request->content() ?? null
         );
@@ -154,6 +109,18 @@ final class GraphqlClient implements GraphqlClientInterface
         $response = $this->getLastResponse();
 
         $this->saveLastResponse($response);
+
+        return $response;
+    }
+
+    public function saveLastResponse($response): void
+    {
+        $this->sharedStorage->set(self::$LAST_GRAPHQL_RESPONSE,$response);
+    }
+
+    public function getLastResponse(): Response
+    {
+        return $this->client->getResponse();
     }
 
     /**

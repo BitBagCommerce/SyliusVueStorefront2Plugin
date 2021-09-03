@@ -28,4 +28,47 @@ final class RegistrationContext implements Context
     }
 
     //TODO::
+
+    /**
+     * @When I want to register new user by GraphQl
+     */
+    public function iWantToRegisterNewUserByGraphQl(){
+
+    }
+
+    /**
+     * @Then I provide his first name : $arg
+     */
+    public function iProvideHisFirstName(){
+
+    }
+
+    /**
+     * @Then I provide his last name : $arg
+     */
+    public function iProvideHisLastName(){
+
+    }
+
+    /**
+     * @Then I provide his email : $arg
+     */
+    public function iProvideHisEmail(){
+
+    }
+
+    /**
+     * @Then I provide his password : $arg
+     */
+    public function iProvideHisPassword(){
+
+    }
+
+    /**
+     * @Then I want to be subscribed to newsletter
+     */
+    public function iWantToBeNewsletterSubscriber(){
+
+    }
+
 }
