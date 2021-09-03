@@ -16,6 +16,8 @@ use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
 
 final class LoginContext implements Context
 {
+    public const OPERATION_LOGIN = "shop_loginShopUserToken";
+
     private GraphqlClientInterface $client;
     private SharedStorageInterface $sharedStorage;
 
@@ -27,5 +29,25 @@ final class LoginContext implements Context
         $this->sharedStorage = $sharedStorage;
     }
 
-    //TODO::
+    /**
+     * @When I want to login as $arg with password $arg
+     */
+    public function iWantToLoginWithEmailPassword(string $email, string $password): void
+    {
+
+        $expectedData = '
+        user{
+            customer{
+              _id
+              email
+              emailCanonical
+            }
+            username
+        }
+        ';
+
+        $operationRequest = $this->client->prepareOperation(self::OPERATION_LOGIN, $expectedData);
+
+        $this->client->post($operationRequest);
+    }
 }
