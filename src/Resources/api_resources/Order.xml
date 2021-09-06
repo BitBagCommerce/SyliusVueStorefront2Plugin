@@ -12,15 +12,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
 >
     <resource class="%sylius.model.order.class%" shortName="Order">
         <graphql>
-
-            <operation name="item_query">
-                <attribute name="method">GET</attribute>
-                <attribute name="args">
-                    <attribute name="tokenValue">
-                        <attribute name="type">String</attribute>
-                    </attribute>
-                </attribute>
-            </operation>
+            <operation name="item_query" />
 
             <operation name="shop_post">
                 <attribute name="method">POST</attribute>
@@ -601,7 +593,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <property name="adjustments" writable="false">
             <subresource resourceClass="%sylius.model.adjustment.class%" />
         </property>
-        <property name="promotions" writable="false">
+        <property name="promotions" writable="true" readable="true">
             <subresource resourceClass="%sylius.model.promotion.class%" />
         </property>
         <property name="billingAddress" writable="true" />
