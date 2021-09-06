@@ -1,24 +1,30 @@
 <?php
 
+/*
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
+
 declare(strict_types=1);
 
 namespace BitBag\SyliusGraphqlPlugin\Resolver\Mutation;
 
 use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
 use BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactoryInterface;
-use BitBag\SyliusGraphqlPlugin\Model\ShopUserToken;
+use BitBag\SyliusGraphqlPlugin\Model\ShopUserTokenInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Sylius\Component\Core\Model\ShopUser;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class RefreshTokenResolver implements MutationResolverInterface
 {
-
     private EntityManagerInterface $entityManager;
+
     private ShopUserTokenFactoryInterface $tokenFactory;
+
     private string $refreshTokenClass;
 
     public function __construct(
@@ -31,9 +37,9 @@ final class RefreshTokenResolver implements MutationResolverInterface
         $this->refreshTokenClass = $refreshTokenClass;
     }
 
-    public function __invoke($item, $context)
+    public function __invoke($item, array $context): ?ShopUserTokenInterface
     {
-        if (!is_array($context) || !isset($context['args']['input'])) {
+        if (!isset($context['args']['input'])) {
             return null;
         }
 
@@ -59,7 +65,6 @@ final class RefreshTokenResolver implements MutationResolverInterface
         $refreshToken->setValid($refreshTokenExpirationDate);
         $this->entityManager->flush();
 
-        return $this->tokenFactory->create($user,$refreshToken);
-
+        return $this->tokenFactory->create($user, $refreshToken);
     }
 }

@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-
-This file has been created by developers from BitBag.
-Feel free to contact us once you face any issues or want to start
-another great project.
-You can find more information about us on https://bitbag.shop and write us
-an email on mikolaj.krol@bitbag.pl.
-
+This file was created by developers working at BitBag
+Do you need more information about us and what we do? Visit our https://bitbag.io website!
+We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
 -->
 
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -15,30 +11,24 @@ an email on mikolaj.krol@bitbag.pl.
     <services>
         <defaults autowire="false" autoconfigure="false" public="false" />
 
-        <service id="bit_bag.sylius_graphql_plugin.resolver.mutation.login_resolver"
+        <service id="bitbag.sylius_graphql_plugin.resolver.mutation.login_resolver"
                  class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\LoginResolver">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="security.encoder_factory" />
-            <argument type="service" id="bit_bag.sylius_graphql_plugin.factory.shop_user_token_factory" />
-            <argument type="service" id="bit_bag.sylius_graphql_plugin.service.refresh_token_manager" />
+            <argument type="service" id="bitbag.sylius_graphql_plugin.factory.shop_user_token_factory" />
+            <argument type="service" id="gesdinet.jwtrefreshtoken.refresh_token_manager" />
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 
-        <service id="bit_bag.sylius_graphql_plugin.resolver.mutation.refresh_token_resolver"
+        <service id="bitbag.sylius_graphql_plugin.resolver.mutation.refresh_token_resolver"
                  class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\RefreshTokenResolver">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="bit_bag.sylius_graphql_plugin.factory.shop_user_token_factory" />
+            <argument type="service" id="bitbag.sylius_graphql_plugin.factory.shop_user_token_factory" />
             <argument type="string" >%bitbag_graphql.model.refresh_token.class%</argument>
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 
-        <service id="bit_bag.sylius_graphql_plugin.resolver.mutation.order_invoices_list_resolver"
-                 class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\OrderInvoicesListResolver">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <tag name="api_platform.graphql.mutation_resolver" />
-        </service>
-
-        <service id="bit_bag.sylius_graphql_plugin.resolver.order_address_state_resolver"
+        <service id="bitbag.sylius_graphql_plugin.resolver.order_address_state_resolver"
                  class="BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolver">
             <argument type="service" id="sm.factory" />
         </service>

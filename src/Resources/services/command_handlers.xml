@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-
-This file has been created by developers from BitBag.
-Feel free to contact us once you face any issues or want to start
-another great project.
-You can find more information about us on https://bitbag.shop and write us
-an email on mikolaj.krol@bitbag.pl.
-
+This file was created by developers working at BitBag
+Do you need more information about us and what we do? Visit our https://bitbag.io website!
+We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
 -->
 
 <container xmlns="http://symfony.com/schema/dic/services"
@@ -69,7 +65,7 @@ an email on mikolaj.krol@bitbag.pl.
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.manager.order" />
             <argument type="service" id="Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface" />
-            <argument type="service" id="bit_bag.sylius_graphql_plugin.resolver.order_address_state_resolver" />
+            <argument type="service" id="bitbag.sylius_graphql_plugin.resolver.order_address_state_resolver" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -79,7 +75,7 @@ an email on mikolaj.krol@bitbag.pl.
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.manager.order" />
             <argument type="service" id="Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface" />
-            <argument type="service" id="bit_bag.sylius_graphql_plugin.resolver.order_address_state_resolver" />
+            <argument type="service" id="bitbag.sylius_graphql_plugin.resolver.order_address_state_resolver" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>

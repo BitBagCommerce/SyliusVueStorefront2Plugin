@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-
-This file has been created by developers from BitBag.
-Feel free to contact us once you face any issues or want to start
-another great project.
-You can find more information about us on https://bitbag.shop and write us
-an email on mikolaj.krol@bitbag.pl.
-
+This file was created by developers working at BitBag
+Do you need more information about us and what we do? Visit our https://bitbag.io website!
+We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
 -->
 
 <container xmlns="http://symfony.com/schema/dic/services"
@@ -25,25 +21,6 @@ an email on mikolaj.krol@bitbag.pl.
             <argument type="service" id="api_platform.core.bridge.doctrine.orm.util.query_name_generator" />
             <argument type="tagged" tag="api_platform.doctrine.orm.query_extension.collection" />
             <tag name="api_platform.collection_data_provider" priority="10" />
-        </service>
-
-        <service id="bit_bag.sylius_graphql_plugin.data_provider.invoice_collection_data_provider"
-                 class="BitBag\SyliusGraphqlPlugin\DataProvider\InvoiceCollectionDataProvider">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="api_platform.doctrine.orm.query_extension.pagination" />
-            <argument type="service" id="sylius.api.context.user" />
-            <argument type="service" id="api_platform.core.bridge.doctrine.orm.util.query_name_generator" />
-            <argument type="tagged" tag="api_platform.doctrine.orm.query_extension.collection" />
-            <argument type="string" >%bitbag_graphql.model.invoice.class%</argument>
-            <tag name="api_platform.collection_data_provider" priority="10" />
-        </service>
-
-        <service id="bit_bag.sylius_graphql_plugin.data_provider.invoice_item_data_provider"
-                 class="BitBag\SyliusGraphqlPlugin\DataProvider\InvoiceItemDataProvider">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument type="service" id="sylius.api.context.user" />
-            <argument type="string" >%bitbag_graphql.model.invoice.class%</argument>
-            <tag name="api_platform.item_data_provider" priority="10" />
         </service>
     </services>
 </container>

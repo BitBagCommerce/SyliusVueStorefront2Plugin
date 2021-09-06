@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-
-This file has been created by developers from BitBag.
-Feel free to contact us once you face any issues or want to start
-another great project.
-You can find more information about us on https://bitbag.shop and write us
-an email on mikolaj.krol@bitbag.pl.
-
+This file was created by developers working at BitBag
+Do you need more information about us and what we do? Visit our https://bitbag.io website!
+We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
 -->
 
 <container xmlns="http://symfony.com/schema/dic/services"
@@ -22,12 +18,5 @@ an email on mikolaj.krol@bitbag.pl.
             class="ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGenerator"
         />
 
-        <service
-            id="bit_bag.sylius_graphql_plugin.service.refresh_token_manager"
-            class="BitBag\SyliusGraphqlPlugin\Service\RefreshTokenManager"
-        >
-            <argument type="service" id="doctrine.orm.default_entity_manager"/>
-            <argument type="string">Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken</argument>
-        </service>
     </services>
 </container>
