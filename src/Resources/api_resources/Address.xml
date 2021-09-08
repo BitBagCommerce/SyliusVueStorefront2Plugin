@@ -13,6 +13,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
     <resource class="%sylius.model.address.class%" shortName="Address">
         <graphql>
             <operation name="item_query" />
+            <operation name="delete" />
             <operation name="collection_query">
                 <attribute name="pagination_type">page</attribute>
             </operation>
@@ -86,14 +87,6 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 </attribute>
             </operation>
 
-            <operation name="shop_delete">
-                <attribute name="method">DELETE</attribute>
-                <attribute name="args">
-                    <attribute name="id">
-                        <attribute name="type">ID!</attribute>
-                    </attribute>
-                </attribute>
-            </operation>
         </graphql>
 
         <attribute name="validation_groups">sylius</attribute>
@@ -156,6 +149,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <property name="street" writable="true" />
         <property name="postcode" writable="true" />
         <property name="countryCode" writable="true" />
+        <property name="phoneNumber" writable="true" />
         <property name="provinceName" writable="true" />
     </resource>
 </resources>

@@ -29,7 +29,6 @@ class AddressInput extends InputObjectType
                 'id' => Type::id(),
                 'firstName' => Type::string(),
                 'lastName' => Type::string(),
-                'fullName' => Type::string(),
                 'countryCode' => Type::string(),
                 'provinceCode' => Type::string(),
                 'phoneNumber' => Type::string(),
