@@ -295,6 +295,42 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 </attribute>
             </itemOperation>
 
+            <itemOperation name="shop_add_shipping_address">
+                <attribute name="method">PATCH</attribute>
+                <attribute name="path">/shop/orders/{tokenValue}/shipping_address</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\ShippingAddressOrder</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:cart:address</attribute>
+                </attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:cart:read</attribute>
+                </attribute>
+                <attribute name="openapi_context">
+                    <attribute name="summary">Addresses cart to given location, logged in Customer does not have to
+                        provide an email
+                    </attribute>
+                </attribute>
+            </itemOperation>
+
+            <itemOperation name="shop_add_billing_address">
+                <attribute name="method">PATCH</attribute>
+                <attribute name="path">/shop/orders/{tokenValue}/billing_address</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\BillingAddressOrder</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:cart:address</attribute>
+                </attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:cart:read</attribute>
+                </attribute>
+                <attribute name="openapi_context">
+                    <attribute name="summary">Addresses cart to given location, logged in Customer does not have to
+                        provide an email
+                    </attribute>
+                </attribute>
+            </itemOperation>
+
             <itemOperation name="shop_select_shipping_method">
                 <attribute name="method">PATCH</attribute>
                 <attribute name="validation_groups">
