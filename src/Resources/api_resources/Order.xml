@@ -95,6 +95,12 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 <attribute name="method">PATCH</attribute>
                 <attribute name="messenger">input</attribute>
                 <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\BillingAddressOrder</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">
+                        <attribute>shop:cart:read</attribute>
+                        <attribute>shop:address:read</attribute>
+                    </attribute>
+                </attribute>
                 <attribute name="args">
                     <attribute name="email">
                         <attribute name="type">String</attribute>
@@ -195,6 +201,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <attribute name="normalization_context">
             <attribute name="groups">
                 <attribute>admin:order:read</attribute>
+<!--                <attribute>shop:cart:read</attribute>-->
             </attribute>
         </attribute>
 
@@ -632,8 +639,8 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <property name="promotions" writable="true" readable="true">
             <subresource resourceClass="%sylius.model.promotion.class%" />
         </property>
-        <property name="billingAddress" writable="true" />
-        <property name="shippingAddress" writable="false" />
+        <property name="billingAddress" writable="true" readable="true"/>
+        <property name="shippingAddress" writable="false" readable="true"/>
         <property name="localeCode" writable="true" />
         <property name="createdAt" writable="false" />
     </resource>

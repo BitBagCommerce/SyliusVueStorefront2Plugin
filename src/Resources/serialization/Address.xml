@@ -46,7 +46,6 @@
         <attribute name="phoneNumber">
             <group>admin:address:read</group>
             <group>admin:order:read</group>
-
             <group>shop:address:read</group>
             <group>shop:address:update</group>
             <group>shop:cart:address</group>
