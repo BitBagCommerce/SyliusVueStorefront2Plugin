@@ -14,9 +14,19 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <service id="bitbag.sylius_graphql_plugin.resolver.mutation.login_resolver"
                  class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\LoginResolver">
             <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="sylius.repository.order" />
+            <argument type="service" id="sylius.repository.shop_user" />
             <argument type="service" id="security.encoder_factory" />
             <argument type="service" id="bitbag.sylius_graphql_plugin.factory.shop_user_token_factory" />
             <argument type="service" id="gesdinet.jwtrefreshtoken.refresh_token_manager" />
+            <tag name="api_platform.graphql.mutation_resolver" />
+        </service>
+
+<!--        TODO: Replace by promotionCoupon taken from order-->
+        <service id="bitbag.sylius_graphql_plugin.resolver.mutation.order_coupon_resolver"
+                 class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\OrderCouponResolver">
+            <argument type="service" id="sylius.repository.order" />
+            <argument type="service" id="sylius.api.context.user" />
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 
@@ -24,6 +34,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
                  class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\RefreshTokenResolver">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="bitbag.sylius_graphql_plugin.factory.shop_user_token_factory" />
+            <argument type="service" id="sylius.repository.shop_user" />
             <argument type="string" >%bitbag_graphql.model.refresh_token.class%</argument>
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>

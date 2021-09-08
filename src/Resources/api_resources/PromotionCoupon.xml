@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+
+<!--
+
+ This file is part of the Sylius package.
+
+ (c) Paweł Jędrzejewski
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+
+-->
+
+<resources xmlns="https://api-platform.com/schema/metadata"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
+>
+    <resource class="%sylius.model.promotion_coupon.class%" shortName="PromotionCoupon">
+        <attribute name="validation_groups">sylius</attribute>
+        <graphql>
+            <operation name="shop_get_order">
+                <attribute name="mutation">bitbag.sylius_graphql_plugin.resolver.mutation.order_coupon_resolver</attribute>
+                <attribute name="write">false</attribute>
+                <attribute name="args">
+                    <attribute name="orderTokenValue">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+        </graphql>
+
+        <property name="id" writable="false" />
+        <property name="code" identifier="true" readable="true" />
+        <property name="used" readable="true" />
+        <property name="promotion" readable="true" />
+        <property name="expiresAt" readable="true" />
+    </resource>
+</resources>

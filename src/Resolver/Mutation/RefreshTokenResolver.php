@@ -15,13 +15,15 @@ use BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactoryInterface;
 use BitBag\SyliusGraphqlPlugin\Model\ShopUserTokenInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
-use Sylius\Component\Core\Model\ShopUser;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class RefreshTokenResolver implements MutationResolverInterface
 {
     private EntityManagerInterface $entityManager;
+
+    private UserRepositoryInterface $userRepository;
 
     private ShopUserTokenFactoryInterface $tokenFactory;
 
@@ -30,10 +32,12 @@ final class RefreshTokenResolver implements MutationResolverInterface
     public function __construct(
         EntityManagerInterface $entityManager,
         ShopUserTokenFactoryInterface $tokenFactory,
+        UserRepositoryInterface $userRepository,
         string $refreshTokenClass
     ) {
         $this->entityManager = $entityManager;
         $this->tokenFactory = $tokenFactory;
+        $this->userRepository = $userRepository;
         $this->refreshTokenClass = $refreshTokenClass;
     }
 
@@ -57,9 +61,8 @@ final class RefreshTokenResolver implements MutationResolverInterface
             );
         }
 
-        $shopUserRepository = $this->entityManager->getRepository(ShopUser::class);
         /** @var ShopUserInterface $user */
-        $user = $shopUserRepository->findOneBy(['username' => $refreshToken->getUsername()]);
+        $user = $this->userRepository->findOneBy(['username' => $refreshToken->getUsername()]);
 
         $refreshTokenExpirationDate = new \DateTime('+1 month');
         $refreshToken->setValid($refreshTokenExpirationDate);

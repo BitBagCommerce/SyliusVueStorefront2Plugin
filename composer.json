@@ -14,7 +14,7 @@
         "gesdinet/jwt-refresh-token-bundle": "^0.12.0",
         "sylius/sylius": "^1.10",
         "webonyx/graphql-php": "^14.6",
-      "ext-json": "*"
+        "ext-json": "*"
     },
     "require-dev": {
         "behat/behat": "^3.6.1",
