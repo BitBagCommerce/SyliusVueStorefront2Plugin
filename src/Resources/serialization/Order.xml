@@ -10,7 +10,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping https://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
 >
-    <class name="Sylius\Component\Core\Model\Order">
+    <class name="%sylius.model.order.class%">
         <attribute name="id">
             <group>admin:order:read</group>
             <group>shop:cart:read</group>
@@ -51,6 +51,12 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </attribute>
 
         <attribute name="promotions">
+            <group>admin:order:read</group>
+            <group>shop:cart:read</group>
+            <group>shop:order:account:read</group>
+        </attribute>
+
+        <attribute name="promotionCoupon">
             <group>admin:order:read</group>
             <group>shop:cart:read</group>
             <group>shop:order:account:read</group>

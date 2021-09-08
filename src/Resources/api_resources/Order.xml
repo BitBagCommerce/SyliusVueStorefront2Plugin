@@ -201,7 +201,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <attribute name="normalization_context">
             <attribute name="groups">
                 <attribute>admin:order:read</attribute>
-<!--                <attribute>shop:cart:read</attribute>-->
+                <attribute>shop:cart:read</attribute>
             </attribute>
         </attribute>
 
@@ -638,6 +638,9 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </property>
         <property name="promotions" writable="true" readable="true">
             <subresource resourceClass="%sylius.model.promotion.class%" />
+        </property>
+        <property name="promotionCoupon" writable="true" readable="true" >
+            <subresource resourceClass="%sylius.model.promotion_coupon.class%" />
         </property>
         <property name="billingAddress" writable="true" readable="true"/>
         <property name="shippingAddress" writable="false" readable="true"/>
