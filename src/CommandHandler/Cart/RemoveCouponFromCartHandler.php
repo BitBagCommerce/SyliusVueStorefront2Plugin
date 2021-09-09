@@ -50,6 +50,10 @@ final class RemoveCouponFromCartHandler implements MessageHandlerInterface
 
         $cart->removePromotion($promotion);
 
+        $cartCoupon = $cart->getPromotionCoupon();
+        if(null !== $cartCoupon && $cartCoupon->getCode() === $command->couponCode){
+            $cart->setPromotionCoupon(null);
+        }
         $this->orderProcessor->process($cart);
 
         return $cart;

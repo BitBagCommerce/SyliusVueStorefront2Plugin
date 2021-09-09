@@ -137,6 +137,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <property name="productTaxons" readable="true" writable="true" />
         <property name="reviews" required="false" />
         <property name="options" required="false" />
+        <property name="attributes" required="false" />
         <property name="channels" required="false" />
         <property name="images" required="false" />
         <property name="mainTaxon" required="false" />
