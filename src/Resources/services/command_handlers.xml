@@ -99,5 +99,14 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
 
+        <service id="BitBag\SyliusGraphqlPlugin\CommandHandler\Account\SendResetPasswordEmailHandler">
+            <argument type="service" id="sylius.email_sender" />
+            <argument type="service" id="sylius.context.channel.single_channel" />
+            <argument type="service" id="sylius.repository.shop_user" />
+            <argument type="service" id="sylius.shop_user.token_generator.password_reset" />
+            <tag name="messenger.message_handler" bus="sylius.command_bus" />
+            <tag name="messenger.message_handler" bus="sylius_default.bus" />
+        </service>
+
     </services>
 </container>

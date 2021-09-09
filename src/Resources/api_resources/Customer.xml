@@ -77,13 +77,10 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
             <operation name="shop_send_reset_password_email">
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">Sylius\Bundle\ApiBundle\Command\SendResetPasswordEmail</attribute>
+                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Account\SendResetPasswordEmail</attribute>
                 <attribute name="args">
                     <attribute name="email">
                         <attribute name="type">String!</attribute>
-                    </attribute>
-                    <attribute name="channelCode">
-                        <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="localeCode">
                         <attribute name="type">String</attribute>
