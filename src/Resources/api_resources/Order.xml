@@ -204,12 +204,12 @@ We are hiring developers from all over the world. Join us and start your new, ex
             </operation>
         </graphql>
 
-        <attribute name="normalization_context">
-            <attribute name="groups">
-                <attribute>admin:order:read</attribute>
-                <attribute>shop:cart:read</attribute>
-            </attribute>
-        </attribute>
+<!--        <attribute name="normalization_context">-->
+<!--            <attribute name="groups">-->
+<!--                <attribute>admin:order:read</attribute>-->
+<!--                <attribute>shop:cart:read</attribute>-->
+<!--            </attribute>-->
+<!--        </attribute>-->
 
         <attribute name="validation_groups">sylius</attribute>
 
@@ -651,6 +651,6 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <property name="billingAddress" writable="true" readable="true"/>
         <property name="shippingAddress" writable="false" readable="true"/>
         <property name="localeCode" writable="true" />
-        <property name="createdAt" writable="false" />
+        <property name="createdAt" writable="false" readable="true"/>
     </resource>
 </resources>
