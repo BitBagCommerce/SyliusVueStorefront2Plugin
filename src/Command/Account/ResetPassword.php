@@ -11,18 +11,21 @@ declare(strict_types=1);
 namespace BitBag\SyliusGraphqlPlugin\Command\Account;
 
 /** @experimental */
-class SendResetPasswordEmail
+class ResetPassword
 {
-    public string $localeCode;
+    public string $newPassword;
 
-    public string $email;
+    public string $confirmedNewPassword;
+
+    public string $resetPasswordToken;
 
     public function __construct(
-        string $localeCode,
-        string $email
-    )
-    {
-        $this->localeCode = $localeCode;
-        $this->email = $email;
+        string $newPassword,
+        string $confirmedNewPassword,
+        string $resetPasswordToken
+    ){
+        $this->newPassword = $newPassword;
+        $this->confirmedNewPassword = $confirmedNewPassword;
+        $this->resetPasswordToken = $resetPasswordToken;
     }
 }

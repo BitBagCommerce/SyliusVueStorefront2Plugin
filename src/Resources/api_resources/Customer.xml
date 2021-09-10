@@ -87,6 +87,23 @@ We are hiring developers from all over the world. Join us and start your new, ex
                     </attribute>
                 </attribute>
             </operation>
+
+            <operation name="shop_reset_password">
+                <attribute name="method">PATCH</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Account\ResetPassword</attribute>
+                <attribute name="args">
+                    <attribute name="newPassword">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="confirmedNewPassword">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="resetPasswordToken">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
         </graphql>
 
         <attribute name="validation_groups">sylius</attribute>

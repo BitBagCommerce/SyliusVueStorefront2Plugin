@@ -32,16 +32,20 @@ final class SendResetPasswordEmailHandler implements MessageHandlerInterface
 
     private GeneratorInterface $generator;
 
+    private string $hostName;
+
     public function __construct(
         SenderInterface $emailSender,
         ChannelContextInterface $channelContext,
         UserRepositoryInterface $userRepository,
-        GeneratorInterface $generator
+        GeneratorInterface $generator,
+        string $hostName
     ) {
         $this->emailSender = $emailSender;
         $this->channelContext = $channelContext;
         $this->userRepository = $userRepository;
         $this->generator = $generator;
+        $this->hostName = $hostName;
     }
 
     public function __invoke(SendResetPasswordEmail $command): CustomerInterface
@@ -51,6 +55,7 @@ final class SendResetPasswordEmailHandler implements MessageHandlerInterface
         Assert::notNull($user, 'User with following email could not be found.');
 
         $channel = $this->channelContext->getChannel();
+        $channel->setHostname($this->hostName);
 
         $user->setPasswordResetToken($this->generator->generate());
         $user->setPasswordRequestedAt(new \DateTime());
