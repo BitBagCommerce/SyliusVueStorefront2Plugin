@@ -11,21 +11,26 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Client;
 
 use Exception;
+use RecursiveArrayIterator;
+use RecursiveIteratorIterator;
+use Sylius\Behat\Service\SharedStorageInterface;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequest;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 use const JSON_ERROR_NONE;
-use RecursiveArrayIterator;
-use RecursiveIteratorIterator;
-use Sylius\Behat\Client\RequestInterface;
-use Sylius\Behat\Service\SharedStorageInterface;
-use Symfony\Component\BrowserKit\AbstractBrowser;
-use Symfony\Component\HttpFoundation\Response;
 
 final class GraphqlClient implements GraphqlClientInterface
 {
 
     public static string $LAST_GRAPHQL_RESPONSE = "lastGraphqlResponse";
+
+    public static string $GRAPHQL_REQUEST = "graphqlRequest";
+
+    public static string $GRAPHQL_OPERATION = "graphqlOperation";
+
+    public static string $GRAPHQL_VARIABLES = "graphqlVariables";
 
     private AbstractBrowser $client;
 
@@ -33,13 +38,14 @@ final class GraphqlClient implements GraphqlClientInterface
 
     private string $authorizationHeader;
 
-    private RequestInterface $request;
+    private Request $requestData;
 
     public function __construct(
         AbstractBrowser $client,
         SharedStorageInterface $sharedStorage,
         string $authorizationHeader
-    ) {
+    )
+    {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
         $this->authorizationHeader = $authorizationHeader;
@@ -65,25 +71,28 @@ final class GraphqlClient implements GraphqlClientInterface
      */
     public function prepareRequest(
         OperationRequestInterface $request,
-        string $method = Request::METHOD_POST,
-        ?bool $auth = false
+        string $method = Request::METHOD_POST
     ): Request
     {
-        if(!in_array($method, [
+        if (!in_array($method, [
             Request::METHOD_POST, Request::METHOD_PATCH, Request::METHOD_DELETE, Request::METHOD_PUT
-        ])){
+        ])) {
             throw new Exception(sprintf("Provided method %s does not match available ones.", $method));
         }
 
-        $requestData = Request::create("",$method, $request->getFormatted());
+        $this->requestData = Request::create("", $method, $request->getFormatted());
+        return $this->requestData;
+    }
+
+    public function addAuthorization():void
+    {
         $token = $this->getToken();
 
-        if($auth && null !== $token ){
-            $requestData->server->add([
-                "Authorization" => sprintf('%s %s',$this->authorizationHeader, $token)
+        if (null !== $token) {
+            $this->requestData->server->add([
+                "Authorization" => sprintf('%s %s', $this->authorizationHeader, $token)
             ]);
         }
-        return $requestData;
     }
 
     public function getToken(): ?string
@@ -91,23 +100,23 @@ final class GraphqlClient implements GraphqlClientInterface
         return $this->sharedStorage->has('token') ? (string)$this->sharedStorage->get('token') : null;
     }
 
-    public function send(Request $request): Response
+    public function send(): Response
     {
         if ($this->sharedStorage->has('hostname')) {
-            $this->client->setServerParameter('HTTP_HOST', $this->sharedStorage->get('hostname'));
+            $this->client->setServerParameter('HTTP_HOST', (string) $this->sharedStorage->get('hostname'));
         }
 
         $this->client->request(
-            $request->method(),
-            '/api/v2/graphql',
+            $this->requestData->getMethod(),
+            'http://127.0.0.1:8001/api/v2/graphql',
             [],
             [],
-            $request->headers(),
-            $request->content() ?? null
+            $this->requestData->server->getHeaders(),
+            $this->requestData->getContent() ?? null
         );
 
-        $response = $this->getLastResponse();
-
+        $response = $this->client->getResponse();
+dump($response);
         $this->saveLastResponse($response);
 
         return $response;
@@ -115,12 +124,7 @@ final class GraphqlClient implements GraphqlClientInterface
 
     public function saveLastResponse($response): void
     {
-        $this->sharedStorage->set(self::$LAST_GRAPHQL_RESPONSE,$response);
-    }
-
-    public function getLastResponse(): Response
-    {
-        return $this->client->getResponse();
+        $this->sharedStorage->set(self::$LAST_GRAPHQL_RESPONSE, $response);
     }
 
     /**
@@ -178,15 +182,29 @@ final class GraphqlClient implements GraphqlClientInterface
         return $diff;
     }
 
-    public function flattenArray(array $array): array
+    /**
+     * @param array $responseArray
+     * @return array
+     * @throws Exception
+     */
+    public function flattenArray(array $responseArray): array
     {
-        $array = reset($array['data']);
-        $ritit = new RecursiveIteratorIterator(new RecursiveArrayIterator($array));
+        if (!key_exists('data', $responseArray)) {
+            throw new Exception("Malformed response, no data key.");
+        }
+
+        if (!is_array($responseArray['data'])) {
+            throw new Exception("Malformed response, data is not an array.");
+        }
+
+        /** @var array $array */
+        $array = reset($responseArray['data']);
+        $recursiveIteratorIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($array));
         $result = [];
-        foreach ($ritit as $leafValue) {
+        foreach ($recursiveIteratorIterator as $leafValue) {
             $keys = [];
-            foreach (range(0, $ritit->getDepth()) as $depth) {
-                $keys[] = $ritit->getSubIterator($depth)->key();
+            foreach (range(0, $recursiveIteratorIterator->getDepth()) as $depth) {
+                $keys[] = $recursiveIteratorIterator->getSubIterator($depth)->key();
             }
             $result[implode('.', $keys)] = $leafValue;
         }
