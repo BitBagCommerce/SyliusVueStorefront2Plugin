@@ -104,7 +104,6 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="sylius.context.channel.single_channel" />
             <argument type="service" id="sylius.repository.shop_user" />
             <argument type="service" id="sylius.shop_user.token_generator.password_reset" />
-            <argument type="string">%bitbag_graphql.frontend_host%</argument>
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
