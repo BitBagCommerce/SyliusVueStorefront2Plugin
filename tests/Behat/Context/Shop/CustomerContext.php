@@ -12,6 +12,7 @@ namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop;
 
 use Behat\Behat\Context\Context;
 use Sylius\Behat\Service\SharedStorageInterface;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClient;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
 
 final class CustomerContext implements Context
@@ -22,10 +23,30 @@ final class CustomerContext implements Context
     public function __construct(
         GraphqlClientInterface $client,
         SharedStorageInterface $sharedStorage
-    ) {
+    )
+    {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
     }
 
-    //TODO::
+    /**
+     * @When I prepare edit customer account operation
+     */
+    public function iPrepareEditAccountOperation(): void
+    {
+        $expectedData = "
+        customer{
+            user {
+                username
+            }
+            id
+            firstName
+            lastName
+            birthday
+        }";
+
+        $operation = $this->client->prepareOperation("shop_putCustomer", $expectedData);
+        $this->sharedStorage->set(GraphqlClient::$GRAPHQL_OPERATION, $operation);
+    }
+
 }

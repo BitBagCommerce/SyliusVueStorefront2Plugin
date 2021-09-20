@@ -11,5 +11,11 @@
             <argument type="service" id="sylius.behat.shared_storage" />
         </service>
 
+        <service id="bitbag_sylius_graphql_plugin.context.customer"
+                 class="Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\CustomerContext">
+            <argument type="service" id="tests.bit_bag.sylius_graphql_plugin.behat.client.graphql_client" />
+            <argument type="service" id="sylius.behat.shared_storage" />
+        </service>
+
     </services>
 </container>

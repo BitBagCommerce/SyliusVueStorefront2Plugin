@@ -10,6 +10,16 @@ imports:
 parameters:
     sylius_core.public_dir: '%kernel.project_dir%/public'
 
+sylius_promotion:
+    resources:
+        promotion_coupon:
+            classes:
+#                model: Sylius\Component\Core\Model\PromotionCoupon
+                model: Sylius\Component\Promotion\Model\PromotionCoupon
+        promotion:
+            classes:
+                model: Sylius\Component\Core\Model\Promotion
+
 sylius_shop:
     product_grid:
         include_all_descendants: true

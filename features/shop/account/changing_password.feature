@@ -7,6 +7,7 @@ Feature: Changing one customer password
     Background:
         Given the store operates on a single channel in "United States"
 
+
     @graphql
     Scenario: Changing password
         When I have the following GraphQL request:

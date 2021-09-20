@@ -2,7 +2,7 @@ default:
     suites:
         graphql_chosing_payment_method:
             contexts:
-                - sylius.behat.context.api_platform.graphql
+                - bitbag_sylius_graphql_plugin.context.graphql
                 - sylius.behat.context.hook.doctrine_orm
                 - sylius.behat.context.setup.channel
                 - sylius.behat.context.setup.payment

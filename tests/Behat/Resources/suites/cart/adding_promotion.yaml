@@ -7,7 +7,7 @@ default:
                 - sylius.behat.context.setup.shipping
                 - sylius.behat.context.setup.product
                 - sylius.behat.context.setup.shop_api_security
-                - sylius.behat.context.api_platform.graphql
+                - bitbag_sylius_graphql_plugin.context.graphql
                 - sylius.behat.context.hook.doctrine_orm
                 - sylius.behat.context.setup.promotion
                 - sylius.behat.context.transform.lexical

@@ -24,9 +24,6 @@ interface GraphqlClientInterface
 
     public function prepareOperation(string $mutationName, string $formattedExpectedData): OperationRequestInterface;
 
-    /** @return object */
-    public function getLastResponse();
-
     public function getToken(): ?string;
 
     public function send(): Response;

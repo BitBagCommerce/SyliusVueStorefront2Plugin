@@ -116,7 +116,6 @@ final class GraphqlClient implements GraphqlClientInterface
         );
 
         $response = $this->client->getResponse();
-dump($response);
         $this->saveLastResponse($response);
 
         return $response;
