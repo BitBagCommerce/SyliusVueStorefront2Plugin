@@ -50,6 +50,8 @@
         <property name="startsAt" readable="true" />
         <property name="endsAt" readable="true" />
         <property name="couponBased" readable="true" />
+        <property name="coupons" readable="true" />
+
         <property name="coupons" readable="true" >
             <subresource resourceClass="%sylius.model.promotion_coupon.class%" />
         </property>

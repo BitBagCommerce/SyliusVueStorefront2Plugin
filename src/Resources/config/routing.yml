@@ -6,3 +6,7 @@ sylius_shop_password_reset:
         _sylius:
             template: "@SyliusShop/Account/resetPassword.html.twig"
             redirect: sylius_shop_login
+
+bitbag_sylius_graphql_shop_product_show:
+    path: /p/{id}/{slug}
+    methods: [ GET ]

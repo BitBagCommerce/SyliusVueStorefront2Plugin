@@ -62,7 +62,7 @@ final class ApplyCouponToCartHandler implements MessageHandlerInterface
         /** @var PromotionCouponInterface|null $promotionCoupon */
         $promotionCoupon = $this->promotionCouponRepository->findOneBy(['code' => $code]);
 
-        Assert::notNull($promotionCoupon);
+        Assert::notNull($promotionCoupon, "Provided code was invalid");
 
         return $promotionCoupon;
     }
