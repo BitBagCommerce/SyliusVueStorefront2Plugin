@@ -13,7 +13,16 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service id="sylius.api.product_slug_filter" parent="api_platform.doctrine.orm.search_filter">
             <argument type="collection">
-                <argument key="translations.slug">exact</argument>
+                <argument key="translations.name">partial</argument>
+                <argument key="translations.slug">partial</argument>
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
+
+        <service id="bitbag_sylius_graphql.filters.product_slug_filter" parent="api_platform.doctrine.orm.search_filter">
+            <argument type="collection">
+                <argument key="attributes.stringValue">partial</argument>
+                <argument key="attributes.slug">partial</argument>
             </argument>
             <tag name="api_platform.filter" />
         </service>

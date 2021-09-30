@@ -15,22 +15,20 @@ use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Symfony\Component\BrowserKit\AbstractBrowser;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequest;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
+use Webmozart\Assert\Assert;
 use const JSON_ERROR_NONE;
 
 final class GraphqlClient implements GraphqlClientInterface
 {
 
-    public static string $LAST_GRAPHQL_RESPONSE = "lastGraphqlResponse";
-
-    public static string $GRAPHQL_REQUEST = "graphqlRequest";
-
-    public static string $GRAPHQL_OPERATION = "graphqlOperation";
-
-    public static string $GRAPHQL_VARIABLES = "graphqlVariables";
+    public const LAST_GRAPHQL_RESPONSE = "lastGraphqlResponse";
+    public const GRAPHQL_OPERATION = "graphqlOperation";
 
     private AbstractBrowser $client;
 
@@ -38,7 +36,7 @@ final class GraphqlClient implements GraphqlClientInterface
 
     private string $authorizationHeader;
 
-    private Request $requestData;
+    private ParameterBag $headers;
 
     public function __construct(
         AbstractBrowser $client,
@@ -49,48 +47,67 @@ final class GraphqlClient implements GraphqlClientInterface
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
         $this->authorizationHeader = $authorizationHeader;
+        $this->headers = new ParameterBag();
     }
 
-    public function prepareOperation(string $mutationName, string $formattedExpectedData): OperationRequestInterface
+    public function prepareOperation(
+        string $name,
+        string $formattedExpectedData,
+        string $method = Request::METHOD_POST
+    ): OperationRequestInterface
     {
-        $mutation = '
+        $operation = '
         mutation <name> ($input: <name>Input!) {
             <name>(input: $input){
             <expectedData>
           }
         }';
 
-        $mutation = str_replace("<name>", $mutationName, $mutation);
-        $mutation = str_replace("<expectedData>", $formattedExpectedData, $mutation);
+        $this->headers->add([
+            "CONTENT_TYPE" => "application/json"
+        ]);
+        $operation = str_replace("<name>", $name, $operation);
+        $operation = str_replace("<expectedData>", $formattedExpectedData, $operation);
 
-        return new OperationRequest($mutationName, $mutation);
+        return new OperationRequest($name, $operation, [], $method);
     }
 
-    /**
-     * @throws Exception
-     */
-    public function prepareRequest(
-        OperationRequestInterface $request,
+    public function prepareQuery(
+        string $name,
+        string $formattedExpectedData,
         string $method = Request::METHOD_POST
-    ): Request
+    ): OperationRequestInterface
     {
-        if (!in_array($method, [
-            Request::METHOD_POST, Request::METHOD_PATCH, Request::METHOD_DELETE, Request::METHOD_PUT
-        ])) {
-            throw new Exception(sprintf("Provided method %s does not match available ones.", $method));
-        }
+        $operation = '
+        query <name> {
+            <name><filters>{
+            <expectedData>
+          }
+        }';
 
-        $this->requestData = Request::create("", $method, $request->getFormatted());
-        return $this->requestData;
+        $this->headers->add([
+            "CONTENT_TYPE" => "application/json"
+        ]);
+        $operation = str_replace("<name>", $name, $operation);
+        $operation = str_replace("<expectedData>", $formattedExpectedData, $operation);
+
+        $operationRequest = new OperationRequest($name, $operation, [], $method);
+        $operationRequest->setOperationType(OperationRequestInterface::OPERATION_QUERY);
+        return $operationRequest;
     }
 
-    public function addAuthorization():void
+    public function getLastOperationRequest(): ?OperationRequestInterface
+    {
+        /** @var OperationRequestInterface|null */
+        return $this->sharedStorage->get(GraphqlClient::GRAPHQL_OPERATION);
+    }
+
+    public function addAuthorization(): void
     {
         $token = $this->getToken();
-
         if (null !== $token) {
-            $this->requestData->server->add([
-                "Authorization" => sprintf('%s %s', $this->authorizationHeader, $token)
+            $this->headers->add([
+                "HTTP_AUTHORIZATION" => sprintf('%s %s', $this->authorizationHeader, $token)
             ]);
         }
     }
@@ -103,35 +120,57 @@ final class GraphqlClient implements GraphqlClientInterface
     public function send(): Response
     {
         if ($this->sharedStorage->has('hostname')) {
-            $this->client->setServerParameter('HTTP_HOST', (string) $this->sharedStorage->get('hostname'));
+            $this->client->setServerParameter('HTTP_HOST', (string)$this->sharedStorage->get('hostname'));
         }
 
-        $this->client->request(
-            $this->requestData->getMethod(),
-            'http://127.0.0.1:8001/api/v2/graphql',
-            [],
-            [],
-            $this->requestData->server->getHeaders(),
-            $this->requestData->getContent() ?? null
+        $operation = $this->getLastOperationRequest();
+
+        $this->client->jsonRequest(
+            $operation->getMethod(),
+            'http://127.0.0.1:8080/api/v2/graphql',
+            $operation->getFormatted(),
+            $this->headers->all()
         );
 
+        /** @var Response $response */
         $response = $this->client->getResponse();
         $this->saveLastResponse($response);
-
+        $this->headers = new ParameterBag();
         return $response;
     }
 
-    public function saveLastResponse($response): void
+    public function saveLastResponse(Response $response): void
     {
-        $this->sharedStorage->set(self::$LAST_GRAPHQL_RESPONSE, $response);
+        $this->sharedStorage->set(self::LAST_GRAPHQL_RESPONSE, $response);
+    }
+
+    public function getLastResponse(): ?JsonResponse
+    {
+        /** @var JsonResponse */
+        return $this->sharedStorage->get(self::LAST_GRAPHQL_RESPONSE);
     }
 
     /**
-     * @return mixed|null
+     * @throws Exception
      */
-    public function getJsonFromResponse(string $response)
+    public function getLastResponseArrayContent(): array
     {
-        $jsonData = json_decode($response, true);
+        $response = $this->getLastResponse();
+        $json = $this->getJsonFromResponse($response);
+        if ($json === null) {
+            throw new Exception('Return data is not Json format');
+        }
+        return $json;
+    }
+
+    public function getJsonFromResponse(Response $response): ?array
+    {
+        $content = $response->getContent();
+        Assert::string($content);
+
+        /** @var array $jsonData */
+        $jsonData = json_decode($content, true);
+
         if (json_last_error() === JSON_ERROR_NONE) {
             return $jsonData;
         }
@@ -188,17 +227,20 @@ final class GraphqlClient implements GraphqlClientInterface
      */
     public function flattenArray(array $responseArray): array
     {
-        if (!key_exists('data', $responseArray)) {
-            throw new Exception("Malformed response, no data key.");
-        }
-
-        if (!is_array($responseArray['data'])) {
-            throw new Exception("Malformed response, data is not an array.");
+        if (!key_exists('data', $responseArray) && !key_exists('errors', $responseArray)) {
+            throw new Exception("Malformed response, no data or error key.");
         }
 
         /** @var array $array */
-        $array = reset($responseArray['data']);
-        $recursiveIteratorIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($array));
+
+        if (key_exists('data', $responseArray) && is_array($responseArray['data'])) {
+            $array = reset($responseArray['data']);
+        }
+
+        if (key_exists('errors', $responseArray) && is_array($responseArray['errors'])) {
+            $array = reset($responseArray['errors']);
+        }
+        $recursiveIteratorIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($array),RecursiveIteratorIterator::CHILD_FIRST );
         $result = [];
         foreach ($recursiveIteratorIterator as $leafValue) {
             $keys = [];
@@ -210,4 +252,5 @@ final class GraphqlClient implements GraphqlClientInterface
 
         return $result;
     }
+
 }

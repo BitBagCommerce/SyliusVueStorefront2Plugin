@@ -11,20 +11,29 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Model;
 
 
+use Symfony\Component\HttpFoundation\Request;
+
 class OperationRequest implements OperationRequestInterface
 {
 
     private string $operationName;
 
+    private string $operationType = OperationRequestInterface::OPERATION_MUTATION;
+
+    private string $method;
+
     private string $query;
 
     private array $variables;
 
-    public function __construct(string $name, string $query, array $variables = [])
+    private array $filters = [];
+
+    public function __construct(string $name, string $query, array $variables = [], string $method = Request::METHOD_POST)
     {
         $this->operationName = $name;
         $this->query = $query;
         $this->variables = $variables;
+        $this->method = $method;
     }
 
     public function getVariables(): array
@@ -37,20 +46,78 @@ class OperationRequest implements OperationRequestInterface
         $this->variables = $variables;
     }
 
-    /** @param mixed $variable */
-    public function addVariable($variable): void
+    /** @param mixed $value */
+    public function addVariable(string $key, $value): void
     {
-        $this->variables[] = $variable;
+        $this->variables[$key] = $value;
+    }
+
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
+
+    /**
+     * @param string $method
+     */
+    public function setMethod(string $method): void
+    {
+        $this->method = $method;
+    }
+
+    public function getOperationType(): string
+    {
+        return $this->operationType;
+    }
+
+    public function setOperationType(string $operationType): void
+    {
+        $this->operationType = $operationType;
+    }
+
+    public function getFilters(): array
+    {
+        return $this->filters;
+    }
+
+    public function setFilters(array $filters): void
+    {
+        $this->filters = $filters;
+    }
+
+    /** @param mixed $value */
+    public function addFilter(string $key, $value): void
+    {
+        $this->filters[$key] = $value;
+    }
+
+    private function formatFilters(): string
+    {
+        $output = "";
+        foreach ($this->filters as $filter)
+        {
+
+        }
+        return $output;
+    }
+
+    private function addFiltersToQuery(): void
+    {
+        $filters = $this->formatFilters();
+        $this->query = str_replace("<filters>", $filters, $this->query);
     }
 
     public function getFormatted(): array
     {
+        if ($this->operationType === OperationRequestInterface::OPERATION_QUERY) {
+            $this->addFiltersToQuery();
+        }
         return [
             "operationName" => $this->operationName,
             "query" => $this->query,
-            "variables" => [
-                "input" => json_encode($this->variables)
-            ]
+            "variables" => json_encode([
+                "input" => $this->variables
+            ], JSON_FORCE_OBJECT)
         ];
     }
 }

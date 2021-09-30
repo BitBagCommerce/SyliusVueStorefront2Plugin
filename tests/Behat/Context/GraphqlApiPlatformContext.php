@@ -9,10 +9,12 @@ use Behat\Gherkin\Node\PyStringNode;
 use Behat\Mink\Element\DocumentElement;
 use Exception;
 use Sylius\Behat\Service\SharedStorageInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClient;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Context for GraphQL.
@@ -30,18 +32,6 @@ final class GraphqlApiPlatformContext implements Context
     }
 
     /**
-     * @When I create a GraphQL request
-     */
-    public function iCreateAGraphQlRequest(): void
-    {
-        /** @var OperationRequestInterface $operation */
-        $operation = $this->sharedStorage->get(GraphqlClient::$GRAPHQL_OPERATION);
-        $request = $this->client->prepareRequest($operation);
-        $this->sharedStorage->set(GraphqlClient::$GRAPHQL_VARIABLES, new ParameterBag());
-        $this->sharedStorage->set(GraphqlClient::$GRAPHQL_REQUEST, $request);
-    }
-
-    /**
      * @When I send that GraphQL request
      */
     public function iSendThatGraphQlRequest(): void
@@ -50,30 +40,27 @@ final class GraphqlApiPlatformContext implements Context
     }
 
     /**
-     * @Then I should receive a JSON response
+     * @When I send that GraphQL request as authorised user
      */
-    public function IShouldReceiveAJsonResponse(): void
+    public function iSendThatGraphQlRequestAsAuthorisedUser(): void
     {
-        $content = (string)$this->client->getLastResponse();
-        $json = $this->client->getJsonFromResponse($content);
-        if ($json === null) {
-            throw new Exception('Return data is not Json format');
-        }
-        $this->sharedStorage->set(GraphqlClient::$LAST_GRAPHQL_RESPONSE,$json);
+        $this->client->addAuthorization();
+        $this->client->send();
     }
 
     /**
-     * @param DocumentElement $response
+     * @Then I should receive a JSON response
      * @throws Exception
      */
-    private function saveLastResponse(DocumentElement $response): void
+    public function IShouldReceiveAJsonResponse(): void
     {
-        $content = $response->getContent();
-        $json = $this->getJsonFromResponse($content);
+        $response = $this->client->getLastResponse();
+        Assert::isInstanceOf($response,JsonResponse::class);
+
+        $json = $this->client->getJsonFromResponse($response);
         if ($json === null) {
             throw new Exception('Return data is not Json format');
         }
-        $this->sharedStorage->set(GraphqlClient::$LAST_GRAPHQL_RESPONSE, $json);
     }
 
     /**
@@ -85,7 +72,7 @@ final class GraphqlApiPlatformContext implements Context
         /** @var array $expected */
         $expected = json_decode($json->getRaw(), true);
         /** @var array $lastResponse */
-        $lastResponse = $this->sharedStorage->get(GraphqlClient::$LAST_GRAPHQL_RESPONSE);
+        $lastResponse = $this->sharedStorage->get(GraphqlClient::LAST_GRAPHQL_RESPONSE);
         $result_array = GraphqlClient::diff($expected, $lastResponse);
         if (empty($result_array)) {
             return true;
@@ -100,10 +87,45 @@ final class GraphqlApiPlatformContext implements Context
      */
     public function iSetKeyFieldToValue(string $key, $value): void
     {
-        /** @var ParameterBag $variables */
-        $variables = $this->sharedStorage->get(GraphqlClient::$GRAPHQL_VARIABLES);
-        $variables->set($key,$value);
-        $this->sharedStorage->set(GraphqlClient::$GRAPHQL_VARIABLES, $variables);
+        $operation = $this->client->getLastOperationRequest();
+        Assert::isInstanceOf($operation,OperationRequestInterface::class);
+        $operation->addVariable($key,$value);
+    }
+
+    /**
+     * @When I set :key field to integer :value
+     */
+    public function iSetKeyFieldToIntegerValue(string $key, int $value): void
+    {
+        $this->iSetKeyFieldToValue($key, $value);
+    }
+
+    /**
+     * @When I set :key field to value :name
+     * @When I set :key field to previously saved value :name
+     */
+    public function iSetKeyFieldToPreviouslySavedValue(string $key, string $name): void
+    {
+        $operation = $this->client->getLastOperationRequest();
+        Assert::isInstanceOf($operation,OperationRequestInterface::class);
+        $value = $this->sharedStorage->get($name);
+        Assert::notEmpty($value);
+        $operation->addVariable($key,$value);
+    }
+
+    /**
+     * @var mixed $value
+     * @Then I set :sharedStorageKey object :propertyName property to :value
+     */
+    public function iSetObjectPropertyToValue(string $sharedStorageKey, string $propertyName, $value): void
+    {
+        try {
+            $storageValue = (array) $this->sharedStorage->get($sharedStorageKey);
+        }catch (\InvalidArgumentException $e){
+            $storageValue = [];
+        }
+        $storageValue[$propertyName] = $value;
+        $this->sharedStorage->set($sharedStorageKey,$storageValue);
     }
 
     /**
@@ -113,6 +135,17 @@ final class GraphqlApiPlatformContext implements Context
     public function thatResponseShouldContain(string $key): bool
     {
         $this->getValueAtKey($key);
+        return true;
+    }
+
+    /**
+     * @Then This response should contain empty :key
+     * @throws Exception
+     */
+    public function thatResponseShouldContainEmpty(string $key): bool
+    {
+        $value = $this->getValueAtKey($key);
+        Assert::isEmpty($value);
         return true;
     }
 
@@ -134,11 +167,15 @@ final class GraphqlApiPlatformContext implements Context
      */
     private function getValueAtKey(string $key)
     {
-        /** @var array $lastResponse */
-        $lastResponse = $this->sharedStorage->get(GraphqlClient::$LAST_GRAPHQL_RESPONSE);
-        $flatResponse = $this->client->flattenArray($lastResponse);
+        $arrayContent = $this->client->getLastResponseArrayContent();
+        $flatResponse = $this->client->flattenArray($arrayContent);
+
         if (!array_key_exists($key, $flatResponse)) {
-            throw new Exception(sprintf('Last response did not have any key named %s', $key));
+            throw new Exception(
+                sprintf("Last response did not have any key named %s \nIt contains:\n%s",
+                $key,
+                print_r($flatResponse, true)
+            ));
         }
         return $flatResponse[$key];
     }
@@ -149,9 +186,8 @@ final class GraphqlApiPlatformContext implements Context
      */
     public function iShouldSeeFollowingErrorMessage(string $message): bool
     {
-        /** @var  array $lastResponse */
-        $lastResponse = $this->sharedStorage->get(GraphqlClient::$LAST_GRAPHQL_RESPONSE);
-        $flatLastResponse = $this->client->flattenArray($lastResponse);
+        $arrayContent = $this->client->getLastResponseArrayContent();
+        $flatLastResponse = $this->client->flattenArray($arrayContent);
         if (!array_key_exists('errors.0.message', $flatLastResponse)) {
             throw new Exception('No errors were produced.');
         }
@@ -160,6 +196,15 @@ final class GraphqlApiPlatformContext implements Context
         }
 
         return true;
+    }
+
+    /**
+     * @Then I save key :key of this response as :name
+     */
+    public function iSaveValueAtKeyOfThisModelResponse(string $key, string $name): void
+    {
+        $value = $this->getValueAtKey($key);
+        $this->sharedStorage->set($name,$value);
     }
 
     /**

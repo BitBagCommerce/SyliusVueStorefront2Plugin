@@ -10,5 +10,14 @@ doctrine:
         driver: 'pdo_mysql'
         server_version: '5.7'
         charset: UTF8
-
         url: '%env(resolve:DATABASE_URL)%'
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        auto_mapping: true
+        mappings:
+            GraphqQL:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/../../src/Resources/doctrine/model'
+                prefix: 'BitBag\SyliusGraphqlPlugin\Model'
+                alias: BitBag\SyliusGraphqlPlugin

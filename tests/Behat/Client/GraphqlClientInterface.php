@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Client;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
@@ -17,21 +18,33 @@ use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 interface GraphqlClientInterface
 {
 
-    public function prepareRequest(
-        OperationRequestInterface $request,
+    public function prepareOperation(
+        string $name,
+        string $formattedExpectedData,
         string $method = Request::METHOD_POST
-    ): Request;
+    ): OperationRequestInterface;
 
-    public function prepareOperation(string $mutationName, string $formattedExpectedData): OperationRequestInterface;
+    public function prepareQuery(
+        string $name,
+        string $formattedExpectedData,
+        string $method = Request::METHOD_POST
+    ): OperationRequestInterface;
 
     public function getToken(): ?string;
 
+    public function addAuthorization(): void;
+
     public function send(): Response;
 
-    /**
-     * @return mixed|null
-     */
-    public function getJsonFromResponse(string $response);
+    public function getJsonFromResponse(Response $response): ?array;
+
+    public function getLastResponseArrayContent(): array;
 
     public function flattenArray(array $responseArray): array;
+
+    public function getLastOperationRequest(): ?OperationRequestInterface;
+
+    public function saveLastResponse(Response $response): void;
+
+    public function getLastResponse(): ?JsonResponse;
 }

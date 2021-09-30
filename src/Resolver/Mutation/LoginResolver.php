@@ -69,7 +69,6 @@ final class LoginResolver implements MutationResolverInterface
 
         if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
             $refreshToken = $this->tokenFactory->getRefreshToken($user);
-
             $shopUserToken = $this->tokenFactory->create($user, $refreshToken);
             $this->applyOrder($input, $user);
 
