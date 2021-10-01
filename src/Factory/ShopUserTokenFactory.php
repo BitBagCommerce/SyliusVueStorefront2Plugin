@@ -51,12 +51,8 @@ class ShopUserTokenFactory implements ShopUserTokenFactoryInterface
     public function getRefreshToken(ShopUserInterface $user): RefreshTokenInterface
     {
         $refreshTokenExpirationDate = new \DateTime('+1 month');
-        $payload = [
-            'exp' => $refreshTokenExpirationDate->getTimestamp(),
-        ];
-        $refreshTokenString = $this->jwtManager->createFromPayload($user, $payload);
         $refreshToken = $this->refreshJwtManager->create();
-        $refreshToken->setRefreshToken($refreshTokenString);
+        $refreshToken->setRefreshToken();
         $refreshToken->setUsername((string) $user->getUsernameCanonical());
         $refreshToken->setValid($refreshTokenExpirationDate);
 

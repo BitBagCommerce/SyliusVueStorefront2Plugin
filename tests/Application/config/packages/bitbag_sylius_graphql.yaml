@@ -1,0 +1,5 @@
+parameters:
+    bitbag_graphql.model.refresh_token.class: 'Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken'
+
+imports:
+    - { resource: "@BitBagSyliusGraphqlPlugin/Resources/config/services.xml" }

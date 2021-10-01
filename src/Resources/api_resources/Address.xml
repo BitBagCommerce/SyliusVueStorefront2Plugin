@@ -58,28 +58,28 @@ We are hiring developers from all over the world. Join us and start your new, ex
                         <attribute name="type">ID!</attribute>
                     </attribute>
                     <attribute name="firstName">
-                        <attribute name="type">String!</attribute>
+                        <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="lastName">
-                        <attribute name="type">String!</attribute>
+                        <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="company">
                         <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="street">
-                        <attribute name="type">String!</attribute>
+                        <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="countryCode">
-                        <attribute name="type">String!</attribute>
+                        <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="provinceName">
                         <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="city">
-                        <attribute name="type">String!</attribute>
+                        <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="postcode">
-                        <attribute name="type">String!</attribute>
+                        <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="phoneNumber">
                         <attribute name="type">String</attribute>

@@ -10,39 +10,41 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Client;
 
-use Sylius\Behat\Client\RequestInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 
 interface GraphqlClientInterface
 {
-    public function post(?RequestInterface $request = null): Response;
 
-    public function put(): Response;
+    public function prepareOperation(
+        string $name,
+        string $formattedExpectedData,
+        string $method = Request::METHOD_POST
+    ): OperationRequestInterface;
 
-    public function patch(): Response;
-
-    public function delete(string $id): Response;
-
-    /** @param string|int $value */
-    public function setRequestInput(string $key, $value): void;
-
-    public function setRequestData(array $content): void;
-
-    public function clearParameters(): void;
-
-    /** @param string|int|array $value */
-    public function addRequestData(string $key, $value): void;
-
-    public function updateRequestData(array $data): void;
-
-    public function getLastResponse(): Response;
+    public function prepareQuery(
+        string $name,
+        string $formattedExpectedData,
+        string $method = Request::METHOD_POST
+    ): OperationRequestInterface;
 
     public function getToken(): ?string;
 
-    public function request(RequestInterface $request): Response;
+    public function addAuthorization(): void;
 
-    /**
-     * @return mixed|null
-     */
-    public function getJsonFromResponse(string $response);
+    public function send(): Response;
+
+    public function getJsonFromResponse(Response $response): ?array;
+
+    public function getLastResponseArrayContent(): array;
+
+    public function flattenArray(array $responseArray): array;
+
+    public function getLastOperationRequest(): ?OperationRequestInterface;
+
+    public function saveLastResponse(Response $response): void;
+
+    public function getLastResponse(): ?JsonResponse;
 }

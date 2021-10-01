@@ -19,6 +19,7 @@ use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class LoginResolver implements MutationResolverInterface
 {
@@ -46,6 +47,9 @@ final class LoginResolver implements MutationResolverInterface
         $this->tokenFactory = $tokenFactory;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function __invoke($item, array $context): ?ShopUserTokenInterface
     {
         if (!isset($context['args']['input'])) {
@@ -65,14 +69,13 @@ final class LoginResolver implements MutationResolverInterface
 
         if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
             $refreshToken = $this->tokenFactory->getRefreshToken($user);
-
             $shopUserToken = $this->tokenFactory->create($user, $refreshToken);
             $this->applyOrder($input, $user);
 
             return $shopUserToken;
         }
 
-        return null;
+        throw new \Exception("Wrong credentials.");
     }
 
     public function applyOrder(array $input, ShopUserInterface $user): void

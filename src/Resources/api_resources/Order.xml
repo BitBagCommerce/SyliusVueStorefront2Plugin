@@ -43,7 +43,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
                         <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="orderItemId">
-                        <attribute name="type">String</attribute>
+                        <attribute name="type">Int</attribute>
                     </attribute>
                 </attribute>
             </operation>

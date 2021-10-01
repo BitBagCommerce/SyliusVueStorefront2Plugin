@@ -1,14 +1,14 @@
 default:
     suites:
-        graphql_creating_account:
+        graphql_managing_addresses:
             contexts:
                 - sylius.behat.context.setup.channel
                 - sylius.behat.context.setup.customer
                 - bitbag_sylius_graphql_plugin.context.graphql
                 - bitbag_sylius_graphql_plugin.context.customer
-                - bitbag_sylius_graphql_plugin.context.registration
+                - bitbag_sylius_graphql_plugin.context.address
                 - sylius.behat.context.hook.doctrine_orm
-                - sylius.behat.context.transform.shared_storage                
                 - sylius.behat.context.transform.lexical
+                - sylius.behat.context.transform.shared_storage
             filters:
-                tags: "@creating_account && @graphql"
+                tags: "@managing_addresses && @graphql"

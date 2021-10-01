@@ -23,7 +23,7 @@ class ResetPassword
         string $newPassword,
         string $confirmedNewPassword,
         string $resetPasswordToken
-    ){
+    ) {
         $this->newPassword = $newPassword;
         $this->confirmedNewPassword = $confirmedNewPassword;
         $this->resetPasswordToken = $resetPasswordToken;
