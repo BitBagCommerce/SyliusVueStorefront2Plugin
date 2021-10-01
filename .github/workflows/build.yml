@@ -25,7 +25,6 @@ jobs:
                 sylius: [ "~1.9.0", "~1.10.0@alpha" ]
                 node: [ "10.x" ]
                 mysql: [ "8.0" ]
-
                 exclude:
                     -   php: "8.0"
                         sylius: "~1.9.0"
@@ -142,9 +141,6 @@ jobs:
 
             -   name: Run PHPSpec
                 run: vendor/bin/phpspec run --ansi -f progress --no-interaction
-
-            -   name: Run PHPUnit
-                run: vendor/bin/phpunit --colors=always
 
             -   name: Run Behat
                 run: vendor/bin/behat --colors --strict -vvv --no-interaction || vendor/bin/behat --colors --strict -vvv --no-interaction --rerun

@@ -1,114 +1,119 @@
-<p align="center">
-    <a href="https://sylius.com" target="_blank">
-        <img src="https://demo.sylius.com/assets/shop/img/logo.png" />
-    </a>
-</p>
+# [![](https://bitbag.io/wp-content/uploads/2021/10/graphql.png)](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql)
 
-<h1 align="center">Plugin Skeleton</h1>
+# BitBag SyliusGraphqlPlugin
 
-<p align="center">Skeleton for starting Sylius plugins.</p>
+----
 
-## Documentation
+[![](https://img.shields.io/packagist/l/bitbag/graphql-plugin.svg) ](https://packagist.org/packages/bitbag/graphql-plugin "License") [ ![](https://img.shields.io/packagist/v/bitbag/graphql-plugin.svg) ](https://packagist.org/packages/bitbag/graphql-plugin "Version") [ ![](https://img.shields.io/travis/BitBagCommerce/SyliusGraphqlPlugin/master.svg) ](http://travis-ci.org/BitBagCommerce/SyliusGraphqlPlugin "Build status") [ ![](https://img.shields.io/scrutinizer/g/BitBagCommerce/SyliusGraphqlPlugin.svg) ](https://scrutinizer-ci.com/g/BitBagCommerce/SyliusGraphqlPlugin/ "Scrutinizer") [![](https://poser.pugx.org/bitbag/graphql-plugin/downloads)](https://packagist.org/packages/bitbag/graphql-plugin "Total Downloads") [![Slack](https://img.shields.io/badge/community%20chat-slack-FF1493.svg)](http://sylius-devs.slack.com) [![Support](https://img.shields.io/badge/support-contact%20author-blue])](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql)
 
-For a comprehensive guide on Sylius Plugins development please go to Sylius documentation, there you will find
-the <a href="https://docs.sylius.com/en/latest/plugin-development-guide/index.html">Plugin Development Guide</a>, that
-is full of examples.
+<p>
+ <img src="https://sylius.com/assets/badge-approved-by-sylius.png" width="85">
+</p> 
 
-## Quickstart Installation
+At BitBag we do believe in open source. However, we are able to do it just because of our awesome clients, who are kind enough to share some parts of our work with the community. Therefore, if you feel like there is a possibility for us working together, feel free to reach us out. You will find out more about our professional services, technologies and contact details at [https://bitbag.io/](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql).
 
-1. Run `composer create-project sylius/plugin-skeleton ProjectName`.
+## Table of Content
 
-2. From the plugin skeleton root directory, run the following commands:
+***
 
-    ```bash
-    $ (cd tests/Application && yarn install)
-    $ (cd tests/Application && yarn build)
-    $ (cd tests/Application && APP_ENV=test bin/console assets:install public)
-    
-    $ (cd tests/Application && APP_ENV=test bin/console doctrine:database:create)
-    $ (cd tests/Application && APP_ENV=test bin/console doctrine:schema:create)
-    ```
+* [Overview](#overview)
+* [Support](#we-are-here-to-help)
+* [About us](#about-us)
+    * [Community](#community)
+* [Demo](#demo)
+* [License](#license)
+* [Contact](#contact)
+* [Installation](doc/installation.md)
+* [Customization & Testing](doc/customization.md)
 
-To be able to setup a plugin's database, remember to configure you database credentials in `tests/Application/.env`
-and `tests/Application/.env.test`.
+## Overview
 
-## Usage
+This plugin allows you to expose all critical models and operations as graphql queries and mutations<br />
+It uses api-platform with xml mappings for models
+It also handles JWT communication
 
-### Running plugin tests
+To check automatically generated API Doc for graphql in Your project - visit one of following endpoints.
 
-- PHPUnit
+```
+  api_graphql_entrypoint              /api/v2/graphql                                                                   
+  api_graphql_graphiql                /api/v2/graphql/graphiql                                                          
+  api_graphql_graphql_playground      /api/v2/graphql/graphql_playground
+```
 
-  ```bash
-  vendor/bin/phpunit
-  ```
+Please not that many of used functions and approaches both on Sylius and API Platform with Graphql support are still marked as experimental
 
-- PHPSpec
+## We are here to help
+This **open-source plugin was developed to help the Sylius community**. If you have any additional questions, would like help with installing or configuring the plugin or need any assistance with your Sylius project - let us know!
 
-  ```bash
-  vendor/bin/phpspec run
-  ```
+[![](https://bitbag.io/wp-content/uploads/2020/10/button-contact.png)](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql)
 
-- Behat (non-JS scenarios)
+# About us
 
-  ```bash
-  vendor/bin/behat --strict --tags="~@javascript"
-  ```
+---
 
-- Behat (JS scenarios)
+BitBag is an agency that provides high-quality **eCommerce and Digital Experience software**. Our main area of expertise includes eCommerce consulting and development for B2C, B2B, and Multi-vendor Marketplaces.
+The scope of our services related to Sylius includes:
+- **Consulting** in the field of strategy development
+- Personalized **headless software development**
+- **System maintenance and long-term support**
+- **Outsourcing**
+- **Plugin development**
+- **Data migration**
 
-    1. [Install Symfony CLI command](https://symfony.com/download).
+Some numbers regarding Sylius:
+* **20+ experts** including consultants, UI/UX designers, Sylius trained front-end and back-end developers,
+* **100+ projects** delivered on top of Sylius,
+* Clients from  **20+ countries**
+* **3+ years** in the Sylius ecosystem.
 
-    2. Start Headless Chrome:
+---
 
-    ```bash
-    google-chrome-stable --enable-automation --disable-background-networking --no-default-browser-check --no-first-run --disable-popup-blocking --disable-default-apps --allow-insecure-localhost --disable-translate --disable-extensions --no-sandbox --enable-features=Metal --headless --remote-debugging-port=9222 --window-size=2880,1800 --proxy-server='direct://' --proxy-bypass-list='*' http://127.0.0.1
-    ```
+If you need some help with Sylius development, don't be hesitate to contact us directly. You can fill the form on [this site](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql) or send us an e-mail to hello@bitbag.io!
 
-    3. Install SSL certificates (only once needed) and run test application's webserver on `127.0.0.1:8080`:
+---
 
-    ```bash
-    symfony server:ca:install
-    APP_ENV=test symfony server:start --port=8080 --dir=tests/Application/public --daemon
-    ```
+[![](https://bitbag.io/wp-content/uploads/2020/10/badges-sylius.png)](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql)
 
-    4. Run Behat:
+## Community
 
-    ```bash
-    vendor/bin/behat --strict --tags="@javascript"
-    ```
+---- 
 
-- Static Analysis
+For online communication, we invite you to chat with us & other users on [Sylius Slack](https://sylius-devs.slack.com/).
 
-    - Psalm
+# Demo
 
-      ```bash
-      vendor/bin/psalm
-      ```
+---
 
-    - PHPStan
+We created a demo app with some useful use-cases of the plugin! Visit [demo.bitbag.shop](https://demo.bitbag.shop) to take a look at it.
+The admin can be accessed under [demo.bitbag.shop/admin](https://demo.bitbag.shop/admin) link and `sylius: sylius` credentials.
 
-      ```bash
-      vendor/bin/phpstan analyse -c phpstan.neon -l max src/  
-      ```
+We also recorded a webinar which presents most of the plugin features, including how they have been implemented and specific use-cases.
 
-- Coding Standard
+<div align="center">
 
-  ```bash
-  vendor/bin/ecs check src
-  ```
+[![Webinar](https://img.youtube.com/vi/Nk8fKA48t_Y/0.jpg)](https://www.youtube.com/watch?v=Nk8fKA48t_Y)
 
-### Opening Sylius with your plugin
+</div>
 
-- Using `test` environment:
 
-    ```bash
-    (cd tests/Application && APP_ENV=test bin/console sylius:fixtures:load)
-    (cd tests/Application && APP_ENV=test bin/console server:run -d public)
-    ```
 
-- Using `dev` environment:
+**If you need an overview of this plugin, schedule a consultation with our expert.**
 
-    ```bash
-    (cd tests/Application && APP_ENV=dev bin/console sylius:fixtures:load)
-    (cd tests/Application && APP_ENV=dev bin/console server:run -d public)
-    ```
+[![](https://bitbag.io/wp-content/uploads/2020/10/button_free_consulatation-1.png)](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql)
+
+
+
+## License
+
+---
+
+This plugin's source code is completely free and released under the terms of the MIT license.
+
+[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen.)
+
+## Contact
+
+---
+If you want to contact us, the best way is to fill the form on [our website](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql) or send us an e-mail to hello@bitbag.io with your question(s). We guarantee that we answer as soon as we can!
+
+[![](https://bitbag.io/wp-content/uploads/2020/10/footer.png)](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql)
