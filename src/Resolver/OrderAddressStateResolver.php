@@ -24,13 +24,19 @@ final class OrderAddressStateResolver implements OrderAddressStateResolverInterf
         $this->stateMachineFactory = $stateMachineFactory;
     }
 
+    /**
+     * @throws \SM\SMException
+     */
     public function resolve(OrderInterface $order): void
     {
         $stateMachine = $this->stateMachineFactory->get($order, OrderCheckoutTransitions::GRAPH);
 
+        $token = $order->getTokenValue();
+        Assert::notNull($token);
+
         Assert::true(
             $stateMachine->can(OrderCheckoutTransitions::TRANSITION_ADDRESS),
-            sprintf('Order with %s token cannot be addressed.', $order->getTokenValue())
+            sprintf('Order with %s token cannot be addressed.', $token)
         );
 
         if ($order->getBillingAddress() !== null || $order->getShippingAddress() !== null) {

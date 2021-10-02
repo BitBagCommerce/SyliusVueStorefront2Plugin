@@ -12,18 +12,32 @@ namespace BitBag\SyliusGraphqlPlugin\Model;
 
 use Sylius\Component\Attribute\Model\AttributeInterface;
 use Sylius\Component\Product\Model\ProductAttributeValue as BaseAttributeValue;
+use Webmozart\Assert\Assert;
 
 class ProductAttributeValue extends BaseAttributeValue
 {
 
+    /**
+     * @return mixed|null
+     */
     public function getValue()
     {
         if (null === $this->attribute) {
             return null;
         }
 
-        $getter = 'get' . ucfirst($this->attribute->getStorageType());
-        return  $this->$getter();
+        $storageType = $this->attribute->getStorageType();
+        Assert::notNull($storageType);
+
+        $getter = 'get' . ucfirst($storageType);
+
+        if (method_exists($this, $getter)) {
+            /** @var callable $callback */
+            $callback = [$this, $getter];
+            return call_user_func($callback);
+        }
+
+        return null;
     }
 
     /**
@@ -31,13 +45,7 @@ class ProductAttributeValue extends BaseAttributeValue
      */
     public function getStringValue(): ?string
     {
-        if (null === $this->attribute) {
-            return null;
-        }
-
-        $getter = 'get' . ucfirst($this->attribute->getStorageType());
-
-        return (string) $this->$getter();
+        return (string) $this->getValue();
     }
 
     public function getAttribute(): ?AttributeInterface

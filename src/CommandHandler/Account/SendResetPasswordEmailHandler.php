@@ -13,8 +13,8 @@ namespace BitBag\SyliusGraphqlPlugin\CommandHandler\Account;
 use BitBag\SyliusGraphqlPlugin\Command\Account\SendResetPasswordEmail;
 use Sylius\Bundle\CoreBundle\Mailer\Emails;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
-use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\Component\Customer\Model\CustomerInterface;
 use Sylius\Component\Mailer\Sender\SenderInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Sylius\Component\User\Security\Generator\GeneratorInterface;
@@ -37,13 +37,18 @@ final class SendResetPasswordEmailHandler implements MessageHandlerInterface
         ChannelContextInterface $channelContext,
         UserRepositoryInterface $userRepository,
         GeneratorInterface $generator
-    ) {
+    )
+    {
         $this->emailSender = $emailSender;
         $this->channelContext = $channelContext;
         $this->userRepository = $userRepository;
         $this->generator = $generator;
     }
 
+    /**
+     * @param SendResetPasswordEmail $command
+     * @return CustomerInterface
+     */
     public function __invoke(SendResetPasswordEmail $command): CustomerInterface
     {
         /** @var ShopUserInterface|null $user */
@@ -65,6 +70,8 @@ final class SendResetPasswordEmailHandler implements MessageHandlerInterface
             ]
         );
 
-        return $user->getCustomer();
+        $customer = $user->getCustomer();
+        Assert::notNull($customer);
+        return $customer;
     }
 }

@@ -45,6 +45,7 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
     public function __invoke(BillingAddressOrder $addressOrder): OrderInterface
     {
         $tokenValue = $addressOrder->orderTokenValue;
+        Assert::notNull($tokenValue);
 
         /** @var OrderInterface|null $order */
         $order = $this->orderRepository->findCartByTokenValue($tokenValue);

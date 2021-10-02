@@ -25,10 +25,11 @@ class ChoosePaymentMethod implements OrderTokenValueAwareInterface, SubresourceI
     /** @psalm-immutable */
     public ?string $paymentMethodCode;
 
-    public function __construct(string $orderTokenValue, string $paymentMethodCode)
+    public function __construct(string $orderTokenValue, string $paymentMethodCode, ?string $paymentId)
     {
         $this->orderTokenValue = $orderTokenValue;
         $this->paymentMethodCode = $paymentMethodCode;
+        $this->paymentId = $paymentId;
     }
 
     public function getOrderTokenValue(): ?string

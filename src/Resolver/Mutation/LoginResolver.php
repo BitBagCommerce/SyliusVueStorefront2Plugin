@@ -19,8 +19,9 @@ use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Webmozart\Assert\Assert;
 
+/** @psalm-suppress DeprecatedClass */
 final class LoginResolver implements MutationResolverInterface
 {
     private EncoderFactoryInterface $encoderFactory;
@@ -33,6 +34,7 @@ final class LoginResolver implements MutationResolverInterface
 
     private ShopUserTokenFactoryInterface $tokenFactory;
 
+    /** @psalm-suppress DeprecatedClass */
     public function __construct(
         EntityManagerInterface $entityManager,
         UserRepositoryInterface $userRepository,
@@ -49,6 +51,7 @@ final class LoginResolver implements MutationResolverInterface
 
     /**
      * @throws \Exception
+     * @psalm-suppress DeprecatedClass
      */
     public function __invoke($item, array $context): ?ShopUserTokenInterface
     {
@@ -67,7 +70,12 @@ final class LoginResolver implements MutationResolverInterface
 
         $encoder = $this->encoderFactory->getEncoder($user);
 
-        if ($encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
+        $userPassword = $user->getPassword();
+        $userSalt = $user->getSalt();
+        Assert::notNull($userPassword);
+        Assert::notNull($userSalt);
+
+        if ($encoder->isPasswordValid($userPassword, $password, $userSalt)) {
             $refreshToken = $this->tokenFactory->getRefreshToken($user);
             $shopUserToken = $this->tokenFactory->create($user, $refreshToken);
             $this->applyOrder($input, $user);

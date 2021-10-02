@@ -19,6 +19,7 @@ use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use BitBag\SyliusGraphqlPlugin\Doctrine\Repository\TaxonRepositoryInterface;
 use Sylius\Bundle\ApiBundle\Context\UserContextInterface;
 use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Webmozart\Assert\Assert;
 
@@ -58,21 +59,25 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
         Assert::keyExists($context, ContextKeys::CHANNEL);
-        $channelMenuTaxon = $context[ContextKeys::CHANNEL]->getMenuTaxon();
+        $channelContext =  $context[ContextKeys::CHANNEL];
+        Assert::isInstanceOf($channelContext,ChannelInterface::class);
+        $channelMenuTaxon = $channelContext->getMenuTaxon();
 
         $user = $this->userContext->getUser();
-        if ($user !== null && in_array('ROLE_API_ACCESS', $user->getRoles())) {
+        if ($user !== null && in_array('ROLE_API_ACCESS', $user->getRoles(),true)) {
             return $this->taxonRepository->findAll();
         }
 
         $queryBuilder = $this->taxonRepository->createChildrenByChannelMenuTaxonQueryBuilder(
             $channelMenuTaxon
         );
-        foreach ($this->collectionExtensions as $extension) {
-            $extension->applyToCollection($queryBuilder, $this->queryNameGenerator, $resourceClass, $operationName, $context);
 
-            if ($extension instanceof QueryResultCollectionExtensionInterface && $extension->supportsResult($resourceClass, $operationName, $context)) {
-                return $extension->getResult($queryBuilder, $resourceClass, $operationName, $context);
+        /** @var QueryCollectionExtensionInterface $extension */
+        foreach ($this->collectionExtensions as $extension) {
+            $extension->applyToCollection($queryBuilder, $this->queryNameGenerator, $resourceClass, $operationName);
+
+            if ($extension instanceof QueryResultCollectionExtensionInterface && $extension->supportsResult($resourceClass, $operationName)) {
+                return $extension->getResult($queryBuilder);
             }
         }
 

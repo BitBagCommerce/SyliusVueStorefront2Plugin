@@ -32,7 +32,8 @@ final class ApplyCouponToCartHandler implements MessageHandlerInterface
         OrderRepositoryInterface $orderRepository,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         OrderProcessorInterface $orderProcessor
-    ) {
+    )
+    {
         $this->orderRepository = $orderRepository;
         $this->promotionCouponRepository = $promotionCouponRepository;
         $this->orderProcessor = $orderProcessor;
@@ -41,7 +42,7 @@ final class ApplyCouponToCartHandler implements MessageHandlerInterface
     public function __invoke(ApplyCouponToCart $command): OrderInterface
     {
         /** @var OrderInterface|null $cart */
-        $cart = $this->orderRepository->findCartByTokenValue($command->getOrderTokenValue());
+        $cart = $this->orderRepository->findCartByTokenValue((string)$command->getOrderTokenValue());
 
         Assert::notNull($cart, 'Cart doesn\'t exist');
         $promotionCoupon = $this->getPromotionCoupon($command->couponCode);

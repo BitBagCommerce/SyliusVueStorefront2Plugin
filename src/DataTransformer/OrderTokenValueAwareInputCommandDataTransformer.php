@@ -14,18 +14,27 @@ use Exception;
 use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 use Sylius\Bundle\ApiBundle\DataTransformer\CommandDataTransformerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
+use Webmozart\Assert\Assert;
 
 /** @experimental */
 final class OrderTokenValueAwareInputCommandDataTransformer implements CommandDataTransformerInterface
 {
-    public function transform($object, string $to, array $context = [])
+    /**
+     * @param OrderTokenValueAwareInterface|mixed $object
+     * @param string $to
+     * @param array $context
+     * @return OrderTokenValueAwareInterface
+     * @throws Exception
+     */
+    public function transform($object, string $to, array $context = []): OrderTokenValueAwareInterface
     {
+        Assert::isInstanceOf($object,OrderTokenValueAwareInterface::class);
         if (array_key_exists('object_to_populate', $context)) {
             /** @var OrderInterface $cart */
             $cart = $context['object_to_populate'];
             $tokenValue = $cart->getTokenValue();
         } elseif (property_exists($object, 'orderTokenValue')) {
-            $tokenValue = $object->orderTokenValue;
+            $tokenValue = (string) $object->getOrderTokenValue();
         } else {
             throw new Exception('Token value could not be found');
         }
@@ -35,6 +44,10 @@ final class OrderTokenValueAwareInputCommandDataTransformer implements CommandDa
         return $object;
     }
 
+    /**
+     * @param mixed $object
+     * @return bool
+     */
     public function supportsTransformation($object): bool
     {
         return $object instanceof OrderTokenValueAwareInterface;

@@ -11,8 +11,8 @@ declare(strict_types=1);
 namespace BitBag\SyliusGraphqlPlugin\CommandHandler\Account;
 
 use BitBag\SyliusGraphqlPlugin\Command\Account\ResetPassword;
-use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\Component\Customer\Model\CustomerInterface;
 use Sylius\Component\Resource\Metadata\MetadataInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Sylius\Component\User\Security\PasswordUpdaterInterface;
@@ -32,12 +32,18 @@ final class ResetPasswordHandler implements MessageHandlerInterface
         UserRepositoryInterface $userRepository,
         MetadataInterface $metadata,
         PasswordUpdaterInterface $passwordUpdater
-    ) {
+    )
+    {
         $this->userRepository = $userRepository;
         $this->metadata = $metadata;
         $this->passwordUpdater = $passwordUpdater;
     }
 
+    /**
+     * @param ResetPassword $command
+     * @return CustomerInterface
+     * @throws \Exception
+     */
     public function __invoke(ResetPassword $command): CustomerInterface
     {
         /** @var ShopUserInterface|null $user */
@@ -46,7 +52,10 @@ final class ResetPasswordHandler implements MessageHandlerInterface
         Assert::notNull($user);
 
         $resetting = $this->metadata->getParameter('resetting');
-        $lifetime = new \DateInterval($resetting['token']['ttl']);
+        Assert::isArray($resetting);
+        Assert::keyExists($resetting,"token");
+        Assert::isArray($resetting["token"]);
+        $lifetime = new \DateInterval((string)$resetting['token']['ttl']);
 
         if (!$user->isPasswordRequestNonExpired($lifetime)) {
             throw new \InvalidArgumentException('Password reset token has expired');
@@ -60,6 +69,8 @@ final class ResetPasswordHandler implements MessageHandlerInterface
 
         $this->passwordUpdater->updatePassword($user);
 
-        return $user->getCustomer();
+        $customer = $user->getCustomer();
+        Assert::notNull($customer);
+        return $customer;
     }
 }

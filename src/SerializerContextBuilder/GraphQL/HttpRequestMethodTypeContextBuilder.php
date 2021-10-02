@@ -15,6 +15,7 @@ use ApiPlatform\Core\GraphQl\Serializer\SerializerContextBuilderInterface;
 use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
 use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
 use Symfony\Component\HttpFoundation\Request;
+use Webmozart\Assert\Assert;
 
 /** @experimental */
 final class HttpRequestMethodTypeContextBuilder implements SerializerContextBuilderInterface
@@ -86,13 +87,15 @@ final class HttpRequestMethodTypeContextBuilder implements SerializerContextBuil
             if (false === isset($availableCustomOperations[$operationName])) {
                 return $context;
             }
+            Assert::isArray($availableCustomOperations[$operationName]);
 
             if (false === isset($availableCustomOperations[$operationName]['method'])) {
                 return $context;
             }
 
+
             $context[ContextKeys::HTTP_REQUEST_METHOD_TYPE] = strtoupper(
-                $availableCustomOperations[$operationName]['method']
+                (string)$availableCustomOperations[$operationName]['method']
             );
         } catch (ResourceClassNotFoundException $exception) {
         }

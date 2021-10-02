@@ -10,21 +10,30 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusGraphqlPlugin\Serializer\Exception;
 
+use Exception;
 use GraphQL\Error\Error;
 use GraphQL\Error\FormattedError;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 final class ExceptionNormalizer implements NormalizerInterface
 {
     /**
-     * {@inheritdoc}
+     * @psalm-suppress MoreSpecificImplementedParamType
+     * @param Exception|mixed $object
+     * @param string|null $format
+     * @param array $context
+     * @return array
+     * @throws \Throwable
      */
-    public function normalize($object, $format = null, array $context = []): array
+    public function normalize($object, string $format = null, array $context = []): array
     {
-        /** @var \InvalidArgumentException $exception */
+        Assert::isInstanceOf($object,Exception::class);
         $exception = $object->getPrevious();
         $error = FormattedError::createFromException($object);
 
+        Assert::isArray($error['extensions']);
+        Assert::notNull($exception);
         $error['extensions']['message'] = $exception->getMessage();
 
         return $error;
@@ -33,7 +42,7 @@ final class ExceptionNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, string $format = null): bool
     {
         return $data instanceof Error && $data->getPrevious() instanceof \InvalidArgumentException;
     }

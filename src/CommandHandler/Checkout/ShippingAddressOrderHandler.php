@@ -45,12 +45,13 @@ final class ShippingAddressOrderHandler implements MessageHandlerInterface
     public function __invoke(ShippingAddressOrder $addressOrder): OrderInterface
     {
         $tokenValue = $addressOrder->orderTokenValue;
+        Assert::notNull($tokenValue);
 
         /** @var OrderInterface|null $order */
         $order = $this->orderRepository->findCartByTokenValue($tokenValue);
         Assert::notNull($order, sprintf('Order with %s token has not been found.', $tokenValue));
 
-        if (null === $order->getCustomer() || null !== $addressOrder->email) {
+        if (null === $order->getCustomer() && null !== $addressOrder->email) {
             $order->setCustomer($this->customerProvider->provide($addressOrder->email));
         }
 

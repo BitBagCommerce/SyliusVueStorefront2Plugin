@@ -40,14 +40,20 @@ final class RemoveCouponFromCartHandler implements MessageHandlerInterface
 
     public function __invoke(RemoveCouponFromCart $command): OrderInterface
     {
-        /** @var OrderInterface $cart */
-        $cart = $this->orderRepository->findCartByTokenValue($command->getOrderTokenValue());
+        $tokenValue = $command->getOrderTokenValue();
+        Assert::notNull($tokenValue);
+
+        /** @var OrderInterface|null $cart */
+        $cart = $this->orderRepository->findCartByTokenValue($tokenValue);
 
         Assert::notNull($cart, 'Cart doesn\'t exist');
 
         $promotionCoupon = $this->getPromotionCoupon($command->couponCode);
+        Assert::notNull($promotionCoupon);
+
         $promotion = $promotionCoupon->getPromotion();
 
+        Assert::notNull($promotion);
         $cart->removePromotion($promotion);
 
         $cartCoupon = $cart->getPromotionCoupon();
@@ -65,7 +71,7 @@ final class RemoveCouponFromCartHandler implements MessageHandlerInterface
             return null;
         }
 
-        /** @var PromotionCouponInterface $promotionCoupon */
+        /** @var PromotionCouponInterface|null $promotionCoupon */
         $promotionCoupon = $this->promotionCouponRepository->findOneBy(['code' => $code]);
 
         Assert::notNull($promotionCoupon);

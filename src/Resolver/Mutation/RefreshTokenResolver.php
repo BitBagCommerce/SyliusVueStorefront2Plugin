@@ -27,8 +27,14 @@ final class RefreshTokenResolver implements MutationResolverInterface
 
     private ShopUserTokenFactoryInterface $tokenFactory;
 
+    /**
+     * @psalm-var class-string
+     */
     private string $refreshTokenClass;
 
+    /**
+     * @psalm-param class-string $refreshTokenClass
+     */
     public function __construct(
         EntityManagerInterface $entityManager,
         ShopUserTokenFactoryInterface $tokenFactory,
@@ -51,6 +57,7 @@ final class RefreshTokenResolver implements MutationResolverInterface
         $input = $context['args']['input'];
         $refreshTokenString = (string) $input['refreshToken'];
 
+        /** @psalm-suppress ArgumentTypeCoercion */
         $refreshTokenRepository = $this->entityManager->getRepository($this->refreshTokenClass);
         /** @var RefreshTokenInterface|null $refreshToken */
         $refreshToken = $refreshTokenRepository->findOneBy(['refreshToken' => $refreshTokenString]);

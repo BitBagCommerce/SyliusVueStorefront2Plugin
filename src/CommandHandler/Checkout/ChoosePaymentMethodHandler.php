@@ -64,6 +64,9 @@ final class ChoosePaymentMethodHandler implements MessageHandlerInterface
         $paymentMethodCode = $choosePaymentMethod->paymentMethodCode;
         $paymentId = $choosePaymentMethod->paymentId;
 
+        Assert::notNull($paymentMethodCode);
+        Assert::notNull($paymentId);
+
         if ($cart->getState() === OrderInterface::STATE_NEW) {
             $this->paymentMethodChanger->changePaymentMethod($paymentMethodCode, $paymentId, $cart);
 

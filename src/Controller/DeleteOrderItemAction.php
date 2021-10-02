@@ -28,8 +28,8 @@ final class DeleteOrderItemAction
     public function __invoke(Request $request): Response
     {
         $command = new RemoveItemFromCart(
-            $request->attributes->get('id'),
-            $request->attributes->get('itemId')
+            (string) $request->attributes->get('id'),
+            (int) $request->attributes->get('itemId')
         );
 
         $this->commandBus->dispatch($command);
