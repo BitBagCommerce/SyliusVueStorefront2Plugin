@@ -57,8 +57,6 @@ final class Kernel extends BaseKernel
         foreach ($this->getConfigurationDirectories() as $confDir) {
             $this->loadContainerConfiguration($loader, $confDir);
         }
-
-        $container->addResource(new DirectoryResource("../../src/Resources/api_resources", '/\.(xml|ya?ml|php)$/'));
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void

@@ -15,7 +15,8 @@
         "ext-openssl": "*",
         "gesdinet/jwt-refresh-token-bundle": "^0.12.0",
         "sylius/sylius": "^1.10",
-        "webonyx/graphql-php": "^14.9"
+        "webonyx/graphql-php": "^14.9",
+        "api-platform/core": "dev-main#bd05d9be31d72af7c047db095b204ac1961e1ab4"
     },
     "require-dev": {
         "behat/behat": "^3.6.1",
