@@ -15,6 +15,7 @@ use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Symfony\Component\BrowserKit\AbstractBrowser;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
@@ -125,7 +126,7 @@ final class GraphqlClient implements GraphqlClientInterface
 
         $operation = $this->getLastOperationRequest();
 
-        $this->client->jsonRequest(
+        $this->jsonRequest(
             $operation->getMethod(),
             'http://127.0.0.1:8080/api/v2/graphql',
             $operation->getFormatted(),
@@ -251,5 +252,18 @@ final class GraphqlClient implements GraphqlClientInterface
         }
 
         return $result;
+    }
+
+    /**
+     * Converts the request parameters into a JSON string and uses it as request content.
+     */
+    public function jsonRequest(string $method, string $uri, array $parameters = [], array $server = [], bool $changeHistory = true): Crawler
+    {
+        $content = json_encode($parameters);
+
+        $this->client->setServerParameter('CONTENT_TYPE', 'application/json');
+        $this->client->setServerParameter('HTTP_ACCEPT', 'application/json');
+
+        return $this->client->request($method, $uri, [], [], $server, $content, $changeHistory);
     }
 }
