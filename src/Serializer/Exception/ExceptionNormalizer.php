@@ -20,15 +20,14 @@ final class ExceptionNormalizer implements NormalizerInterface
 {
     /**
      * @psalm-suppress MoreSpecificImplementedParamType
+     *
      * @param Exception|mixed $object
-     * @param string|null $format
-     * @param array $context
-     * @return array
+     *
      * @throws \Throwable
      */
     public function normalize($object, string $format = null, array $context = []): array
     {
-        Assert::isInstanceOf($object,Exception::class);
+        Assert::isInstanceOf($object, Exception::class);
         $exception = $object->getPrevious();
         $error = FormattedError::createFromException($object);
 
@@ -40,7 +39,7 @@ final class ExceptionNormalizer implements NormalizerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function supportsNormalization($data, string $format = null): bool
     {

@@ -16,7 +16,6 @@ use Sylius\Bundle\ApiBundle\Command\SubresourceIdAwareInterface;
 /** @experimental */
 class ChangeItemQuantityInCart implements OrderTokenValueAwareInterface, SubresourceIdAwareInterface
 {
-
     /** @psalm-immutable */
     public ?string $orderTokenValue;
 

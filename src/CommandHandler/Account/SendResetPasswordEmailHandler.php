@@ -37,18 +37,13 @@ final class SendResetPasswordEmailHandler implements MessageHandlerInterface
         ChannelContextInterface $channelContext,
         UserRepositoryInterface $userRepository,
         GeneratorInterface $generator
-    )
-    {
+    ) {
         $this->emailSender = $emailSender;
         $this->channelContext = $channelContext;
         $this->userRepository = $userRepository;
         $this->generator = $generator;
     }
 
-    /**
-     * @param SendResetPasswordEmail $command
-     * @return CustomerInterface
-     */
     public function __invoke(SendResetPasswordEmail $command): CustomerInterface
     {
         /** @var ShopUserInterface|null $user */
@@ -72,6 +67,7 @@ final class SendResetPasswordEmailHandler implements MessageHandlerInterface
 
         $customer = $user->getCustomer();
         Assert::notNull($customer);
+
         return $customer;
     }
 }

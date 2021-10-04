@@ -32,16 +32,13 @@ final class ResetPasswordHandler implements MessageHandlerInterface
         UserRepositoryInterface $userRepository,
         MetadataInterface $metadata,
         PasswordUpdaterInterface $passwordUpdater
-    )
-    {
+    ) {
         $this->userRepository = $userRepository;
         $this->metadata = $metadata;
         $this->passwordUpdater = $passwordUpdater;
     }
 
     /**
-     * @param ResetPassword $command
-     * @return CustomerInterface
      * @throws \Exception
      */
     public function __invoke(ResetPassword $command): CustomerInterface
@@ -53,9 +50,9 @@ final class ResetPasswordHandler implements MessageHandlerInterface
 
         $resetting = $this->metadata->getParameter('resetting');
         Assert::isArray($resetting);
-        Assert::keyExists($resetting,"token");
-        Assert::isArray($resetting["token"]);
-        $lifetime = new \DateInterval((string)$resetting['token']['ttl']);
+        Assert::keyExists($resetting, 'token');
+        Assert::isArray($resetting['token']);
+        $lifetime = new \DateInterval((string) $resetting['token']['ttl']);
 
         if (!$user->isPasswordRequestNonExpired($lifetime)) {
             throw new \InvalidArgumentException('Password reset token has expired');
@@ -71,6 +68,7 @@ final class ResetPasswordHandler implements MessageHandlerInterface
 
         $customer = $user->getCustomer();
         Assert::notNull($customer);
+
         return $customer;
     }
 }

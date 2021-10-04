@@ -24,8 +24,7 @@ final class OrderCouponResolver implements MutationResolverInterface
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         UserContextInterface $userContext
-    )
-    {
+    ) {
         $this->orderRepository = $orderRepository;
         $this->userContext = $userContext;
     }
@@ -39,12 +38,12 @@ final class OrderCouponResolver implements MutationResolverInterface
         /** @var array $input */
         $input = $context['args']['input'];
 
-        $orderToken = (string)$input['orderTokenValue'];
+        $orderToken = (string) $input['orderTokenValue'];
 
         $user = $this->userContext->getUser();
 
         /** @var OrderInterface $order */
-        $order = $this->orderRepository->findOneBy(["tokenValue" => $orderToken]);
+        $order = $this->orderRepository->findOneBy(['tokenValue' => $orderToken]);
 
         if (null === $order->getUser() || $user === $order->getUser()) {
             return $order->getPromotionCoupon();

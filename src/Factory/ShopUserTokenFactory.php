@@ -21,7 +21,9 @@ use Sylius\Component\Core\Model\ShopUserInterface;
 class ShopUserTokenFactory implements ShopUserTokenFactoryInterface
 {
     private JWTTokenManagerInterface $jwtManager;
+
     private RefreshTokenManagerInterface $refreshJwtManager;
+
     private EntityManagerInterface $entityManager;
 
     public function __construct(

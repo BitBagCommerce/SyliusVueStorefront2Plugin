@@ -59,12 +59,12 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
         Assert::keyExists($context, ContextKeys::CHANNEL);
-        $channelContext =  $context[ContextKeys::CHANNEL];
-        Assert::isInstanceOf($channelContext,ChannelInterface::class);
+        $channelContext = $context[ContextKeys::CHANNEL];
+        Assert::isInstanceOf($channelContext, ChannelInterface::class);
         $channelMenuTaxon = $channelContext->getMenuTaxon();
 
         $user = $this->userContext->getUser();
-        if ($user !== null && in_array('ROLE_API_ACCESS', $user->getRoles(),true)) {
+        if ($user !== null && in_array('ROLE_API_ACCESS', $user->getRoles(), true)) {
             return $this->taxonRepository->findAll();
         }
 

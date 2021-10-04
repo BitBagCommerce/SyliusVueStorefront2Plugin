@@ -83,7 +83,7 @@ final class LoginResolver implements MutationResolverInterface
             return $shopUserToken;
         }
 
-        throw new \Exception("Wrong credentials.");
+        throw new \Exception('Wrong credentials.');
     }
 
     public function applyOrder(array $input, ShopUserInterface $user): void

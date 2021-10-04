@@ -21,14 +21,12 @@ final class OrderTokenValueAwareInputCommandDataTransformer implements CommandDa
 {
     /**
      * @param OrderTokenValueAwareInterface|mixed $object
-     * @param string $to
-     * @param array $context
-     * @return OrderTokenValueAwareInterface
+     *
      * @throws Exception
      */
     public function transform($object, string $to, array $context = []): OrderTokenValueAwareInterface
     {
-        Assert::isInstanceOf($object,OrderTokenValueAwareInterface::class);
+        Assert::isInstanceOf($object, OrderTokenValueAwareInterface::class);
         if (array_key_exists('object_to_populate', $context)) {
             /** @var OrderInterface $cart */
             $cart = $context['object_to_populate'];
@@ -46,7 +44,6 @@ final class OrderTokenValueAwareInputCommandDataTransformer implements CommandDa
 
     /**
      * @param mixed $object
-     * @return bool
      */
     public function supportsTransformation($object): bool
     {

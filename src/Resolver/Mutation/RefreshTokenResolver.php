@@ -27,9 +27,7 @@ final class RefreshTokenResolver implements MutationResolverInterface
 
     private ShopUserTokenFactoryInterface $tokenFactory;
 
-    /**
-     * @psalm-var class-string
-     */
+    /** @psalm-var class-string */
     private string $refreshTokenClass;
 
     /**

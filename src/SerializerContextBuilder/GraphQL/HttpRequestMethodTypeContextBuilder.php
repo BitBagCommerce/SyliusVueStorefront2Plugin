@@ -93,9 +93,8 @@ final class HttpRequestMethodTypeContextBuilder implements SerializerContextBuil
                 return $context;
             }
 
-
             $context[ContextKeys::HTTP_REQUEST_METHOD_TYPE] = strtoupper(
-                (string)$availableCustomOperations[$operationName]['method']
+                (string) $availableCustomOperations[$operationName]['method']
             );
         } catch (ResourceClassNotFoundException $exception) {
         }

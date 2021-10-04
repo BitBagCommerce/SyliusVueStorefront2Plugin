@@ -32,8 +32,7 @@ final class ApplyCouponToCartHandler implements MessageHandlerInterface
         OrderRepositoryInterface $orderRepository,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         OrderProcessorInterface $orderProcessor
-    )
-    {
+    ) {
         $this->orderRepository = $orderRepository;
         $this->promotionCouponRepository = $promotionCouponRepository;
         $this->orderProcessor = $orderProcessor;
@@ -42,7 +41,7 @@ final class ApplyCouponToCartHandler implements MessageHandlerInterface
     public function __invoke(ApplyCouponToCart $command): OrderInterface
     {
         /** @var OrderInterface|null $cart */
-        $cart = $this->orderRepository->findCartByTokenValue((string)$command->getOrderTokenValue());
+        $cart = $this->orderRepository->findCartByTokenValue((string) $command->getOrderTokenValue());
 
         Assert::notNull($cart, 'Cart doesn\'t exist');
         $promotionCoupon = $this->getPromotionCoupon($command->couponCode);
@@ -63,7 +62,7 @@ final class ApplyCouponToCartHandler implements MessageHandlerInterface
         /** @var PromotionCouponInterface|null $promotionCoupon */
         $promotionCoupon = $this->promotionCouponRepository->findOneBy(['code' => $code]);
 
-        Assert::notNull($promotionCoupon, "Provided code was invalid");
+        Assert::notNull($promotionCoupon, 'Provided code was invalid');
 
         return $promotionCoupon;
     }

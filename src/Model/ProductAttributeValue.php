@@ -16,7 +16,6 @@ use Webmozart\Assert\Assert;
 
 class ProductAttributeValue extends BaseAttributeValue
 {
-
     /**
      * @return mixed|null
      */
@@ -34,15 +33,13 @@ class ProductAttributeValue extends BaseAttributeValue
         if (method_exists($this, $getter)) {
             /** @var callable $callback */
             $callback = [$this, $getter];
+
             return call_user_func($callback);
         }
 
         return null;
     }
 
-    /**
-     * @return string|null
-     */
     public function getStringValue(): ?string
     {
         return (string) $this->getValue();
@@ -66,10 +63,11 @@ class ProductAttributeValue extends BaseAttributeValue
     public function getName(): ?string
     {
         $attribute = $this->getAttribute();
-        if(null === $attribute){
+        if (null === $attribute) {
             return null;
         }
         $translation = $attribute->getTranslation($this->getLocaleCode());
+
         return $translation->getName();
     }
 }
