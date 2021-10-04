@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusGraphqlPlugin\Command\Checkout;
 
 use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
-use Sylius\Component\Core\Model\AddressInterface;
+use Sylius\Component\Addressing\Model\AddressInterface;
 
 /** @experimental */
 class ShippingAddressOrder implements OrderTokenValueAwareInterface

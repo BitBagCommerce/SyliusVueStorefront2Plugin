@@ -14,6 +14,7 @@ use BitBag\SyliusGraphqlPlugin\Command\Checkout\ShippingAddressOrder;
 use BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface;
+use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -55,7 +56,8 @@ final class ShippingAddressOrderHandler implements MessageHandlerInterface
             $order->setCustomer($this->customerProvider->provide($addressOrder->email));
         }
 
-        if ($addressOrder->shippingAddress !== null) {
+        if ($addressOrder->shippingAddress !== null && $addressOrder->shippingAddress instanceof AddressInterface) {
+            /** @psalm-suppress ArgumentTypeCoercion */
             $order->setShippingAddress($addressOrder->shippingAddress);
         }
 
