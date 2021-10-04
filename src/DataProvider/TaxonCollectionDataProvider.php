@@ -64,6 +64,7 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
         $channelMenuTaxon = $channelContext->getMenuTaxon();
 
         $user = $this->userContext->getUser();
+        /** @psalm-suppress DeprecatedClass */
         if ($user !== null && in_array('ROLE_API_ACCESS', $user->getRoles(), true)) {
             return $this->taxonRepository->findAll();
         }
