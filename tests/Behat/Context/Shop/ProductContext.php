@@ -45,7 +45,7 @@ final class ProductContext implements Context
      */
     public function iPrepareFetchProductsQuery(): void
     {
-        $expectedData = "
+        $expectedData = '
         collection {
             _id
             sku: code
@@ -87,9 +87,9 @@ final class ProductContext implements Context
             metaKeywords
             metaDescription
             enabled
-        }";
+        }';
 
-        $operation = $this->client->prepareQuery("products", $expectedData);
+        $operation = $this->client->prepareQuery('products', $expectedData);
         $operation->setOperationType(OperationRequestInterface::OPERATION_QUERY);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }

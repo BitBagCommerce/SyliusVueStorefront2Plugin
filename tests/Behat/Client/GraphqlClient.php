@@ -26,9 +26,9 @@ use const JSON_ERROR_NONE;
 
 final class GraphqlClient implements GraphqlClientInterface
 {
+    public const LAST_GRAPHQL_RESPONSE = 'lastGraphqlResponse';
 
-    public const LAST_GRAPHQL_RESPONSE = "lastGraphqlResponse";
-    public const GRAPHQL_OPERATION = "graphqlOperation";
+    public const GRAPHQL_OPERATION = 'graphqlOperation';
 
     private AbstractBrowser $client;
 
@@ -64,10 +64,10 @@ final class GraphqlClient implements GraphqlClientInterface
         }';
 
         $this->headers->add([
-            "CONTENT_TYPE" => "application/json"
+            'CONTENT_TYPE' => 'application/json',
         ]);
-        $operation = str_replace("<name>", $name, $operation);
-        $operation = str_replace("<expectedData>", $formattedExpectedData, $operation);
+        $operation = str_replace('<name>', $name, $operation);
+        $operation = str_replace('<expectedData>', $formattedExpectedData, $operation);
 
         return new OperationRequest($name, $operation, [], $method);
     }
@@ -86,20 +86,20 @@ final class GraphqlClient implements GraphqlClientInterface
         }';
 
         $this->headers->add([
-            "CONTENT_TYPE" => "application/json"
+            'CONTENT_TYPE' => 'application/json',
         ]);
-        $operation = str_replace("<name>", $name, $operation);
-        $operation = str_replace("<expectedData>", $formattedExpectedData, $operation);
+        $operation = str_replace('<name>', $name, $operation);
+        $operation = str_replace('<expectedData>', $formattedExpectedData, $operation);
 
         $operationRequest = new OperationRequest($name, $operation, [], $method);
         $operationRequest->setOperationType(OperationRequestInterface::OPERATION_QUERY);
+
         return $operationRequest;
     }
 
     public function getLastOperationRequest(): ?OperationRequestInterface
     {
-        /** @var OperationRequestInterface|null */
-        return $this->sharedStorage->get(GraphqlClient::GRAPHQL_OPERATION);
+        return $this->sharedStorage->get(self::GRAPHQL_OPERATION);
     }
 
     public function addAuthorization(): void
@@ -107,7 +107,7 @@ final class GraphqlClient implements GraphqlClientInterface
         $token = $this->getToken();
         if (null !== $token) {
             $this->headers->add([
-                "HTTP_AUTHORIZATION" => sprintf('%s %s', $this->authorizationHeader, $token)
+                'HTTP_AUTHORIZATION' => sprintf('%s %s', $this->authorizationHeader, $token),
             ]);
         }
     }
@@ -136,6 +136,7 @@ final class GraphqlClient implements GraphqlClientInterface
         $response = $this->client->getResponse();
         $this->saveLastResponse($response);
         $this->headers = new ParameterBag();
+
         return $response;
     }
 
@@ -146,7 +147,6 @@ final class GraphqlClient implements GraphqlClientInterface
 
     public function getLastResponse(): ?JsonResponse
     {
-        /** @var JsonResponse */
         return $this->sharedStorage->get(self::LAST_GRAPHQL_RESPONSE);
     }
 
@@ -160,6 +160,7 @@ final class GraphqlClient implements GraphqlClientInterface
         if ($json === null) {
             throw new Exception('Return data is not Json format');
         }
+
         return $json;
     }
 
@@ -221,26 +222,25 @@ final class GraphqlClient implements GraphqlClientInterface
     }
 
     /**
-     * @param array $responseArray
-     * @return array
      * @throws Exception
      */
     public function flattenArray(array $responseArray): array
     {
-        if (!key_exists('data', $responseArray) && !key_exists('errors', $responseArray)) {
-            throw new Exception("Malformed response, no data or error key.");
+        if (!array_key_exists('data', $responseArray) && !array_key_exists('errors', $responseArray)) {
+            throw new Exception('Malformed response, no data or error key.');
         }
+        $array = [];
 
-        /** @var array $array */
-
-        if (key_exists('data', $responseArray) && is_array($responseArray['data'])) {
+        if (array_key_exists('data', $responseArray) && is_array($responseArray['data'])) {
+            /** @var array $array */
             $array = reset($responseArray['data']);
         }
 
-        if (key_exists('errors', $responseArray) && is_array($responseArray['errors'])) {
+        if (array_key_exists('errors', $responseArray) && is_array($responseArray['errors'])) {
+            /** @var array $array */
             $array = reset($responseArray['errors']);
         }
-        $recursiveIteratorIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($array),RecursiveIteratorIterator::CHILD_FIRST );
+        $recursiveIteratorIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($array), RecursiveIteratorIterator::CHILD_FIRST);
         $result = [];
         foreach ($recursiveIteratorIterator as $leafValue) {
             $keys = [];
@@ -252,5 +252,4 @@ final class GraphqlClient implements GraphqlClientInterface
 
         return $result;
     }
-
 }

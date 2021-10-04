@@ -52,7 +52,7 @@ final class AddressContext implements Context
      */
     public function iPrepareAddAddressOperation(): void
     {
-        $expectedData = "
+        $expectedData = '
         address{
             id
             _id
@@ -65,9 +65,9 @@ final class AddressContext implements Context
             street
             city
             postcode
-        }";
+        }';
 
-        $operation = $this->client->prepareOperation("shop_postAddress", $expectedData);
+        $operation = $this->client->prepareOperation('shop_postAddress', $expectedData);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
 
@@ -76,7 +76,7 @@ final class AddressContext implements Context
      */
     public function iPrepareEditAddressOperation(): void
     {
-        $expectedData = "
+        $expectedData = '
         address{
             id
             _id
@@ -89,9 +89,9 @@ final class AddressContext implements Context
             street
             city
             postcode
-        }";
+        }';
 
-        $operation = $this->client->prepareOperation("shop_putAddress", $expectedData);
+        $operation = $this->client->prepareOperation('shop_putAddress', $expectedData);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
 
@@ -101,7 +101,7 @@ final class AddressContext implements Context
      */
     public function iPrepareUserAddressesCollectionQueryOperation(): void
     {
-        $expectedData = "
+        $expectedData = '
         collection{
             id
             firstName
@@ -113,9 +113,9 @@ final class AddressContext implements Context
             street
             city
             postcode
-        }";
+        }';
 
-        $operation = $this->client->prepareQuery("addresses", $expectedData);
+        $operation = $this->client->prepareQuery('addresses', $expectedData);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
 
@@ -124,9 +124,9 @@ final class AddressContext implements Context
      */
     public function iPrepareDeleteAddressOperation(): void
     {
-        $expectedData = "clientMutationId";
+        $expectedData = 'clientMutationId';
 
-        $operation = $this->client->prepareOperation("deleteAddress", $expectedData);
+        $operation = $this->client->prepareOperation('deleteAddress', $expectedData);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
 
@@ -144,14 +144,14 @@ final class AddressContext implements Context
 
         $address->setFirstName($customer->getFirstName());
         $address->setLastName($customer->getLastName());
-        $address->setStreet("Street");
-        $address->setCity("City");
-        $address->setPostcode("00000");
-        $address->setCountryCode("US");
+        $address->setStreet('Street');
+        $address->setCity('City');
+        $address->setPostcode('00000');
+        $address->setCountryCode('US');
         $address->setCustomer($customer);
 
         $this->addressRepository->add($address);
         $iri = $this->iriConverter->getIriFromItem($address);
-        $this->sharedStorage->set("customerAddressIri", $iri);
+        $this->sharedStorage->set('customerAddressIri', $iri);
     }
 }

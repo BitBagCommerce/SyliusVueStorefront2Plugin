@@ -40,9 +40,11 @@ final class ExceptionNormalizer implements NormalizerInterface
     }
 
     /**
-     * @inheritdoc
+     * @param mixed $data
+     * @param string|null $format
+     * @return bool
      */
-    public function supportsNormalization($data, string $format = null): bool
+    public function supportsNormalization($data, $format = null)
     {
         return $data instanceof Error && $data->getPrevious() instanceof \InvalidArgumentException;
     }

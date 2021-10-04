@@ -38,8 +38,7 @@ final class CustomerContext implements Context
         UserRepositoryInterface $userRepository,
         ShopUserTokenFactoryInterface $tokenFactory,
         IriConverterInterface $iriConverter
-    )
-    {
+    ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
         $this->userRepository = $userRepository;
@@ -52,7 +51,7 @@ final class CustomerContext implements Context
      */
     public function iPrepareEditAccountOperation(): void
     {
-        $expectedData = "
+        $expectedData = '
         customer{
             user {
                 username
@@ -63,9 +62,9 @@ final class CustomerContext implements Context
             birthday
             subscribedToNewsletter
             phoneNumber
-        }";
+        }';
 
-        $operation = $this->client->prepareOperation("shop_putCustomer", $expectedData);
+        $operation = $this->client->prepareOperation('shop_putCustomer', $expectedData);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
 
@@ -74,15 +73,15 @@ final class CustomerContext implements Context
      */
     public function iPrepareChangeCustomerPasswordOperation(): void
     {
-        $expectedData = "
+        $expectedData = '
         customer {
             user{
                 id
                 username
             }
-        }";
+        }';
 
-        $operation = $this->client->prepareOperation("shop_password_updateCustomer", $expectedData);
+        $operation = $this->client->prepareOperation('shop_password_updateCustomer', $expectedData);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
 
@@ -91,19 +90,19 @@ final class CustomerContext implements Context
      */
     public function iPrepareLoginOperation(string $email, string $password): void
     {
-        $expectedData = "
+        $expectedData = '
         shopUserToken{
             user {
                 username
             }
             token
             refreshToken
-        }";
+        }';
 
-        $operation = $this->client->prepareOperation("shop_loginShopUserToken", $expectedData);
+        $operation = $this->client->prepareOperation('shop_loginShopUserToken', $expectedData);
         $operation->setVariables([
-            "username" => $email,
-            "password" => $password,
+            'username' => $email,
+            'password' => $password,
         ]);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
@@ -119,8 +118,8 @@ final class CustomerContext implements Context
         $refreshToken = $this->tokenFactory->getRefreshToken($user);
         $shopUserToken = $this->tokenFactory->create($user, $refreshToken);
 
-        $this->sharedStorage->set("token", $shopUserToken->getToken());
-        $this->sharedStorage->set("refreshToken", $refreshToken->getRefreshToken());
+        $this->sharedStorage->set('token', $shopUserToken->getToken());
+        $this->sharedStorage->set('refreshToken', $refreshToken->getRefreshToken());
     }
 
     /**
@@ -133,7 +132,7 @@ final class CustomerContext implements Context
         /** @var ShopUserInterface|null $user */
         $user = $this->userRepository->findOneBy(['username' => $email]);
         $id = $this->iriConverter->getIriFromItem($user->getCustomer());
-        $operation->addVariable("id", $id);
+        $operation->addVariable('id', $id);
     }
 
     /**
@@ -145,7 +144,7 @@ final class CustomerContext implements Context
 
         /** @var ShopUserInterface|null $user */
         $user = $this->userRepository->findOneBy(['username' => $email]);
-        $operation->addVariable("shopUserId", (string)$user->getId());
+        $operation->addVariable('shopUserId', (string) $user->getId());
     }
 
     /**
@@ -153,7 +152,7 @@ final class CustomerContext implements Context
      */
     public function iPrepareRefreshJwtTokenOperation(): void
     {
-        $expectedData = "
+        $expectedData = '
         shopUserToken {
             token
             refreshToken
@@ -165,14 +164,11 @@ final class CustomerContext implements Context
                     firstName
                 }
             }
-        }";
+        }';
 
-        $operation = $this->client->prepareOperation("shop_refreshShopUserToken", $expectedData);
-        $refreshToken = (string)$this->sharedStorage->get("refreshToken");
-        $operation->addVariable("refreshToken", $refreshToken);
+        $operation = $this->client->prepareOperation('shop_refreshShopUserToken', $expectedData);
+        $refreshToken = (string) $this->sharedStorage->get('refreshToken');
+        $operation->addVariable('refreshToken', $refreshToken);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
-
-
-
 }

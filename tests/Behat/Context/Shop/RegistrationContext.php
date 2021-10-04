@@ -25,8 +25,7 @@ final class RegistrationContext implements Context
     public function __construct(
         GraphqlClientInterface $client,
         SharedStorageInterface $sharedStorage
-    )
-    {
+    ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
     }
@@ -37,16 +36,16 @@ final class RegistrationContext implements Context
      */
     public function iPrepareRegisterUserOperation(): void
     {
-        $expectedData = "
+        $expectedData = '
         user {
             username
             customer{
                 id
                 email
             }
-        }";
+        }';
 
-        $operation = $this->client->prepareOperation("shop_registerUser", $expectedData);
+        $operation = $this->client->prepareOperation('shop_registerUser', $expectedData);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
 
@@ -57,7 +56,7 @@ final class RegistrationContext implements Context
     {
         /** @var OperationRequestInterface $operation */
         $operation = $this->client->getLastOperationRequest();
-        $operation->addVariable("firstName", $argument);
+        $operation->addVariable('firstName', $argument);
     }
 
     /**
@@ -67,7 +66,7 @@ final class RegistrationContext implements Context
     {
         /** @var OperationRequestInterface $operation */
         $operation = $this->client->getLastOperationRequest();
-        $operation->addVariable("lastName", $argument);
+        $operation->addVariable('lastName', $argument);
     }
 
     /**
@@ -77,7 +76,7 @@ final class RegistrationContext implements Context
     {
         /** @var OperationRequestInterface $operation */
         $operation = $this->client->getLastOperationRequest();
-        $operation->addVariable("email", $argument);
+        $operation->addVariable('email', $argument);
     }
 
     /**
@@ -87,7 +86,7 @@ final class RegistrationContext implements Context
     {
         /** @var OperationRequestInterface $operation */
         $operation = $this->client->getLastOperationRequest();
-        $operation->addVariable("password", $argument);
+        $operation->addVariable('password', $argument);
     }
 
     /**
@@ -97,7 +96,7 @@ final class RegistrationContext implements Context
     {
         /** @var OperationRequestInterface $operation */
         $operation = $this->client->getLastOperationRequest();
-        $operation->addVariable("phoneNumber", $argument);
+        $operation->addVariable('phoneNumber', $argument);
     }
 
     /**
@@ -107,7 +106,7 @@ final class RegistrationContext implements Context
     {
         /** @var OperationRequestInterface $operation */
         $operation = $this->client->getLastOperationRequest();
-        $operation->addVariable("subscribedToNewsletter", true);
+        $operation->addVariable('subscribedToNewsletter', true);
     }
 
     /**
@@ -117,7 +116,6 @@ final class RegistrationContext implements Context
     {
         /** @var OperationRequestInterface $operation */
         $operation = $this->client->getLastOperationRequest();
-        $operation->addVariable("subscribedToNewsletter", false);
+        $operation->addVariable('subscribedToNewsletter', false);
     }
-
 }

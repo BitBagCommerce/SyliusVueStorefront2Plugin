@@ -17,7 +17,6 @@ use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 
 interface GraphqlClientInterface
 {
-
     public function prepareOperation(
         string $name,
         string $formattedExpectedData,

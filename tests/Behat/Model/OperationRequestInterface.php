@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Model;
 
-
 use Symfony\Component\HttpFoundation\Request;
 
 interface OperationRequestInterface
 {
-    public const OPERATION_MUTATION = "mutation";
-    public const OPERATION_QUERY = "query";
+    public const OPERATION_MUTATION = 'mutation';
+
+    public const OPERATION_QUERY = 'query';
 
     public function __construct(string $name, string $query, array $variables = [], string $method = Request::METHOD_POST);
 

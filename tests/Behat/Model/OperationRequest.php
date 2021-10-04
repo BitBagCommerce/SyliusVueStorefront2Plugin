@@ -10,12 +10,10 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Model;
 
-
 use Symfony\Component\HttpFoundation\Request;
 
 class OperationRequest implements OperationRequestInterface
 {
-
     private string $operationName;
 
     private string $operationType = OperationRequestInterface::OPERATION_MUTATION;
@@ -57,9 +55,6 @@ class OperationRequest implements OperationRequestInterface
         return $this->method;
     }
 
-    /**
-     * @param string $method
-     */
     public function setMethod(string $method): void
     {
         $this->method = $method;
@@ -93,18 +88,17 @@ class OperationRequest implements OperationRequestInterface
 
     private function formatFilters(): string
     {
-        $output = "";
-        foreach ($this->filters as $filter)
-        {
-
+        $output = '';
+        foreach ($this->filters as $filter) {
         }
+
         return $output;
     }
 
     private function addFiltersToQuery(): void
     {
         $filters = $this->formatFilters();
-        $this->query = str_replace("<filters>", $filters, $this->query);
+        $this->query = str_replace('<filters>', $filters, $this->query);
     }
 
     public function getFormatted(): array
@@ -112,12 +106,13 @@ class OperationRequest implements OperationRequestInterface
         if ($this->operationType === OperationRequestInterface::OPERATION_QUERY) {
             $this->addFiltersToQuery();
         }
+
         return [
-            "operationName" => $this->operationName,
-            "query" => $this->query,
-            "variables" => json_encode([
-                "input" => $this->variables
-            ], JSON_FORCE_OBJECT)
+            'operationName' => $this->operationName,
+            'query' => $this->query,
+            'variables' => json_encode([
+                'input' => $this->variables,
+            ], \JSON_FORCE_OBJECT),
         ];
     }
 }

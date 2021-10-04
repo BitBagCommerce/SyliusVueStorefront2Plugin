@@ -6,11 +6,9 @@ namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Context;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use Behat\Mink\Element\DocumentElement;
 use Exception;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClient;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
@@ -50,12 +48,13 @@ final class GraphqlApiPlatformContext implements Context
 
     /**
      * @Then I should receive a JSON response
+     *
      * @throws Exception
      */
     public function IShouldReceiveAJsonResponse(): void
     {
         $response = $this->client->getLastResponse();
-        Assert::isInstanceOf($response,JsonResponse::class);
+        Assert::isInstanceOf($response, JsonResponse::class);
 
         $json = $this->client->getJsonFromResponse($response);
         if ($json === null) {
@@ -65,6 +64,7 @@ final class GraphqlApiPlatformContext implements Context
 
     /**
      * @When I should see following response:
+     *
      * @throws Exception
      */
     public function iShouldSeeFollowingResponse(PyStringNode $json): bool
@@ -88,8 +88,8 @@ final class GraphqlApiPlatformContext implements Context
     public function iSetKeyFieldToValue(string $key, $value): void
     {
         $operation = $this->client->getLastOperationRequest();
-        Assert::isInstanceOf($operation,OperationRequestInterface::class);
-        $operation->addVariable($key,$value);
+        Assert::isInstanceOf($operation, OperationRequestInterface::class);
+        $operation->addVariable($key, $value);
     }
 
     /**
@@ -107,62 +107,69 @@ final class GraphqlApiPlatformContext implements Context
     public function iSetKeyFieldToPreviouslySavedValue(string $key, string $name): void
     {
         $operation = $this->client->getLastOperationRequest();
-        Assert::isInstanceOf($operation,OperationRequestInterface::class);
+        Assert::isInstanceOf($operation, OperationRequestInterface::class);
         $value = $this->sharedStorage->get($name);
         Assert::notEmpty($value);
-        $operation->addVariable($key,$value);
+        $operation->addVariable($key, $value);
     }
 
     /**
-     * @var mixed $value
+     * @var mixed
      * @Then I set :sharedStorageKey object :propertyName property to :value
      */
     public function iSetObjectPropertyToValue(string $sharedStorageKey, string $propertyName, $value): void
     {
         try {
             $storageValue = (array) $this->sharedStorage->get($sharedStorageKey);
-        }catch (\InvalidArgumentException $e){
+        } catch (\InvalidArgumentException $e) {
             $storageValue = [];
         }
         $storageValue[$propertyName] = $value;
-        $this->sharedStorage->set($sharedStorageKey,$storageValue);
+        $this->sharedStorage->set($sharedStorageKey, $storageValue);
     }
 
     /**
      * @Then This response should contain :key
+     *
      * @throws Exception
      */
     public function thatResponseShouldContain(string $key): bool
     {
         $this->getValueAtKey($key);
+
         return true;
     }
 
     /**
      * @Then This response should contain empty :key
+     *
      * @throws Exception
      */
     public function thatResponseShouldContainEmpty(string $key): bool
     {
         $value = $this->getValueAtKey($key);
         Assert::isEmpty($value);
+
         return true;
     }
 
     /**
      * @param mixed $value
      * @Then This response should contain :key equal to :value
+     *
      * @throws Exception
      */
     public function thatResponseShouldContainKeyWithValue(string $key, $value): bool
     {
         /** @psalm-suppress MixedAssignment */
         $responseValueAtKey = $this->getValueAtKey($key);
-        return ($value === $responseValueAtKey);
+
+        return $value === $responseValueAtKey;
     }
 
     /**
      * @return mixed
+     *
      * @throws Exception
      */
     private function getValueAtKey(string $key)
@@ -172,16 +179,20 @@ final class GraphqlApiPlatformContext implements Context
 
         if (!array_key_exists($key, $flatResponse)) {
             throw new Exception(
-                sprintf("Last response did not have any key named %s \nIt contains:\n%s",
-                $key,
-                print_r($flatResponse, true)
-            ));
+                sprintf(
+                    "Last response did not have any key named %s \nIt contains:\n%s",
+                    $key,
+                    print_r($flatResponse, true)
+                )
+            );
         }
+
         return $flatResponse[$key];
     }
 
     /**
      * @Then I should see following error message :message
+     *
      * @throws Exception
      */
     public function iShouldSeeFollowingErrorMessage(string $message): bool
@@ -204,13 +215,9 @@ final class GraphqlApiPlatformContext implements Context
     public function iSaveValueAtKeyOfThisModelResponse(string $key, string $name): void
     {
         $value = $this->getValueAtKey($key);
-        $this->sharedStorage->set($name,$value);
+        $this->sharedStorage->set($name, $value);
     }
 
-    /**
-     * @param string $response
-     * @return array|null
-     */
     private function getJsonFromResponse(string $response): ?array
     {
         /** @var array $jsonData */
@@ -221,5 +228,4 @@ final class GraphqlApiPlatformContext implements Context
 
         return null;
     }
-
 }

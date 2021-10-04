@@ -18,13 +18,13 @@ use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
 final class CheckoutContext implements Context
 {
     private GraphqlClientInterface $client;
+
     private SharedStorageInterface $sharedStorage;
 
     public function __construct(
         GraphqlClientInterface $client,
         SharedStorageInterface $sharedStorage
-    )
-    {
+    ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
     }
@@ -34,7 +34,7 @@ final class CheckoutContext implements Context
      */
     public function iPrepareOperationToSelectShippingMethod(): void
     {
-        $expectedData = "
+        $expectedData = '
         order {
             shipments{
                 edges{
@@ -46,9 +46,9 @@ final class CheckoutContext implements Context
                 }
             }
             shippingTotal
-        }";
+        }';
 
-        $operation = $this->client->prepareOperation("shop_select_shipping_methodOrder", $expectedData);
+        $operation = $this->client->prepareOperation('shop_select_shipping_methodOrder', $expectedData);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
 
@@ -57,7 +57,7 @@ final class CheckoutContext implements Context
      */
     public function iPrepareOperationToSelectPaymentMethod(): void
     {
-        $expectedData = "
+        $expectedData = '
         order {
             payments{
                 edges{
@@ -82,9 +82,9 @@ final class CheckoutContext implements Context
             shippingTotal
             total
 
-        }";
+        }';
 
-        $operation = $this->client->prepareOperation("shop_select_payment_methodOrder", $expectedData);
+        $operation = $this->client->prepareOperation('shop_select_payment_methodOrder', $expectedData);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
 
@@ -92,9 +92,9 @@ final class CheckoutContext implements Context
      * @When I prepare operation to submit order
      * @When I prepare operation to submit order with note :note
      */
-    public function iPrepareOperationToSubmitOrder(?string $note = ""): void
+    public function iPrepareOperationToSubmitOrder(?string $note = ''): void
     {
-        $expectedData = "
+        $expectedData = '
         order {
             payments{
                 edges{
@@ -120,20 +120,19 @@ final class CheckoutContext implements Context
             shippingTotal
             taxTotal
             total
-        }";
+        }';
 
-        $operation = $this->client->prepareOperation("shop_completeOrder", $expectedData);
-        $operation->addVariable("notes", $note);
+        $operation = $this->client->prepareOperation('shop_completeOrder', $expectedData);
+        $operation->addVariable('notes', $note);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
-
 
     /**
      * @When I prepare operation to add promotion coupon :coupon
      */
     public function iPrepareOperationToAddPromotionCouponOrder(string $coupon): void
     {
-        $expectedData = "
+        $expectedData = '
         order {
             orderPromotionTotal
             promotionCoupon{
@@ -141,10 +140,10 @@ final class CheckoutContext implements Context
             }
             taxTotal
             total
-        }";
+        }';
 
-        $operation = $this->client->prepareOperation("shop_apply_couponOrder", $expectedData);
-        $operation->addVariable('couponCode',$coupon);
+        $operation = $this->client->prepareOperation('shop_apply_couponOrder', $expectedData);
+        $operation->addVariable('couponCode', $coupon);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
 }
