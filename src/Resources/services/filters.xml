@@ -11,8 +11,9 @@ We are hiring developers from all over the world. Join us and start your new, ex
     <services>
         <defaults autowire="false" autoconfigure="false" public="false" />
 
-        <service id="sylius.api.product_slug_filter" parent="api_platform.doctrine.orm.search_filter" autowire="false"
-                 autoconfigure="false">
+        <service id="sylius.api.product_slug_filter"
+                 parent="api_platform.doctrine.orm.search_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="translations.name">partial</argument>
                 <argument key="translations.slug">partial</argument>
@@ -20,8 +21,9 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="bitbag_sylius_graphql.filters.product_slug_filter" parent="api_platform.doctrine.orm.search_filter"
-                 autowire="false" autoconfigure="false">
+        <service id="bitbag_sylius_graphql.filters.product_slug_filter"
+                 parent="api_platform.doctrine.orm.search_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="attributes.stringValue">partial</argument>
                 <argument key="attributes.slug">partial</argument>
@@ -29,24 +31,26 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.product_price_filter" parent="api_platform.doctrine.orm.range_filter" autowire="false"
-                 autoconfigure="false">
+        <service id="sylius.api.product_price_filter" parent="api_platform.doctrine.orm.range_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="variants.channelPricings.price" />
             </argument>
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.product_taxon_slug_filter" parent="api_platform.doctrine.orm.search_filter"
-                 autowire="false" autoconfigure="false">
+        <service id="sylius.api.product_taxon_slug_filter"
+                 parent="api_platform.doctrine.orm.search_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="productTaxons.taxon.translations.slug">exact</argument>
             </argument>
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.taxa_translation_slug_filter" parent="api_platform.doctrine.orm.search_filter"
-                 autowire="false" autoconfigure="false">
+        <service id="sylius.api.taxa_translation_slug_filter"
+                 parent="api_platform.doctrine.orm.search_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="translations.name">partial</argument>
                 <argument key="translations.slug">partial</argument>
@@ -54,16 +58,18 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.taxa_date_filter" parent="api_platform.doctrine.orm.order_filter" autowire="false"
-                 autoconfigure="false">
+        <service id="sylius.api.taxa_date_filter"
+                 parent="api_platform.doctrine.orm.order_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="createdAt" />
             </argument>
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.shipping_method_enabled_filter" parent="api_platform.doctrine.orm.boolean_filter"
-                 autowire="false" autoconfigure="false">
+        <service id="sylius.api.shipping_method_enabled_filter"
+                 parent="api_platform.doctrine.orm.boolean_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="enabled" />
             </argument>
@@ -78,40 +84,45 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.payment_method_enabled_filter" parent="api_platform.doctrine.orm.boolean_filter"
-                 autowire="false" autoconfigure="false">
+        <service id="sylius.api.payment_method_enabled_filter"
+                 parent="api_platform.doctrine.orm.boolean_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="enabled" />
             </argument>
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.payment_method_channel_code_filter" parent="api_platform.doctrine.orm.search_filter"
-                 autowire="false" autoconfigure="false">
+        <service id="sylius.api.payment_method_channel_code_filter"
+                 parent="api_platform.doctrine.orm.search_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="channels.code">exact</argument>
             </argument>
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.order_customer_id_filter" parent="api_platform.doctrine.orm.search_filter"
-                 autowire="false" autoconfigure="false">
+        <service id="sylius.api.order_customer_id_filter"
+                 parent="api_platform.doctrine.orm.search_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="channels.code">exact</argument>
             </argument>
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.product_review.product_id_filter" parent="api_platform.doctrine.orm.search_filter"
-                 autowire="false" autoconfigure="false">
+        <service id="sylius.api.product_review.product_id_filter"
+                 parent="api_platform.doctrine.orm.search_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="reviewSubject.id">exact</argument>
             </argument>
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.product_review.author_id_filter" parent="api_platform.doctrine.orm.search_filter"
-                 autowire="false" autoconfigure="false">
+        <service id="sylius.api.product_review.author_id_filter"
+                 parent="api_platform.doctrine.orm.search_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="author.id">exact</argument>
             </argument>
