@@ -8,6 +8,7 @@ use PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer;
 use Sylius\Bundle\CoreBundle\Application\Kernel as SyliusKernel;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Config\Resource\DirectoryResource;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
@@ -56,6 +57,8 @@ final class Kernel extends BaseKernel
         foreach ($this->getConfigurationDirectories() as $confDir) {
             $this->loadContainerConfiguration($loader, $confDir);
         }
+
+        $container->addResource(new DirectoryResource("../../src/Resources/api_resources", '/\.(xml|ya?ml|php)$/'));
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
