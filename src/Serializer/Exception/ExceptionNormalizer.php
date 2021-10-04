@@ -21,9 +21,11 @@ final class ExceptionNormalizer implements NormalizerInterface
     /**
      * @param Exception|mixed $object
      *
+     * @return array
+     *
      * @throws \Throwable
      */
-    public function normalize($object, string $format = null, array $context = []): array
+    public function normalize($object, string $format = null, array $context = [])
     {
         Assert::isInstanceOf($object, Exception::class);
         $exception = $object->getPrevious();
