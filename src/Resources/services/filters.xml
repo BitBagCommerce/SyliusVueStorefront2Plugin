@@ -76,8 +76,9 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.shipping_method_channel_code_filter" parent="api_platform.doctrine.orm.search_filter"
-                 autowire="false" autoconfigure="false">
+        <service id="sylius.api.shipping_method_channel_code_filter"
+                 parent="api_platform.doctrine.orm.search_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="channels.code">exact</argument>
             </argument>
