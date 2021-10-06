@@ -266,4 +266,30 @@ final class GraphqlClient implements GraphqlClientInterface
 
         return $this->client->request($method, $uri, [], [], $server, $content, $changeHistory);
     }
+
+    /**
+     * @return mixed
+     *
+     * @throws Exception
+     */
+    public function getValueAtKey(string $key)
+    {
+        $arrayContent = $this->getLastResponseArrayContent();
+        $flatResponse = $this->flattenArray($arrayContent);
+
+        if (!array_key_exists($key, $flatResponse)) {
+
+            $message = key_exists("debugMessage",$flatResponse) ? $flatResponse["debugMessage"] : $flatResponse;
+            throw new Exception(
+                sprintf(
+                    "Last response did not have any key named %s \n%s",
+                    $key,
+//                    print_r($message, true)
+                    print_r($flatResponse, true)
+                )
+            );
+        }
+
+        return $flatResponse[$key];
+    }
 }

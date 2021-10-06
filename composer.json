@@ -15,8 +15,7 @@
         "ext-openssl": "*",
         "gesdinet/jwt-refresh-token-bundle": "^0.12.0",
         "sylius/sylius": "^1.10",
-        "webonyx/graphql-php": "^14.9",
-        "api-platform/core": "dev-main#bd05d9be31d72af7c047db095b204ac1961e1ab4"
+        "webonyx/graphql-php": "^14.9"
     },
     "require-dev": {
         "behat/behat": "^3.6.1",
@@ -51,12 +50,6 @@
     "config": {
         "sort-packages": true
     },
-    "conflict": {
-        "symfony/translation": "v5.3.8",
-        "symfony/messenger": "v5.3.8",
-        "symfony/mailer": "v5.3.8",
-        "symfony/notifier": "v5.3.8"
-    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.10-dev"
@@ -69,6 +62,9 @@
         }
     },
     "autoload-dev": {
+        "psr-4": {
+            "spec\\BitBag\\SyliusGraphqlPlugin\\": "spec/"
+        },
         "classmap": [
             "tests/Application/Kernel.php"
         ]

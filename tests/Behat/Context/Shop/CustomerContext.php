@@ -86,28 +86,6 @@ final class CustomerContext implements Context
     }
 
     /**
-     * @Given I prepare login operation with username :email and password :password
-     */
-    public function iPrepareLoginOperation(string $email, string $password): void
-    {
-        $expectedData = '
-        shopUserToken{
-            user {
-                username
-            }
-            token
-            refreshToken
-        }';
-
-        $operation = $this->client->prepareOperation('shop_loginShopUserToken', $expectedData);
-        $operation->setVariables([
-            'username' => $email,
-            'password' => $password,
-        ]);
-        $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
-    }
-
-    /**
      * @When I create a JWT Token for customer identified by an email :email
      */
     public function iCreateJWTTokenForCustomer(string $email): void

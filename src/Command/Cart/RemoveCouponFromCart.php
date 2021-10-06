@@ -25,11 +25,6 @@ class RemoveCouponFromCart implements OrderTokenValueAwareInterface
         $this->couponCode = $couponCode;
     }
 
-    public static function removeFromData(string $tokenValue, string $couponCode): self
-    {
-        return new self($tokenValue, $couponCode);
-    }
-
     public function getOrderTokenValue(): ?string
     {
         return $this->orderTokenValue;

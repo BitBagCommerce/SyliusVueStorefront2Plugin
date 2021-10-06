@@ -46,4 +46,9 @@ interface GraphqlClientInterface
     public function saveLastResponse(Response $response): void;
 
     public function getLastResponse(): ?JsonResponse;
+
+    /**
+     * @return mixed
+     */
+    public function getValueAtKey(string $key);
 }

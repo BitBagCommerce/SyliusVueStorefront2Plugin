@@ -13,7 +13,7 @@ Feature: Submitting order
         And there is a customer "Gordon Freeman" identified by an email "gfreeman@resistance.com" and a password "gg3883"
         And I create a JWT Token for customer identified by an email "gfreeman@resistance.com"
         And customer identified by an email "gfreeman@resistance.com" has an address
-        And the store has a product "HEV Suit" priced at "$1299.00"
+        And the store has a product "HEV Suit" priced at "$1000.00"
         And the store has a product "Glasses" priced at "$10.00"
 
     @graphql
@@ -42,13 +42,13 @@ Feature: Submitting order
         And I set 'id' field to value "orderId"
         Then I send that GraphQL request as authorised user
         And I save key 'order.items.edges.1.node._id' of this response as "secondOrderItemId"
-        And This response should contain "order.total" equal to "131900"
+        And total price for items should equal to "102000"
 
         When I prepare remove product from cart operation
         And I set 'id' field to value "orderId"
         And I set 'orderItemId' field to value "firstOrderItemId"
         Then I send that GraphQL request as authorised user
-        And This response should contain "order.total" equal to "1000"
+        And total price for items should equal to "100000"
 
         When I prepare operation to fetch collection of user addresses
         And I send that GraphQL request as authorised user
@@ -60,7 +60,7 @@ Feature: Submitting order
         And I set 'orderTokenValue' field to value "orderToken"
         And I send that GraphQL request as authorised user
         And This response should contain "order.shippingAddress.firstName" equal to "Gordon"
-        And I save key 'order.shipments.edges.0.node.id' of this response as "orderShipmentId"
+        And I save key 'order.shipments.edges.0.node._id' of this response as "orderShipmentId"
 
         When I prepare operation to add order billing address
         And I set 'email' field to "alyx.vance@resistance.com"
@@ -74,17 +74,18 @@ Feature: Submitting order
         And I set billingAddress field to value "billingAddress"
         And I send that GraphQL request as authorised user
         And This response should contain "order.billingAddress.firstName" equal to "Alyx"
-        And I save key 'order.payments.edges.0.node.id' of this response as "orderPaymentId"
+        And I save key 'order.payments.edges.0.node._id' of this response as "orderPaymentId"
 
         When I prepare operation to select shipping method
         And I set 'orderTokenValue' field to value "orderToken"
-        And I set 'shipmentId' field to value "orderShipmentId"
+        And I set 'shipmentId' field to previously saved 'string' value "orderShipmentId"
         And I set 'shippingMethodCode' field to "ups"
         And I send that GraphQL request as authorised user
+        And This response should contain "order.shipments.edges.0.node.method.code" equal to "ups"
 
         When I prepare operation to select payment method
         And I set 'orderTokenValue' field to value "orderToken"
-        And I set 'paymentId' field to value "orderPaymentId"
+        And I set 'paymentId' field to previously saved 'string' value "orderPaymentId"
         And I set 'paymentMethodCode' field to "cash"
         And I send that GraphQL request as authorised user
 
@@ -100,3 +101,13 @@ Feature: Submitting order
         And I set 'id' field to value "orderId"
         And I send that GraphQL request as authorised user
         Then I should receive a JSON response
+        And This response should contain "order.id"
+        And This response should contain "order._id"
+        And This response should contain "order.billingAddress.firstName" equal to "Alyx"
+        And This response should contain "order.shippingAddress.firstName" equal to "Gordon"
+        And This response should contain "order.currencyCode" equal to "USD"
+        And This response should contain "order.checkoutState" equal to "completed"
+        And This response should contain "order.paymentState" equal to "awaiting_payment"
+        And This response should contain "order.shippingState" equal to "ready"
+        And This response should contain "order.shippingTotal"
+        And This response should contain "order.total"

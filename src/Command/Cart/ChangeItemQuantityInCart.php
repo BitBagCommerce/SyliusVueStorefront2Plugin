@@ -16,23 +16,28 @@ use Sylius\Bundle\ApiBundle\Command\SubresourceIdAwareInterface;
 /** @experimental */
 class ChangeItemQuantityInCart implements OrderTokenValueAwareInterface, SubresourceIdAwareInterface
 {
-    /** @psalm-immutable */
     public ?string $orderTokenValue;
 
-    /** @psalm-immutable */
     public ?string $orderItemId;
 
-    /** @psalm-immutable */
     public int $quantity;
 
-    public function __construct(int $quantity, ?string $orderItemId = null, ?string $orderTokenValue = null)
+    public function __construct(
+        int $quantity,
+        ?string $orderItemId = null,
+        ?string $orderTokenValue = null
+    )
     {
         $this->quantity = $quantity;
         $this->orderItemId = $orderItemId;
         $this->orderTokenValue = $orderTokenValue;
     }
 
-    public static function createFromData(string $tokenValue, string $orderItemId, int $quantity): self
+    public static function createFromData(
+        string $tokenValue,
+        string $orderItemId,
+        int $quantity
+    ): self
     {
         $command = new self($quantity);
 
@@ -66,4 +71,25 @@ class ChangeItemQuantityInCart implements OrderTokenValueAwareInterface, Subreso
     {
         return 'orderItemId';
     }
+
+    public function getOrderItemId(): ?string
+    {
+        return $this->orderItemId;
+    }
+
+    public function setOrderItemId(?string $orderItemId): void
+    {
+        $this->orderItemId = $orderItemId;
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): void
+    {
+        $this->quantity = $quantity;
+    }
+
 }

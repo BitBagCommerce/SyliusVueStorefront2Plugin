@@ -30,6 +30,14 @@ final class GraphqlApiPlatformContext implements Context
     }
 
     /**
+     * @Transform /^(true|false)$/
+     */
+    public function getBooleanFromString(string $boolean): bool
+    {
+        return (bool) $boolean;
+    }
+
+    /**
      * @When I send that GraphQL request
      */
     public function iSendThatGraphQlRequest(): void
@@ -103,13 +111,15 @@ final class GraphqlApiPlatformContext implements Context
     /**
      * @When I set :key field to value :name
      * @When I set :key field to previously saved value :name
+     * @When I set :key field to previously saved :type value :name
      */
-    public function iSetKeyFieldToPreviouslySavedValue(string $key, string $name): void
+    public function iSetKeyFieldToPreviouslySavedValue(string $key, string $name, string $type = null): void
     {
         $operation = $this->client->getLastOperationRequest();
         Assert::isInstanceOf($operation, OperationRequestInterface::class);
         $value = $this->sharedStorage->get($name);
         Assert::notEmpty($value);
+        $value = $this->castToType($value,$type);
         $operation->addVariable($key, $value);
     }
 
@@ -135,7 +145,7 @@ final class GraphqlApiPlatformContext implements Context
      */
     public function thatResponseShouldContain(string $key): bool
     {
-        $this->getValueAtKey($key);
+        $this->client->getValueAtKey($key);
 
         return true;
     }
@@ -147,7 +157,7 @@ final class GraphqlApiPlatformContext implements Context
      */
     public function thatResponseShouldContainEmpty(string $key): bool
     {
-        $value = $this->getValueAtKey($key);
+        $value = $this->client->getValueAtKey($key);
         Assert::isEmpty($value);
 
         return true;
@@ -159,35 +169,36 @@ final class GraphqlApiPlatformContext implements Context
      *
      * @throws Exception
      */
-    public function thatResponseShouldContainKeyWithValue(string $key, $value): bool
+    public function thatResponseShouldContainKeyWithValue(string $key, $value): void
     {
         /** @psalm-suppress MixedAssignment */
-        $responseValueAtKey = $this->getValueAtKey($key);
-
-        return $value === $responseValueAtKey;
+        $responseValueAtKey = $this->client->getValueAtKey($key);
+        Assert::same($value,$responseValueAtKey);
     }
 
     /**
+     * @param mixed $value
+     * @param string|null $type
      * @return mixed
-     *
-     * @throws Exception
      */
-    private function getValueAtKey(string $key)
-    {
-        $arrayContent = $this->client->getLastResponseArrayContent();
-        $flatResponse = $this->client->flattenArray($arrayContent);
-
-        if (!array_key_exists($key, $flatResponse)) {
-            throw new Exception(
-                sprintf(
-                    "Last response did not have any key named %s \nIt contains:\n%s",
-                    $key,
-                    print_r($flatResponse, true)
-                )
-            );
+    private function castToType($value, string $type = null){
+        switch ($type){
+            case 'bool':
+                $value = (bool) $value;
+                break;
+            case 'float':
+                $value = (float) $value;
+                break;
+            case 'int':
+                $value = (int) $value;
+                break;
+            case 'string':
+                $value = (string) $value;
+                break;
+            default:
+                return $value;
         }
-
-        return $flatResponse[$key];
+        return $value;
     }
 
     /**
@@ -214,9 +225,10 @@ final class GraphqlApiPlatformContext implements Context
      */
     public function iSaveValueAtKeyOfThisModelResponse(string $key, string $name): void
     {
-        $value = $this->getValueAtKey($key);
+        $value = $this->client->getValueAtKey($key);
         $this->sharedStorage->set($name, $value);
     }
+
 
     private function getJsonFromResponse(string $response): ?array
     {

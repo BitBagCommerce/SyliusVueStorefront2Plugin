@@ -27,12 +27,13 @@ $ bin/console debug:container --parameters | grep bitbag
                     model: Sylius\Component\Core\Model\Promotion
     ```
 
-    That can be sometimes tricky as GraphQL is not following inheritance and sometimes default models point to models in e.g. 
+    That can be sometimes tricky as GraphQL is not following inheritance and sometimes default models point to specific components e.g. 
+    
+    Some components like Promotion have defined their models (`%sylius.model.promotion.class%`) as class from specific Component by default (check promotion component extension)
 
-    `Sylius\Component\Core\Model\Promotion` while in models relations they point to interfaces in specific Component like
-    `Sylius\Component\Promotion\Model\Promotion` that can cause errors in Normalization Stage.
-   
-    The input data is misformatted OR while trying to return mutation data it is comparing string classes instead if object can be an instance of other object or interface.
+    Serializer would then expect `Sylius\Component\Promotion\Model\Promotion` on output on every mutation when You could expect `Sylius\Component\Core\Model\Promotion` as the models from Core extends the models from distinct Components. 
+
+    For GraphQL at the moment `Sylius\Component\Core\Model\Promotion` =/= `Sylius\Component\Promotion\Model\Promotion`
 
 
 2. Why my properties are not visible as available to query ?
@@ -54,8 +55,8 @@ $ bin/console debug:container --parameters | grep bitbag
     </attribute>
     ```
     
-    That’s changing available properties and if Your application does not need to have strict serialisation groups (e.g. security wise) 
-    for the sake of GraphQL I would suggest dropping it as the whole point is to allow client to browse what he needs.
+    That’s changing available properties and if Your application does not need to have strict serialization groups (e.g. security wise) 
+    for the sake of GraphQL we would suggest dropping it as the whole point is to allow client to browse what he needs.
 
 
 3.  Serializing methods

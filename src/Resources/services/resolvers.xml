@@ -35,7 +35,6 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="bitbag.sylius_graphql_plugin.factory.shop_user_token_factory" />
             <argument type="service" id="sylius.repository.shop_user" />
-            <argument type="string" >%bitbag_graphql.model.refresh_token.class%</argument>
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 

@@ -31,10 +31,8 @@ final class OrderTokenValueAwareInputCommandDataTransformer implements CommandDa
             /** @var OrderInterface $cart */
             $cart = $context['object_to_populate'];
             $tokenValue = $cart->getTokenValue();
-        } elseif (property_exists($object, 'orderTokenValue')) {
-            $tokenValue = (string) $object->getOrderTokenValue();
         } else {
-            throw new Exception('Token value could not be found');
+            $tokenValue = (string) $object->getOrderTokenValue();
         }
 
         $object->setOrderTokenValue($tokenValue);

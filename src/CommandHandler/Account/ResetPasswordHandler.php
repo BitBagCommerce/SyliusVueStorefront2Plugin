@@ -40,8 +40,9 @@ final class ResetPasswordHandler implements MessageHandlerInterface
 
     /**
      * @throws \Exception
+     * @return CustomerInterface
      */
-    public function __invoke(ResetPassword $command): CustomerInterface
+    public function __invoke(ResetPassword $command)
     {
         /** @var ShopUserInterface|null $user */
         $user = $this->userRepository->findOneBy(['passwordResetToken' => $command->resetPasswordToken]);
@@ -54,13 +55,8 @@ final class ResetPasswordHandler implements MessageHandlerInterface
         Assert::isArray($resetting['token']);
         $lifetime = new \DateInterval((string) $resetting['token']['ttl']);
 
-        if (!$user->isPasswordRequestNonExpired($lifetime)) {
-            throw new \InvalidArgumentException('Password reset token has expired');
-        }
-
-        if ($command->resetPasswordToken !== $user->getPasswordResetToken()) {
-            throw new \InvalidArgumentException('Password reset token does not match.');
-        }
+        Assert::true($user->isPasswordRequestNonExpired($lifetime),'Password reset token has expired');
+        Assert::same($command->resetPasswordToken,$user->getPasswordResetToken(),'Password reset token does not match.');
 
         $user->setPlainPassword($command->newPassword);
 

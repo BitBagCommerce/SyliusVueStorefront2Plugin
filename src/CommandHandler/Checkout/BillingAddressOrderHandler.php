@@ -48,23 +48,43 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
         $tokenValue = $addressOrder->orderTokenValue;
         Assert::notNull($tokenValue);
 
-        /** @var OrderInterface|null $order */
         $order = $this->orderRepository->findCartByTokenValue($tokenValue);
-        Assert::notNull($order, sprintf('Order with %s token has not been found.', $tokenValue));
+        Assert::isInstanceOf($order, OrderInterface::class, sprintf('Order with %s token has not been found.', $tokenValue));
 
-        if (null === $order->getCustomer() && null !== $addressOrder->email) {
-            $order->setCustomer($this->customerProvider->provide($addressOrder->email));
-        }
+        $this->applyCustomer($order, $addressOrder);
 
-        if ($addressOrder->billingAddress !== null && $addressOrder->billingAddress instanceof AddressInterface) {
-            /** @psalm-suppress ArgumentTypeCoercion */
-            $order->setBillingAddress($addressOrder->billingAddress);
-        }
+        $this->applyBillingAddress($addressOrder, $order);
 
         $this->addressStateResolver->resolve($order);
 
         $this->manager->persist($order);
 
         return $order;
+    }
+
+    private function shouldSetCustomer(OrderInterface $order, BillingAddressOrder $addressOrder): bool
+    {
+        return null === $order->getCustomer() && null !== $addressOrder->email;
+    }
+
+    private function canAddressBeSet(BillingAddressOrder $addressOrder): bool
+    {
+        return $addressOrder->billingAddress !== null && $addressOrder->billingAddress instanceof AddressInterface;
+    }
+
+
+    private function applyCustomer(OrderInterface $order, BillingAddressOrder $addressOrder): void
+    {
+        if (null === $order->getCustomer() && null !== $addressOrder->email) {
+            $order->setCustomer($this->customerProvider->provide($addressOrder->email));
+        }
+    }
+
+    private function applyBillingAddress(BillingAddressOrder $addressOrder, OrderInterface $order): void
+    {
+        if ($addressOrder->billingAddress !== null && $addressOrder->billingAddress instanceof AddressInterface) {
+            /** @psalm-suppress ArgumentTypeCoercion */
+            $order->setBillingAddress($addressOrder->billingAddress);
+        }
     }
 }

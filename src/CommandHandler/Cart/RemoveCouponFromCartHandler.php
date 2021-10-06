@@ -32,7 +32,8 @@ final class RemoveCouponFromCartHandler implements MessageHandlerInterface
         OrderRepositoryInterface $orderRepository,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         OrderProcessorInterface $orderProcessor
-    ) {
+    )
+    {
         $this->orderRepository = $orderRepository;
         $this->promotionCouponRepository = $promotionCouponRepository;
         $this->orderProcessor = $orderProcessor;
@@ -57,12 +58,25 @@ final class RemoveCouponFromCartHandler implements MessageHandlerInterface
         $cart->removePromotion($promotion);
 
         $cartCoupon = $cart->getPromotionCoupon();
-        if (null !== $cartCoupon && $cartCoupon->getCode() === $command->couponCode) {
+        if ($this->shouldCouponBeRemovedFromCart($cartCoupon, $command->couponCode)) {
             $cart->setPromotionCoupon(null);
         }
         $this->orderProcessor->process($cart);
 
         return $cart;
+    }
+
+    private function shouldCouponBeRemovedFromCart(?PromotionCouponInterface $cartCoupon, string $code): bool
+    {
+        if (null === $cartCoupon) {
+            return false;
+        }
+
+        if ($cartCoupon->getCode() !== $code) {
+            return false;
+        }
+
+        return true;
     }
 
     private function getPromotionCoupon(?string $code): ?PromotionCouponInterface

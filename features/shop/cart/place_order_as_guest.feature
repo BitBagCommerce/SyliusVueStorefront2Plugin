@@ -39,13 +39,13 @@ Feature: Submitting order
         And I set 'id' field to value "orderId"
         Then I send that GraphQL request
         And I save key 'order.items.edges.1.node._id' of this response as "secondOrderItemId"
-        And This response should contain "order.total" equal to "131900"
+        And total price for items should equal to "8000"
 
         When I prepare remove product from cart operation
         And I set 'id' field to value "orderId"
         And I set 'orderItemId' field to value "firstOrderItemId"
         Then I send that GraphQL request
-        And This response should contain "order.total" equal to "1000"
+        And total price for items should equal to "2000"
 
         When I prepare operation to add order shipping address
         And I set 'email' field to "john.doe@mail.com"
@@ -59,7 +59,7 @@ Feature: Submitting order
         And I set shippingAddress field to value "shippingAddress"
         And I send that GraphQL request
         And This response should contain "order.shippingAddress.firstName" equal to "John"
-        And I save key 'order.shipments.edges.0.node.id' of this response as "orderShipmentId"
+        And I save key 'order.shipments.edges.0.node._id' of this response as "orderShipmentId"
 
         When I prepare operation to add order billing address
         And I set 'email' field to "jane.doe@mail.com"
@@ -73,19 +73,21 @@ Feature: Submitting order
         And I set billingAddress field to value "billingAddress"
         And I send that GraphQL request
         And This response should contain "order.billingAddress.firstName" equal to "Jane"
-        And I save key 'order.payments.edges.0.node.id' of this response as "orderPaymentId"
+        And I save key 'order.payments.edges.0.node._id' of this response as "orderPaymentId"
 
         When I prepare operation to select shipping method
         And I set 'orderTokenValue' field to value "orderToken"
-        And I set 'shipmentId' field to value "orderShipmentId"
+        And I set 'shipmentId' field to previously saved 'string' value "orderShipmentId"
         And I set 'shippingMethodCode' field to "pickup"
         And I send that GraphQL request
+        And This response should contain "order.shipments.edges.0.node.method.code" equal to "pickup"
 
         When I prepare operation to select payment method
         And I set 'orderTokenValue' field to value "orderToken"
-        And I set 'paymentId' field to value "orderPaymentId"
+        And I set 'paymentId' field to previously saved 'string' value "orderPaymentId"
         And I set 'paymentMethodCode' field to "cash"
         And I send that GraphQL request
+        And This response should contain "order.payments.edges.0.node.method.code" equal to "cash"
 
         When I prepare operation to add promotion coupon "bfriday"
         And I set 'orderTokenValue' field to value "orderToken"
@@ -99,3 +101,13 @@ Feature: Submitting order
         And I set 'id' field to value "orderId"
         And I send that GraphQL request
         Then I should receive a JSON response
+        And This response should contain "order.id"
+        And This response should contain "order._id"
+        And This response should contain "order.billingAddress.firstName" equal to "Jane"
+        And This response should contain "order.shippingAddress.firstName" equal to "John"
+        And This response should contain "order.currencyCode" equal to "USD"
+        And This response should contain "order.checkoutState" equal to "completed"
+        And This response should contain "order.paymentState" equal to "awaiting_payment"
+        And This response should contain "order.shippingState" equal to "ready"
+        And This response should contain "order.shippingTotal"
+        And This response should contain "order.total"

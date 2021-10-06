@@ -20,6 +20,12 @@
             <argument type="service" id="api_platform.iri_converter" />
         </service>
 
+        <service id="bitbag_sylius_graphql_plugin.context.login"
+                 class="Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\LoginContext">
+            <argument type="service" id="tests.bit_bag.sylius_graphql_plugin.behat.client.graphql_client" />
+            <argument type="service" id="sylius.behat.shared_storage" />
+        </service>
+
         <service id="bitbag_sylius_graphql_plugin.context.registration"
                  class="Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\RegistrationContext">
             <argument type="service" id="tests.bit_bag.sylius_graphql_plugin.behat.client.graphql_client" />

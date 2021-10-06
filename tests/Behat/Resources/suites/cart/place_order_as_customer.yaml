@@ -5,6 +5,7 @@ default:
                 - bitbag_sylius_graphql_plugin.context.address
                 - bitbag_sylius_graphql_plugin.context.cart
                 - bitbag_sylius_graphql_plugin.context.customer
+                - bitbag_sylius_graphql_plugin.context.login
                 - bitbag_sylius_graphql_plugin.context.graphql
                 - bitbag_sylius_graphql_plugin.context.checkout
                 - bitbag_sylius_graphql_plugin.context.product

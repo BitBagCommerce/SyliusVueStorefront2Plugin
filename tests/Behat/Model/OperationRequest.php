@@ -86,20 +86,6 @@ class OperationRequest implements OperationRequestInterface
         $this->filters[$key] = $value;
     }
 
-    private function formatFilters(): string
-    {
-        $output = '';
-        foreach ($this->filters as $filter) {
-        }
-
-        return $output;
-    }
-
-    private function addFiltersToQuery(): void
-    {
-        $filters = $this->formatFilters();
-        $this->query = str_replace('<filters>', $filters, $this->query);
-    }
 
     public function getFormatted(): array
     {
@@ -115,4 +101,21 @@ class OperationRequest implements OperationRequestInterface
             ], \JSON_FORCE_OBJECT),
         ];
     }
+
+    private function formatFilters(): string
+    {
+        $output = '';
+        foreach ($this->filters as $filter) {
+            //TODO:: Implement in later stages of development
+        }
+
+        return $output;
+    }
+
+    private function addFiltersToQuery(): void
+    {
+        $filters = $this->formatFilters();
+        $this->query = str_replace('<filters>', $filters, $this->query);
+    }
+
 }

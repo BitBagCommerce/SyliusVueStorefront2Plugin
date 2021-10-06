@@ -20,10 +20,13 @@ class ChooseShippingMethod implements OrderTokenValueAwareInterface, Subresource
 
     public ?string $shipmentId;
 
-    /** @psalm-immutable */
     public string $shippingMethodCode;
 
-    public function __construct(string $orderTokenValue, string $shippingMethodCode, string $shipmentId)
+    public function __construct(
+        string $orderTokenValue,
+        string $shippingMethodCode,
+        string $shipmentId
+    )
     {
         $this->orderTokenValue = $orderTokenValue;
         $this->shippingMethodCode = $shippingMethodCode;
@@ -54,4 +57,25 @@ class ChooseShippingMethod implements OrderTokenValueAwareInterface, Subresource
     {
         return 'shipmentId';
     }
+
+    public function getShipmentId(): ?string
+    {
+        return $this->shipmentId;
+    }
+
+    public function setShipmentId(?string $shipmentId): void
+    {
+        $this->shipmentId = $shipmentId;
+    }
+
+    public function getShippingMethodCode(): string
+    {
+        return $this->shippingMethodCode;
+    }
+
+    public function setShippingMethodCode(string $shippingMethodCode): void
+    {
+        $this->shippingMethodCode = $shippingMethodCode;
+    }
+
 }

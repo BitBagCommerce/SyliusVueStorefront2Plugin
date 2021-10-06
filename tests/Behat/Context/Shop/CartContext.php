@@ -17,6 +17,7 @@ use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClient;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
+use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
 {
@@ -33,7 +34,8 @@ final class CartContext implements Context
         SharedStorageInterface $sharedStorage,
         OrderRepositoryInterface $orderRepository,
         IriConverterInterface $iriConverter
-    ) {
+    )
+    {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
         $this->orderRepository = $orderRepository;
@@ -125,6 +127,7 @@ final class CartContext implements Context
                 edges{
                     node {
                         id
+                        _id
                         method {
                             code
                         }
@@ -153,6 +156,7 @@ final class CartContext implements Context
                 edges{
                     node {
                         id
+                        _id
                         method {
                             code
                         }
@@ -162,7 +166,7 @@ final class CartContext implements Context
             shippingTotal
         }';
 
-        $addressIri = (string) $this->sharedStorage->get($addressKey);
+        $addressIri = (string)$this->sharedStorage->get($addressKey);
         /** @var AddressInterface $address */
         $address = $this->iriConverter->getItemFromIri($addressIri);
 
@@ -186,6 +190,7 @@ final class CartContext implements Context
     {
         $expectedData = '
         order {
+
             billingAddress{
                 firstName
                 lastName
@@ -194,6 +199,7 @@ final class CartContext implements Context
                 edges{
                     node {
                         id
+                        _id
                         method {
                             code
                         }
@@ -231,7 +237,7 @@ final class CartContext implements Context
             shippingTotal
         }';
 
-        $addressIri = (string) $this->sharedStorage->get($addressKey);
+        $addressIri = (string)$this->sharedStorage->get($addressKey);
         /** @var AddressInterface $address */
         $address = $this->iriConverter->getItemFromIri($addressIri);
 
@@ -247,4 +253,16 @@ final class CartContext implements Context
         $operation->addVariable('billingAddress', $shippingAddress);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
+
+    /**
+     * @Then total price for items should equal to :price
+     */
+    public function totalPriceForItemsShouldEqualTo(int $price)
+    {
+        $orderTotal = (int)$this->client->getValueAtKey('order.total');
+        $shippingTotal = (int)$this->client->getValueAtKey('order.shippingTotal');
+
+        Assert::same($price, ($orderTotal - $shippingTotal));
+    }
+
 }

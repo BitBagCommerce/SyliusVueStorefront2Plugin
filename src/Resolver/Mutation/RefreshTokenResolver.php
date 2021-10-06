@@ -14,7 +14,9 @@ use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
 use BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactoryInterface;
 use BitBag\SyliusGraphqlPlugin\Model\ShopUserTokenInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ObjectRepository;
+use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -27,22 +29,18 @@ final class RefreshTokenResolver implements MutationResolverInterface
 
     private ShopUserTokenFactoryInterface $tokenFactory;
 
-    /** @psalm-var class-string */
-    private string $refreshTokenClass;
+    /** @var EntityRepository<RefreshToken>  */
+    private ObjectRepository $refreshTokenRepository;
 
-    /**
-     * @psalm-param class-string $refreshTokenClass
-     */
     public function __construct(
         EntityManagerInterface $entityManager,
         ShopUserTokenFactoryInterface $tokenFactory,
-        UserRepositoryInterface $userRepository,
-        string $refreshTokenClass
+        UserRepositoryInterface $userRepository
     ) {
         $this->entityManager = $entityManager;
         $this->tokenFactory = $tokenFactory;
         $this->userRepository = $userRepository;
-        $this->refreshTokenClass = $refreshTokenClass;
+        $this->refreshTokenRepository = $entityManager->getRepository(RefreshToken::class);
     }
 
     public function __invoke($item, array $context): ?ShopUserTokenInterface
@@ -55,10 +53,7 @@ final class RefreshTokenResolver implements MutationResolverInterface
         $input = $context['args']['input'];
         $refreshTokenString = (string) $input['refreshToken'];
 
-        /** @psalm-suppress ArgumentTypeCoercion */
-        $refreshTokenRepository = $this->entityManager->getRepository($this->refreshTokenClass);
-        /** @var RefreshTokenInterface|null $refreshToken */
-        $refreshToken = $refreshTokenRepository->findOneBy(['refreshToken' => $refreshTokenString]);
+        $refreshToken = $this->refreshTokenRepository->findOneBy(['refreshToken' => $refreshTokenString]);
 
         if (null === $refreshToken || !$refreshToken->isValid()) {
             throw new AuthenticationException(

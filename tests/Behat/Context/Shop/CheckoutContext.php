@@ -96,6 +96,8 @@ final class CheckoutContext implements Context
     {
         $expectedData = '
         order {
+            id
+            _id
             payments{
                 edges{
                     node {
@@ -106,6 +108,14 @@ final class CheckoutContext implements Context
                 }
             }
             billingAddress{
+                firstName
+                lastName
+                countryCode
+                city
+                street
+                postcode
+            }
+            shippingAddress{
                 firstName
                 lastName
                 countryCode

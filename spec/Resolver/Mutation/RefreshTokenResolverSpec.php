@@ -28,11 +28,12 @@ final class RefreshTokenResolverSpec extends ObjectBehavior
     function let(
         EntityManagerInterface $entityManager,
         ShopUserTokenFactoryInterface $tokenFactory,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        ObjectRepository $refreshTokenRepository
     ): void
     {
-        $refreshTokenClass = "Path/To/RefreshTokenClass";
-        $this->beConstructedWith($entityManager, $tokenFactory, $userRepository, $refreshTokenClass);
+        $entityManager->getRepository(RefreshToken::class)->willReturn($refreshTokenRepository);
+        $this->beConstructedWith($entityManager, $tokenFactory, $userRepository );
     }
 
     function it_is_initializable(): void
