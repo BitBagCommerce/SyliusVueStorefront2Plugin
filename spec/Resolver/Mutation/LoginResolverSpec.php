@@ -15,12 +15,11 @@ use BitBag\SyliusGraphqlPlugin\Model\ShopUserTokenInterface;
 use BitBag\SyliusGraphqlPlugin\Resolver\Mutation\LoginResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
+use GraphQL\Error\Error;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
-use Sylius\Component\Customer\Model\CustomerInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
@@ -145,9 +144,6 @@ final class LoginResolverSpec extends ObjectBehavior
         $userSalt = "SALT";
         $user->getPassword()->willReturn($userPassword);
         $user->getSalt()->willReturn($userSalt);
-
-        Assert::notNull($userPassword);
-        Assert::notNull($userSalt);
 
         $encoder->isPasswordValid($userPassword, $password, $userSalt)->shouldBeCalledOnce();
         $encoder->isPasswordValid($userPassword, $password, $userSalt)->willReturn(false);

@@ -86,7 +86,6 @@ class OperationRequest implements OperationRequestInterface
         $this->filters[$key] = $value;
     }
 
-
     public function getFormatted(): array
     {
         if ($this->operationType === OperationRequestInterface::OPERATION_QUERY) {
@@ -117,5 +116,4 @@ class OperationRequest implements OperationRequestInterface
         $filters = $this->formatFilters();
         $this->query = str_replace('<filters>', $filters, $this->query);
     }
-
 }

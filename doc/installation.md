@@ -22,14 +22,14 @@
     ```yaml
     # config/packages/bitbag_sylius_graphql_plugin.yaml
     
-    parameters:
-        bitbag_graphql.model.refresh_token.class: 'Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken'
-
-    
     imports:
         - { resource: "@BitBagSyliusGraphqlPlugin/Resources/config/config.yml" }
     ```    
-
+2. Add following envs
+   
+   `BITBAG_SYLIUS_GRAPHQL_REFRESH_TOKEN_LIFESPAN` - Lifespan of refresh token in seconds
+   `BITBAG_SYLIUS_GRAPHQL_TEST_ENDPOINT` - graphql endpoint for behat tests
+   
 4. In _sylius.yaml add mappings for promotion and product attribute so graphql can see them properly
 
     ```yml

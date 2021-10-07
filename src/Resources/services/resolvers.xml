@@ -22,7 +22,6 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 
-<!--        TODO: Replace by promotionCoupon taken from order-->
         <service id="bitbag.sylius_graphql_plugin.resolver.mutation.order_coupon_resolver"
                  class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\OrderCouponResolver">
             <argument type="service" id="sylius.repository.order" />
@@ -37,7 +36,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="bitbag.sylius_graphql_plugin.factory.shop_user_token_factory" />
             <argument type="service" id="sylius.repository.shop_user" />
             <argument type="service" id="event_dispatcher" />
-            <argument type="string">%bitbag_sylius_graphql_refresh_token_lifespan%</argument>
+            <argument type="string">%bitbag_sylius_graphql.refresh_token_lifespan%</argument>
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 

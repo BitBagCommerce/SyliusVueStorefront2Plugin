@@ -20,7 +20,6 @@ sylius_promotion:
     resources:
         promotion_coupon:
             classes:
-#                model: Sylius\Component\Promotion\Model\PromotionCoupon
                 model: Sylius\Component\Core\Model\PromotionCoupon
         promotion:
             classes:
@@ -31,18 +30,6 @@ sylius_taxonomy:
         taxon:
             classes:
                 repository: BitBag\SyliusGraphqlPlugin\Doctrine\Repository\TaxonRepository
-
-sylius_shop:
-    product_grid:
-        include_all_descendants: true
-
-sylius_theme:
-    sources:
-        filesystem:
-            scan_depth: 1
-            directories:
-                - "%kernel.project_dir%/themes"
-
 
 sylius_api:
     enabled: true

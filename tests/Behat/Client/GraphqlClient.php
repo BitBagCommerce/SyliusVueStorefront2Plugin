@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Client;
 
 use Exception;
+use const JSON_ERROR_NONE;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 use Sylius\Behat\Service\SharedStorageInterface;
@@ -23,7 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequest;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 use Webmozart\Assert\Assert;
-use const JSON_ERROR_NONE;
 
 final class GraphqlClient implements GraphqlClientInterface
 {
@@ -37,17 +37,20 @@ final class GraphqlClient implements GraphqlClientInterface
 
     private string $authorizationHeader;
 
+    private string $uri;
+
     private ParameterBag $headers;
 
     public function __construct(
         AbstractBrowser $client,
         SharedStorageInterface $sharedStorage,
-        string $authorizationHeader
-    )
-    {
+        string $authorizationHeader,
+        string $uri
+    ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
         $this->authorizationHeader = $authorizationHeader;
+        $this->uri = $uri;
         $this->headers = new ParameterBag();
     }
 
@@ -55,8 +58,7 @@ final class GraphqlClient implements GraphqlClientInterface
         string $name,
         string $formattedExpectedData,
         string $method = Request::METHOD_POST
-    ): OperationRequestInterface
-    {
+    ): OperationRequestInterface {
         $operation = '
         mutation <name> ($input: <name>Input!) {
             <name>(input: $input){
@@ -77,8 +79,7 @@ final class GraphqlClient implements GraphqlClientInterface
         string $name,
         string $formattedExpectedData,
         string $method = Request::METHOD_POST
-    ): OperationRequestInterface
-    {
+    ): OperationRequestInterface {
         $operation = '
         query <name> {
             <name><filters>{
@@ -115,20 +116,20 @@ final class GraphqlClient implements GraphqlClientInterface
 
     public function getToken(): ?string
     {
-        return $this->sharedStorage->has('token') ? (string)$this->sharedStorage->get('token') : null;
+        return $this->sharedStorage->has('token') ? (string) $this->sharedStorage->get('token') : null;
     }
 
     public function send(): Response
     {
         if ($this->sharedStorage->has('hostname')) {
-            $this->client->setServerParameter('HTTP_HOST', (string)$this->sharedStorage->get('hostname'));
+            $this->client->setServerParameter('HTTP_HOST', (string) $this->sharedStorage->get('hostname'));
         }
 
         $operation = $this->getLastOperationRequest();
 
-        $this->jsonRequest(
+        $this->sendJsonRequest(
             $operation->getMethod(),
-            'http://127.0.0.1:8080/api/v2/graphql',
+            $this->uri,
             $operation->getFormatted(),
             $this->headers->all()
         );
@@ -170,8 +171,12 @@ final class GraphqlClient implements GraphqlClientInterface
         $content = $response->getContent();
         Assert::string($content);
 
-        /** @var array $jsonData */
-        $jsonData = json_decode($content, true);
+        try {
+            /** @var array $jsonData */
+            $jsonData = json_decode($content, true);
+        } catch (Exception $exception){
+            print_r($exception->getMessage());
+        }
 
         if (json_last_error() === JSON_ERROR_NONE) {
             return $jsonData;
@@ -180,75 +185,31 @@ final class GraphqlClient implements GraphqlClientInterface
         return null;
     }
 
-    public static function diff($arr1, $arr2): array
-    {
-        $diff = [];
-
-        // Check the similarities
-        foreach ($arr1 as $k1 => $v1) {
-            if (isset($arr2[$k1])) {
-                $v2 = $arr2[$k1];
-                if (is_array($v1) && is_array($v2)) {
-                    // 2 arrays: just go further...
-                    // .. and explain it's an update!
-                    $changes = self::diff($v1, $v2);
-                    if (count($changes) > 0) {
-                        // If we have no change, simply ignore
-                        $diff[$k1] = ['upd' => $changes];
-                    }
-                    unset($arr2[$k1]); // don't forget
-                } elseif ($v2 === $v1) {
-                    // unset the value on the second array
-                    // for the "surplus"
-                    unset($arr2[$k1]);
-                } else {
-                    // Don't mind if arrays or not.
-                    $diff[$k1] = ['old' => $v1, 'new' => $v2];
-                    unset($arr2[$k1]);
-                }
-            } else {
-                // remove information
-                $diff[$k1] = ['old' => $v1];
-            }
-        }
-
-        // Now, check for new stuff in $arr2
-        reset($arr2); // Don't argue it's unnecessary (even I believe you)
-        foreach ($arr2 as $k => $v) {
-            // OK, it is quite stupid my friend
-            $diff[$k] = ['new' => $v];
-        }
-
-        return $diff;
-    }
-
     /**
      * @throws Exception
      */
     public function flattenArray(array $responseArray): array
     {
-        if (!array_key_exists('data', $responseArray) && !array_key_exists('errors', $responseArray)) {
-            throw new Exception('Malformed response, no data or error key.');
-        }
+        $this->checkIfResponseProperlyFormatted($responseArray);
         $array = [];
 
-        if (array_key_exists('data', $responseArray) && is_array($responseArray['data'])) {
+        if ($this->isDataSectionPresentInResponse($responseArray)) {
             /** @var array $array */
             $array = reset($responseArray['data']);
         }
 
-        if (array_key_exists('errors', $responseArray) && is_array($responseArray['errors'])) {
+        if ($this->isErrorSectionPresentInResponse($responseArray)) {
             /** @var array $array */
             $array = reset($responseArray['errors']);
         }
         $recursiveIteratorIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($array), RecursiveIteratorIterator::CHILD_FIRST);
         $result = [];
-        foreach ($recursiveIteratorIterator as $leafValue) {
+        foreach ($recursiveIteratorIterator as $value) {
             $keys = [];
             foreach (range(0, $recursiveIteratorIterator->getDepth()) as $depth) {
                 $keys[] = $recursiveIteratorIterator->getSubIterator($depth)->key();
             }
-            $result[implode('.', $keys)] = $leafValue;
+            $result[implode('.', $keys)] = $value;
         }
 
         return $result;
@@ -257,7 +218,13 @@ final class GraphqlClient implements GraphqlClientInterface
     /**
      * Converts the request parameters into a JSON string and uses it as request content.
      */
-    public function jsonRequest(string $method, string $uri, array $parameters = [], array $server = [], bool $changeHistory = true): Crawler
+    private function sendJsonRequest(
+        string $method,
+        string $uri,
+        array $parameters = [],
+        array $server = [],
+        bool $changeHistory = true
+    ): Crawler
     {
         $content = json_encode($parameters);
 
@@ -278,18 +245,46 @@ final class GraphqlClient implements GraphqlClientInterface
         $flatResponse = $this->flattenArray($arrayContent);
 
         if (!array_key_exists($key, $flatResponse)) {
+            $message = array_key_exists('debugMessage', $flatResponse) ? $flatResponse['debugMessage'] : $flatResponse;
 
-            $message = key_exists("debugMessage",$flatResponse) ? $flatResponse["debugMessage"] : $flatResponse;
             throw new Exception(
                 sprintf(
                     "Last response did not have any key named %s \n%s",
                     $key,
-//                    print_r($message, true)
-                    print_r($flatResponse, true)
+                    print_r($message, true)
                 )
             );
         }
 
         return $flatResponse[$key];
+    }
+
+    /**
+     * @param array $responseArray
+     * @throws Exception
+     */
+    private function checkIfResponseProperlyFormatted(array $responseArray): void
+    {
+        if (!array_key_exists('data', $responseArray) && !array_key_exists('errors', $responseArray)) {
+            throw new Exception('Malformed response, no data or error key.');
+        }
+    }
+
+    /**
+     * @param array $responseArray
+     * @return bool
+     */
+    private function isDataSectionPresentInResponse(array $responseArray): bool
+    {
+        return array_key_exists('data', $responseArray) && is_array($responseArray['data']);
+    }
+
+    /**
+     * @param array $responseArray
+     * @return bool
+     */
+    private function isErrorSectionPresentInResponse(array $responseArray): bool
+    {
+        return array_key_exists('errors', $responseArray) && is_array($responseArray['errors']);
     }
 }

@@ -79,9 +79,7 @@ final class LoginResolver implements MutationResolverInterface
         /** @var ShopUserInterface|null $user */
         $user = $this->userRepository->findOneBy(['username' => $username]);
 
-        if (null === $user) {
-            throw new \Exception('Wrong credentials.');
-        }
+        Assert::notNull($user, 'Wrong credentials.');
 
         $encoder = $this->encoderFactory->getEncoder($user);
 

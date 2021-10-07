@@ -23,17 +23,14 @@ final class ExceptionNormalizer implements NormalizerInterface
      * @param string|null $format
      *
      * @return array
-     *
-     * @throws \Throwable
      */
     public function normalize($object, $format = null, array $context = [])
     {
         Assert::isInstanceOf($object, Exception::class);
-        $exception = $object->getPrevious();
+        $exception = $object->getPrevious() ?? $object;
         $error = FormattedError::createFromException($object);
 
         Assert::isArray($error['extensions']);
-        Assert::notNull($exception);
         $error['extensions']['message'] = $exception->getMessage();
 
         return $error;
@@ -47,6 +44,6 @@ final class ExceptionNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Error && $data->getPrevious() instanceof \InvalidArgumentException;
+        return $data instanceof Error;
     }
 }

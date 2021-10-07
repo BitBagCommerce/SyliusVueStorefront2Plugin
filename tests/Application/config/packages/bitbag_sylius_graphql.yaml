@@ -1,4 +1,6 @@
-parameters:
-    bitbag_sylius_graphql_refresh_token_lifespan: '%env(resolve:BITBAG_SYLIUS_GRAPHQL_REFRESH_TOKEN_LIFESPAN)%'
 imports:
     - { resource: "@BitBagSyliusGraphqlPlugin/Resources/config/services.xml" }
+
+bitbag_sylius_graphql:
+    refresh_token_lifespan: 2592000
+    

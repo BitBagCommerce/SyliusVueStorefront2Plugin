@@ -34,8 +34,7 @@ final class CartContext implements Context
         SharedStorageInterface $sharedStorage,
         OrderRepositoryInterface $orderRepository,
         IriConverterInterface $iriConverter
-    )
-    {
+    ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
         $this->orderRepository = $orderRepository;
@@ -166,7 +165,7 @@ final class CartContext implements Context
             shippingTotal
         }';
 
-        $addressIri = (string)$this->sharedStorage->get($addressKey);
+        $addressIri = (string) $this->sharedStorage->get($addressKey);
         /** @var AddressInterface $address */
         $address = $this->iriConverter->getItemFromIri($addressIri);
 
@@ -237,7 +236,7 @@ final class CartContext implements Context
             shippingTotal
         }';
 
-        $addressIri = (string)$this->sharedStorage->get($addressKey);
+        $addressIri = (string) $this->sharedStorage->get($addressKey);
         /** @var AddressInterface $address */
         $address = $this->iriConverter->getItemFromIri($addressIri);
 
@@ -259,10 +258,9 @@ final class CartContext implements Context
      */
     public function totalPriceForItemsShouldEqualTo(int $price)
     {
-        $orderTotal = (int)$this->client->getValueAtKey('order.total');
-        $shippingTotal = (int)$this->client->getValueAtKey('order.shippingTotal');
+        $orderTotal = (int) $this->client->getValueAtKey('order.total');
+        $shippingTotal = (int) $this->client->getValueAtKey('order.shippingTotal');
 
         Assert::same($price, ($orderTotal - $shippingTotal));
     }
-
 }

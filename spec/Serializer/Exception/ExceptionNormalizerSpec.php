@@ -46,11 +46,6 @@ final class ExceptionNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(ExceptionNormalizer::class);
     }
 
-    function it_checks_if_it_supports_normalization_without_previous(Error $data, \InvalidArgumentException $exception): void
-    {
-        $this->supportsNormalization($data)->shouldReturn(false);
-    }
-
     function it_checks_if_it_supports_normalization(Error $data): void
     {
         $e = new \InvalidArgumentException();

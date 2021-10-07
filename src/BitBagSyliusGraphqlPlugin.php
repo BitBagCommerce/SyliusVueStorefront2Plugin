@@ -10,10 +10,24 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusGraphqlPlugin;
 
+use BitBag\SyliusGraphqlPlugin\DependencyInjection\BitBagSyliusGraphqlExtension;
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Webmozart\Assert\Assert;
 
 final class BitBagSyliusGraphqlPlugin extends Bundle
 {
     use SyliusPluginTrait;
+
+    public function getContainerExtension(): ?ExtensionInterface
+    {
+        if (!$this->containerExtension instanceof BitBagSyliusGraphqlExtension) {
+            $extension = $this->createContainerExtension();
+            Assert::notNull($extension);
+            $this->containerExtension = $extension;
+        }
+
+        return $this->containerExtension;
+    }
 }

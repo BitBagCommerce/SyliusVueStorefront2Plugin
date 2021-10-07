@@ -14,9 +14,7 @@ use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 use Webmozart\Assert\Assert;
 
-/**
- * Context for GraphQL.
- */
+/** Context for GraphQL. */
 final class GraphqlApiPlatformContext implements Context
 {
     private GraphqlClientInterface $client;
@@ -81,7 +79,7 @@ final class GraphqlApiPlatformContext implements Context
         $expected = json_decode($json->getRaw(), true);
         /** @var array $lastResponse */
         $lastResponse = $this->sharedStorage->get(GraphqlClient::LAST_GRAPHQL_RESPONSE);
-        $result_array = GraphqlClient::diff($expected, $lastResponse);
+        $result_array = $this->differ->diff($expected, $lastResponse);
         if (empty($result_array)) {
             return true;
         }
@@ -119,7 +117,7 @@ final class GraphqlApiPlatformContext implements Context
         Assert::isInstanceOf($operation, OperationRequestInterface::class);
         $value = $this->sharedStorage->get($name);
         Assert::notEmpty($value);
-        $value = $this->castToType($value,$type);
+        $value = $this->castToType($value, $type);
         $operation->addVariable($key, $value);
     }
 
@@ -173,31 +171,37 @@ final class GraphqlApiPlatformContext implements Context
     {
         /** @psalm-suppress MixedAssignment */
         $responseValueAtKey = $this->client->getValueAtKey($key);
-        Assert::same($value,$responseValueAtKey);
+        Assert::same($value, $responseValueAtKey);
     }
 
     /**
      * @param mixed $value
-     * @param string|null $type
+     *
      * @return mixed
      */
-    private function castToType($value, string $type = null){
-        switch ($type){
+    private function castToType($value, string $type = null)
+    {
+        switch ($type) {
             case 'bool':
                 $value = (bool) $value;
+
                 break;
             case 'float':
                 $value = (float) $value;
+
                 break;
             case 'int':
                 $value = (int) $value;
+
                 break;
             case 'string':
                 $value = (string) $value;
+
                 break;
             default:
                 return $value;
         }
+
         return $value;
     }
 
@@ -229,11 +233,14 @@ final class GraphqlApiPlatformContext implements Context
         $this->sharedStorage->set($name, $value);
     }
 
-
     private function getJsonFromResponse(string $response): ?array
     {
         /** @var array $jsonData */
-        $jsonData = json_decode($response, true);
+        try {
+            $jsonData = json_decode($response, true);
+        }catch (Exception $exception){
+            print_r($exception->getMessage());
+        }
         if (json_last_error() === \JSON_ERROR_NONE) {
             return $jsonData;
         }

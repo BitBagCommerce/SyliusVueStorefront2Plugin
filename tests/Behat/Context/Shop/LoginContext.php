@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop;
 
@@ -17,8 +18,7 @@ final class LoginContext implements Context
     public function __construct(
         GraphqlClientInterface $client,
         SharedStorageInterface $sharedStorage
-    )
-    {
+    ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
     }
@@ -44,5 +44,4 @@ final class LoginContext implements Context
         ]);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
-
 }
