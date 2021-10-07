@@ -37,7 +37,8 @@ final class RefreshTokenResolverSpec extends ObjectBehavior
     ): void
     {
         $entityManager->getRepository(RefreshToken::class)->willReturn($refreshTokenRepository);
-        $this->beConstructedWith($entityManager, $tokenFactory, $userRepository, $eventDispatcher);
+        $lifespan = "2592000";
+        $this->beConstructedWith($entityManager, $tokenFactory, $userRepository, $eventDispatcher, $lifespan);
     }
 
     function it_is_initializable(): void

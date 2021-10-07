@@ -25,9 +25,7 @@ final class SubresourceIdAwareCommandDataTransformer implements CommandDataTrans
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * @param SubresourceIdAwareInterface|mixed $object
-     */
+    /** @param SubresourceIdAwareInterface|mixed $object */
     public function transform($object, string $to, array $context = []): SubresourceIdAwareInterface
     {
         Assert::isInstanceOf($object, SubresourceIdAwareInterface::class);
@@ -51,9 +49,7 @@ final class SubresourceIdAwareCommandDataTransformer implements CommandDataTrans
         return $object;
     }
 
-    /**
-     * @param mixed $object
-     */
+    /** @param mixed $object */
     public function supportsTransformation($object): bool
     {
         return $object instanceof SubresourceIdAwareInterface;

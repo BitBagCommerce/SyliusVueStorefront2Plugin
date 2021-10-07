@@ -14,12 +14,14 @@ use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
 use Sylius\Bundle\ApiBundle\Context\UserContextInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
+use Sylius\Component\Promotion\Model\PromotionCouponInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 final class OrderCouponResolver implements MutationResolverInterface
 {
-    public const EVENT_NAME = "bitbag_sylius_graphql.mutation_resolver.order_coupon.complete";
+    public const EVENT_NAME = 'bitbag_sylius_graphql.mutation_resolver.order_coupon.complete';
 
     private OrderRepositoryInterface $orderRepository;
 
@@ -37,7 +39,10 @@ final class OrderCouponResolver implements MutationResolverInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function __invoke($item, array $context)
+    /**
+     * @param object|null $item
+     */
+    public function __invoke($item, array $context): ?PromotionCouponInterface
     {
         if (!isset($context['args']['input'])) {
             return null;
@@ -53,12 +58,17 @@ final class OrderCouponResolver implements MutationResolverInterface
         /** @var OrderInterface $order */
         $order = $this->orderRepository->findOneBy(['tokenValue' => $orderToken]);
 
-        $this->eventDispatcher->dispatch(new GenericEvent($order,$input), self::EVENT_NAME);
+        $this->eventDispatcher->dispatch(new GenericEvent($order, $input), self::EVENT_NAME);
 
-        if (null === $order->getUser() || $user === $order->getUser()) {
+        if ($this->isAllowedToRetrieveCoupon($order, $user)) {
             return $order->getPromotionCoupon();
         }
 
         return null;
+    }
+
+    private function isAllowedToRetrieveCoupon(OrderInterface $order, ?UserInterface $user): bool
+    {
+        return null === $order->getUser() || $user === $order->getUser();
     }
 }

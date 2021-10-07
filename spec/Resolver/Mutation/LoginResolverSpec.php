@@ -156,28 +156,4 @@ final class LoginResolverSpec extends ObjectBehavior
             ->shouldThrow(\Exception::class)
             ->during('__invoke', [null, $context]);
     }
-
-    function it_applies_order(
-        EntityManagerInterface $entityManager,
-        OrderInterface $order,
-        OrderRepositoryInterface $orderRepository,
-        ShopUserInterface $user,
-        CustomerInterface $customer
-    ): void
-    {
-        $tokenValue = "tokenValue";
-
-        $orderRepository->findCartByTokenValue($tokenValue)->willReturn($order);
-
-        $user->getCustomer()->shouldBeCalledOnce()->willReturn($customer);
-        $order->setCustomer($customer)->shouldBeCalledOnce();
-
-        $entityManager->flush()->shouldBeCalledOnce();
-
-        $this->applyOrder([
-            "username" => "username",
-            "password" => "somepass",
-            "orderTokenValue" => "tokenValue"
-        ], $user);
-    }
 }

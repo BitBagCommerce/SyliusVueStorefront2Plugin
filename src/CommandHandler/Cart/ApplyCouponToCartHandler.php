@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class ApplyCouponToCartHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = "bitbag_sylius_graphql.apply_coupon_to_cart.complete";
+    public const EVENT_NAME = 'bitbag_sylius_graphql.apply_coupon_to_cart.complete';
 
     private OrderRepositoryInterface $orderRepository;
 
@@ -63,7 +63,7 @@ final class ApplyCouponToCartHandler implements MessageHandlerInterface
 
         $this->orderProcessor->process($cart);
 
-        $this->eventDispatcher->dispatch(new GenericEvent($cart,[$command]), self::EVENT_NAME);
+        $this->eventDispatcher->dispatch(new GenericEvent($cart, [$command]), self::EVENT_NAME);
 
         return $cart;
     }

@@ -26,8 +26,7 @@ class ChangeItemQuantityInCart implements OrderTokenValueAwareInterface, Subreso
         int $quantity,
         ?string $orderItemId = null,
         ?string $orderTokenValue = null
-    )
-    {
+    ) {
         $this->quantity = $quantity;
         $this->orderItemId = $orderItemId;
         $this->orderTokenValue = $orderTokenValue;
@@ -37,8 +36,7 @@ class ChangeItemQuantityInCart implements OrderTokenValueAwareInterface, Subreso
         string $tokenValue,
         string $orderItemId,
         int $quantity
-    ): self
-    {
+    ): self {
         $command = new self($quantity);
 
         $command->orderTokenValue = $tokenValue;
@@ -91,5 +89,4 @@ class ChangeItemQuantityInCart implements OrderTokenValueAwareInterface, Subreso
     {
         $this->quantity = $quantity;
     }
-
 }

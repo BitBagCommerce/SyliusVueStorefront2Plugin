@@ -37,6 +37,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="bitbag.sylius_graphql_plugin.factory.shop_user_token_factory" />
             <argument type="service" id="sylius.repository.shop_user" />
             <argument type="service" id="event_dispatcher" />
+            <argument type="string">%bitbag_sylius_graphql_refresh_token_lifespan%</argument>
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 

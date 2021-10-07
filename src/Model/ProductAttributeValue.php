@@ -16,9 +16,7 @@ use Webmozart\Assert\Assert;
 
 class ProductAttributeValue extends BaseAttributeValue
 {
-    /**
-     * @return mixed|null
-     */
+    /** @return mixed|null */
     public function getValue()
     {
         if (null === $this->attribute) {

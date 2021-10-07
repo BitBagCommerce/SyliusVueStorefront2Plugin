@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class RemoveCouponFromCartHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = "bitbag_sylius_graphql.remove_coupon_from_cart.complete";
+    public const EVENT_NAME = 'bitbag_sylius_graphql.remove_coupon_from_cart.complete';
 
     private OrderRepositoryInterface $orderRepository;
 
@@ -39,8 +39,7 @@ final class RemoveCouponFromCartHandler implements MessageHandlerInterface
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         OrderProcessorInterface $orderProcessor,
         EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->orderRepository = $orderRepository;
         $this->promotionCouponRepository = $promotionCouponRepository;
         $this->orderProcessor = $orderProcessor;
@@ -71,7 +70,7 @@ final class RemoveCouponFromCartHandler implements MessageHandlerInterface
         }
         $this->orderProcessor->process($cart);
 
-        $this->eventDispatcher->dispatch(new GenericEvent($cart,[$command]), self::EVENT_NAME);
+        $this->eventDispatcher->dispatch(new GenericEvent($cart, [$command]), self::EVENT_NAME);
 
         return $cart;
     }

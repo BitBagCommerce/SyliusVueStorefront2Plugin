@@ -26,7 +26,7 @@ use Webmozart\Assert\Assert;
 /** @psalm-suppress DeprecatedClass */
 final class LoginResolver implements MutationResolverInterface
 {
-    public const EVENT_NAME = "bitbag_sylius_graphql.mutation_resolver.login.complete";
+    public const EVENT_NAME = 'bitbag_sylius_graphql.mutation_resolver.login.complete';
 
     private EncoderFactoryInterface $encoderFactory;
 
@@ -59,6 +59,9 @@ final class LoginResolver implements MutationResolverInterface
 
     /**
      * @throws \Exception
+     *
+     * @param ShopUserTokenInterface|object|null $item
+     *
      * @psalm-suppress DeprecatedClass
      */
     public function __invoke($item, array $context): ?ShopUserTokenInterface
@@ -76,7 +79,7 @@ final class LoginResolver implements MutationResolverInterface
         /** @var ShopUserInterface|null $user */
         $user = $this->userRepository->findOneBy(['username' => $username]);
 
-        if(null === $user){
+        if (null === $user) {
             throw new \Exception('Wrong credentials.');
         }
 
@@ -92,7 +95,7 @@ final class LoginResolver implements MutationResolverInterface
             $shopUserToken = $this->tokenFactory->create($user, $refreshToken);
             $this->applyOrder($input, $user);
 
-            $this->eventDispatcher->dispatch(new GenericEvent($shopUserToken,$input), self::EVENT_NAME);
+            $this->eventDispatcher->dispatch(new GenericEvent($shopUserToken, $input), self::EVENT_NAME);
 
             return $shopUserToken;
         }
@@ -100,7 +103,7 @@ final class LoginResolver implements MutationResolverInterface
         throw new \Exception('Wrong credentials.');
     }
 
-    public function applyOrder(array $input, ShopUserInterface $user): void
+    private function applyOrder(array $input, ShopUserInterface $user): void
     {
         if (!array_key_exists('orderTokenValue', $input)) {
             return;

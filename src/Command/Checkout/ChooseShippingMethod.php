@@ -26,8 +26,7 @@ class ChooseShippingMethod implements OrderTokenValueAwareInterface, Subresource
         string $orderTokenValue,
         string $shippingMethodCode,
         string $shipmentId
-    )
-    {
+    ) {
         $this->orderTokenValue = $orderTokenValue;
         $this->shippingMethodCode = $shippingMethodCode;
         $this->shipmentId = $shipmentId;
@@ -77,5 +76,4 @@ class ChooseShippingMethod implements OrderTokenValueAwareInterface, Subresource
     {
         $this->shippingMethodCode = $shippingMethodCode;
     }
-
 }

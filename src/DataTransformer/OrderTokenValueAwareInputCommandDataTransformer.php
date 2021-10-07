@@ -32,7 +32,7 @@ final class OrderTokenValueAwareInputCommandDataTransformer implements CommandDa
             $cart = $context['object_to_populate'];
             $tokenValue = $cart->getTokenValue();
         } else {
-            $tokenValue = (string) $object->getOrderTokenValue();
+            $tokenValue = $object->getOrderTokenValue();
         }
 
         $object->setOrderTokenValue($tokenValue);
@@ -40,9 +40,7 @@ final class OrderTokenValueAwareInputCommandDataTransformer implements CommandDa
         return $object;
     }
 
-    /**
-     * @param mixed $object
-     */
+    /** @param mixed $object */
     public function supportsTransformation($object): bool
     {
         return $object instanceof OrderTokenValueAwareInterface;

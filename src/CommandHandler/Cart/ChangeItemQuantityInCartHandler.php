@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class ChangeItemQuantityInCartHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = "bitbag_sylius_graphql.change_item_quantity.complete";
+    public const EVENT_NAME = 'bitbag_sylius_graphql.change_item_quantity.complete';
 
     private OrderItemRepositoryInterface $orderItemRepository;
 
@@ -64,7 +64,7 @@ final class ChangeItemQuantityInCartHandler implements MessageHandlerInterface
         $this->orderItemQuantityModifier->modify($orderItem, $command->quantity);
         $this->orderProcessor->process($cart);
 
-        $this->eventDispatcher->dispatch(new GenericEvent($cart,[$command]), self::EVENT_NAME);
+        $this->eventDispatcher->dispatch(new GenericEvent($cart, [$command]), self::EVENT_NAME);
 
         return $cart;
     }

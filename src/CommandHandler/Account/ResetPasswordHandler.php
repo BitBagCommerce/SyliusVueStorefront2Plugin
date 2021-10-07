@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class ResetPasswordHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = "bitbag_sylius_graphql.reset_password.complete";
+    public const EVENT_NAME = 'bitbag_sylius_graphql.reset_password.complete';
 
     private UserRepositoryInterface $userRepository;
 
@@ -48,6 +48,7 @@ final class ResetPasswordHandler implements MessageHandlerInterface
 
     /**
      * @throws \Exception
+     *
      * @return CustomerInterface
      */
     public function __invoke(ResetPassword $command)
@@ -63,8 +64,8 @@ final class ResetPasswordHandler implements MessageHandlerInterface
         Assert::isArray($resetting['token']);
         $lifetime = new \DateInterval((string) $resetting['token']['ttl']);
 
-        Assert::true($user->isPasswordRequestNonExpired($lifetime),'Password reset token has expired');
-        Assert::same($command->resetPasswordToken,$user->getPasswordResetToken(),'Password reset token does not match.');
+        Assert::true($user->isPasswordRequestNonExpired($lifetime), 'Password reset token has expired');
+        Assert::same($command->resetPasswordToken, $user->getPasswordResetToken(), 'Password reset token does not match.');
 
         $user->setPlainPassword($command->newPassword);
 
@@ -73,7 +74,7 @@ final class ResetPasswordHandler implements MessageHandlerInterface
         $customer = $user->getCustomer();
         Assert::notNull($customer);
 
-        $this->eventDispatcher->dispatch(new GenericEvent($user,[$command]), self::EVENT_NAME);
+        $this->eventDispatcher->dispatch(new GenericEvent($user, [$command]), self::EVENT_NAME);
 
         return $customer;
     }

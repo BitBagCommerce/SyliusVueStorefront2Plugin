@@ -64,8 +64,7 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
         $channelMenuTaxon = $channelContext->getMenuTaxon();
 
         $user = $this->userContext->getUser();
-        /** @psalm-suppress DeprecatedClass */
-        if ($user !== null && in_array('ROLE_API_ACCESS', $user->getRoles(), true)) {
+        if ($this->isUserAllowedToGetAllTaxa($user)) {
             return $this->taxonRepository->findAll();
         }
 
@@ -88,5 +87,11 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
             $operationName,
             $context
         );
+    }
+
+    private function isUserAllowedToGetAllTaxa(?\Symfony\Component\Security\Core\User\UserInterface $user): bool
+    {
+        /** @psalm-suppress DeprecatedClass */
+        return $user !== null && in_array('ROLE_API_ACCESS', $user->getRoles(), true);
     }
 }

@@ -25,7 +25,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class BillingAddressOrderHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = "bitbag_sylius_graphql.choose_order_billing_address.complete";
+    public const EVENT_NAME = 'bitbag_sylius_graphql.choose_order_billing_address.complete';
 
     private OrderRepositoryInterface $orderRepository;
 
@@ -67,7 +67,7 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
 
         $this->manager->persist($order);
 
-        $this->eventDispatcher->dispatch(new GenericEvent($order,[$command]), self::EVENT_NAME);
+        $this->eventDispatcher->dispatch(new GenericEvent($order, [$command]), self::EVENT_NAME);
 
         return $order;
     }
@@ -81,7 +81,6 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
     {
         return $addressOrder->billingAddress !== null && $addressOrder->billingAddress instanceof AddressInterface;
     }
-
 
     private function applyCustomer(OrderInterface $order, BillingAddressOrder $addressOrder): void
     {

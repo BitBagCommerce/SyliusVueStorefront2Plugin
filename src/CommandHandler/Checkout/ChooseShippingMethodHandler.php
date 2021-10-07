@@ -27,7 +27,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class ChooseShippingMethodHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = "bitbag_sylius_graphql.choose_order_shipping_method.complete";
+    public const EVENT_NAME = 'bitbag_sylius_graphql.choose_order_shipping_method.complete';
 
     private OrderRepositoryInterface $orderRepository;
 
@@ -88,7 +88,7 @@ final class ChooseShippingMethodHandler implements MessageHandlerInterface
         $shipment->setMethod($shippingMethod);
         $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_SELECT_SHIPPING);
 
-        $this->eventDispatcher->dispatch(new GenericEvent($cart,[$command]), self::EVENT_NAME);
+        $this->eventDispatcher->dispatch(new GenericEvent($cart, [$command]), self::EVENT_NAME);
 
         return $cart;
     }

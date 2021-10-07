@@ -23,7 +23,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class RemoveItemFromCartHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = "bitbag_sylius_graphql.remove_item_from_cart.complete";
+    public const EVENT_NAME = 'bitbag_sylius_graphql.remove_item_from_cart.complete';
 
     private OrderItemRepositoryInterface $orderItemRepository;
 
@@ -58,7 +58,7 @@ final class RemoveItemFromCartHandler implements MessageHandlerInterface
 
         $this->orderModifier->removeFromOrder($cart, $orderItem);
 
-        $this->eventDispatcher->dispatch(new GenericEvent($cart,[$command]), self::EVENT_NAME);
+        $this->eventDispatcher->dispatch(new GenericEvent($cart, [$command]), self::EVENT_NAME);
 
         return $cart;
     }

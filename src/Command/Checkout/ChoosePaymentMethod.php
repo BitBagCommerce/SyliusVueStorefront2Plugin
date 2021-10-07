@@ -27,8 +27,7 @@ class ChoosePaymentMethod implements OrderTokenValueAwareInterface, SubresourceI
         string $orderTokenValue,
         string $paymentMethodCode,
         ?string $paymentId
-    )
-    {
+    ) {
         $this->orderTokenValue = $orderTokenValue;
         $this->paymentMethodCode = $paymentMethodCode;
         $this->paymentId = $paymentId;
@@ -78,5 +77,4 @@ class ChoosePaymentMethod implements OrderTokenValueAwareInterface, SubresourceI
     {
         $this->paymentId = $paymentId;
     }
-
 }

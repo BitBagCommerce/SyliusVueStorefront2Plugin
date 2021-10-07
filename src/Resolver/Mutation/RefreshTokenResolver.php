@@ -17,40 +17,51 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectRepository;
 use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken;
+use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Webmozart\Assert\Assert;
 
 final class RefreshTokenResolver implements MutationResolverInterface
 {
-    public const EVENT_NAME = "bitbag_sylius_graphql.mutation_resolver.refresh_token.complete";
+    public const EVENT_NAME = 'bitbag_sylius_graphql.mutation_resolver.refresh_token.complete';
 
     private EntityManagerInterface $entityManager;
 
     private UserRepositoryInterface $userRepository;
 
-    private ShopUserTokenFactoryInterface $tokenFactory;
+    private ShopUserTokenFactoryInterface $shopUserTokenFactory;
 
     private EventDispatcherInterface $eventDispatcher;
 
-    /** @var EntityRepository<RefreshToken>  */
+    /** @var EntityRepository<RefreshToken> */
     private ObjectRepository $refreshTokenRepository;
+
+    private string $refreshTokenLifetime;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         ShopUserTokenFactoryInterface $tokenFactory,
         UserRepositoryInterface $userRepository,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        string $refreshTokenLifetime
     ) {
         $this->entityManager = $entityManager;
-        $this->tokenFactory = $tokenFactory;
+        $this->shopUserTokenFactory = $tokenFactory;
         $this->userRepository = $userRepository;
         $this->refreshTokenRepository = $entityManager->getRepository(RefreshToken::class);
         $this->eventDispatcher = $eventDispatcher;
+        $this->refreshTokenLifetime = $refreshTokenLifetime;
     }
 
+    /**
+     * @param ShopUserTokenInterface|object|null $item
+     *
+     * @throws \Exception
+     */
     public function __invoke($item, array $context): ?ShopUserTokenInterface
     {
         if (!isset($context['args']['input'])) {
@@ -59,25 +70,32 @@ final class RefreshTokenResolver implements MutationResolverInterface
 
         /** @var array $input */
         $input = $context['args']['input'];
+        Assert::keyExists($input, 'refreshToken');
         $refreshTokenString = (string) $input['refreshToken'];
 
         $refreshToken = $this->refreshTokenRepository->findOneBy(['refreshToken' => $refreshTokenString]);
 
+        $this->validateRefreshToken($refreshToken, $refreshTokenString);
+        Assert::notNull($refreshToken);
+
+        /** @var ShopUserInterface $user */
+        $user = $this->userRepository->findOneBy(['username' => $refreshToken->getUsername()]);
+
+        $refreshTokenExpirationDate = new \DateTime(sprintf('+%s seconds', $this->refreshTokenLifetime));
+        $refreshToken->setValid($refreshTokenExpirationDate);
+        $this->entityManager->flush();
+
+        $this->eventDispatcher->dispatch(new GenericEvent($user, $input), self::EVENT_NAME);
+
+        return $this->shopUserTokenFactory->create($user, $refreshToken);
+    }
+
+    private function validateRefreshToken(?RefreshTokenInterface $refreshToken, string $refreshTokenString): void
+    {
         if (null === $refreshToken || !$refreshToken->isValid()) {
             throw new AuthenticationException(
                 sprintf('Refresh token "%s" is invalid.', $refreshTokenString)
             );
         }
-
-        /** @var ShopUserInterface $user */
-        $user = $this->userRepository->findOneBy(['username' => $refreshToken->getUsername()]);
-
-        $refreshTokenExpirationDate = new \DateTime('+1 month');
-        $refreshToken->setValid($refreshTokenExpirationDate);
-        $this->entityManager->flush();
-
-        $this->eventDispatcher->dispatch(new GenericEvent($user,$input), self::EVENT_NAME);
-
-        return $this->tokenFactory->create($user, $refreshToken);
     }
 }

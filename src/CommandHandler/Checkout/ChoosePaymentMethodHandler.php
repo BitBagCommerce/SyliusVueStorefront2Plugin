@@ -29,7 +29,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class ChoosePaymentMethodHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = "bitbag_sylius_graphql.choose_order_payment_method.complete";
+    public const EVENT_NAME = 'bitbag_sylius_graphql.choose_order_payment_method.complete';
 
     private OrderRepositoryInterface $orderRepository;
 
@@ -77,7 +77,8 @@ final class ChoosePaymentMethodHandler implements MessageHandlerInterface
 
         if ($cart->getState() === OrderInterface::STATE_NEW) {
             $this->paymentMethodChanger->changePaymentMethod($paymentMethodCode, $paymentId, $cart);
-            $this->eventDispatcher->dispatch(new GenericEvent($cart,[$command]), self::EVENT_NAME);
+            $this->eventDispatcher->dispatch(new GenericEvent($cart, [$command]), self::EVENT_NAME);
+
             return $cart;
         }
 
@@ -103,7 +104,7 @@ final class ChoosePaymentMethodHandler implements MessageHandlerInterface
             $payment->setMethod($paymentMethod);
             $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_SELECT_PAYMENT);
 
-            $this->eventDispatcher->dispatch(new GenericEvent($cart,[$command]), self::EVENT_NAME);
+            $this->eventDispatcher->dispatch(new GenericEvent($cart, [$command]), self::EVENT_NAME);
 
             return $cart;
         }

@@ -13,7 +13,7 @@ namespace BitBag\SyliusGraphqlPlugin\Model;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
 /** @psalm-suppress MissingConstructor */
-final class ShopUserToken implements ShopUserTokenInterface
+class ShopUserToken implements ShopUserTokenInterface
 {
     private int $id;
 

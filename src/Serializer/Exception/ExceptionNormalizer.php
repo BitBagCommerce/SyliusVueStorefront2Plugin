@@ -42,6 +42,7 @@ final class ExceptionNormalizer implements NormalizerInterface
     /**
      * @param mixed $data
      * @param string|null $format
+     *
      * @return bool
      */
     public function supportsNormalization($data, $format = null)
