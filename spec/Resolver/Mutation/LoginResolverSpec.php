@@ -16,11 +16,13 @@ use BitBag\SyliusGraphqlPlugin\Resolver\Mutation\LoginResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Customer\Model\CustomerInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Webmozart\Assert\Assert;
@@ -33,10 +35,11 @@ final class LoginResolverSpec extends ObjectBehavior
         UserRepositoryInterface $userRepository,
         OrderRepositoryInterface $orderRepository,
         EncoderFactoryInterface $encoderFactory,
-        ShopUserTokenFactoryInterface $tokenFactory
+        ShopUserTokenFactoryInterface $tokenFactory,
+        EventDispatcherInterface $eventDispatcher
     )
     {
-        $this->beConstructedWith($entityManager, $userRepository, $orderRepository, $encoderFactory, $tokenFactory);
+        $this->beConstructedWith($entityManager, $userRepository, $orderRepository, $encoderFactory, $tokenFactory, $eventDispatcher);
     }
 
     function it_is_initializable(): void
@@ -51,7 +54,8 @@ final class LoginResolverSpec extends ObjectBehavior
         PasswordEncoderInterface $encoder,
         ShopUserInterface $user,
         RefreshTokenInterface $refreshToken,
-        ShopUserTokenInterface $shopUserToken
+        ShopUserTokenInterface $shopUserToken,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
         $context = [
@@ -83,6 +87,8 @@ final class LoginResolverSpec extends ObjectBehavior
 
         $tokenFactory->getRefreshToken($user)->willReturn($refreshToken);
         $tokenFactory->create($user, $refreshToken)->willReturn($shopUserToken);
+
+        $eventDispatcher->dispatch(Argument::any(), LoginResolver::EVENT_NAME)->willReturn(Argument::any());
 
         $this->__invoke(null, $context);
     }

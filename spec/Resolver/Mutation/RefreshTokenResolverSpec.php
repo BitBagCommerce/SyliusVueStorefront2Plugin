@@ -18,8 +18,11 @@ use Doctrine\Persistence\ObjectRepository;
 use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class RefreshTokenResolverSpec extends ObjectBehavior
@@ -29,11 +32,12 @@ final class RefreshTokenResolverSpec extends ObjectBehavior
         EntityManagerInterface $entityManager,
         ShopUserTokenFactoryInterface $tokenFactory,
         UserRepositoryInterface $userRepository,
-        ObjectRepository $refreshTokenRepository
+        ObjectRepository $refreshTokenRepository,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
         $entityManager->getRepository(RefreshToken::class)->willReturn($refreshTokenRepository);
-        $this->beConstructedWith($entityManager, $tokenFactory, $userRepository );
+        $this->beConstructedWith($entityManager, $tokenFactory, $userRepository, $eventDispatcher);
     }
 
     function it_is_initializable(): void
@@ -47,7 +51,8 @@ final class RefreshTokenResolverSpec extends ObjectBehavior
         UserRepositoryInterface $userRepository,
         ObjectRepository $refreshTokenRepository,
         ShopUserInterface $user,
-        ShopUserTokenInterface $shopUserToken
+        ShopUserTokenInterface $shopUserToken,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
         $refreshTokenClass = "Path/To/RefreshTokenClass";
@@ -79,6 +84,9 @@ final class RefreshTokenResolverSpec extends ObjectBehavior
         $entityManager->flush()->shouldBeCalledOnce();
 
         $tokenFactory->create($user, $refreshToken)->willReturn($shopUserToken);
+
+        $eventDispatcher->dispatch(Argument::any(), RefreshTokenResolver::EVENT_NAME)->willReturn(Argument::any());
+
         $this->__invoke(null, $context)->shouldReturn($shopUserToken);
     }
 

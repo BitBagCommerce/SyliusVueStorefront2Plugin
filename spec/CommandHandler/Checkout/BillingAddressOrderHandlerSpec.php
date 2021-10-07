@@ -16,10 +16,12 @@ use BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout\BillingAddressOrderHandle
 use BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Customer\Model\CustomerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\InvalidArgumentException;
 
 
@@ -30,10 +32,11 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         OrderRepositoryInterface $orderRepository,
         ObjectManager $manager,
         CustomerProviderInterface $customerProvider,
-        OrderAddressStateResolverInterface $addressStateResolver
+        OrderAddressStateResolverInterface $addressStateResolver,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
-        $this->beConstructedWith($orderRepository, $manager, $customerProvider, $addressStateResolver);
+        $this->beConstructedWith($orderRepository, $manager, $customerProvider, $addressStateResolver, $eventDispatcher);
     }
 
     function it_is_initializable(): void
@@ -47,7 +50,8 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         CustomerProviderInterface $customerProvider,
         OrderAddressStateResolverInterface $addressStateResolver,
         OrderInterface $order,
-        CustomerInterface $customer
+        CustomerInterface $customer,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
         $addressOrder = new BillingAddressOrder("jd@mail.com", "token");
@@ -60,6 +64,8 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
 
         $addressStateResolver->resolve($order)->shouldBeCalled();
         $manager->persist($order)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(Argument::any(), BillingAddressOrderHandler::EVENT_NAME)->willReturn(Argument::any());
 
         $this->__invoke($addressOrder);
     }

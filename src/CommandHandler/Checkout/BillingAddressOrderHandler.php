@@ -17,12 +17,16 @@ use Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Webmozart\Assert\Assert;
 
 /** @experimental */
 final class BillingAddressOrderHandler implements MessageHandlerInterface
 {
+    public const EVENT_NAME = "bitbag_sylius_graphql.choose_order_billing_address.complete";
+
     private OrderRepositoryInterface $orderRepository;
 
     private ObjectManager $manager;
@@ -31,33 +35,39 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
 
     private OrderAddressStateResolverInterface $addressStateResolver;
 
+    private EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         ObjectManager $manager,
         CustomerProviderInterface $customerProvider,
-        OrderAddressStateResolverInterface $addressStateResolver
+        OrderAddressStateResolverInterface $addressStateResolver,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->orderRepository = $orderRepository;
         $this->manager = $manager;
         $this->customerProvider = $customerProvider;
         $this->addressStateResolver = $addressStateResolver;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function __invoke(BillingAddressOrder $addressOrder): OrderInterface
+    public function __invoke(BillingAddressOrder $command): OrderInterface
     {
-        $tokenValue = $addressOrder->orderTokenValue;
+        $tokenValue = $command->orderTokenValue;
         Assert::notNull($tokenValue);
 
         $order = $this->orderRepository->findCartByTokenValue($tokenValue);
         Assert::isInstanceOf($order, OrderInterface::class, sprintf('Order with %s token has not been found.', $tokenValue));
 
-        $this->applyCustomer($order, $addressOrder);
+        $this->applyCustomer($order, $command);
 
-        $this->applyBillingAddress($addressOrder, $order);
+        $this->applyBillingAddress($command, $order);
 
         $this->addressStateResolver->resolve($order);
 
         $this->manager->persist($order);
+
+        $this->eventDispatcher->dispatch(new GenericEvent($order,[$command]), self::EVENT_NAME);
 
         return $order;
     }

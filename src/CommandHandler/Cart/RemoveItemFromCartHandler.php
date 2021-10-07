@@ -15,30 +15,38 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Sylius\Component\Order\Repository\OrderItemRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Webmozart\Assert\Assert;
 
 /** @experimental */
 final class RemoveItemFromCartHandler implements MessageHandlerInterface
 {
+    public const EVENT_NAME = "bitbag_sylius_graphql.remove_item_from_cart.complete";
+
     private OrderItemRepositoryInterface $orderItemRepository;
 
     private OrderModifierInterface $orderModifier;
 
+    private EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         OrderItemRepositoryInterface $orderItemRepository,
-        OrderModifierInterface $orderModifier
+        OrderModifierInterface $orderModifier,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->orderItemRepository = $orderItemRepository;
         $this->orderModifier = $orderModifier;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function __invoke(RemoveItemFromCart $removeItemFromCart): OrderInterface
+    public function __invoke(RemoveItemFromCart $command): OrderInterface
     {
         /** @var OrderItemInterface|null $orderItem */
         $orderItem = $this->orderItemRepository->findOneByIdAndCartTokenValue(
-            $removeItemFromCart->itemId,
-            $removeItemFromCart->orderTokenValue
+            $command->itemId,
+            $command->orderTokenValue
         );
 
         Assert::notNull($orderItem);
@@ -46,9 +54,11 @@ final class RemoveItemFromCartHandler implements MessageHandlerInterface
         /** @var OrderInterface $cart */
         $cart = $orderItem->getOrder();
 
-        Assert::same($cart->getTokenValue(), $removeItemFromCart->orderTokenValue);
+        Assert::same($cart->getTokenValue(), $command->orderTokenValue);
 
         $this->orderModifier->removeFromOrder($cart, $orderItem);
+
+        $this->eventDispatcher->dispatch(new GenericEvent($cart,[$command]), self::EVENT_NAME);
 
         return $cart;
     }

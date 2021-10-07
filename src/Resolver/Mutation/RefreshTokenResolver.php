@@ -19,15 +19,21 @@ use Doctrine\Persistence\ObjectRepository;
 use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class RefreshTokenResolver implements MutationResolverInterface
 {
+    public const EVENT_NAME = "bitbag_sylius_graphql.mutation_resolver.refresh_token.complete";
+
     private EntityManagerInterface $entityManager;
 
     private UserRepositoryInterface $userRepository;
 
     private ShopUserTokenFactoryInterface $tokenFactory;
+
+    private EventDispatcherInterface $eventDispatcher;
 
     /** @var EntityRepository<RefreshToken>  */
     private ObjectRepository $refreshTokenRepository;
@@ -35,12 +41,14 @@ final class RefreshTokenResolver implements MutationResolverInterface
     public function __construct(
         EntityManagerInterface $entityManager,
         ShopUserTokenFactoryInterface $tokenFactory,
-        UserRepositoryInterface $userRepository
+        UserRepositoryInterface $userRepository,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->entityManager = $entityManager;
         $this->tokenFactory = $tokenFactory;
         $this->userRepository = $userRepository;
         $this->refreshTokenRepository = $entityManager->getRepository(RefreshToken::class);
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke($item, array $context): ?ShopUserTokenInterface
@@ -67,6 +75,8 @@ final class RefreshTokenResolver implements MutationResolverInterface
         $refreshTokenExpirationDate = new \DateTime('+1 month');
         $refreshToken->setValid($refreshTokenExpirationDate);
         $this->entityManager->flush();
+
+        $this->eventDispatcher->dispatch(new GenericEvent($user,$input), self::EVENT_NAME);
 
         return $this->tokenFactory->create($user, $refreshToken);
     }

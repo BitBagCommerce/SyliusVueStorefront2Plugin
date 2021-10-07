@@ -18,12 +18,16 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Webmozart\Assert\Assert;
 
 /** @psalm-suppress DeprecatedClass */
 final class LoginResolver implements MutationResolverInterface
 {
+    public const EVENT_NAME = "bitbag_sylius_graphql.mutation_resolver.login.complete";
+
     private EncoderFactoryInterface $encoderFactory;
 
     private EntityManagerInterface $entityManager;
@@ -34,19 +38,23 @@ final class LoginResolver implements MutationResolverInterface
 
     private ShopUserTokenFactoryInterface $tokenFactory;
 
+    private EventDispatcherInterface $eventDispatcher;
+
     /** @psalm-suppress DeprecatedClass */
     public function __construct(
         EntityManagerInterface $entityManager,
         UserRepositoryInterface $userRepository,
         OrderRepositoryInterface $orderRepository,
         EncoderFactoryInterface $encoderFactory,
-        ShopUserTokenFactoryInterface $tokenFactory
+        ShopUserTokenFactoryInterface $tokenFactory,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
         $this->orderRepository = $orderRepository;
         $this->encoderFactory = $encoderFactory;
         $this->tokenFactory = $tokenFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -83,6 +91,8 @@ final class LoginResolver implements MutationResolverInterface
             $refreshToken = $this->tokenFactory->getRefreshToken($user);
             $shopUserToken = $this->tokenFactory->create($user, $refreshToken);
             $this->applyOrder($input, $user);
+
+            $this->eventDispatcher->dispatch(new GenericEvent($shopUserToken,$input), self::EVENT_NAME);
 
             return $shopUserToken;
         }

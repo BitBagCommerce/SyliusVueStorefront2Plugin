@@ -16,26 +16,34 @@ use Sylius\Component\Customer\Model\CustomerInterface;
 use Sylius\Component\Resource\Metadata\MetadataInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Sylius\Component\User\Security\PasswordUpdaterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Webmozart\Assert\Assert;
 
 /** @experimental */
 final class ResetPasswordHandler implements MessageHandlerInterface
 {
+    public const EVENT_NAME = "bitbag_sylius_graphql.reset_password.complete";
+
     private UserRepositoryInterface $userRepository;
 
     private MetadataInterface $metadata;
 
     private PasswordUpdaterInterface $passwordUpdater;
 
+    private EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         UserRepositoryInterface $userRepository,
         MetadataInterface $metadata,
-        PasswordUpdaterInterface $passwordUpdater
+        PasswordUpdaterInterface $passwordUpdater,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->userRepository = $userRepository;
         $this->metadata = $metadata;
         $this->passwordUpdater = $passwordUpdater;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -64,6 +72,8 @@ final class ResetPasswordHandler implements MessageHandlerInterface
 
         $customer = $user->getCustomer();
         Assert::notNull($customer);
+
+        $this->eventDispatcher->dispatch(new GenericEvent($user,[$command]), self::EVENT_NAME);
 
         return $customer;
     }

@@ -14,11 +14,13 @@ use BitBag\SyliusGraphqlPlugin\Command\Cart\ApplyCouponToCart;
 use BitBag\SyliusGraphqlPlugin\Command\Cart\ApplyCouponToCartSpec;
 use BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\ApplyCouponToCartHandler;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\Processor\OrderProcessorInterface;
 use Sylius\Component\Promotion\Model\PromotionCouponInterface;
 use Sylius\Component\Promotion\Repository\PromotionCouponRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 
 final class ApplyCouponToCartHandlerSpec extends ObjectBehavior
@@ -27,10 +29,11 @@ final class ApplyCouponToCartHandlerSpec extends ObjectBehavior
     function let(
         OrderRepositoryInterface $orderRepository,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
-        OrderProcessorInterface $orderProcessor
+        OrderProcessorInterface $orderProcessor,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
-        $this->beConstructedWith($orderRepository, $promotionCouponRepository, $orderProcessor);
+        $this->beConstructedWith($orderRepository, $promotionCouponRepository, $orderProcessor, $eventDispatcher);
     }
 
     function it_is_initializable(): void
@@ -43,7 +46,8 @@ final class ApplyCouponToCartHandlerSpec extends ObjectBehavior
         OrderProcessorInterface $orderProcessor,
         OrderInterface $cart,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
-        PromotionCouponInterface $promotionCoupon
+        PromotionCouponInterface $promotionCoupon,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
         $code = "code";
@@ -55,6 +59,8 @@ final class ApplyCouponToCartHandlerSpec extends ObjectBehavior
 
         $cart->setPromotionCoupon($promotionCoupon->getWrappedObject())->shouldBeCalled();
         $orderProcessor->process($cart->getWrappedObject())->shouldBeCalled();
+
+        $eventDispatcher->dispatch(Argument::any(), ApplyCouponToCartHandler::EVENT_NAME)->willReturn(Argument::any());
 
         $this->__invoke($command);
     }

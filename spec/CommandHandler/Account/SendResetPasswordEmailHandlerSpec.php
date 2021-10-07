@@ -22,6 +22,7 @@ use Sylius\Component\Customer\Model\CustomerInterface;
 use Sylius\Component\Mailer\Sender\SenderInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Sylius\Component\User\Security\Generator\GeneratorInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 
 final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
@@ -31,10 +32,11 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
         SenderInterface $emailSender,
         ChannelContextInterface $channelContext,
         UserRepositoryInterface $userRepository,
-        GeneratorInterface $generator
+        GeneratorInterface $generator,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
-        $this->beConstructedWith($emailSender, $channelContext, $userRepository, $generator);
+        $this->beConstructedWith($emailSender, $channelContext, $userRepository, $generator, $eventDispatcher);
     }
 
     function it_is_initializable(): void
@@ -49,7 +51,8 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
         GeneratorInterface $generator,
         ShopUserInterface $user,
         ChannelInterface $channel,
-        CustomerInterface $customer
+        CustomerInterface $customer,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
         $resetToken = "hdhgvshjvbwje";
@@ -74,6 +77,7 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $user->getCustomer()->willReturn($customer);
+        $eventDispatcher->dispatch(Argument::any(), SendResetPasswordEmailHandler::EVENT_NAME)->willReturn(Argument::any());
 
         $this->__invoke($command);
     }

@@ -15,10 +15,12 @@ use BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout\ShippingAddressOrderHandl
 use BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Customer\Model\CustomerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\InvalidArgumentException;
 
 
@@ -29,10 +31,11 @@ final class ShippingAddressOrderHandlerSpec extends ObjectBehavior
         OrderRepositoryInterface $orderRepository,
         ObjectManager $manager,
         CustomerProviderInterface $customerProvider,
-        OrderAddressStateResolverInterface $addressStateResolver
+        OrderAddressStateResolverInterface $addressStateResolver,
+        EventDispatcherInterface $eventDispatcher
     )
     {
-        $this->beConstructedWith($orderRepository, $manager, $customerProvider, $addressStateResolver);
+        $this->beConstructedWith($orderRepository, $manager, $customerProvider, $addressStateResolver, $eventDispatcher);
     }
 
     function it_is_initializable(): void
@@ -45,7 +48,8 @@ final class ShippingAddressOrderHandlerSpec extends ObjectBehavior
         ObjectManager $manager,
         OrderAddressStateResolverInterface $addressStateResolver,
         OrderInterface $order,
-        CustomerInterface $customer
+        CustomerInterface $customer,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
         $addressOrder = new ShippingAddressOrder("jd@mail.com", "token");
@@ -56,6 +60,8 @@ final class ShippingAddressOrderHandlerSpec extends ObjectBehavior
         $order->setShippingAddress($addressOrder->shippingAddress)->shouldNotBeCalled();
         $addressStateResolver->resolve($order)->shouldBeCalled();
         $manager->persist($order)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(Argument::any(), ShippingAddressOrderHandler::EVENT_NAME)->willReturn(Argument::any());
 
         $this->__invoke($addressOrder);
     }

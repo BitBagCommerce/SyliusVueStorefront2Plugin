@@ -13,6 +13,7 @@ namespace spec\BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout;
 use BitBag\SyliusGraphqlPlugin\Command\Checkout\ChoosePaymentMethod;
 use BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout\ChoosePaymentMethodHandler;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use SM\Factory\FactoryInterface;
 use SM\StateMachine\StateMachineInterface;
 use Sylius\Bundle\ApiBundle\Changer\PaymentMethodChangerInterface;
@@ -23,6 +24,7 @@ use Sylius\Component\Core\OrderCheckoutTransitions;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Core\Repository\PaymentMethodRepositoryInterface;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\InvalidArgumentException;
 
 
@@ -34,10 +36,18 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         PaymentRepositoryInterface $paymentRepository,
         FactoryInterface $stateMachineFactory,
-        PaymentMethodChangerInterface $paymentMethodChanger
+        PaymentMethodChangerInterface $paymentMethodChanger,
+        EventDispatcherInterface $eventDispatcher
     )
     {
-        $this->beConstructedWith($orderRepository, $paymentMethodRepository, $paymentRepository, $stateMachineFactory, $paymentMethodChanger);
+        $this->beConstructedWith(
+            $orderRepository,
+            $paymentMethodRepository,
+            $paymentRepository,
+            $stateMachineFactory,
+            $paymentMethodChanger,
+            $eventDispatcher
+        );
     }
 
     function it_is_initializable(): void
@@ -54,7 +64,8 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         OrderInterface $cart,
         PaymentMethodInterface $paymentMethod,
         PaymentInterface $payment,
-        StateMachineInterface $stateMachine
+        StateMachineInterface $stateMachine,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
         $choosePaymentMethod = new ChoosePaymentMethod("token", "cash", "paymentId");
@@ -73,13 +84,14 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         $cartId = 1;
         $cart->getId()->willReturn($cartId);
         $paymentRepository->findOneByOrderId($paymentId, $cartId)->willReturn($payment);
-//        Assert::notNull($payment, 'Can not find payment with given identifier.');
 
         $cart->getState()->willReturn(OrderInterface::STATE_CART);
         $stateMachineFactory->get($cart, OrderCheckoutTransitions::GRAPH)->willReturn($stateMachine);
         $stateMachine->can(OrderCheckoutTransitions::TRANSITION_SELECT_PAYMENT)->willReturn(true);
         $payment->setMethod($paymentMethod)->shouldBeCalled();
         $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_SELECT_PAYMENT)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(Argument::any(), ChoosePaymentMethodHandler::EVENT_NAME)->willReturn(Argument::any());
 
         $this->__invoke($choosePaymentMethod)->shouldReturn($cart);
     }

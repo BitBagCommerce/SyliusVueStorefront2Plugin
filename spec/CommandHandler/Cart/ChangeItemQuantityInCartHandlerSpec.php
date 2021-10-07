@@ -14,12 +14,13 @@ use BitBag\SyliusGraphqlPlugin\Command\Cart\ChangeItemQuantityInCart;
 use BitBag\SyliusGraphqlPlugin\Command\Cart\ChangeItemQuantityInCartSpec;
 use BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\ChangeItemQuantityInCartHandler;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Processor\OrderProcessorInterface;
 use Sylius\Component\Order\Repository\OrderItemRepositoryInterface;
-use Webmozart\Assert\Assert;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 
 final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
@@ -28,10 +29,11 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
     function let(
         OrderItemRepositoryInterface $orderItemRepository,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
-        OrderProcessorInterface $orderProcessor
+        OrderProcessorInterface $orderProcessor,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
-        $this->beConstructedWith($orderItemRepository, $orderItemQuantityModifier, $orderProcessor);
+        $this->beConstructedWith($orderItemRepository, $orderItemQuantityModifier, $orderProcessor, $eventDispatcher);
     }
 
     function it_is_initializable(): void
@@ -44,11 +46,12 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         OrderProcessorInterface $orderProcessor,
         OrderItemInterface $orderItem,
-        OrderInterface $cart
+        OrderInterface $cart,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
         $orderToken = "token";
-        $command = new ChangeItemQuantityInCart(10,"itemId", $orderToken);
+        $command = new ChangeItemQuantityInCart(10, "itemId", $orderToken);
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $command->orderItemId,
@@ -60,6 +63,8 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
 
         $orderItemQuantityModifier->modify($orderItem->getWrappedObject(), $command->quantity)->shouldBeCalled();
         $orderProcessor->process($cart->getWrappedObject())->shouldBeCalled();
+
+        $eventDispatcher->dispatch(Argument::any(), ChangeItemQuantityInCartHandler::EVENT_NAME)->willReturn(Argument::any());
 
         $this->__invoke($command);
     }

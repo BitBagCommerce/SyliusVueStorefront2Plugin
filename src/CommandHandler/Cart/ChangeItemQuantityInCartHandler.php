@@ -16,26 +16,34 @@ use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Processor\OrderProcessorInterface;
 use Sylius\Component\Order\Repository\OrderItemRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Webmozart\Assert\Assert;
 
 /** @experimental */
 final class ChangeItemQuantityInCartHandler implements MessageHandlerInterface
 {
+    public const EVENT_NAME = "bitbag_sylius_graphql.change_item_quantity.complete";
+
     private OrderItemRepositoryInterface $orderItemRepository;
 
     private OrderItemQuantityModifierInterface $orderItemQuantityModifier;
 
     private OrderProcessorInterface $orderProcessor;
 
+    private EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         OrderItemRepositoryInterface $orderItemRepository,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
-        OrderProcessorInterface $orderProcessor
+        OrderProcessorInterface $orderProcessor,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->orderItemRepository = $orderItemRepository;
         $this->orderItemQuantityModifier = $orderItemQuantityModifier;
         $this->orderProcessor = $orderProcessor;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(ChangeItemQuantityInCart $command): OrderInterface
@@ -55,6 +63,8 @@ final class ChangeItemQuantityInCartHandler implements MessageHandlerInterface
 
         $this->orderItemQuantityModifier->modify($orderItem, $command->quantity);
         $this->orderProcessor->process($cart);
+
+        $this->eventDispatcher->dispatch(new GenericEvent($cart,[$command]), self::EVENT_NAME);
 
         return $cart;
     }

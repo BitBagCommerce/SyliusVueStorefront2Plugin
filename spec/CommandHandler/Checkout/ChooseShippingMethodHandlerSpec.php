@@ -13,6 +13,7 @@ namespace spec\BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout;
 use BitBag\SyliusGraphqlPlugin\Command\Checkout\ChooseShippingMethod;
 use BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout\ChooseShippingMethodHandler;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use SM\Factory\FactoryInterface;
 use SM\StateMachine\StateMachineInterface;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -23,6 +24,7 @@ use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Core\Repository\ShipmentRepositoryInterface;
 use Sylius\Component\Core\Repository\ShippingMethodRepositoryInterface;
 use Sylius\Component\Shipping\Checker\Eligibility\ShippingMethodEligibilityCheckerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\InvalidArgumentException;
 
 
@@ -34,10 +36,18 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         ShippingMethodRepositoryInterface $shippingMethodRepository,
         ShipmentRepositoryInterface $shipmentRepository,
         ShippingMethodEligibilityCheckerInterface $eligibilityChecker,
-        FactoryInterface $stateMachineFactory
+        FactoryInterface $stateMachineFactory,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
-        $this->beConstructedWith($orderRepository, $shippingMethodRepository, $shipmentRepository, $eligibilityChecker, $stateMachineFactory);
+        $this->beConstructedWith(
+            $orderRepository,
+            $shippingMethodRepository,
+            $shipmentRepository,
+            $eligibilityChecker,
+            $stateMachineFactory,
+            $eventDispatcher
+        );
     }
 
     function it_is_initializable(): void
@@ -54,7 +64,8 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         OrderInterface $cart,
         ShippingMethodInterface $shippingMethod,
         StateMachineInterface $stateMachine,
-        ShipmentInterface $shipment
+        ShipmentInterface $shipment,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
         $chooseShippingMethod = new ChooseShippingMethod("token", "ups", "shipmentId");
@@ -77,6 +88,8 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
 
         $shipment->setMethod($shippingMethod)->shouldBeCalled();
         $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_SELECT_SHIPPING)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(Argument::any(), ChooseShippingMethodHandler::EVENT_NAME)->willReturn(Argument::any());
 
         $this->__invoke($chooseShippingMethod);
     }

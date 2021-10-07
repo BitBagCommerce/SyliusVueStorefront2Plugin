@@ -12,21 +12,24 @@ namespace spec\BitBag\SyliusGraphqlPlugin\Resolver\Mutation;
 
 use BitBag\SyliusGraphqlPlugin\Resolver\Mutation\OrderCouponResolver;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Bundle\ApiBundle\Context\UserContextInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Promotion\Model\PromotionCouponInterface;
 use Sylius\Component\User\Model\UserInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class OrderCouponResolverSpec extends ObjectBehavior
 {
 
     function let(
         OrderRepositoryInterface $orderRepository,
-        UserContextInterface $userContext
+        UserContextInterface $userContext,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
-        $this->beConstructedWith($orderRepository, $userContext);
+        $this->beConstructedWith($orderRepository, $userContext, $eventDispatcher);
     }
 
     function it_is_initializable(): void
@@ -39,7 +42,8 @@ final class OrderCouponResolverSpec extends ObjectBehavior
         UserContextInterface $userContext,
         OrderInterface $order,
         PromotionCouponInterface $promotionCoupon,
-        UserInterface $user
+        UserInterface $user,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
         $context = [
@@ -61,6 +65,8 @@ final class OrderCouponResolverSpec extends ObjectBehavior
         $order->getUser()->willReturn($user);
 
         $order->getPromotionCoupon()->willReturn($promotionCoupon);
+
+        $eventDispatcher->dispatch(Argument::any(), OrderCouponResolver::EVENT_NAME)->willReturn(Argument::any());
 
         $this->__invoke(null, $context)->shouldReturn($promotionCoupon);
     }

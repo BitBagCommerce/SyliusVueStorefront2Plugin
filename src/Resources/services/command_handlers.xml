@@ -19,6 +19,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         >
             <argument type="service" id="sylius.repository.order_item" />
             <argument type="service" id="sylius.order_modifier" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -30,6 +31,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="sylius.repository.order_item" />
             <argument type="service" id="sylius.order_item_quantity_modifier" />
             <argument type="service" id="sylius.order_processing.order_processor" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -43,6 +45,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="sylius.repository.shipment" />
             <argument type="service" id="sylius.shipping_method_eligibility_checker" />
             <argument type="service" id="sm.factory" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -56,6 +59,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="sylius.repository.payment" />
             <argument type="service" id="sm.factory" />
             <argument type="service" id="Sylius\Bundle\ApiBundle\Changer\PaymentMethodChanger" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -66,6 +70,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="sylius.manager.order" />
             <argument type="service" id="Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface" />
             <argument type="service" id="bitbag.sylius_graphql_plugin.resolver.order_address_state_resolver" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -76,6 +81,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="sylius.manager.order" />
             <argument type="service" id="Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface" />
             <argument type="service" id="bitbag.sylius_graphql_plugin.resolver.order_address_state_resolver" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -85,6 +91,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.repository.promotion_coupon" />
             <argument type="service" id="sylius.order_processing.order_processor" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -95,6 +102,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.repository.promotion_coupon" />
             <argument type="service" id="sylius.order_processing.order_processor" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -104,6 +112,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="sylius.context.channel.single_channel" />
             <argument type="service" id="sylius.repository.shop_user" />
             <argument type="service" id="sylius.shop_user.token_generator.password_reset" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -117,6 +126,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 </service>
             </argument>
             <argument type="service" id="sylius.security.password_updater" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>

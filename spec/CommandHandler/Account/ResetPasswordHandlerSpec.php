@@ -13,13 +13,14 @@ namespace spec\BitBag\SyliusGraphqlPlugin\CommandHandler\Account;
 use BitBag\SyliusGraphqlPlugin\Command\Account\ResetPassword;
 use BitBag\SyliusGraphqlPlugin\CommandHandler\Account\ResetPasswordHandler;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Customer\Model\CustomerInterface;
 use Sylius\Component\Resource\Metadata\MetadataInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Sylius\Component\User\Security\PasswordUpdaterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Webmozart\Assert\Assert;
 
 
 final class ResetPasswordHandlerSpec extends ObjectBehavior
@@ -28,10 +29,11 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
     function let(
         UserRepositoryInterface $userRepository,
         MetadataInterface $metadata,
-        PasswordUpdaterInterface $passwordUpdater
+        PasswordUpdaterInterface $passwordUpdater,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
-        $this->beConstructedWith($userRepository, $metadata, $passwordUpdater);
+        $this->beConstructedWith($userRepository, $metadata, $passwordUpdater, $eventDispatcher);
     }
 
     function it_is_initializable(): void
@@ -47,12 +49,13 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
     /**
      * @throws \Exception
      */
-    function it_changes_customer_password(
+    function it_is_invokable(
         UserRepositoryInterface $userRepository,
         MetadataInterface $metadata,
         PasswordUpdaterInterface $passwordUpdater,
         ShopUserInterface $user,
-        CustomerInterface $customer
+        CustomerInterface $customer,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
         $command = new ResetPassword("newS3ret", "newS3ret", "token");
@@ -73,6 +76,8 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
         $passwordUpdater->updatePassword($user->getWrappedObject())->shouldBeCalledOnce();
 
         $user->getCustomer()->willReturn($customer);
+
+        $eventDispatcher->dispatch(Argument::any(), ResetPasswordHandler::EVENT_NAME)->willReturn(Argument::any());
 
         $this->__invoke($command);
     }

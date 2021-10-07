@@ -18,12 +18,17 @@ use Sylius\Component\Customer\Model\CustomerInterface;
 use Sylius\Component\Mailer\Sender\SenderInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Sylius\Component\User\Security\Generator\GeneratorInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Webmozart\Assert\Assert;
 
 /** @experimental */
 final class SendResetPasswordEmailHandler implements MessageHandlerInterface
 {
+
+    public const EVENT_NAME = "bitbag_sylius_graphql.send_reset_password_email.complete";
+
     private SenderInterface $emailSender;
 
     private ChannelContextInterface $channelContext;
@@ -32,16 +37,21 @@ final class SendResetPasswordEmailHandler implements MessageHandlerInterface
 
     private GeneratorInterface $generator;
 
+    private EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         SenderInterface $emailSender,
         ChannelContextInterface $channelContext,
         UserRepositoryInterface $userRepository,
-        GeneratorInterface $generator
-    ) {
+        GeneratorInterface $generator,
+        EventDispatcherInterface $eventDispatcher
+    )
+    {
         $this->emailSender = $emailSender;
         $this->channelContext = $channelContext;
         $this->userRepository = $userRepository;
         $this->generator = $generator;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(SendResetPasswordEmail $command): CustomerInterface
@@ -67,6 +77,8 @@ final class SendResetPasswordEmailHandler implements MessageHandlerInterface
 
         $customer = $user->getCustomer();
         Assert::notNull($customer);
+
+        $this->eventDispatcher->dispatch(new GenericEvent($user,[$command]), self::EVENT_NAME);
 
         return $customer;
     }

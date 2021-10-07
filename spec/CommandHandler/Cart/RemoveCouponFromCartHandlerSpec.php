@@ -13,12 +13,14 @@ namespace spec\BitBag\SyliusGraphqlPlugin\CommandHandler\Cart;
 use BitBag\SyliusGraphqlPlugin\Command\Cart\RemoveCouponFromCart;
 use BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\RemoveCouponFromCartHandler;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\Processor\OrderProcessorInterface;
 use Sylius\Component\Promotion\Model\PromotionCouponInterface;
 use Sylius\Component\Promotion\Model\PromotionInterface;
 use Sylius\Component\Promotion\Repository\PromotionCouponRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 
 final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
@@ -27,10 +29,11 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
     function let(
         OrderRepositoryInterface $orderRepository,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
-        OrderProcessorInterface $orderProcessor
+        OrderProcessorInterface $orderProcessor,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
-        $this->beConstructedWith($orderRepository, $promotionCouponRepository, $orderProcessor);
+        $this->beConstructedWith($orderRepository, $promotionCouponRepository, $orderProcessor, $eventDispatcher);
     }
 
     function it_is_initializable(): void
@@ -45,7 +48,8 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         PromotionCouponInterface $promotionCoupon,
         PromotionCouponInterface $cartCoupon,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
-        PromotionInterface $promotion
+        PromotionInterface $promotion,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
         $tokenValue = "token";
@@ -64,6 +68,8 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         $cart->setPromotionCoupon(null)->shouldBeCalled();
 
         $orderProcessor->process($cart)->shouldBeCalledOnce();
+
+        $eventDispatcher->dispatch(Argument::any(), RemoveCouponFromCartHandler::EVENT_NAME)->willReturn(Argument::any());
 
         $this->__invoke($command);
     }

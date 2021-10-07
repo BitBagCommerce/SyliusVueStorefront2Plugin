@@ -14,10 +14,12 @@ use BitBag\SyliusGraphqlPlugin\Command\Cart\RemoveItemFromCart;
 use BitBag\SyliusGraphqlPlugin\Command\Cart\RemoveItemFromCartSpec;
 use BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\RemoveItemFromCartHandler;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Sylius\Component\Order\Repository\OrderItemRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 use Webmozart\Assert\InvalidArgumentException;
 
@@ -27,10 +29,11 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
 
     function let(
         OrderItemRepositoryInterface $orderItemRepository,
-        OrderModifierInterface $orderModifier
+        OrderModifierInterface $orderModifier,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
-        $this->beConstructedWith($orderItemRepository, $orderModifier);
+        $this->beConstructedWith($orderItemRepository, $orderModifier, $eventDispatcher);
     }
 
     function it_is_initializable(): void
@@ -42,7 +45,8 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         OrderItemRepositoryInterface $orderItemRepository,
         OrderModifierInterface $orderModifier,
         OrderItemInterface $orderItem,
-        OrderInterface $cart
+        OrderInterface $cart,
+        EventDispatcherInterface $eventDispatcher
     ): void
     {
         $tokenValue = "token";
@@ -56,9 +60,9 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         $orderItem->getOrder()->willReturn($cart);
         $cart->getTokenValue()->willReturn($tokenValue);
 
-//        Assert::same($cart->getTokenValue(), $removeItemFromCart->orderTokenValue);
-
         $orderModifier->removeFromOrder($cart->getWrappedObject(), $orderItem->getWrappedObject())->shouldBeCalledOnce();
+
+        $eventDispatcher->dispatch(Argument::any(), RemoveItemFromCartHandler::EVENT_NAME)->willReturn(Argument::any());
 
         $this->__invoke($removeItemFromCart);
     }
