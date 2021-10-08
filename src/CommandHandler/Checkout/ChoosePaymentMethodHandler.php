@@ -77,6 +77,8 @@ final class ChoosePaymentMethodHandler implements MessageHandlerInterface
 
         if ($cart->getState() === OrderInterface::STATE_NEW) {
             $this->paymentMethodChanger->changePaymentMethod($paymentMethodCode, $paymentId, $cart);
+
+            /** @psalm-suppress TooManyArguments */
             $this->eventDispatcher->dispatch(new GenericEvent($cart, [$command]), self::EVENT_NAME);
 
             return $cart;
@@ -104,6 +106,7 @@ final class ChoosePaymentMethodHandler implements MessageHandlerInterface
             $payment->setMethod($paymentMethod);
             $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_SELECT_PAYMENT);
 
+            /** @psalm-suppress TooManyArguments */
             $this->eventDispatcher->dispatch(new GenericEvent($cart, [$command]), self::EVENT_NAME);
 
             return $cart;

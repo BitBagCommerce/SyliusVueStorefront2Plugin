@@ -88,6 +88,7 @@ final class ChooseShippingMethodHandler implements MessageHandlerInterface
         $shipment->setMethod($shippingMethod);
         $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_SELECT_SHIPPING);
 
+        /** @psalm-suppress TooManyArguments */
         $this->eventDispatcher->dispatch(new GenericEvent($cart, [$command]), self::EVENT_NAME);
 
         return $cart;

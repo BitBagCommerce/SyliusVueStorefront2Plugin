@@ -67,6 +67,7 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
 
         $this->manager->persist($order);
 
+        /** @psalm-suppress TooManyArguments */
         $this->eventDispatcher->dispatch(new GenericEvent($order, [$command]), self::EVENT_NAME);
 
         return $order;

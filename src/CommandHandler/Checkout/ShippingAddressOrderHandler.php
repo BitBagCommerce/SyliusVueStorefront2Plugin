@@ -65,6 +65,7 @@ final class ShippingAddressOrderHandler implements MessageHandlerInterface
         $this->addressStateResolver->resolve($order);
         $this->manager->persist($order);
 
+        /** @psalm-suppress TooManyArguments */
         $this->eventDispatcher->dispatch(new GenericEvent($order, [$command]), self::EVENT_NAME);
 
         return $order;

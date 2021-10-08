@@ -93,6 +93,7 @@ final class LoginResolver implements MutationResolverInterface
             $shopUserToken = $this->tokenFactory->create($user, $refreshToken);
             $this->applyOrder($input, $user);
 
+            /** @psalm-suppress TooManyArguments */
             $this->eventDispatcher->dispatch(new GenericEvent($shopUserToken, $input), self::EVENT_NAME);
 
             return $shopUserToken;

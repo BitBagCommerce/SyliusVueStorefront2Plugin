@@ -85,6 +85,7 @@ final class RefreshTokenResolver implements MutationResolverInterface
         $refreshToken->setValid($refreshTokenExpirationDate);
         $this->entityManager->flush();
 
+        /** @psalm-suppress TooManyArguments */
         $this->eventDispatcher->dispatch(new GenericEvent($user, $input), self::EVENT_NAME);
 
         return $this->shopUserTokenFactory->create($user, $refreshToken);

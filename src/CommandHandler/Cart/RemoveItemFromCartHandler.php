@@ -58,6 +58,7 @@ final class RemoveItemFromCartHandler implements MessageHandlerInterface
 
         $this->orderModifier->removeFromOrder($cart, $orderItem);
 
+        /** @psalm-suppress TooManyArguments */
         $this->eventDispatcher->dispatch(new GenericEvent($cart, [$command]), self::EVENT_NAME);
 
         return $cart;

@@ -64,6 +64,7 @@ final class ChangeItemQuantityInCartHandler implements MessageHandlerInterface
         $this->orderItemQuantityModifier->modify($orderItem, $command->quantity);
         $this->orderProcessor->process($cart);
 
+        /** @psalm-suppress TooManyArguments */
         $this->eventDispatcher->dispatch(new GenericEvent($cart, [$command]), self::EVENT_NAME);
 
         return $cart;

@@ -58,6 +58,7 @@ final class OrderCouponResolver implements MutationResolverInterface
         /** @var OrderInterface $order */
         $order = $this->orderRepository->findOneBy(['tokenValue' => $orderToken]);
 
+        /** @psalm-suppress TooManyArguments */
         $this->eventDispatcher->dispatch(new GenericEvent($order, $input), self::EVENT_NAME);
 
         if ($this->isAllowedToRetrieveCoupon($order, $user)) {

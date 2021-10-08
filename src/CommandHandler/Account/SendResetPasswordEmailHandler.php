@@ -76,6 +76,7 @@ final class SendResetPasswordEmailHandler implements MessageHandlerInterface
         $customer = $user->getCustomer();
         Assert::notNull($customer);
 
+        /** @psalm-suppress TooManyArguments */
         $this->eventDispatcher->dispatch(new GenericEvent($user, [$command]), self::EVENT_NAME);
 
         return $customer;
