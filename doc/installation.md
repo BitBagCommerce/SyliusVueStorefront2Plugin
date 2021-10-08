@@ -25,10 +25,27 @@
     imports:
         - { resource: "@BitBagSyliusGraphqlPlugin/Resources/config/config.yml" }
     ```    
-2. Add following envs
    
-   `BITBAG_SYLIUS_GRAPHQL_REFRESH_TOKEN_LIFESPAN` - Lifespan of refresh token in seconds
-   `BITBAG_SYLIUS_GRAPHQL_TEST_ENDPOINT` - graphql endpoint for behat tests
+    There are 2 plugin parameters that You can adjsut:
+   
+    ```yml
+    bitbag_sylius_graphql:
+        refresh_token_lifespan: 2592000 #that its default value
+        test_endpoint: 'http://127.0.0.1:8080/api/v2/graphql' #that its default value
+    ```
+2. Add doctrine mapping:
+
+    ```yml
+    doctrine:
+        orm:
+            mappings:
+                GraphqQL:
+                    is_bundle: false
+                    type: xml
+                    dir: '%kernel.project_dir%/vendor/bitbag/graphql-plugin/src/Resources/doctrine/model'
+                    prefix: 'BitBag\SyliusGraphqlPlugin\Model'
+                    alias: BitBag\SyliusGraphqlPlugin
+    ```
    
 4. In _sylius.yaml add mappings for promotion and product attribute so graphql can see them properly
 

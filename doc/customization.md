@@ -6,6 +6,18 @@
 $ bin/console debug:container | grep bitbag_sylius_graphql
 ```
 
+### There are generic events dispatched after completion of every custom mutation and command handler .e.g.
+
+```php
+    public const EVENT_NAME = 'bitbag_sylius_graphql.some_handler.complete';
+
+    public function __invoke(Command $command)
+    {
+        # logic...
+        $this->eventDispatcher->dispatch(new GenericEvent($arg, [$command]), self::EVENT_NAME);
+    }
+```
+
 ### Parameters you can override in your parameters.yml(.dist) file
 ```bash
 $ bin/console debug:container --parameters | grep bitbag
@@ -116,10 +128,12 @@ $ bin/console doctrine:schema:create -e test
 
 $ bin/console server:run 127.0.0.1:8000 -d public -e test
 OR
-$ symfony server:start -d --dir=public
+$ APP_ENV=test symfony server:start -d --dir=public
 
 $ open http://127.0.0.1:8000
 $ vendor/bin/behat
+$ vendor/bin/ecs check src --fix
+$ vendor/bin/psalm
 $ vendor/bin/phpspec run
 $ vendor/bin/phpstan analyse -c phpstan.neon -l max src/
 ```
