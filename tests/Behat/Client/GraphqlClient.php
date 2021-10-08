@@ -174,7 +174,7 @@ final class GraphqlClient implements GraphqlClientInterface
         try {
             /** @var array $jsonData */
             $jsonData = json_decode($content, true);
-        } catch (Exception $exception){
+        } catch (Exception $exception) {
             print_r($exception->getMessage());
         }
 
@@ -224,8 +224,7 @@ final class GraphqlClient implements GraphqlClientInterface
         array $parameters = [],
         array $server = [],
         bool $changeHistory = true
-    ): Crawler
-    {
+    ): Crawler {
         $content = json_encode($parameters);
 
         $this->client->setServerParameter('CONTENT_TYPE', 'application/json');
@@ -260,7 +259,6 @@ final class GraphqlClient implements GraphqlClientInterface
     }
 
     /**
-     * @param array $responseArray
      * @throws Exception
      */
     private function checkIfResponseProperlyFormatted(array $responseArray): void
@@ -270,19 +268,11 @@ final class GraphqlClient implements GraphqlClientInterface
         }
     }
 
-    /**
-     * @param array $responseArray
-     * @return bool
-     */
     private function isDataSectionPresentInResponse(array $responseArray): bool
     {
         return array_key_exists('data', $responseArray) && is_array($responseArray['data']);
     }
 
-    /**
-     * @param array $responseArray
-     * @return bool
-     */
     private function isErrorSectionPresentInResponse(array $responseArray): bool
     {
         return array_key_exists('errors', $responseArray) && is_array($responseArray['errors']);

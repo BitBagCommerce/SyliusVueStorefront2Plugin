@@ -23,18 +23,15 @@ use Sylius\Component\Customer\Model\CustomerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\InvalidArgumentException;
 
-
 final class ShippingAddressOrderHandlerSpec extends ObjectBehavior
 {
-
     function let(
         OrderRepositoryInterface $orderRepository,
         ObjectManager $manager,
         CustomerProviderInterface $customerProvider,
         OrderAddressStateResolverInterface $addressStateResolver,
         EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->beConstructedWith($orderRepository, $manager, $customerProvider, $addressStateResolver, $eventDispatcher);
     }
 
@@ -50,9 +47,8 @@ final class ShippingAddressOrderHandlerSpec extends ObjectBehavior
         OrderInterface $order,
         CustomerInterface $customer,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
-        $addressOrder = new ShippingAddressOrder("jd@mail.com", "token");
+    ): void {
+        $addressOrder = new ShippingAddressOrder('jd@mail.com', 'token');
         $tokenValue = $addressOrder->orderTokenValue;
 
         $orderRepository->findCartByTokenValue($tokenValue)->willReturn($order);
@@ -68,9 +64,8 @@ final class ShippingAddressOrderHandlerSpec extends ObjectBehavior
 
     function it_throws_exception_when_cannot_find_cart(
         OrderRepositoryInterface $orderRepository
-    ): void
-    {
-        $addressOrder = new ShippingAddressOrder("jd@mail.com", "token");
+    ): void {
+        $addressOrder = new ShippingAddressOrder('jd@mail.com', 'token');
         $tokenValue = $addressOrder->orderTokenValue;
 
         $orderRepository->findCartByTokenValue($tokenValue)->willReturn(null);

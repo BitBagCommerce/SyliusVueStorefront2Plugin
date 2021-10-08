@@ -15,13 +15,11 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 use Sylius\Bundle\ApiBundle\Command\SubresourceIdAwareInterface;
 
-
 class ChooseShippingMethodSpec extends ObjectBehavior
 {
-
     function let(): void
     {
-        $this->beConstructedWith("orderTokenValue", "shippingMethodCode", "shipmentId");
+        $this->beConstructedWith('orderTokenValue', 'shippingMethodCode', 'shipmentId');
     }
 
     function it_is_initializable(): void

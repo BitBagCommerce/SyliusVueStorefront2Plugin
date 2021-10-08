@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusGraphqlPlugin\CommandHandler\Cart;
 
 use BitBag\SyliusGraphqlPlugin\Command\Cart\RemoveItemFromCart;
-use BitBag\SyliusGraphqlPlugin\Command\Cart\RemoveItemFromCartSpec;
 use BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\RemoveItemFromCartHandler;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -20,19 +19,15 @@ use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Sylius\Component\Order\Repository\OrderItemRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Webmozart\Assert\Assert;
 use Webmozart\Assert\InvalidArgumentException;
-
 
 final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
 {
-
     function let(
         OrderItemRepositoryInterface $orderItemRepository,
         OrderModifierInterface $orderModifier,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+    ): void {
         $this->beConstructedWith($orderItemRepository, $orderModifier, $eventDispatcher);
     }
 
@@ -47,10 +42,9 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         OrderItemInterface $orderItem,
         OrderInterface $cart,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
-        $tokenValue = "token";
-        $removeItemFromCart = new RemoveItemFromCart($tokenValue,222);
+    ): void {
+        $tokenValue = 'token';
+        $removeItemFromCart = new RemoveItemFromCart($tokenValue, 222);
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $removeItemFromCart->itemId,
@@ -72,10 +66,9 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         OrderModifierInterface $orderModifier,
         OrderItemInterface $orderItem,
         OrderInterface $cart
-    ): void
-    {
-        $tokenValue = "token";
-        $removeItemFromCart = new RemoveItemFromCart($tokenValue,222);
+    ): void {
+        $tokenValue = 'token';
+        $removeItemFromCart = new RemoveItemFromCart($tokenValue, 222);
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $removeItemFromCart->itemId,
@@ -91,11 +84,10 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         OrderModifierInterface $orderModifier,
         OrderItemInterface $orderItem,
         OrderInterface $cart
-    ): void
-    {
-        $tokenValue = "token";
-        $differentTokenValue = "different_token";
-        $removeItemFromCart = new RemoveItemFromCart($tokenValue,222);
+    ): void {
+        $tokenValue = 'token';
+        $differentTokenValue = 'different_token';
+        $removeItemFromCart = new RemoveItemFromCart($tokenValue, 222);
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $removeItemFromCart->itemId,

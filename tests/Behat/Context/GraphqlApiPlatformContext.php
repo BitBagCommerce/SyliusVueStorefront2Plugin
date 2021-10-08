@@ -235,10 +235,10 @@ final class GraphqlApiPlatformContext implements Context
 
     private function getJsonFromResponse(string $response): ?array
     {
-        /** @var array $jsonData */
         try {
+            /** @var array $jsonData */
             $jsonData = json_decode($response, true);
-        }catch (Exception $exception){
+        } catch (Exception $exception) {
             print_r($exception->getMessage());
         }
         if (json_last_error() === \JSON_ERROR_NONE) {

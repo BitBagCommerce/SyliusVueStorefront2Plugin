@@ -16,13 +16,11 @@ use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 use Sylius\Bundle\ApiBundle\Command\PaymentMethodCodeAwareInterface;
 use Sylius\Bundle\ApiBundle\Command\SubresourceIdAwareInterface;
 
-
 class ChoosePaymentMethodSpec extends ObjectBehavior
 {
-
     function let(): void
     {
-        $this->beConstructedWith("orderTokenValue", "paymentMethodCode", "paymentId");
+        $this->beConstructedWith('orderTokenValue', 'paymentMethodCode', 'paymentId');
     }
 
     function it_is_initializable(): void
@@ -49,5 +47,4 @@ class ChoosePaymentMethodSpec extends ObjectBehavior
     {
         $this->shouldImplement(SubresourceIdAwareInterface::class);
     }
-
 }

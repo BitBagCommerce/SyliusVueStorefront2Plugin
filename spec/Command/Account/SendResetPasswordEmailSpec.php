@@ -15,7 +15,6 @@ use PhpSpec\ObjectBehavior;
 
 class SendResetPasswordEmailSpec extends ObjectBehavior
 {
-
     function let(): void
     {
         $this->beConstructedWith('en_US', 'somemail@mail.com');

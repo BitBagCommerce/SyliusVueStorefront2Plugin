@@ -24,18 +24,15 @@ use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Sylius\Component\User\Security\Generator\GeneratorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-
 final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
 {
-
     function let(
         SenderInterface $emailSender,
         ChannelContextInterface $channelContext,
         UserRepositoryInterface $userRepository,
         GeneratorInterface $generator,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+    ): void {
         $this->beConstructedWith($emailSender, $channelContext, $userRepository, $generator, $eventDispatcher);
     }
 
@@ -53,11 +50,10 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
         ChannelInterface $channel,
         CustomerInterface $customer,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
-        $resetToken = "hdhgvshjvbwje";
+    ): void {
+        $resetToken = 'hdhgvshjvbwje';
 
-        $command = new SendResetPasswordEmail("en_US", "john.d@gmail.com");
+        $command = new SendResetPasswordEmail('en_US', 'john.d@gmail.com');
 
         $userRepository->findOneByEmail($command->email)->willReturn($user);
         $channelContext->getChannel()->willReturn($channel);
@@ -81,6 +77,4 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
 
         $this->__invoke($command);
     }
-
-
 }

@@ -15,12 +15,11 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 
-
 class BillingAddressOrderSpec extends ObjectBehavior
 {
     function let(AddressInterface $billingAddress): void
     {
-        $this->beConstructedWith("johndoe@mail.com", "orderTokenValue", $billingAddress);
+        $this->beConstructedWith('johndoe@mail.com', 'orderTokenValue', $billingAddress);
     }
 
     function it_is_initializable(): void
@@ -32,5 +31,4 @@ class BillingAddressOrderSpec extends ObjectBehavior
     {
         $this->shouldImplement(OrderTokenValueAwareInterface::class);
     }
-
 }

@@ -15,10 +15,9 @@ use PhpSpec\ObjectBehavior;
 
 class RemoveCouponFromCartSpec extends ObjectBehavior
 {
-
     function let(): void
     {
-        $this->beConstructedWith("orderTokenValue", "couponCode");
+        $this->beConstructedWith('orderTokenValue', 'couponCode');
     }
 
     function it_is_initializable(): void

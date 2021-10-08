@@ -22,22 +22,19 @@ use Prophecy\Argument;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 final class RefreshTokenResolverSpec extends ObjectBehavior
 {
-
     function let(
         EntityManagerInterface $entityManager,
         ShopUserTokenFactoryInterface $tokenFactory,
         UserRepositoryInterface $userRepository,
         ObjectRepository $refreshTokenRepository,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+    ): void {
         $entityManager->getRepository(RefreshToken::class)->willReturn($refreshTokenRepository);
-        $lifespan = "2592000";
+        $lifespan = '2592000';
         $this->beConstructedWith($entityManager, $tokenFactory, $userRepository, $eventDispatcher, $lifespan);
     }
 
@@ -54,24 +51,23 @@ final class RefreshTokenResolverSpec extends ObjectBehavior
         ShopUserInterface $user,
         ShopUserTokenInterface $shopUserToken,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
-        $refreshTokenClass = "Path/To/RefreshTokenClass";
+    ): void {
+        $refreshTokenClass = 'Path/To/RefreshTokenClass';
 
         $refreshToken = new RefreshToken();
-        $refreshToken->setValid(new \DateTime("+1 hour"));
-        $refreshToken->setUsername("username");
+        $refreshToken->setValid(new \DateTime('+1 hour'));
+        $refreshToken->setUsername('username');
 
         $context = [
-            "args" => [
-                "input" => [
-                    "refreshToken" => "token"
-                ]
-            ]
+            'args' => [
+                'input' => [
+                    'refreshToken' => 'token',
+                ],
+            ],
         ];
 
         $input = $context['args']['input'];
-        $refreshTokenString = (string)$input['refreshToken'];
+        $refreshTokenString = (string) $input['refreshToken'];
 
         $entityManager->getRepository($refreshTokenClass)->willReturn($refreshTokenRepository);
 
@@ -95,19 +91,18 @@ final class RefreshTokenResolverSpec extends ObjectBehavior
         EntityManagerInterface $entityManager,
         ObjectRepository $refreshTokenRepository,
         RefreshTokenInterface $refreshToken
-    ): void
-    {
-        $refreshTokenClass = "Path/To/RefreshTokenClass";
+    ): void {
+        $refreshTokenClass = 'Path/To/RefreshTokenClass';
         $context = [
-            "args" => [
-                "input" => [
-                    "refreshToken" => "token"
-                ]
-            ]
+            'args' => [
+                'input' => [
+                    'refreshToken' => 'token',
+                ],
+            ],
         ];
 
         $input = $context['args']['input'];
-        $refreshTokenString = (string)$input['refreshToken'];
+        $refreshTokenString = (string) $input['refreshToken'];
 
         $entityManager->getRepository($refreshTokenClass)->willReturn($refreshTokenRepository);
 

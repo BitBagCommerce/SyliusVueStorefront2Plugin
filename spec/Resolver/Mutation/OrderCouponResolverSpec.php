@@ -22,13 +22,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class OrderCouponResolverSpec extends ObjectBehavior
 {
-
     function let(
         OrderRepositoryInterface $orderRepository,
         UserContextInterface $userContext,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+    ): void {
         $this->beConstructedWith($orderRepository, $userContext, $eventDispatcher);
     }
 
@@ -44,19 +42,18 @@ final class OrderCouponResolverSpec extends ObjectBehavior
         PromotionCouponInterface $promotionCoupon,
         UserInterface $user,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+    ): void {
         $context = [
-            "args" => [
-                "input" => [
-                    "orderTokenValue" => "token"
-                ]
-            ]
+            'args' => [
+                'input' => [
+                    'orderTokenValue' => 'token',
+                ],
+            ],
         ];
 
         /** @var array $input */
         $input = $context['args']['input'];
-        $orderToken = (string)$input['orderTokenValue'];
+        $orderToken = (string) $input['orderTokenValue'];
 
         $userContext->getUser()->willReturn($user);
 

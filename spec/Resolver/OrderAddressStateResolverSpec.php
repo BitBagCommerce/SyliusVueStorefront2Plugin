@@ -15,14 +15,12 @@ use PhpSpec\ObjectBehavior;
 use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
 use SM\SMException;
 use SM\StateMachine\StateMachineInterface;
-use Sylius\Component\Core\Model\Address;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\OrderCheckoutTransitions;
 use Webmozart\Assert\InvalidArgumentException;
 
 final class OrderAddressStateResolverSpec extends ObjectBehavior
 {
-
     function let(StateMachineFactoryInterface $stateMachineFactory): void
     {
         $this->beConstructedWith($stateMachineFactory);
@@ -33,17 +31,14 @@ final class OrderAddressStateResolverSpec extends ObjectBehavior
         $this->shouldHaveType(OrderAddressStateResolver::class);
     }
 
-
     function it_resolves(
         StateMachineFactoryInterface $stateMachineFactory,
         StateMachineInterface $stateMachine,
         OrderInterface $order
-
-    ): void
-    {
+    ): void {
         $stateMachineFactory->get($order, OrderCheckoutTransitions::GRAPH)->willReturn($stateMachine);
 
-        $token = "token";
+        $token = 'token';
         $order->getTokenValue()->willReturn($token);
 
         $stateMachine->can(OrderCheckoutTransitions::TRANSITION_ADDRESS)->willReturn(true);
@@ -60,11 +55,10 @@ final class OrderAddressStateResolverSpec extends ObjectBehavior
         StateMachineInterface $stateMachine,
         OrderInterface $order,
         SMException $exception
-    ): void
-    {
+    ): void {
         $stateMachineFactory->get($order, OrderCheckoutTransitions::GRAPH)->willReturn($stateMachine);
 
-        $token = "token";
+        $token = 'token';
         $order->getTokenValue()->willReturn($token);
 
         $stateMachine->can(OrderCheckoutTransitions::TRANSITION_ADDRESS)->willReturn(false);

@@ -29,5 +29,4 @@ class ApplyCouponToCartSpec extends ObjectBehavior
     {
         $this->getOrderTokenValue()->shouldReturn('orderTokenValue');
     }
-
 }

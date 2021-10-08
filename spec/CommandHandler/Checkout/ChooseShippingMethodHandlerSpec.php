@@ -27,10 +27,8 @@ use Sylius\Component\Shipping\Checker\Eligibility\ShippingMethodEligibilityCheck
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\InvalidArgumentException;
 
-
 final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
 {
-
     function let(
         OrderRepositoryInterface $orderRepository,
         ShippingMethodRepositoryInterface $shippingMethodRepository,
@@ -38,8 +36,7 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         ShippingMethodEligibilityCheckerInterface $eligibilityChecker,
         FactoryInterface $stateMachineFactory,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+    ): void {
         $this->beConstructedWith(
             $orderRepository,
             $shippingMethodRepository,
@@ -66,9 +63,8 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         StateMachineInterface $stateMachine,
         ShipmentInterface $shipment,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
-        $chooseShippingMethod = new ChooseShippingMethod("token", "ups", "shipmentId");
+    ): void {
+        $chooseShippingMethod = new ChooseShippingMethod('token', 'ups', 'shipmentId');
         $orderRepository->findOneBy(['tokenValue' => $chooseShippingMethod->orderTokenValue])->willReturn($cart);
         $stateMachineFactory->get($cart, OrderCheckoutTransitions::GRAPH)->willReturn($stateMachine);
         $stateMachine->can(OrderCheckoutTransitions::TRANSITION_SELECT_SHIPPING)->willReturn(true);
@@ -96,9 +92,8 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
 
     function it_throws_exception_on_null_cart(
         OrderRepositoryInterface $orderRepository
-    ): void
-    {
-        $chooseShippingMethod = new ChooseShippingMethod("token", "ups", "shipmentId");
+    ): void {
+        $chooseShippingMethod = new ChooseShippingMethod('token', 'ups', 'shipmentId');
         $orderRepository->findOneBy(['tokenValue' => $chooseShippingMethod->orderTokenValue])->willReturn(null);
         $this->shouldThrow(InvalidArgumentException::class)
             ->during('__invoke', [$chooseShippingMethod]);
@@ -110,10 +105,8 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         FactoryInterface $stateMachineFactory,
         OrderInterface $cart,
         StateMachineInterface $stateMachine
-    ): void
-    {
-
-        $chooseShippingMethod = new ChooseShippingMethod("token", "ups", "shipmentId");
+    ): void {
+        $chooseShippingMethod = new ChooseShippingMethod('token', 'ups', 'shipmentId');
 
         $orderRepository->findOneBy(['tokenValue' => $chooseShippingMethod->orderTokenValue])->willReturn($cart);
 
@@ -136,9 +129,8 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         OrderInterface $cart,
         ShippingMethodInterface $shippingMethod,
         StateMachineInterface $stateMachine
-    ): void
-    {
-        $chooseShippingMethod = new ChooseShippingMethod("token", "ups", "shipmentId");
+    ): void {
+        $chooseShippingMethod = new ChooseShippingMethod('token', 'ups', 'shipmentId');
         $orderRepository->findOneBy(['tokenValue' => $chooseShippingMethod->orderTokenValue])->willReturn($cart);
 
         $stateMachineFactory->get($cart, OrderCheckoutTransitions::GRAPH)->willReturn($stateMachine);

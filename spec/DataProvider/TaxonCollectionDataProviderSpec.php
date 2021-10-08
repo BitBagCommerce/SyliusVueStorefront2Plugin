@@ -25,10 +25,8 @@ use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 
-
 final class TaxonCollectionDataProviderSpec extends ObjectBehavior
 {
-
     function let(
         TaxonRepositoryInterface $taxonRepository,
         UserContextInterface $userContext,
@@ -36,9 +34,7 @@ final class TaxonCollectionDataProviderSpec extends ObjectBehavior
         ManagerRegistry $managerRegistry,
         ResourceMetadataFactoryInterface $resourceMetadataFactory,
         QueryResultCollectionExtensionInterface $queryResultCollectionExtension
-    ): void
-    {
-
+    ): void {
         $pagination = new Pagination($resourceMetadataFactory->getWrappedObject());
         $paginationExtension = new PaginationExtension(
             $managerRegistry->getWrappedObject(),
@@ -46,7 +42,7 @@ final class TaxonCollectionDataProviderSpec extends ObjectBehavior
             $pagination
         );
         $collectionExtensions = [
-            $queryResultCollectionExtension->getWrappedObject()
+            $queryResultCollectionExtension->getWrappedObject(),
         ];
         $this->beConstructedWith($taxonRepository, $paginationExtension, $userContext, $queryNameGenerator, $collectionExtensions);
     }
@@ -67,10 +63,9 @@ final class TaxonCollectionDataProviderSpec extends ObjectBehavior
         UserContextInterface $userContext,
         ShopUserInterface $user,
         TaxonRepositoryInterface $taxonRepository
-    )
-    {
+    ) {
         $context = [
-            ContextKeys::CHANNEL => $channel
+            ContextKeys::CHANNEL => $channel,
         ];
         $channelContext = $context[ContextKeys::CHANNEL];
         $channelContext->getMenuTaxon()->willReturn($channelMenuTaxon);
@@ -80,7 +75,6 @@ final class TaxonCollectionDataProviderSpec extends ObjectBehavior
         $user->getRoles()->willReturn($roles);
         $taxonRepository->findAll()->shouldBeCalledOnce();
 
-        $this->getCollection("class", "operation", $context);
+        $this->getCollection('class', 'operation', $context);
     }
-
 }

@@ -13,15 +13,12 @@ namespace spec\BitBag\SyliusGraphqlPlugin\Controller;
 use BitBag\SyliusGraphqlPlugin\Command\Cart\RemoveItemFromCart;
 use BitBag\SyliusGraphqlPlugin\Controller\DeleteOrderItemAction;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 final class DeleteOrderItemActionSpec extends ObjectBehavior
 {
-
     function let(MessageBusInterface $commandBus): void
     {
         $this->beConstructedWith($commandBus);
@@ -34,17 +31,16 @@ final class DeleteOrderItemActionSpec extends ObjectBehavior
 
     function it_is_invokable(
         MessageBusInterface $commandBus
-    ): void
-    {
+    ): void {
         $attributes = [
-            "id" => "id",
-            "itemId" => 11,
+            'id' => 'id',
+            'itemId' => 11,
         ];
-        $request = new Request([],[],$attributes);
+        $request = new Request([], [], $attributes);
 
         $command = new RemoveItemFromCart(
-            (string)$request->attributes->get('id'),
-            (int)$request->attributes->get('itemId')
+            (string) $request->attributes->get('id'),
+            (int) $request->attributes->get('itemId')
         );
 
         $envelope = Envelope::wrap($command);

@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout;
 
 use BitBag\SyliusGraphqlPlugin\Command\Checkout\BillingAddressOrder;
-use BitBag\SyliusGraphqlPlugin\Command\Checkout\BillingAddressOrderSpec;
 use BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout\BillingAddressOrderHandler;
 use BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolverInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -24,18 +23,15 @@ use Sylius\Component\Customer\Model\CustomerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\InvalidArgumentException;
 
-
 final class BillingAddressOrderHandlerSpec extends ObjectBehavior
 {
-
     function let(
         OrderRepositoryInterface $orderRepository,
         ObjectManager $manager,
         CustomerProviderInterface $customerProvider,
         OrderAddressStateResolverInterface $addressStateResolver,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+    ): void {
         $this->beConstructedWith($orderRepository, $manager, $customerProvider, $addressStateResolver, $eventDispatcher);
     }
 
@@ -52,9 +48,8 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         OrderInterface $order,
         CustomerInterface $customer,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
-        $addressOrder = new BillingAddressOrder("jd@mail.com", "token");
+    ): void {
+        $addressOrder = new BillingAddressOrder('jd@mail.com', 'token');
         $tokenValue = $addressOrder->orderTokenValue;
 
         $orderRepository->findCartByTokenValue($tokenValue)->willReturn($order);
@@ -72,9 +67,8 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
 
     function it_throws_exception_when_cannot_find_cart(
         OrderRepositoryInterface $orderRepository
-    ): void
-    {
-        $addressOrder = new BillingAddressOrder("jd@mail.com", "token");
+    ): void {
+        $addressOrder = new BillingAddressOrder('jd@mail.com', 'token');
         $tokenValue = $addressOrder->orderTokenValue;
 
         $orderRepository->findCartByTokenValue($tokenValue)->willReturn(null);

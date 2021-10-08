@@ -22,17 +22,14 @@ use Sylius\Component\User\Security\PasswordUpdaterInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
-
 final class ResetPasswordHandlerSpec extends ObjectBehavior
 {
-
     function let(
         UserRepositoryInterface $userRepository,
         MetadataInterface $metadata,
         PasswordUpdaterInterface $passwordUpdater,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+    ): void {
         $this->beConstructedWith($userRepository, $metadata, $passwordUpdater, $eventDispatcher);
     }
 
@@ -56,21 +53,20 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
         ShopUserInterface $user,
         CustomerInterface $customer,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
-        $command = new ResetPassword("newS3ret", "newS3ret", "token");
+    ): void {
+        $command = new ResetPassword('newS3ret', 'newS3ret', 'token');
 
-        $userRepository->findOneBy(['passwordResetToken' => "token"])->willReturn($user);
+        $userRepository->findOneBy(['passwordResetToken' => 'token'])->willReturn($user);
 
         $metadata->getParameter('resetting')->willReturn([
-            "token" => [
-                "ttl" => "PT3600S"
-            ]
+            'token' => [
+                'ttl' => 'PT3600S',
+            ],
         ]);
 
         $lifetime = new \DateInterval('PT3600S');
         $user->isPasswordRequestNonExpired($lifetime)->willReturn(true);
-        $user->getPasswordResetToken()->willReturn("token");
+        $user->getPasswordResetToken()->willReturn('token');
 
         $user->setPlainPassword($command->newPassword)->shouldBeCalled();
         $passwordUpdater->updatePassword($user->getWrappedObject())->shouldBeCalledOnce();

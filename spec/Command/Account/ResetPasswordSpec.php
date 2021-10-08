@@ -15,15 +15,13 @@ use PhpSpec\ObjectBehavior;
 
 class ResetPasswordSpec extends ObjectBehavior
 {
-
     function let(): void
     {
-        $this->beConstructedWith('newPassword','newPassword','token');
+        $this->beConstructedWith('newPassword', 'newPassword', 'token');
     }
 
     function it_is_initializable(): void
     {
         $this->shouldHaveType(ResetPassword::class);
     }
-
 }

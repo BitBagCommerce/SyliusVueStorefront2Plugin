@@ -13,13 +13,11 @@ namespace spec\BitBag\SyliusGraphqlPlugin\Command\Cart;
 use BitBag\SyliusGraphqlPlugin\Command\Cart\ChangeItemQuantityInCart;
 use PhpSpec\ObjectBehavior;
 
-
 class ChangeItemQuantityInCartSpec extends ObjectBehavior
 {
-
     function let()
     {
-        $this->beConstructedWith(1, "orderItemId", "orderTokenValue");
+        $this->beConstructedWith(1, 'orderItemId', 'orderTokenValue');
     }
 
     function it_is_initializable(): void

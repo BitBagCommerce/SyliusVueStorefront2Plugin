@@ -15,18 +15,14 @@ use BitBag\SyliusGraphqlPlugin\SerializerContextBuilder\GraphQL\ChannelContextBu
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
-use Sylius\Component\Channel\Context\ChannelNotFoundException;
 use Sylius\Component\Core\Model\ChannelInterface;
-
 
 final class ChannelContextBuilderSpec extends ObjectBehavior
 {
-
     function let(
         SerializerContextBuilderInterface $decoratedContextBuilder,
         ChannelContextInterface $channelContext
-    ): void
-    {
+    ): void {
         $this->beConstructedWith($decoratedContextBuilder, $channelContext);
     }
 
@@ -39,13 +35,12 @@ final class ChannelContextBuilderSpec extends ObjectBehavior
         SerializerContextBuilderInterface $decoratedContextBuilder,
         ChannelContextInterface $channelContext,
         ChannelInterface $channel
-    ): void
-    {
+    ): void {
         $context = [];
-        $resourceClass = "Class/Name";
-        $operationName = "custom_operation";
+        $resourceClass = 'Class/Name';
+        $operationName = 'custom_operation';
         $resolverContext = [
-            "is_collection" => false
+            'is_collection' => false,
         ];
         $normalization = true;
 
@@ -59,12 +54,14 @@ final class ChannelContextBuilderSpec extends ObjectBehavior
         $channelContext->getChannel()->willReturn($channel);
 
         $context = [
-            ContextKeys::CHANNEL => $channel
+            ContextKeys::CHANNEL => $channel,
         ];
 
-        $this->create($resourceClass,
+        $this->create(
+            $resourceClass,
             $operationName,
             $resolverContext,
-            $normalization)->shouldReturn($context);
+            $normalization
+        )->shouldReturn($context);
     }
 }

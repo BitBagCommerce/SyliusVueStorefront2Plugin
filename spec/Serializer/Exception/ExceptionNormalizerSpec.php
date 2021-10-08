@@ -11,29 +11,26 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusGraphqlPlugin\Serializer\Exception;
 
 use BitBag\SyliusGraphqlPlugin\Serializer\Exception\ExceptionNormalizer;
-use Exception;
 use GraphQL\Error\Error;
 use PhpSpec\ObjectBehavior;
 
 final class ExceptionNormalizerSpec extends ObjectBehavior
 {
     /**
-     * @param Exception|mixed $object
-     *
      * @throws \Throwable
      */
     function it_normalizes_error(): void
     {
-        $errorMessage = "Some error message";
+        $errorMessage = 'Some error message';
 
         $e = new \InvalidArgumentException($errorMessage);
-        $object = new Error("Message", null, null, [], null, $e);
+        $object = new Error('Message', null, null, [], null, $e);
 
         $error = [
-            'message' => "Internal server error",
+            'message' => 'Internal server error',
             'extensions' => [
-                'category' => "internal"
-            ]
+                'category' => 'internal',
+            ],
         ];
 
         $error['extensions']['message'] = $errorMessage;
@@ -49,7 +46,7 @@ final class ExceptionNormalizerSpec extends ObjectBehavior
     function it_checks_if_it_supports_normalization(Error $data): void
     {
         $e = new \InvalidArgumentException();
-        $error = new Error("Message", null, null, [], null, $e);
+        $error = new Error('Message', null, null, [], null, $e);
 
         $this->supportsNormalization($error)->shouldReturn(true);
     }

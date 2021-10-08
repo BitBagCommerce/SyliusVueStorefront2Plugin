@@ -22,17 +22,14 @@ use Sylius\Component\Promotion\Model\PromotionInterface;
 use Sylius\Component\Promotion\Repository\PromotionCouponRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-
 final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
 {
-
     function let(
         OrderRepositoryInterface $orderRepository,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         OrderProcessorInterface $orderProcessor,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+    ): void {
         $this->beConstructedWith($orderRepository, $promotionCouponRepository, $orderProcessor, $eventDispatcher);
     }
 
@@ -50,10 +47,9 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         PromotionInterface $promotion,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
-        $tokenValue = "token";
-        $couponCode = "PROMO";
+    ): void {
+        $tokenValue = 'token';
+        $couponCode = 'PROMO';
         $command = new RemoveCouponFromCart($tokenValue, $couponCode);
 
         $orderRepository->findCartByTokenValue($tokenValue)->willReturn($cart);
@@ -76,10 +72,9 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_cart_not_found(
         OrderRepositoryInterface $orderRepository
-    ): void
-    {
-        $tokenValue = "token";
-        $couponCode = "PROMO";
+    ): void {
+        $tokenValue = 'token';
+        $couponCode = 'PROMO';
         $command = new RemoveCouponFromCart($tokenValue, $couponCode);
 
         $orderRepository->findCartByTokenValue($tokenValue)->willReturn(null);
@@ -93,10 +88,9 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         OrderInterface $cart,
         PromotionCouponInterface $promotionCoupon,
         PromotionCouponRepositoryInterface $promotionCouponRepository
-    ): void
-    {
-        $tokenValue = "token";
-        $couponCode = "PROMO";
+    ): void {
+        $tokenValue = 'token';
+        $couponCode = 'PROMO';
         $command = new RemoveCouponFromCart($tokenValue, $couponCode);
 
         $orderRepository->findCartByTokenValue($tokenValue)->willReturn($cart);
@@ -107,5 +101,4 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)
             ->during('__invoke', [$command]);
     }
-
 }

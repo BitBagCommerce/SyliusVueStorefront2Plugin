@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusGraphqlPlugin\CommandHandler\Cart;
 
 use BitBag\SyliusGraphqlPlugin\Command\Cart\ChangeItemQuantityInCart;
-use BitBag\SyliusGraphqlPlugin\Command\Cart\ChangeItemQuantityInCartSpec;
 use BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\ChangeItemQuantityInCartHandler;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -22,17 +21,14 @@ use Sylius\Component\Order\Processor\OrderProcessorInterface;
 use Sylius\Component\Order\Repository\OrderItemRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-
 final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
 {
-
     function let(
         OrderItemRepositoryInterface $orderItemRepository,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         OrderProcessorInterface $orderProcessor,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+    ): void {
         $this->beConstructedWith($orderItemRepository, $orderItemQuantityModifier, $orderProcessor, $eventDispatcher);
     }
 
@@ -48,10 +44,9 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
         OrderItemInterface $orderItem,
         OrderInterface $cart,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
-        $orderToken = "token";
-        $command = new ChangeItemQuantityInCart(10, "itemId", $orderToken);
+    ): void {
+        $orderToken = 'token';
+        $command = new ChangeItemQuantityInCart(10, 'itemId', $orderToken);
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $command->orderItemId,

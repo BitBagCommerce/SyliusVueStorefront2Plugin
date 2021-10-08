@@ -16,15 +16,12 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
 use Sylius\Component\Locale\Context\LocaleContextInterface;
 
-
 final class LocaleContextBuilderSpec extends ObjectBehavior
 {
-
     function let(
         SerializerContextBuilderInterface $decoratedContextBuilder,
         LocaleContextInterface $localeContext
-    )
-    {
+    ) {
         $this->beConstructedWith($decoratedContextBuilder, $localeContext);
     }
 
@@ -36,16 +33,15 @@ final class LocaleContextBuilderSpec extends ObjectBehavior
     function it_creates(
         SerializerContextBuilderInterface $decoratedContextBuilder,
         LocaleContextInterface $localeContext
-    ): void
-    {
-        $resourceClass = "Class/Name";
-        $operationName = "operation_name";
+    ): void {
+        $resourceClass = 'Class/Name';
+        $operationName = 'operation_name';
         $resolverContext = [];
         $normalization = true;
 
         $context = [
-            ContextKeys::CHANNEL => "channelName",
-            ContextKeys::LOCALE_CODE => "en_US"
+            ContextKeys::CHANNEL => 'channelName',
+            ContextKeys::LOCALE_CODE => 'en_US',
         ];
         $decoratedContextBuilder->create(
             $resourceClass,
@@ -54,7 +50,7 @@ final class LocaleContextBuilderSpec extends ObjectBehavior
             $normalization
         )->willReturn($context);
 
-        $localeContext->getLocaleCode()->willReturn("en_US");
+        $localeContext->getLocaleCode()->willReturn('en_US');
 
         $this->create(
             $resourceClass,

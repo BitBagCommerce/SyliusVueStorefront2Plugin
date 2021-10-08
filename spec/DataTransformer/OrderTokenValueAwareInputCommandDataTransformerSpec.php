@@ -15,39 +15,35 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 
-
 final class OrderTokenValueAwareInputCommandDataTransformerSpec extends ObjectBehavior
 {
-
     function it_transforms_object_to_populate(
         OrderTokenValueAwareInterface $object,
         OrderInterface $cart
-    ): void
-    {
+    ): void {
         $context = [
-            "object_to_populate" => $cart
+            'object_to_populate' => $cart,
         ];
-        $tokenValue = "token";
+        $tokenValue = 'token';
 
         $cart = $context['object_to_populate'];
         $cart->getTokenValue()->willReturn($tokenValue);
 
         $object->setOrderTokenValue($tokenValue)->shouldBeCalledOnce();
 
-        $this->transform($object, "", $context);
+        $this->transform($object, '', $context);
     }
 
     function it_transforms_object_with_property(
         OrderTokenValueAwareInterface $object
-    ): void
-    {
+    ): void {
         $context = [];
-        $tokenValue = "token";
+        $tokenValue = 'token';
 
         $object->getOrderTokenValue()->willReturn($tokenValue);
         $object->setOrderTokenValue($tokenValue)->shouldBeCalledOnce();
 
-        $this->transform($object, "", $context);
+        $this->transform($object, '', $context);
     }
 
     function it_is_initializable(): void
@@ -57,8 +53,7 @@ final class OrderTokenValueAwareInputCommandDataTransformerSpec extends ObjectBe
 
     function it_supports_transformation(
         OrderTokenValueAwareInterface $object
-    ): void
-    {
+    ): void {
         $this->supportsTransformation($object)->shouldReturn(true);
     }
 }

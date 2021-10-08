@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusGraphqlPlugin\CommandHandler\Cart;
 
 use BitBag\SyliusGraphqlPlugin\Command\Cart\ApplyCouponToCart;
-use BitBag\SyliusGraphqlPlugin\Command\Cart\ApplyCouponToCartSpec;
 use BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\ApplyCouponToCartHandler;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -22,17 +21,14 @@ use Sylius\Component\Promotion\Model\PromotionCouponInterface;
 use Sylius\Component\Promotion\Repository\PromotionCouponRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-
 final class ApplyCouponToCartHandlerSpec extends ObjectBehavior
 {
-
     function let(
         OrderRepositoryInterface $orderRepository,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         OrderProcessorInterface $orderProcessor,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+    ): void {
         $this->beConstructedWith($orderRepository, $promotionCouponRepository, $orderProcessor, $eventDispatcher);
     }
 
@@ -48,12 +44,11 @@ final class ApplyCouponToCartHandlerSpec extends ObjectBehavior
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         PromotionCouponInterface $promotionCoupon,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
-        $code = "code";
-        $command = new ApplyCouponToCart($code, "token");
+    ): void {
+        $code = 'code';
+        $command = new ApplyCouponToCart($code, 'token');
 
-        $orderRepository->findCartByTokenValue((string)$command->getOrderTokenValue())->willReturn($cart);
+        $orderRepository->findCartByTokenValue((string) $command->getOrderTokenValue())->willReturn($cart);
 
         $promotionCouponRepository->findOneBy(['code' => $code])->willReturn($promotionCoupon);
 
@@ -67,15 +62,13 @@ final class ApplyCouponToCartHandlerSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_could_not_found_cart(
         OrderRepositoryInterface $orderRepository
-    ): void
-    {
-        $command = new ApplyCouponToCart("code", "token");
+    ): void {
+        $command = new ApplyCouponToCart('code', 'token');
 
-        $orderRepository->findCartByTokenValue((string)$command->getOrderTokenValue())->willReturn(null);
+        $orderRepository->findCartByTokenValue((string) $command->getOrderTokenValue())->willReturn(null);
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
             ->during('__invoke', [$command]);
     }
-
 }

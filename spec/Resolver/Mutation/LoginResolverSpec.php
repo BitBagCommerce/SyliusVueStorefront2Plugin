@@ -15,7 +15,6 @@ use BitBag\SyliusGraphqlPlugin\Model\ShopUserTokenInterface;
 use BitBag\SyliusGraphqlPlugin\Resolver\Mutation\LoginResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
-use GraphQL\Error\Error;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Component\Core\Model\ShopUserInterface;
@@ -28,7 +27,6 @@ use Webmozart\Assert\Assert;
 
 final class LoginResolverSpec extends ObjectBehavior
 {
-
     function let(
         EntityManagerInterface $entityManager,
         UserRepositoryInterface $userRepository,
@@ -36,8 +34,7 @@ final class LoginResolverSpec extends ObjectBehavior
         EncoderFactoryInterface $encoderFactory,
         ShopUserTokenFactoryInterface $tokenFactory,
         EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->beConstructedWith($entityManager, $userRepository, $orderRepository, $encoderFactory, $tokenFactory, $eventDispatcher);
     }
 
@@ -55,27 +52,26 @@ final class LoginResolverSpec extends ObjectBehavior
         RefreshTokenInterface $refreshToken,
         ShopUserTokenInterface $shopUserToken,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+    ): void {
         $context = [
-            "args" => [
-                "input" => [
-                    "username" => "username",
-                    "password" => "somepass"
-                ]
-            ]
+            'args' => [
+                'input' => [
+                    'username' => 'username',
+                    'password' => 'somepass',
+                ],
+            ],
         ];
 
         /** @var array $input */
         $input = $context['args']['input'];
-        $username = (string)$input['username'];
-        $password = (string)$input['password'];
+        $username = (string) $input['username'];
+        $password = (string) $input['password'];
 
         $userRepository->findOneBy(['username' => $username])->willReturn($user);
         $encoderFactory->getEncoder($user)->willReturn($encoder);
 
-        $userPassword = "ENCODED_PASSWORD";
-        $userSalt = "SALT";
+        $userPassword = 'ENCODED_PASSWORD';
+        $userSalt = 'SALT';
         $user->getPassword()->willReturn($userPassword);
         $user->getSalt()->willReturn($userSalt);
 
@@ -94,20 +90,19 @@ final class LoginResolverSpec extends ObjectBehavior
 
     function it_throws_an_exception_on_wrong_username(
         UserRepositoryInterface $userRepository
-    ): void
-    {
+    ): void {
         $context = [
-            "args" => [
-                "input" => [
-                    "username" => "username",
-                    "password" => "somepass"
-                ]
-            ]
+            'args' => [
+                'input' => [
+                    'username' => 'username',
+                    'password' => 'somepass',
+                ],
+            ],
         ];
 
         /** @var array $input */
         $input = $context['args']['input'];
-        $username = (string)$input['username'];
+        $username = (string) $input['username'];
 
         $userRepository->findOneBy(['username' => $username])->willReturn(null);
 
@@ -121,27 +116,26 @@ final class LoginResolverSpec extends ObjectBehavior
         EncoderFactoryInterface $encoderFactory,
         PasswordEncoderInterface $encoder,
         ShopUserInterface $user
-    ): void
-    {
+    ): void {
         $context = [
-            "args" => [
-                "input" => [
-                    "username" => "username",
-                    "password" => "somepass"
-                ]
-            ]
+            'args' => [
+                'input' => [
+                    'username' => 'username',
+                    'password' => 'somepass',
+                ],
+            ],
         ];
 
         /** @var array $input */
         $input = $context['args']['input'];
-        $username = (string)$input['username'];
-        $password = (string)$input['password'];
+        $username = (string) $input['username'];
+        $password = (string) $input['password'];
 
         $userRepository->findOneBy(['username' => $username])->willReturn($user);
         $encoderFactory->getEncoder($user)->willReturn($encoder);
 
-        $userPassword = "ENCODED_PASSWORD";
-        $userSalt = "SALT";
+        $userPassword = 'ENCODED_PASSWORD';
+        $userSalt = 'SALT';
         $user->getPassword()->willReturn($userPassword);
         $user->getSalt()->willReturn($userSalt);
 

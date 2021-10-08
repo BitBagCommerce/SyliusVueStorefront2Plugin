@@ -12,17 +12,13 @@ namespace spec\BitBag\SyliusGraphqlPlugin\DataTransformer;
 
 use BitBag\SyliusGraphqlPlugin\DataTransformer\SubresourceIdAwareCommandDataTransformer;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Sylius\Bundle\ApiBundle\Command\SubresourceIdAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Webmozart\Assert\Assert;
 use Webmozart\Assert\InvalidArgumentException;
-
 
 final class SubresourceIdAwareCommandDataTransformerSpec extends ObjectBehavior
 {
-
     function let(RequestStack $requestStack): void
     {
         $this->beConstructedWith($requestStack);
@@ -36,13 +32,12 @@ final class SubresourceIdAwareCommandDataTransformerSpec extends ObjectBehavior
     function it_transforms(
         SubresourceIdAwareInterface $object,
         RequestStack $requestStack
-    ): void
-    {
-        $attributeKey = "key";
-        $subresourceId = "id";
+    ): void {
+        $attributeKey = 'key';
+        $subresourceId = 'id';
 
         $requestAttributes = [
-            $attributeKey => $subresourceId
+            $attributeKey => $subresourceId,
         ];
 
         $request = new Request([], [], $requestAttributes);
@@ -52,20 +47,19 @@ final class SubresourceIdAwareCommandDataTransformerSpec extends ObjectBehavior
         $object->getSubresourceIdAttributeKey()->willReturn($attributeKey);
         $object->getSubresourceId()->willReturn($subresourceId);
 
-        $this->transform($object, "")->shouldReturn($object);
+        $this->transform($object, '')->shouldReturn($object);
     }
 
     function it_throws_an_exception(
         SubresourceIdAwareInterface $object,
         RequestStack $requestStack,
         Request $request
-    ): void
-    {
+    ): void {
         $requestStack->getCurrentRequest()->willReturn($request);
 
         $this
             ->shouldThrow(InvalidArgumentException::class)
-            ->during('transform', [null, ""]);
+            ->during('transform', [null, '']);
     }
 
     function it_checks_if_it_supports_transformation(SubresourceIdAwareInterface $object): void

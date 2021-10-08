@@ -27,8 +27,7 @@ class ShopUserTokenFactorySpec extends ObjectBehavior
         EntityManagerInterface $entityManager,
         JWTTokenManagerInterface $jwtManager,
         RefreshTokenManagerInterface $refreshJwtManager
-    ): void
-    {
+    ): void {
         $this->beConstructedWith($entityManager, $jwtManager, $refreshJwtManager);
     }
 
@@ -41,23 +40,22 @@ class ShopUserTokenFactorySpec extends ObjectBehavior
         JWTTokenManagerInterface $jwtManager,
         ShopUserInterface $user,
         RefreshTokenInterface $refreshToken
-    ): void
-    {
+    ): void {
         $shopUserToken = new ShopUserToken();
-        $token = "token";
+        $token = 'token';
         $jwtManager->create($user)->willReturn($token);
         $userId = 1;
         $user->getId()->willReturn($userId);
         $shopUserToken->setId($userId);
         $shopUserToken->setToken($token);
 
-        $refreshTokenString = "refreshToken";
+        $refreshTokenString = 'refreshToken';
         $refreshToken->getRefreshToken()->willReturn($refreshTokenString);
         $shopUserToken->setRefreshToken($refreshTokenString);
 
         $shopUserToken->setUser($user->getWrappedObject());
 
-        $this->create($user,$refreshToken)->shouldReturnAnInstanceOf(ShopUserTokenInterface::class);
+        $this->create($user, $refreshToken)->shouldReturnAnInstanceOf(ShopUserTokenInterface::class);
     }
 
     function it_gets_refresh_token(
@@ -65,11 +63,10 @@ class ShopUserTokenFactorySpec extends ObjectBehavior
         RefreshTokenManagerInterface $refreshJwtManager,
         RefreshTokenInterface $refreshToken,
         ShopUserInterface $user
-    ): void
-    {
+    ): void {
         $refreshJwtManager->create()->willReturn($refreshToken);
 
-        $username = "canonical";
+        $username = 'canonical';
         $user->getUsernameCanonical()->willReturn($username);
         $refreshToken->setUsername($username)->shouldBeCalled();
 
