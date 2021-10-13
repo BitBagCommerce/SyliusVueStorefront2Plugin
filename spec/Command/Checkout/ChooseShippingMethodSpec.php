@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 use Sylius\Bundle\ApiBundle\Command\SubresourceIdAwareInterface;
 
-class ChooseShippingMethodSpec extends ObjectBehavior
+final class ChooseShippingMethodSpec extends ObjectBehavior
 {
     function let(): void
     {

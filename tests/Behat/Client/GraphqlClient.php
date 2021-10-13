@@ -250,7 +250,7 @@ final class GraphqlClient implements GraphqlClientInterface
                 sprintf(
                     "Last response did not have any key named %s \n%s",
                     $key,
-                    print_r($message, true)
+                    print_r($flatResponse, true)
                 )
             );
         }
@@ -258,9 +258,7 @@ final class GraphqlClient implements GraphqlClientInterface
         return $flatResponse[$key];
     }
 
-    /**
-     * @throws Exception
-     */
+    /** @throws Exception */
     private function checkIfResponseProperlyFormatted(array $responseArray): void
     {
         if (!array_key_exists('data', $responseArray) && !array_key_exists('errors', $responseArray)) {

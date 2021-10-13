@@ -1,4 +1,4 @@
-@place_order_guest
+@place_order_guest_customer
 Feature: Submitting order
     In order buy a product
     As a guest
@@ -6,6 +6,7 @@ Feature: Submitting order
 
     Background:
         Given the store operates on a single channel in "United States"
+        And there is a customer "Gordon Freeman" identified by an email "gfreeman@resistance.com" and a password "123456"
         And the store has a product "Jack Daniels Gentleman" priced at "$30.00"
         And the store has a product "Jim Beam" priced at "$20.00"
         And the store allows shipping with "Pickup" identified by "pickup"
@@ -48,7 +49,7 @@ Feature: Submitting order
         And total price for items should equal to "2000"
 
         When I prepare operation to add order shipping address
-        And I set 'email' field to "john.doe@mail.com"
+        And I set 'email' field to "gfreeman@resistance.com"
         And I set 'orderTokenValue' field to value "orderToken"
         And I set 'shippingAddress' object "firstName" property to "John"
         And I set 'shippingAddress' object "lastName" property to "Doe"
@@ -62,7 +63,7 @@ Feature: Submitting order
         And I save key 'order.shipments.edges.0.node._id' of this response as "orderShipmentId"
 
         When I prepare operation to add order billing address
-        And I set 'email' field to "jane.doe@mail.com"
+        And I set 'email' field to "gfreeman@resistance.com"
         And I set 'orderTokenValue' field to value "orderToken"
         And I set 'billingAddress' object "firstName" property to "Jane"
         And I set 'billingAddress' object "lastName" property to "Doe"
@@ -72,42 +73,5 @@ Feature: Submitting order
         And I set 'billingAddress' object "postcode" property to "45222"
         And I set billingAddress field to value "billingAddress"
         And I send that GraphQL request
-        And This response should contain "order.billingAddress.firstName" equal to "Jane"
-        And I save key 'order.payments.edges.0.node._id' of this response as "orderPaymentId"
+        And This response should contain "extensions.message" equal to "Provided email address belongs to another user, please log in to complete order."
 
-        When I prepare operation to select shipping method
-        And I set 'orderTokenValue' field to value "orderToken"
-        And I set 'shipmentId' field to previously saved 'string' value "orderShipmentId"
-        And I set 'shippingMethodCode' field to "pickup"
-        And I send that GraphQL request
-        And This response should contain "order.shipments.edges.0.node.method.code" equal to "pickup"
-
-        When I prepare operation to select payment method
-        And I set 'orderTokenValue' field to value "orderToken"
-        And I set 'paymentId' field to previously saved 'string' value "orderPaymentId"
-        And I set 'paymentMethodCode' field to "cash"
-        And I send that GraphQL request
-        And This response should contain "order.payments.edges.0.node.method.code" equal to "cash"
-
-        When I prepare operation to add promotion coupon "bfriday"
-        And I set 'orderTokenValue' field to value "orderToken"
-        And I send that GraphQL request
-        Then I should receive a JSON response
-        And This response should contain "order.orderPromotionTotal"
-        And This response should contain "order.promotionCoupon.code" equal to "bfriday"
-
-        When I prepare operation to submit order with note "This is some note"
-        And I set 'orderTokenValue' field to value "orderToken"
-        And I set 'id' field to value "orderId"
-        And I send that GraphQL request
-        Then I should receive a JSON response
-        And This response should contain "order.id"
-        And This response should contain "order._id"
-        And This response should contain "order.billingAddress.firstName" equal to "Jane"
-        And This response should contain "order.shippingAddress.firstName" equal to "John"
-        And This response should contain "order.currencyCode" equal to "USD"
-        And This response should contain "order.checkoutState" equal to "completed"
-        And This response should contain "order.paymentState" equal to "awaiting_payment"
-        And This response should contain "order.shippingState" equal to "ready"
-        And This response should contain "order.shippingTotal"
-        And This response should contain "order.total"

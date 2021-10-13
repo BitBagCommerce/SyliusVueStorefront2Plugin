@@ -16,6 +16,7 @@ use BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Sylius\Bundle\ApiBundle\Context\UserContextInterface;
 use Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
@@ -30,9 +31,11 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         ObjectManager $manager,
         CustomerProviderInterface $customerProvider,
         OrderAddressStateResolverInterface $addressStateResolver,
-        EventDispatcherInterface $eventDispatcher
-    ): void {
-        $this->beConstructedWith($orderRepository, $manager, $customerProvider, $addressStateResolver, $eventDispatcher);
+        EventDispatcherInterface $eventDispatcher,
+        UserContextInterface $userContext
+    ): void
+    {
+        $this->beConstructedWith($orderRepository, $manager, $customerProvider, $addressStateResolver, $userContext, $eventDispatcher);
     }
 
     function it_is_initializable(): void
@@ -47,12 +50,21 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         OrderAddressStateResolverInterface $addressStateResolver,
         OrderInterface $order,
         CustomerInterface $customer,
-        EventDispatcherInterface $eventDispatcher
-    ): void {
-        $addressOrder = new BillingAddressOrder('jd@mail.com', 'token');
+        \Sylius\Component\Core\Model\CustomerInterface $newCustomer,
+        EventDispatcherInterface $eventDispatcher,
+        UserContextInterface $userContext
+    ): void
+    {
+        $email = 'jd@mail.com';
+        $addressOrder = new BillingAddressOrder($email, 'token');
         $tokenValue = $addressOrder->orderTokenValue;
 
         $orderRepository->findCartByTokenValue($tokenValue)->willReturn($order);
+
+        $userContext->getUser()->willReturn(null);
+        $customerProvider->provide($email)->willReturn($newCustomer);
+        $manager->contains($newCustomer)->willReturn(false);
+        $order->setCustomer($newCustomer)->shouldBeCalledOnce();
 
         $order->getCustomer()->willReturn($customer);
         $order->setBillingAddress($addressOrder->billingAddress);
@@ -67,7 +79,8 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
 
     function it_throws_exception_when_cannot_find_cart(
         OrderRepositoryInterface $orderRepository
-    ): void {
+    ): void
+    {
         $addressOrder = new BillingAddressOrder('jd@mail.com', 'token');
         $tokenValue = $addressOrder->orderTokenValue;
 

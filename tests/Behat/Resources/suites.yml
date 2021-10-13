@@ -1,5 +1,6 @@
 imports:
     - suites/cart/place_order_as_guest.yaml
+    - suites/cart/place_order_as_guest_customer.yaml
     - suites/cart/place_order_as_customer.yaml
     - suites/account/creating_account.yaml
     - suites/account/editing_account.yaml

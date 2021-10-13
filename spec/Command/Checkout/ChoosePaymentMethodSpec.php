@@ -16,7 +16,7 @@ use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 use Sylius\Bundle\ApiBundle\Command\PaymentMethodCodeAwareInterface;
 use Sylius\Bundle\ApiBundle\Command\SubresourceIdAwareInterface;
 
-class ChoosePaymentMethodSpec extends ObjectBehavior
+final class ChoosePaymentMethodSpec extends ObjectBehavior
 {
     function let(): void
     {

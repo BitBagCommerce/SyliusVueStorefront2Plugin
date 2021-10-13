@@ -13,7 +13,7 @@ namespace spec\BitBag\SyliusGraphqlPlugin\Command\Account;
 use BitBag\SyliusGraphqlPlugin\Command\Account\ResetPassword;
 use PhpSpec\ObjectBehavior;
 
-class ResetPasswordSpec extends ObjectBehavior
+final class ResetPasswordSpec extends ObjectBehavior
 {
     function let(): void
     {

@@ -44,7 +44,7 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher
     ): void {
         $tokenValue = 'token';
-        $removeItemFromCart = new RemoveItemFromCart($tokenValue, 222);
+        $removeItemFromCart = new RemoveItemFromCart($tokenValue, "222");
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $removeItemFromCart->itemId,
@@ -68,7 +68,7 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         OrderInterface $cart
     ): void {
         $tokenValue = 'token';
-        $removeItemFromCart = new RemoveItemFromCart($tokenValue, 222);
+        $removeItemFromCart = new RemoveItemFromCart($tokenValue, "222");
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $removeItemFromCart->itemId,
@@ -87,7 +87,7 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
     ): void {
         $tokenValue = 'token';
         $differentTokenValue = 'different_token';
-        $removeItemFromCart = new RemoveItemFromCart($tokenValue, 222);
+        $removeItemFromCart = new RemoveItemFromCart($tokenValue, "222");
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $removeItemFromCart->itemId,

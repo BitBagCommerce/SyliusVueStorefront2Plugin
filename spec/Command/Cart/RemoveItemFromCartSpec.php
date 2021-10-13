@@ -13,7 +13,7 @@ namespace spec\BitBag\SyliusGraphqlPlugin\Command\Cart;
 use BitBag\SyliusGraphqlPlugin\Command\Cart\RemoveItemFromCart;
 use PhpSpec\ObjectBehavior;
 
-class RemoveItemFromCartSpec extends ObjectBehavior
+final class RemoveItemFromCartSpec extends ObjectBehavior
 {
     function let(): void
     {

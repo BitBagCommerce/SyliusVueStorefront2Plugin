@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 
-class ShippingAddressOrderSpec extends ObjectBehavior
+final class ShippingAddressOrderSpec extends ObjectBehavior
 {
     function let(AddressInterface $shippingAddress): void
     {

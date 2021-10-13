@@ -32,7 +32,7 @@ final class GraphqlApiPlatformContext implements Context
      */
     public function getBooleanFromString(string $boolean): bool
     {
-        return (bool) $boolean;
+        return (bool)$boolean;
     }
 
     /**
@@ -57,7 +57,7 @@ final class GraphqlApiPlatformContext implements Context
      *
      * @throws Exception
      */
-    public function IShouldReceiveAJsonResponse(): void
+    public function iShouldReceiveAJsonResponse(): void
     {
         $response = $this->client->getLastResponse();
         Assert::isInstanceOf($response, JsonResponse::class);
@@ -128,7 +128,7 @@ final class GraphqlApiPlatformContext implements Context
     public function iSetObjectPropertyToValue(string $sharedStorageKey, string $propertyName, $value): void
     {
         try {
-            $storageValue = (array) $this->sharedStorage->get($sharedStorageKey);
+            $storageValue = (array)$this->sharedStorage->get($sharedStorageKey);
         } catch (\InvalidArgumentException $e) {
             $storageValue = [];
         }
@@ -183,19 +183,19 @@ final class GraphqlApiPlatformContext implements Context
     {
         switch ($type) {
             case 'bool':
-                $value = (bool) $value;
+                $value = (bool)$value;
 
                 break;
             case 'float':
-                $value = (float) $value;
+                $value = (float)$value;
 
                 break;
             case 'int':
-                $value = (int) $value;
+                $value = (int)$value;
 
                 break;
             case 'string':
-                $value = (string) $value;
+                $value = (string)$value;
 
                 break;
             default:
@@ -226,10 +226,12 @@ final class GraphqlApiPlatformContext implements Context
 
     /**
      * @Then I save key :key of this response as :name
+     * @Then I save key :key of this response as :name as :type
      */
-    public function iSaveValueAtKeyOfThisModelResponse(string $key, string $name): void
+    public function iSaveValueAtKeyOfThisModelResponse(string $key, string $name, ?string $type = null): void
     {
         $value = $this->client->getValueAtKey($key);
+        $value = $this->castToType($value, $type);
         $this->sharedStorage->set($name, $value);
     }
 

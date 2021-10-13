@@ -13,7 +13,7 @@ namespace spec\BitBag\SyliusGraphqlPlugin\Command\Cart;
 use BitBag\SyliusGraphqlPlugin\Command\Cart\ApplyCouponToCart;
 use PhpSpec\ObjectBehavior;
 
-class ApplyCouponToCartSpec extends ObjectBehavior
+final class ApplyCouponToCartSpec extends ObjectBehavior
 {
     function let()
     {

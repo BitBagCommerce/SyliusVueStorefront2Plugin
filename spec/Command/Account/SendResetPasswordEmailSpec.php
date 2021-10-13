@@ -13,7 +13,7 @@ namespace spec\BitBag\SyliusGraphqlPlugin\Command\Account;
 use BitBag\SyliusGraphqlPlugin\Command\Account\SendResetPasswordEmail;
 use PhpSpec\ObjectBehavior;
 
-class SendResetPasswordEmailSpec extends ObjectBehavior
+final class SendResetPasswordEmailSpec extends ObjectBehavior
 {
     function let(): void
     {

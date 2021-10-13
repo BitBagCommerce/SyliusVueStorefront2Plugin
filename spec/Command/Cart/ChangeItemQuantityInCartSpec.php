@@ -13,7 +13,7 @@ namespace spec\BitBag\SyliusGraphqlPlugin\Command\Cart;
 use BitBag\SyliusGraphqlPlugin\Command\Cart\ChangeItemQuantityInCart;
 use PhpSpec\ObjectBehavior;
 
-class ChangeItemQuantityInCartSpec extends ObjectBehavior
+final class ChangeItemQuantityInCartSpec extends ObjectBehavior
 {
     function let()
     {

@@ -21,7 +21,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
-class ShopUserTokenFactorySpec extends ObjectBehavior
+final class ShopUserTokenFactorySpec extends ObjectBehavior
 {
     function let(
         EntityManagerInterface $entityManager,

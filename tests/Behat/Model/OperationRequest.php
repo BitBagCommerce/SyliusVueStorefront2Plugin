@@ -26,8 +26,12 @@ class OperationRequest implements OperationRequestInterface
 
     private array $filters = [];
 
-    public function __construct(string $name, string $query, array $variables = [], string $method = Request::METHOD_POST)
-    {
+    public function __construct(
+        string $name,
+        string $query,
+        array $variables = [],
+        string $method = Request::METHOD_POST
+    ) {
         $this->operationName = $name;
         $this->query = $query;
         $this->variables = $variables;
@@ -101,11 +105,11 @@ class OperationRequest implements OperationRequestInterface
         ];
     }
 
+    /** @todo Implement in later stages of development */
     private function formatFilters(): string
     {
         $output = '';
         foreach ($this->filters as $filter) {
-            //TODO:: Implement in later stages of development
         }
 
         return $output;

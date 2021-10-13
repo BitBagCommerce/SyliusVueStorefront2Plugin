@@ -13,9 +13,12 @@ namespace BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout;
 use BitBag\SyliusGraphqlPlugin\Command\Checkout\BillingAddressOrder;
 use BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolverInterface;
 use Doctrine\Persistence\ObjectManager;
+use Sylius\Bundle\ApiBundle\Context\UserContextInterface;
 use Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface;
 use Sylius\Component\Core\Model\AddressInterface;
+use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -35,6 +38,8 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
 
     private OrderAddressStateResolverInterface $addressStateResolver;
 
+    private UserContextInterface $userContext;
+
     private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
@@ -42,12 +47,14 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
         ObjectManager $manager,
         CustomerProviderInterface $customerProvider,
         OrderAddressStateResolverInterface $addressStateResolver,
+        UserContextInterface $userContext,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->orderRepository = $orderRepository;
         $this->manager = $manager;
         $this->customerProvider = $customerProvider;
         $this->addressStateResolver = $addressStateResolver;
+        $this->userContext = $userContext;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -73,21 +80,32 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
         return $order;
     }
 
-    private function shouldSetCustomer(OrderInterface $order, BillingAddressOrder $addressOrder): bool
-    {
-        return null === $order->getCustomer() && null !== $addressOrder->email;
-    }
-
-    private function canAddressBeSet(BillingAddressOrder $addressOrder): bool
-    {
-        return $addressOrder->billingAddress !== null && $addressOrder->billingAddress instanceof AddressInterface;
-    }
-
+    /** @throws \Exception */
     private function applyCustomer(OrderInterface $order, BillingAddressOrder $addressOrder): void
     {
-        if (null === $order->getCustomer() && null !== $addressOrder->email) {
-            $order->setCustomer($this->customerProvider->provide($addressOrder->email));
+        /** @var ShopUserInterface|null $loggedIn */
+        $loggedIn = $this->userContext->getUser();
+
+        /** @var CustomerInterface|null $loggedInCustomer */
+        $loggedInCustomer = null !== $loggedIn ? $loggedIn->getCustomer() : null;
+
+        if (null !== $addressOrder->email) {
+            $customer = $this->customerProvider->provide($addressOrder->email);
+        } elseif (null !== $loggedInCustomer) {
+            $customer = $loggedInCustomer;
+        } else {
+            throw new \Exception('You have to be either logged in or provide an email address.');
         }
+
+        if (null !== $loggedInCustomer && $loggedInCustomer->getId() !== $customer->getId()) {
+            throw new \Exception('Provided email address belongs to another user');
+        }
+
+        if (null === $loggedInCustomer && $this->manager->contains($customer)) {
+            throw new \Exception('Provided email address belongs to another user, please log in to complete order.');
+        }
+
+        $order->setCustomer($customer);
     }
 
     private function applyBillingAddress(BillingAddressOrder $addressOrder, OrderInterface $order): void
