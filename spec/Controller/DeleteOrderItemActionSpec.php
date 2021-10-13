@@ -13,7 +13,9 @@ namespace spec\BitBag\SyliusGraphqlPlugin\Controller;
 use BitBag\SyliusGraphqlPlugin\Command\Cart\RemoveItemFromCart;
 use BitBag\SyliusGraphqlPlugin\Controller\DeleteOrderItemAction;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -47,6 +49,6 @@ final class DeleteOrderItemActionSpec extends ObjectBehavior
 
         $commandBus->dispatch($command)->willReturn($envelope);
 
-        $this->__invoke($request);
+        $this->__invoke($request)->shouldBeLike(new JsonResponse());
     }
 }
