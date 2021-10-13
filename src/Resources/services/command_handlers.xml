@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-
-This file has been created by developers from BitBag.
-Feel free to contact us once you face any issues or want to start
-another great project.
-You can find more information about us on https://bitbag.shop and write us
-an email on mikolaj.krol@bitbag.pl.
-
+This file was created by developers working at BitBag
+Do you need more information about us and what we do? Visit our https://bitbag.io website!
+We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
 -->
 
 <container xmlns="http://symfony.com/schema/dic/services"
@@ -17,12 +13,11 @@ an email on mikolaj.krol@bitbag.pl.
     <services>
         <defaults autowire="false" autoconfigure="false" public="false" />
 
-        <service
-            id="Sylius\Bundle\ApiBundle\CommandHandler\Cart\RemoveItemFromCartHandler"
-            class="BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\RemoveItemFromCartHandler"
-        >
+        <service id="Sylius\Bundle\ApiBundle\CommandHandler\Cart\RemoveItemFromCartHandler"
+            class="BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\RemoveItemFromCartHandler">
             <argument type="service" id="sylius.repository.order_item" />
             <argument type="service" id="sylius.order_modifier" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -34,6 +29,7 @@ an email on mikolaj.krol@bitbag.pl.
             <argument type="service" id="sylius.repository.order_item" />
             <argument type="service" id="sylius.order_item_quantity_modifier" />
             <argument type="service" id="sylius.order_processing.order_processor" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -47,6 +43,7 @@ an email on mikolaj.krol@bitbag.pl.
             <argument type="service" id="sylius.repository.shipment" />
             <argument type="service" id="sylius.shipping_method_eligibility_checker" />
             <argument type="service" id="sm.factory" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -60,27 +57,39 @@ an email on mikolaj.krol@bitbag.pl.
             <argument type="service" id="sylius.repository.payment" />
             <argument type="service" id="sm.factory" />
             <argument type="service" id="Sylius\Bundle\ApiBundle\Changer\PaymentMethodChanger" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
 
-        <service id="Sylius\Bundle\ApiBundle\CommandHandler\Checkout\AddressOrderHandler"
-                 class="BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout\AddressOrderHandler"
-        >
+        <service id="BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout\ShippingAddressOrderHandler" >
             <argument type="service" id="sylius.repository.order" />
-            <argument type="service" id="sylius.repository.customer" />
-            <argument type="service" id="sylius.factory.customer" />
-            <argument type="service" id="sylius.manager.customer" />
-            <argument type="service" id="sm.factory" />
+            <argument type="service" id="sylius.manager.order" />
+            <argument type="service" id="Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface" />
+            <argument type="service" id="bitbag.sylius_graphql_plugin.resolver.order_address_state_resolver" />
+            <argument type="service" id="event_dispatcher" />
+            <tag name="messenger.message_handler" bus="sylius.command_bus" />
+            <tag name="messenger.message_handler" bus="sylius_default.bus" />
+        </service>
+
+        <service id="BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout\BillingAddressOrderHandler" >
+            <argument type="service" id="sylius.repository.order" />
+            <argument type="service" id="sylius.manager.order" />
+            <argument type="service" id="Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface" />
+            <argument type="service" id="bitbag.sylius_graphql_plugin.resolver.order_address_state_resolver" />
+            <argument type="service" id="sylius.api.context.user" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
 
         <service id="Sylius\Bundle\ApiBundle\CommandHandler\Cart\ApplyCouponToCartHandler"
-                 class="BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\ApplyCouponToCartHandler">
+                 class="BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\ApplyCouponToCartHandler"
+        >
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.repository.promotion_coupon" />
             <argument type="service" id="sylius.order_processing.order_processor" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -91,6 +100,31 @@ an email on mikolaj.krol@bitbag.pl.
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.repository.promotion_coupon" />
             <argument type="service" id="sylius.order_processing.order_processor" />
+            <argument type="service" id="event_dispatcher" />
+            <tag name="messenger.message_handler" bus="sylius.command_bus" />
+            <tag name="messenger.message_handler" bus="sylius_default.bus" />
+        </service>
+
+        <service id="BitBag\SyliusGraphqlPlugin\CommandHandler\Account\SendResetPasswordEmailHandler" >
+            <argument type="service" id="sylius.email_sender" />
+            <argument type="service" id="sylius.context.channel.single_channel" />
+            <argument type="service" id="sylius.repository.shop_user" />
+            <argument type="service" id="sylius.shop_user.token_generator.password_reset" />
+            <argument type="service" id="event_dispatcher" />
+            <tag name="messenger.message_handler" bus="sylius.command_bus" />
+            <tag name="messenger.message_handler" bus="sylius_default.bus" />
+        </service>
+
+        <service id="BitBag\SyliusGraphqlPlugin\CommandHandler\Account\ResetPasswordHandler" >
+            <argument type="service" id="sylius.repository.shop_user" />
+            <argument type="service">
+                <service class="Sylius\Component\Resource\Metadata\MetadataInterface">
+                    <factory service="sylius.resource_registry" method="get" />
+                    <argument type="string">sylius.shop_user</argument>
+                </service>
+            </argument>
+            <argument type="service" id="sylius.security.password_updater" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>

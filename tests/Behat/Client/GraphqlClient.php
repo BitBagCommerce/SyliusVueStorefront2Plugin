@@ -1,172 +1,181 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
 
 declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Client;
 
+use Exception;
+use const JSON_ERROR_NONE;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
-use Sylius\Behat\Client\RequestInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Symfony\Component\BrowserKit\AbstractBrowser;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use const JSON_ERROR_NONE;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequest;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
+use Webmozart\Assert\Assert;
 
 final class GraphqlClient implements GraphqlClientInterface
 {
-    /** @var AbstractBrowser */
-    private $client;
+    public const LAST_GRAPHQL_RESPONSE = 'lastGraphqlResponse';
 
-    /** @var SharedStorageInterface */
-    private $sharedStorage;
+    public const GRAPHQL_OPERATION = 'graphqlOperation';
 
-    /** @var string */
-    private $authorizationHeader;
+    private AbstractBrowser $client;
 
-    /** @var RequestInterface */
-    private $request;
+    private SharedStorageInterface $sharedStorage;
+
+    private string $authorizationHeader;
+
+    private string $uri;
+
+    private ParameterBag $headers;
 
     public function __construct(
         AbstractBrowser $client,
         SharedStorageInterface $sharedStorage,
-        string $authorizationHeader
-    )
-    {
+        string $authorizationHeader,
+        string $uri
+    ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
         $this->authorizationHeader = $authorizationHeader;
+        $this->uri = $uri;
+        $this->headers = new ParameterBag();
     }
 
-    public function post(?RequestInterface $request = null): Response
-    {
-        return $this->request($request ?? $this->request);
+    public function prepareOperation(
+        string $name,
+        string $formattedExpectedData,
+        string $method = Request::METHOD_POST
+    ): OperationRequestInterface {
+        $operation = '
+        mutation <name> ($input: <name>Input!) {
+            <name>(input: $input){
+            <expectedData>
+          }
+        }';
+
+        $this->headers->add([
+            'CONTENT_TYPE' => 'application/json',
+        ]);
+        $operation = str_replace('<name>', $name, $operation);
+        $operation = str_replace('<expectedData>', $formattedExpectedData, $operation);
+
+        return new OperationRequest($name, $operation, [], $method);
     }
 
-    public function put(): Response
-    {
-        return $this->request($this->request);
+    public function prepareQuery(
+        string $name,
+        string $formattedExpectedData,
+        string $method = Request::METHOD_POST
+    ): OperationRequestInterface {
+        $operation = '
+        query <name> {
+            <name><filters>{
+            <expectedData>
+          }
+        }';
+
+        $this->headers->add([
+            'CONTENT_TYPE' => 'application/json',
+        ]);
+        $operation = str_replace('<name>', $name, $operation);
+        $operation = str_replace('<expectedData>', $formattedExpectedData, $operation);
+
+        $operationRequest = new OperationRequest($name, $operation, [], $method);
+        $operationRequest->setOperationType(OperationRequestInterface::OPERATION_QUERY);
+
+        return $operationRequest;
     }
 
-    public function patch(): Response
+    public function getLastOperationRequest(): ?OperationRequestInterface
     {
-        return $this->request($this->request);
+        return $this->sharedStorage->get(self::GRAPHQL_OPERATION);
     }
 
-    public function delete(string $id): Response
+    public function addAuthorization(): void
     {
-        return $this->request(Request::delete(
-            $this->section,
-            $this->resource,
-            $id,
-            $this->authorizationHeader,
-            $this->getToken()
-        ));
-    }
-
-    public function buildCreateRequest(): void
-    {
-        $this->request = Request::create($this->section, $this->resource, $this->authorizationHeader);
-        $this->request->authorize($this->getToken(), $this->authorizationHeader);
-    }
-
-    public function buildUpdateRequest(string $id): void
-    {
-        $this->show($id);
-
-        $this->request = Request::update(
-            $this->section,
-            $this->resource,
-            $id,
-            $this->authorizationHeader,
-            $this->getToken()
-        );
-        $this->request->setContent(json_decode($this->client->getResponse()->getContent(), true));
-    }
-
-    public function buildCustomUpdateRequest(string $id, string $customSuffix): void
-    {
-        $this->request = Request::update(
-            $this->section,
-            $this->resource,
-            sprintf('%s/%s', $id, $customSuffix),
-            $this->authorizationHeader,
-            $this->getToken()
-        );
-    }
-
-
-    /** @param string|int $value */
-    public function setRequestInput(string $key, $value): void
-    {
-        $this->request->updateParameters([$key => $value]);
-    }
-
-    public function setRequestData(array $content): void
-    {
-        $this->request->setContent($content);
-    }
-
-    public function clearParameters(): void
-    {
-        $this->request->clearParameters();
-    }
-
-    /** @param string|int|array $value */
-    public function addRequestData(string $key, $value): void
-    {
-        $this->request->updateContent([$key => $value]);
-    }
-
-    public function updateRequestData(array $data): void
-    {
-        $this->request->updateContent($data);
-    }
-
-    public function getLastResponse(): Response
-    {
-        return $this->client->getResponse();
+        $token = $this->getToken();
+        if (null !== $token) {
+            $this->headers->add([
+                'HTTP_AUTHORIZATION' => sprintf('%s %s', $this->authorizationHeader, $token),
+            ]);
+        }
     }
 
     public function getToken(): ?string
     {
-        return $this->sharedStorage->has('token') ? $this->sharedStorage->get('token') : null;
+        return $this->sharedStorage->has('token') ? (string) $this->sharedStorage->get('token') : null;
     }
 
-    function request(RequestInterface $request): Response
+    public function send(): Response
     {
         if ($this->sharedStorage->has('hostname')) {
-            $this->client->setServerParameter('HTTP_HOST', $this->sharedStorage->get('hostname'));
+            $this->client->setServerParameter('HTTP_HOST', (string) $this->sharedStorage->get('hostname'));
         }
 
-        $this->client->request(
-            $request->method(),
-            '/api/v2/graphql',
-            $request->parameters(),
-            $request->files(),
-            $request->headers(),
-            $request->content() ?? null
+        $operation = $this->getLastOperationRequest();
+
+        $this->sendJsonRequest(
+            $operation->getMethod(),
+            $this->uri,
+            $operation->getFormatted(),
+            $this->headers->all()
         );
 
-        $response = $this->getLastResponse();
-
+        /** @var Response $response */
+        $response = $this->client->getResponse();
         $this->saveLastResponse($response);
+        $this->headers = new ParameterBag();
+
+        return $response;
     }
 
-
-    /**
-     * @return mixed|null
-     */
-    function getJsonFromResponse(string $response)
+    public function saveLastResponse(Response $response): void
     {
-        $jsonData = json_decode($response, true);
+        $this->sharedStorage->set(self::LAST_GRAPHQL_RESPONSE, $response);
+    }
+
+    public function getLastResponse(): ?JsonResponse
+    {
+        return $this->sharedStorage->get(self::LAST_GRAPHQL_RESPONSE);
+    }
+
+/** @throws Exception */
+    public function getLastResponseArrayContent(): array
+    {
+        $response = $this->getLastResponse();
+        $json = $this->getJsonFromResponse($response);
+        if ($json === null) {
+            throw new Exception('Return data is not Json format');
+        }
+
+        return $json;
+    }
+
+    public function getJsonFromResponse(Response $response): ?array
+    {
+        $content = $response->getContent();
+        Assert::string($content);
+
+        try {
+            /** @var array $jsonData */
+            $jsonData = json_decode($content, true);
+        } catch (Exception $exception) {
+            print_r($exception->getMessage());
+        }
+
         if (json_last_error() === JSON_ERROR_NONE) {
             return $jsonData;
         }
@@ -174,61 +183,93 @@ final class GraphqlClient implements GraphqlClientInterface
         return null;
     }
 
-    public static function diff($arr1, $arr2): array
+/** @throws Exception */
+    public function flattenArray(array $responseArray): array
     {
-        $diff = [];
+        $this->checkIfResponseProperlyFormatted($responseArray);
+        $array = [];
 
-        // Check the similarities
-        foreach ($arr1 as $k1 => $v1) {
-            if (isset($arr2[$k1])) {
-                $v2 = $arr2[$k1];
-                if (is_array($v1) && is_array($v2)) {
-                    // 2 arrays: just go further...
-                    // .. and explain it's an update!
-                    $changes = self::diff($v1, $v2);
-                    if (count($changes) > 0) {
-                        // If we have no change, simply ignore
-                        $diff[$k1] = ['upd' => $changes];
-                    }
-                    unset($arr2[$k1]); // don't forget
-                } elseif ($v2 === $v1) {
-                    // unset the value on the second array
-                    // for the "surplus"
-                    unset($arr2[$k1]);
-                } else {
-                    // Don't mind if arrays or not.
-                    $diff[$k1] = ['old' => $v1, 'new' => $v2];
-                    unset($arr2[$k1]);
-                }
-            } else {
-                // remove information
-                $diff[$k1] = ['old' => $v1];
-            }
+        if ($this->isDataSectionPresentInResponse($responseArray)) {
+            /** @var array $array */
+            $array = reset($responseArray['data']);
         }
 
-        // Now, check for new stuff in $arr2
-        reset($arr2); // Don't argue it's unnecessary (even I believe you)
-        foreach ($arr2 as $k => $v) {
-            // OK, it is quite stupid my friend
-            $diff[$k] = ['new' => $v];
+        if ($this->isErrorSectionPresentInResponse($responseArray)) {
+            /** @var array $array */
+            $array = reset($responseArray['errors']);
         }
-
-        return $diff;
-    }
-
-    public function flattenArray(array $array): array
-    {
-        $array = reset($array['data']);
-        $ritit = new RecursiveIteratorIterator(new RecursiveArrayIterator($array));
+        $recursiveIteratorIterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($array), RecursiveIteratorIterator::CHILD_FIRST);
         $result = [];
-        foreach ($ritit as $leafValue) {
+        foreach ($recursiveIteratorIterator as $value) {
             $keys = [];
-            foreach (range(0, $ritit->getDepth()) as $depth) {
-                $keys[] = $ritit->getSubIterator($depth)->key();
+            foreach (range(0, $recursiveIteratorIterator->getDepth()) as $depth) {
+                $keys[] = $recursiveIteratorIterator->getSubIterator($depth)->key();
             }
-            $result[implode('.', $keys)] = $leafValue;
+            $result[implode('.', $keys)] = $value;
         }
 
         return $result;
+    }
+
+    /** Converts the request parameters into a JSON string and uses it as request content. */
+    private function sendJsonRequest(
+        string $method,
+        string $uri,
+        array $parameters = [],
+        array $server = [],
+        bool $changeHistory = true
+    ): Crawler {
+        $content = json_encode($parameters);
+        $this->setJsonServerHeaders();
+        return $this->client->request($method, $uri, [], [], $server, $content, $changeHistory);
+    }
+
+    /**
+     * @return mixed
+     *
+     * @throws Exception
+     */
+    public function getValueAtKey(string $key)
+    {
+        $arrayContent = $this->getLastResponseArrayContent();
+        $flatResponse = $this->flattenArray($arrayContent);
+
+        if (!array_key_exists($key, $flatResponse)) {
+            $message = array_key_exists('debugMessage', $flatResponse) ? $flatResponse['debugMessage'] : $flatResponse;
+
+            throw new Exception(
+                sprintf(
+                    "Last response did not have any key named %s \n%s",
+                    $key,
+                    print_r($flatResponse, true)
+                )
+            );
+        }
+
+        return $flatResponse[$key];
+    }
+
+    /** @throws Exception */
+    private function checkIfResponseProperlyFormatted(array $responseArray): void
+    {
+        if (!array_key_exists('data', $responseArray) && !array_key_exists('errors', $responseArray)) {
+            throw new Exception('Malformed response, no data or error key.');
+        }
+    }
+
+    private function isDataSectionPresentInResponse(array $responseArray): bool
+    {
+        return array_key_exists('data', $responseArray) && is_array($responseArray['data']);
+    }
+
+    private function isErrorSectionPresentInResponse(array $responseArray): bool
+    {
+        return array_key_exists('errors', $responseArray) && is_array($responseArray['errors']);
+    }
+
+    private function setJsonServerHeaders(): void
+    {
+        $this->client->setServerParameter('CONTENT_TYPE', 'application/json');
+        $this->client->setServerParameter('HTTP_ACCEPT', 'application/json');
     }
 }

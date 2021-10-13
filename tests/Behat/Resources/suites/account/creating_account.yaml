@@ -3,8 +3,12 @@ default:
         graphql_creating_account:
             contexts:
                 - sylius.behat.context.setup.channel
-                - sylius.behat.context.api_platform.graphql
+                - sylius.behat.context.setup.customer
+                - bitbag_sylius_graphql_plugin.context.graphql
+                - bitbag_sylius_graphql_plugin.context.customer
+                - bitbag_sylius_graphql_plugin.context.login
+                - bitbag_sylius_graphql_plugin.context.registration
                 - sylius.behat.context.hook.doctrine_orm
-                - sylius.behat.context.transform.shared_storage
+                - sylius.behat.context.transform.shared_storage                
             filters:
                 tags: "@creating_account && @graphql"

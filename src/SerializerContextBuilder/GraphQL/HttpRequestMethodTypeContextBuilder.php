@@ -1,12 +1,10 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
 
 declare(strict_types=1);
 
@@ -17,6 +15,7 @@ use ApiPlatform\Core\GraphQl\Serializer\SerializerContextBuilderInterface;
 use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
 use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
 use Symfony\Component\HttpFoundation\Request;
+use Webmozart\Assert\Assert;
 
 /** @experimental */
 final class HttpRequestMethodTypeContextBuilder implements SerializerContextBuilderInterface
@@ -88,13 +87,14 @@ final class HttpRequestMethodTypeContextBuilder implements SerializerContextBuil
             if (false === isset($availableCustomOperations[$operationName])) {
                 return $context;
             }
+            Assert::isArray($availableCustomOperations[$operationName]);
 
             if (false === isset($availableCustomOperations[$operationName]['method'])) {
                 return $context;
             }
 
             $context[ContextKeys::HTTP_REQUEST_METHOD_TYPE] = strtoupper(
-                $availableCustomOperations[$operationName]['method']
+                (string) $availableCustomOperations[$operationName]['method']
             );
         } catch (ResourceClassNotFoundException $exception) {
         }

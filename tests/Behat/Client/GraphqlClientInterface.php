@@ -1,52 +1,52 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
 
 declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Client;
 
-use Sylius\Behat\Client\RequestInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 
 interface GraphqlClientInterface
 {
+    public function prepareOperation(
+        string $name,
+        string $formattedExpectedData,
+        string $method = Request::METHOD_POST
+    ): OperationRequestInterface;
 
-    public function post(?RequestInterface $request = null): Response;
-
-    public function put(): Response;
-
-    public function patch(): Response;
-
-    public function delete(string $id): Response;
-
-    /** @param string|int $value */
-    public function setRequestInput(string $key, $value): void;
-
-    public function setRequestData(array $content): void;
-
-    public function clearParameters(): void;
-
-    /** @param string|int|array $value */
-    public function addRequestData(string $key, $value): void;
-
-    public function updateRequestData(array $data): void;
-
-    public function getLastResponse(): Response;
+    public function prepareQuery(
+        string $name,
+        string $formattedExpectedData,
+        string $method = Request::METHOD_POST
+    ): OperationRequestInterface;
 
     public function getToken(): ?string;
 
-    function request(RequestInterface $request): Response;
+    public function addAuthorization(): void;
 
-    /**
-     * @return mixed|null
-     */
-    function getJsonFromResponse(string $response);
+    public function send(): Response;
 
+    public function getJsonFromResponse(Response $response): ?array;
+
+    public function getLastResponseArrayContent(): array;
+
+    public function flattenArray(array $responseArray): array;
+
+    public function getLastOperationRequest(): ?OperationRequestInterface;
+
+    public function saveLastResponse(Response $response): void;
+
+    public function getLastResponse(): ?JsonResponse;
+
+    /** @return mixed */
+    public function getValueAtKey(string $key);
 }

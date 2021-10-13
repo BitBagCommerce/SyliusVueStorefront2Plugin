@@ -1,12 +1,10 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
 
 declare(strict_types=1);
 
@@ -21,12 +19,16 @@ use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Core\Repository\ShipmentRepositoryInterface;
 use Sylius\Component\Core\Repository\ShippingMethodRepositoryInterface;
 use Sylius\Component\Shipping\Checker\Eligibility\ShippingMethodEligibilityCheckerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Webmozart\Assert\Assert;
 
 /** @experimental */
 final class ChooseShippingMethodHandler implements MessageHandlerInterface
 {
+    public const EVENT_NAME = 'bitbag_sylius_graphql.choose_order_shipping_method.complete';
+
     private OrderRepositoryInterface $orderRepository;
 
     private ShippingMethodRepositoryInterface $shippingMethodRepository;
@@ -37,24 +39,28 @@ final class ChooseShippingMethodHandler implements MessageHandlerInterface
 
     private FactoryInterface $stateMachineFactory;
 
+    private EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         ShippingMethodRepositoryInterface $shippingMethodRepository,
         ShipmentRepositoryInterface $shipmentRepository,
         ShippingMethodEligibilityCheckerInterface $eligibilityChecker,
-        FactoryInterface $stateMachineFactory
+        FactoryInterface $stateMachineFactory,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->orderRepository = $orderRepository;
         $this->shippingMethodRepository = $shippingMethodRepository;
         $this->shipmentRepository = $shipmentRepository;
         $this->eligibilityChecker = $eligibilityChecker;
         $this->stateMachineFactory = $stateMachineFactory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function __invoke(ChooseShippingMethod $chooseShippingMethod): OrderInterface
+    public function __invoke(ChooseShippingMethod $command): OrderInterface
     {
         /** @var OrderInterface|null $cart */
-        $cart = $this->orderRepository->findOneBy(['tokenValue' => $chooseShippingMethod->orderTokenValue]);
+        $cart = $this->orderRepository->findOneBy(['tokenValue' => $command->orderTokenValue]);
 
         Assert::notNull($cart, 'Cart has not been found.');
 
@@ -67,11 +73,11 @@ final class ChooseShippingMethodHandler implements MessageHandlerInterface
 
         /** @var ShippingMethodInterface|null $shippingMethod */
         $shippingMethod = $this->shippingMethodRepository->findOneBy([
-            'code' => $chooseShippingMethod->shippingMethodCode,
+            'code' => $command->shippingMethodCode,
         ]);
         Assert::notNull($shippingMethod, 'Shipping method has not been found');
 
-        $shipment = $this->shipmentRepository->findOneByOrderId($chooseShippingMethod->shipmentId, $cart->getId());
+        $shipment = $this->shipmentRepository->findOneByOrderId($command->shipmentId, $cart->getId());
         Assert::notNull($shipment, 'Can not find shipment with given identifier.');
 
         Assert::true(
@@ -81,6 +87,9 @@ final class ChooseShippingMethodHandler implements MessageHandlerInterface
 
         $shipment->setMethod($shippingMethod);
         $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_SELECT_SHIPPING);
+
+        /** @psalm-suppress TooManyArguments */
+        $this->eventDispatcher->dispatch(new GenericEvent($cart, [$command]), self::EVENT_NAME);
 
         return $cart;
     }

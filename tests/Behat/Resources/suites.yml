@@ -1,7 +1,8 @@
 imports:
-    - suites/cart/adding_product_to_cart.yaml
-    - suites/cart/chosing_shipping_method.yaml
-    - suites/cart/chosing_payment_method.yaml
-    - suites/cart/adding_promotion.yaml
+    - suites/cart/place_order_as_guest.yaml
+    - suites/cart/place_order_as_guest_customer.yaml
+    - suites/cart/place_order_as_customer.yaml
     - suites/account/creating_account.yaml
+    - suites/account/editing_account.yaml
     - suites/account/changing_password.yaml
+    - suites/account/managing_addresses.yaml

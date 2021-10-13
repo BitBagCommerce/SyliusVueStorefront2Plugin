@@ -6,64 +6,22 @@ Feature: Changing one customer password
 
     Background:
         Given the store operates on a single channel in "United States"
+        And there is a customer "Frank Horrigan" identified by an email "frankh@enclave.com" and a password "semperfi"
+        And I create a JWT Token for customer identified by an email "frankh@enclave.com"
 
     @graphql
     Scenario: Changing password
-        When I have the following GraphQL request:
-        """
-        mutation shop_postCustomer ($input: shop_postCustomerInput!) {
-            shop_postCustomer(input: $input){
-		        customer{
-                    _id
-                }
-            }
-        }
-        """
-        And I prepare the variables for GraphQL request with saved data:
-        """
-        {
-            "input":{
-                "firstName": "John",
-                "lastName": "Doe",
-                "email": "john.doe@example.org",
-                "phoneNumber": "+44 123 123 789",
-                "subscribedToNewsletter": false,
-                "password": "S3cret"
-            }
-        }
-        """
-        Then I save value at key "customer._id" from last response as "customerId".
-
-        When I have the following GraphQL request:
-        """
-        mutation shop_password_updateCustomer ($input: shop_password_updateCustomerInput!) {
-            shop_password_updateCustomer(input: $input){
-                customer{
-                    email
-                }
-            }
-        }
-        """
-        And I prepare the variables for GraphQL request with saved data:
-        """
-        {
-            "input": {
-                "id": "{customerId}",
-                "currentPassword": "S3cret",
-                "newPassword": "SuperS4cret",
-                "confirmNewPassword": "SuperS4cret",
-            }
-        }
-        """
-        Then I should see following response:
-        """
-        {
-            "data": {
-                "shop_password_updateCustomer": {
-                    "customer": {
-                        "email": "john.doe@example.org",
-                    }
-                }
-            }
-        }
-        """
+        When I prepare change customer password operation
+        And I set id of this user request to match "frankh@enclave.com"
+        And I set 'currentPassword' field to "semperfi"
+        And I set 'newPassword' field to "oilrig"
+        And I set 'confirmNewPassword' field to "oilrig"
+        When I send that GraphQL request as authorised user
+        Then I should receive a JSON response
+        And I prepare refresh JWT Token operation
+        When I send that GraphQL request as authorised user
+        Then This response should contain 'shopUserToken.token'
+        When I prepare login operation with username "frankh@enclave.com" and password "oilrig"
+        And I send that GraphQL request
+        Then I should receive a JSON response
+        And This response should contain 'shopUserToken.user.username' equal to "frankh@enclave.com"

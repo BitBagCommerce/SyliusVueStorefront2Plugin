@@ -6,23 +6,17 @@ namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Context;
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Element\DocumentElement;
 use Exception;
-use InvalidArgumentException;
-use PHPUnit\Framework\ExpectationFailedException;
-use RecursiveArrayIterator;
-use RecursiveIteratorIterator;
 use Sylius\Behat\Service\SharedStorageInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClient;
 use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
-use const DIRECTORY_SEPARATOR;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
+use Webmozart\Assert\Assert;
 
-/**
- * Context for GraphQL.
- */
+/** Context for GraphQL. */
 final class GraphqlApiPlatformContext implements Context
 {
-
     private GraphqlClientInterface $client;
 
     private SharedStorageInterface $sharedStorage;
@@ -34,40 +28,58 @@ final class GraphqlApiPlatformContext implements Context
     }
 
     /**
-     * @When I have the following GraphQL request:
+     * @Transform /^(true|false)$/
      */
-    public function IHaveTheFollowingGraphqlRequest(PyStringNode $request)
+    public function getBooleanFromString(string $boolean): bool
     {
-        $this->graphqlRequest = ['query' => $request->getRaw()];
-        $this->graphqlLine = $request->getLine();
+        return (bool)$boolean;
     }
 
     /**
-     * @When I send the following GraphQL request:
+     * @When I send that GraphQL request
      */
-    public function ISendTheFollowingGraphqlRequest(PyStringNode $request)
+    public function iSendThatGraphQlRequest(): void
     {
-        $this->IHaveTheFollowingGraphqlRequest($request);
-        $this->sendGraphqlRequest();
+        $this->client->send();
     }
 
-    private function saveLastResponse(DocumentElement $response)
+    /**
+     * @When I send that GraphQL request as authorised user
+     */
+    public function iSendThatGraphQlRequestAsAuthorisedUser(): void
     {
-        $content = $response->getContent();
-        $json = $this->getJsonFromResponse($content);
+        $this->client->addAuthorization();
+        $this->client->send();
+    }
+
+    /**
+     * @Then I should receive a JSON response
+     *
+     * @throws Exception
+     */
+    public function iShouldReceiveAJsonResponse(): void
+    {
+        $response = $this->client->getLastResponse();
+        Assert::isInstanceOf($response, JsonResponse::class);
+
+        $json = $this->client->getJsonFromResponse($response);
         if ($json === null) {
             throw new Exception('Return data is not Json format');
         }
-        $this->lastResponse = $json;
     }
 
     /**
      * @When I should see following response:
+     *
+     * @throws Exception
      */
-    public function IShouldSeeFollowingResponse(PyStringNode $json): bool
+    public function iShouldSeeFollowingResponse(PyStringNode $json): bool
     {
+        /** @var array $expected */
         $expected = json_decode($json->getRaw(), true);
-        $result_array = self::diff($expected, $this->lastResponse);
+        /** @var array $lastResponse */
+        $lastResponse = $this->sharedStorage->get(GraphqlClient::LAST_GRAPHQL_RESPONSE);
+        $result_array = $this->differ->diff($expected, $lastResponse);
         if (empty($result_array)) {
             return true;
         }
@@ -76,220 +88,165 @@ final class GraphqlApiPlatformContext implements Context
     }
 
     /**
-     * @Then I save value at key :arg1 from last response as :arg2.
+     * @param mixed $value
+     * @When I set :key field to :value
      */
-    public function iSaveValueAs($key, $valueName)
+    public function iSetKeyFieldToValue(string $key, $value): void
     {
-        $flatResponse = $this->flattenArray($this->lastResponse);
-        if (!array_key_exists($key, $flatResponse)) {
-            throw new Exception(sprintf('Last response did not have any key named %s', $key));
+        $operation = $this->client->getLastOperationRequest();
+        Assert::isInstanceOf($operation, OperationRequestInterface::class);
+        $operation->addVariable($key, $value);
+    }
+
+    /**
+     * @When I set :key field to integer :value
+     */
+    public function iSetKeyFieldToIntegerValue(string $key, int $value): void
+    {
+        $this->iSetKeyFieldToValue($key, $value);
+    }
+
+    /**
+     * @When I set :key field to value :name
+     * @When I set :key field to previously saved value :name
+     * @When I set :key field to previously saved :type value :name
+     */
+    public function iSetKeyFieldToPreviouslySavedValue(string $key, string $name, string $type = null): void
+    {
+        $operation = $this->client->getLastOperationRequest();
+        Assert::isInstanceOf($operation, OperationRequestInterface::class);
+        $value = $this->sharedStorage->get($name);
+        Assert::notEmpty($value);
+        $value = $this->castToType($value, $type);
+        $operation->addVariable($key, $value);
+    }
+
+    /**
+     * @var mixed
+     * @Then I set :sharedStorageKey object :propertyName property to :value
+     */
+    public function iSetObjectPropertyToValue(string $sharedStorageKey, string $propertyName, $value): void
+    {
+        try {
+            $storageValue = (array)$this->sharedStorage->get($sharedStorageKey);
+        } catch (\InvalidArgumentException $e) {
+            $storageValue = [];
         }
-        $this->savedValues[$valueName] = $flatResponse[$key];
+        $storageValue[$propertyName] = $value;
+        $this->sharedStorage->set($sharedStorageKey, $storageValue);
     }
 
     /**
-     * @When I send the GraphQL request with variables:
+     * @Then This response should contain :key
+     *
+     * @throws Exception
      */
-    public function ISendTheGraphqlRequestWithVariables(PyStringNode $variables)
+    public function thatResponseShouldContain(string $key): bool
     {
-        $this->graphqlRequest['variables'] = $variables->getRaw();
-        $this->sendGraphqlRequest();
+        $this->client->getValueAtKey($key);
+
+        return true;
     }
 
     /**
-     * @When I prepare the variables for GraphQL request with saved data:
+     * @Then This response should contain empty :key
+     *
+     * @throws Exception
      */
-    public function IPrepareTheVariablesForGraphqlRequest(PyStringNode $variables)
+    public function thatResponseShouldContainEmpty(string $key): bool
     {
-        $raw = $variables->getRaw();
-        preg_match_all('/{(\w+)}/', $raw, $matches);
-        $parsed = $raw;
-        foreach ($matches[0] as $index => $var_name) {
-            $key = $matches[1][$index];
-            if (array_key_exists($key, $this->savedValues)) {
-                $parsed = str_replace($var_name, $this->savedValues[$key], $parsed);
-            }
-        }
-        $this->graphqlRequest['variables'] = $parsed;
-        $this->sendGraphqlRequest();
+        $value = $this->client->getValueAtKey($key);
+        Assert::isEmpty($value);
+
+        return true;
     }
 
     /**
-     * @When I send the GraphQL request with operationName :operationName
+     * @param mixed $value
+     * @Then This response should contain :key equal to :value
+     *
+     * @throws Exception
      */
-    public function ISendTheGraphqlRequestWithOperation(string $operationName)
+    public function thatResponseShouldContainKeyWithValue(string $key, $value): void
     {
-        $this->graphqlRequest['operationName'] = $operationName;
-        $this->sendGraphqlRequest();
+        /** @psalm-suppress MixedAssignment */
+        $responseValueAtKey = $this->client->getValueAtKey($key);
+        Assert::same($value, $responseValueAtKey);
     }
 
     /**
-     * @Then I send the same request again
-     * @Then I resend the request
+     * @param mixed $value
+     *
+     * @return mixed
      */
-    public function IResendGraphqlRequest(string $method = self::METHOD_POST): DocumentElement
+    private function castToType($value, string $type = null)
     {
-        $response = $this->restContext->iSendARequestTo($method, '/api/v2/graphql?' . http_build_query($this->graphqlRequest));
-        $this->saveLastResponse($response);
+        switch ($type) {
+            case 'bool':
+                $value = (bool)$value;
 
-        return $response;
-    }
+                break;
+            case 'float':
+                $value = (float)$value;
 
-    /**
-     * @Given I have the following file(s) for a GraphQL request:
-     */
-    public function iHaveTheFollowingFilesForAGraphqlRequest(TableNode $table)
-    {
-        $files = [];
+                break;
+            case 'int':
+                $value = (int)$value;
 
-        foreach ($table->getHash() as $row) {
-            if (!isset($row['name'], $row['file'])) {
-                throw new InvalidArgumentException('You must provide a "name" and "file" column in your table node.');
-            }
+                break;
+            case 'string':
+                $value = (string)$value;
 
-            $files[$row['name']] = $this->restContext->getMinkParameter('files_path') . DIRECTORY_SEPARATOR . $row['file'];
-        }
-
-        $this->graphqlRequest['files'] = $files;
-    }
-
-    /**
-     * @Given I have the following GraphQL multipart request map:
-     */
-    public function iHaveTheFollowingGraphqlMultipartRequestMap(PyStringNode $string)
-    {
-        $this->graphqlRequest['map'] = $string->getRaw();
-    }
-
-    /**
-     * @When I send the following GraphQL multipart request operations:
-     */
-    public function iSendTheFollowingGraphqlMultipartRequestOperations(PyStringNode $string)
-    {
-        $params = [];
-        $params['operations'] = $string->getRaw();
-        $params['map'] = $this->graphqlRequest['map'];
-
-        $this->request->setHttpHeader('Content-type', 'multipart/form-data'); // @phpstan-ignore-line
-        $this->request->send('POST', '/graphql', $params, $this->graphqlRequest['files']); // @phpstan-ignore-line
-    }
-
-    /**
-     * @When I send the query to introspect the schema
-     */
-    public function ISendTheQueryToIntrospectTheSchema()
-    {
-        $this->graphqlRequest = ['query' => Introspection::getIntrospectionQuery()];
-        $this->sendGraphqlRequest();
-    }
-
-    /**
-     * @Then the GraphQL field :fieldName is deprecated for the reason :reason
-     */
-    public function theGraphQLFieldIsDeprecatedForTheReason(string $fieldName, string $reason)
-    {
-        foreach (json_decode($this->request->getContent(), true)['data']['__type']['fields'] as $field) { // @phpstan-ignore-line
-            if ($fieldName === $field['name'] && $field['isDeprecated'] && $reason === $field['deprecationReason']) {
-                return;
-            }
+                break;
+            default:
+                return $value;
         }
 
-        throw new ExpectationFailedException(sprintf('The field "%s" is not deprecated.', $fieldName));
+        return $value;
     }
 
     /**
      * @Then I should see following error message :message
+     *
+     * @throws Exception
      */
     public function iShouldSeeFollowingErrorMessage(string $message): bool
     {
-        $flatLastResponse = $this->flattenArray($this->lastResponse);
-        if (!key_exists("errors.0.message", $flatLastResponse)) {
-            throw new Exception("No errors were produced.");
+        $arrayContent = $this->client->getLastResponseArrayContent();
+        $flatLastResponse = $this->client->flattenArray($arrayContent);
+        if (!array_key_exists('errors.0.message', $flatLastResponse)) {
+            throw new Exception('No errors were produced.');
         }
-        if ($flatLastResponse["errors.0.message"] !== $message) {
-            throw new Exception("The error message is different then expected.");
+        if ($flatLastResponse['errors.0.message'] !== $message) {
+            throw new Exception('The error message is different then expected.');
         }
+
         return true;
     }
 
-
-    private function sendGraphqlRequest(string $method = self::METHOD_POST): DocumentElement
+    /**
+     * @Then I save key :key of this response as :name
+     * @Then I save key :key of this response as :name as :type
+     */
+    public function iSaveValueAtKeyOfThisModelResponse(string $key, string $name, ?string $type = null): void
     {
-        $this->lastRequest = $this->graphqlRequest;
-        $response = $this->restContext->iSendARequestTo($method, '/api/v2/graphql?' . http_build_query($this->graphqlRequest));
-        $this->saveLastResponse($response);
-
-        return $response;
+        $value = $this->client->getValueAtKey($key);
+        $value = $this->castToType($value, $type);
+        $this->sharedStorage->set($name, $value);
     }
 
-    /**
-     * @return mixed|null
-     */
-    private function getJsonFromResponse(string $response)
+    private function getJsonFromResponse(string $response): ?array
     {
-        $jsonData = json_decode($response, true);
-        if (json_last_error() === JSON_ERROR_NONE) {
+        try {
+            /** @var array $jsonData */
+            $jsonData = json_decode($response, true);
+        } catch (Exception $exception) {
+            print_r($exception->getMessage());
+        }
+        if (json_last_error() === \JSON_ERROR_NONE) {
             return $jsonData;
         }
 
         return null;
-    }
-
-    public static function diff($arr1, $arr2)
-    {
-        $diff = [];
-
-        // Check the similarities
-        foreach ($arr1 as $k1 => $v1) {
-            if (isset($arr2[$k1])) {
-                $v2 = $arr2[$k1];
-                if (is_array($v1) && is_array($v2)) {
-                    // 2 arrays: just go further...
-                    // .. and explain it's an update!
-                    $changes = self::diff($v1, $v2);
-                    if (count($changes) > 0) {
-                        // If we have no change, simply ignore
-                        $diff[$k1] = ['upd' => $changes];
-                    }
-                    unset($arr2[$k1]); // don't forget
-                } elseif ($v2 === $v1) {
-                    // unset the value on the second array
-                    // for the "surplus"
-                    unset($arr2[$k1]);
-                } else {
-                    // Don't mind if arrays or not.
-                    $diff[$k1] = ['old' => $v1, 'new' => $v2];
-                    unset($arr2[$k1]);
-                }
-            } else {
-                // remove information
-                $diff[$k1] = ['old' => $v1];
-            }
-        }
-
-        // Now, check for new stuff in $arr2
-        reset($arr2); // Don't argue it's unnecessary (even I believe you)
-        foreach ($arr2 as $k => $v) {
-            // OK, it is quite stupid my friend
-            $diff[$k] = ['new' => $v];
-        }
-
-        return $diff;
-    }
-
-    private function flattenArray(array $array)
-    {
-        $array = reset($array['data']);
-        $ritit = new RecursiveIteratorIterator(new RecursiveArrayIterator($array));
-        $result = [];
-        foreach ($ritit as $leafValue) {
-            $keys = [];
-            foreach (range(0, $ritit->getDepth()) as $depth) {
-                $keys[] = $ritit->getSubIterator($depth)->key();
-            }
-            $result[implode('.', $keys)] = $leafValue;
-        }
-
-        return $result;
     }
 }

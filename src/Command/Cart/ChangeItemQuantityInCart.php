@@ -1,12 +1,10 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
 
 declare(strict_types=1);
 
@@ -22,17 +20,23 @@ class ChangeItemQuantityInCart implements OrderTokenValueAwareInterface, Subreso
 
     public ?string $orderItemId;
 
-    /** @psalm-immutable */
     public int $quantity;
 
-    public function __construct(int $quantity, ?string $orderItemId = null)
-    {
+    public function __construct(
+        int $quantity,
+        ?string $orderItemId = null,
+        ?string $orderTokenValue = null
+    ) {
         $this->quantity = $quantity;
         $this->orderItemId = $orderItemId;
+        $this->orderTokenValue = $orderTokenValue;
     }
 
-    public static function createFromData(string $tokenValue, string $orderItemId, int $quantity): self
-    {
+    public static function createFromData(
+        string $tokenValue,
+        string $orderItemId,
+        int $quantity
+    ): self {
         $command = new self($quantity);
 
         $command->orderTokenValue = $tokenValue;
@@ -64,5 +68,25 @@ class ChangeItemQuantityInCart implements OrderTokenValueAwareInterface, Subreso
     public function getSubresourceIdAttributeKey(): string
     {
         return 'orderItemId';
+    }
+
+    public function getOrderItemId(): ?string
+    {
+        return $this->orderItemId;
+    }
+
+    public function setOrderItemId(?string $orderItemId): void
+    {
+        $this->orderItemId = $orderItemId;
+    }
+
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): void
+    {
+        $this->quantity = $quantity;
     }
 }

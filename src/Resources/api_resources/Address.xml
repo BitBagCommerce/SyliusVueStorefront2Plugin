@@ -1,13 +1,9 @@
 <?xml version="1.0" ?>
 
 <!--
-
-This file has been created by developers from BitBag.
-Feel free to contact us once you face any issues or want to start
-another great project.
-You can find more information about us on https://bitbag.shop and write us
-an email on mikolaj.krol@bitbag.pl.
-
+This file was created by developers working at BitBag
+Do you need more information about us and what we do? Visit our https://bitbag.io website!
+We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
 -->
 
 <resources xmlns="https://api-platform.com/schema/metadata"
@@ -17,25 +13,66 @@ an email on mikolaj.krol@bitbag.pl.
     <resource class="%sylius.model.address.class%" shortName="Address">
         <graphql>
             <operation name="item_query" />
+            <operation name="delete" />
+            <operation name="collection_query">
+                <attribute name="pagination_type">page</attribute>
+            </operation>
 
             <operation name="shop_post">
                 <attribute name="method">POST</attribute>
-                <attribute name="messenger">input</attribute>
-                <!--                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\AddAddress</attribute>-->
-                <attribute name="normalization_context">
-                    <attribute name="groups">shop:address:create</attribute>
-                </attribute>
                 <attribute name="args">
+                    <attribute name="firstName">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="lastName">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="company">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="street">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="countryCode">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="provinceName">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="city">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="postcode">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="phoneNumber">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+
+            <operation name="shop_put">
+                <attribute name="method">PUT</attribute>
+                <attribute name="args">
+                    <attribute name="id">
+                        <attribute name="type">ID!</attribute>
+                    </attribute>
                     <attribute name="firstName">
                         <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="lastName">
                         <attribute name="type">String</attribute>
                     </attribute>
-                    <attribute name="countryCode">
+                    <attribute name="company">
                         <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="street">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="countryCode">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="provinceName">
                         <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="city">
@@ -44,8 +81,12 @@ an email on mikolaj.krol@bitbag.pl.
                     <attribute name="postcode">
                         <attribute name="type">String</attribute>
                     </attribute>
+                    <attribute name="phoneNumber">
+                        <attribute name="type">String</attribute>
+                    </attribute>
                 </attribute>
             </operation>
+
         </graphql>
 
         <attribute name="validation_groups">sylius</attribute>
@@ -104,10 +145,11 @@ an email on mikolaj.krol@bitbag.pl.
         <property name="id" identifier="true" writable="false" />
         <property name="firstName" writable="true" />
         <property name="lastName" writable="true" />
-        <property name="city" writable="true" />
+        <property name="city" writable="true"/>
         <property name="street" writable="true" />
         <property name="postcode" writable="true" />
         <property name="countryCode" writable="true" />
+        <property name="phoneNumber" writable="true" />
         <property name="provinceName" writable="true" />
     </resource>
 </resources>

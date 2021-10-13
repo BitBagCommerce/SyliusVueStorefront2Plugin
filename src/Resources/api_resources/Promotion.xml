@@ -1,13 +1,9 @@
 <?xml version="1.0" ?>
 
 <!--
-
-This file has been created by developers from BitBag.
-Feel free to contact us once you face any issues or want to start
-another great project.
-You can find more information about us on https://bitbag.shop and write us
-an email on mikolaj.krol@bitbag.pl.
-
+This file was created by developers working at BitBag
+Do you need more information about us and what we do? Visit our https://bitbag.io website!
+We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
 -->
 
 <resources xmlns="https://api-platform.com/schema/metadata"
@@ -15,14 +11,6 @@ an email on mikolaj.krol@bitbag.pl.
            xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
 >
     <resource class="%sylius.model.promotion.class%" shortName="Promotion">
-        <graphql>
-            <operation name="collection_query">
-                <attribute name="pagination_type">page</attribute>
-            </operation>
-
-            <operation name="item_query" />
-        </graphql>
-
         <attribute name="route_prefix">admin</attribute>
 
         <attribute name="validation_groups">sylius</attribute>
@@ -57,9 +45,10 @@ an email on mikolaj.krol@bitbag.pl.
         <property name="startsAt" readable="true" />
         <property name="endsAt" readable="true" />
         <property name="couponBased" readable="true" />
-        <property name="coupons" readable="true" />
+        <property name="coupons" readable="true" >
+            <subresource resourceClass="%sylius.model.promotion_coupon.class%" />
+        </property>
         <property name="rules" readable="true" />
         <property name="actions" readable="true" />
-        <property name="channels" readable="true" />
     </resource>
 </resources>

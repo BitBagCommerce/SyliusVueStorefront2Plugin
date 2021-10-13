@@ -2,3 +2,6 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en_US
+
+debug:
+    dump_destination: "tcp://%env(VAR_DUMPER_SERVER)%"

@@ -1,0 +1,116 @@
+<?xml version="1.0" ?>
+
+<!--
+This file was created by developers working at BitBag
+Do you need more information about us and what we do? Visit our https://bitbag.io website!
+We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+-->
+
+<serializer xmlns="http://symfony.com/schema/dic/serializer-mapping"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping https://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
+>
+    <class name="Sylius\Component\Core\Model\Product">
+        <attribute name="id">
+            <group>admin:product:read</group>
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="variantSelectionMethod">
+            <group>admin:product:read</group>
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="productTaxons">
+            <group>admin:product:create</group>
+            <group>admin:product:read</group>
+            <group>admin:product:update</group>
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="channels">
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="mainTaxon">
+            <group>admin:product:create</group>
+            <group>admin:product:read</group>
+            <group>admin:product:update</group>
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="reviews">
+            <group>admin:product:read</group>
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="averageRating">
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="images">
+            <group>admin:product:read</group>
+            <group>admin:product:create</group>
+            <group>admin:product:update</group>
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="code">
+            <group>admin:product:create</group>
+            <group>admin:product:read</group>
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="attributes">
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="variants">
+            <group>admin:product:read</group>
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="options">
+            <group>admin:product:read</group>
+            <group>admin:product:create</group>
+            <group>admin:product:update</group>
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="createdAt">
+            <group>admin:product:read</group>
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="updatedAt">
+            <group>admin:product:read</group>
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="enabled">
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="translations">
+            <group>admin:product:create</group>
+            <group>admin:product:read</group>
+            <group>admin:product:update</group>
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="variantSelectionMethodChoice">
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="variantSelectionMethodLabel">
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="shortDescription">
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="translation">
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="name">
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="slug">
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="metaKeywords">
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="metaDescription">
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="simple">
+            <group>shop:product:read</group>
+        </attribute>
+        <attribute name="configurable">
+            <group>shop:product:read</group>
+        </attribute>
+    </class>
+</serializer>

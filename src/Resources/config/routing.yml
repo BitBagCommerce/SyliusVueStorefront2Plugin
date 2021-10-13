@@ -1,0 +1,12 @@
+sylius_shop_password_reset:
+    path: /reset-password
+    methods: [GET, POST]
+    defaults:
+        _controller: sylius.controller.shop_user:resetPasswordAction
+        _sylius:
+            template: "@SyliusShop/Account/resetPassword.html.twig"
+            redirect: sylius_shop_login
+
+bitbag_sylius_graphql_shop_product_show:
+    path: /p/{id}/{slug}
+    methods: [ GET ]

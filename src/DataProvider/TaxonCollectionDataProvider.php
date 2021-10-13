@@ -1,12 +1,10 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
 
 declare(strict_types=1);
 
@@ -21,6 +19,7 @@ use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use BitBag\SyliusGraphqlPlugin\Doctrine\Repository\TaxonRepositoryInterface;
 use Sylius\Bundle\ApiBundle\Context\UserContextInterface;
 use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Webmozart\Assert\Assert;
 
@@ -60,21 +59,25 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
         Assert::keyExists($context, ContextKeys::CHANNEL);
-        $channelMenuTaxon = $context[ContextKeys::CHANNEL]->getMenuTaxon();
+        $channelContext = $context[ContextKeys::CHANNEL];
+        Assert::isInstanceOf($channelContext, ChannelInterface::class);
+        $channelMenuTaxon = $channelContext->getMenuTaxon();
 
         $user = $this->userContext->getUser();
-        if ($user !== null && in_array('ROLE_API_ACCESS', $user->getRoles())) {
+        if ($this->isUserAllowedToGetAllTaxa($user)) {
             return $this->taxonRepository->findAll();
         }
 
         $queryBuilder = $this->taxonRepository->createChildrenByChannelMenuTaxonQueryBuilder(
             $channelMenuTaxon
         );
-        foreach ($this->collectionExtensions as $extension) {
-            $extension->applyToCollection($queryBuilder, $this->queryNameGenerator, $resourceClass, $operationName, $context);
 
-            if ($extension instanceof QueryResultCollectionExtensionInterface && $extension->supportsResult($resourceClass, $operationName, $context)) {
-                return $extension->getResult($queryBuilder, $resourceClass, $operationName, $context);
+        /** @var QueryCollectionExtensionInterface $extension */
+        foreach ($this->collectionExtensions as $extension) {
+            $extension->applyToCollection($queryBuilder, $this->queryNameGenerator, $resourceClass, $operationName);
+
+            if ($extension instanceof QueryResultCollectionExtensionInterface && $extension->supportsResult($resourceClass, $operationName)) {
+                return $extension->getResult($queryBuilder);
             }
         }
 
@@ -84,5 +87,11 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
             $operationName,
             $context
         );
+    }
+
+    private function isUserAllowedToGetAllTaxa(?\Symfony\Component\Security\Core\User\UserInterface $user): bool
+    {
+        /** @psalm-suppress DeprecatedClass */
+        return $user !== null && in_array('ROLE_API_ACCESS', $user->getRoles(), true);
     }
 }

@@ -1,13 +1,9 @@
 <?xml version="1.0" ?>
 
 <!--
-
-This file has been created by developers from BitBag.
-Feel free to contact us once you face any issues or want to start
-another great project.
-You can find more information about us on https://bitbag.shop and write us
-an email on mikolaj.krol@bitbag.pl.
-
+This file was created by developers working at BitBag
+Do you need more information about us and what we do? Visit our https://bitbag.io website!
+We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
 -->
 
 <resources xmlns="https://api-platform.com/schema/metadata"
@@ -18,15 +14,12 @@ an email on mikolaj.krol@bitbag.pl.
         <graphql>
             <operation name="item_query" />
 
-            <operation name="shop_post">
-                <attribute name="method">POST</attribute>
-                <attribute name="denormalization_context">
-                    <attribute name="groups">shop:customer:create</attribute>
-                </attribute>
-                <attribute name="messenger">input</attribute>
-                <attribute name="input">Sylius\Bundle\ApiBundle\Command\RegisterShopUser</attribute>
-                <attribute name="output">false</attribute>
+            <operation name="shop_put">
+                <attribute name="method">PUT</attribute>
                 <attribute name="args">
+                    <attribute name="id">
+                        <attribute name="type">ID!</attribute>
+                    </attribute>
                     <attribute name="firstName">
                         <attribute name="type">String</attribute>
                     </attribute>
@@ -42,52 +35,30 @@ an email on mikolaj.krol@bitbag.pl.
                     <attribute name="phoneNumber">
                         <attribute name="type">String</attribute>
                     </attribute>
+                    <attribute name="gender">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="birthday">
+                        <attribute name="type">String</attribute>
+                    </attribute>
                     <attribute name="subscribedToNewsletter">
                         <attribute name="type">Boolean</attribute>
                     </attribute>
                 </attribute>
             </operation>
 
-
-            <operation name="shop_add_address">
-                <attribute name="method">POST</attribute>
-                <attribute name="denormalization_context">
-                    <attribute name="groups">shop:customer:create</attribute>
-                </attribute>
-                <attribute name="messenger">input</attribute>
-                <attribute name="input">Sylius\Bundle\ApiBundle\Command\RegisterShopUser</attribute>
-                <attribute name="output">false</attribute>
+            <operation name="shop_set_default_address">
+                <attribute name="method">PUT</attribute>
                 <attribute name="args">
-                    <attribute name="firstName">
-                        <attribute name="type">String</attribute>
-                    </attribute>
-                    <attribute name="lastName">
-                        <attribute name="type">String</attribute>
-                    </attribute>
-                    <attribute name="email">
-                        <attribute name="type">String</attribute>
-                    </attribute>
-                    <attribute name="password">
-                        <attribute name="type">String</attribute>
-                    </attribute>
-                    <attribute name="phoneNumber">
-                        <attribute name="type">String</attribute>
-                    </attribute>
-                    <attribute name="subscribedToNewsletter">
-                        <attribute name="type">Boolean</attribute>
+                    <attribute name="defaultAddress">
+                        <attribute name="type">ID!</attribute>
                     </attribute>
                 </attribute>
             </operation>
-
 
             <operation name="shop_password_update">
-                <attribute name="method">PUT</attribute>
                 <attribute name="messenger">input</attribute>
                 <attribute name="input">Sylius\Bundle\ApiBundle\Command\ChangeShopUserPassword</attribute>
-                <attribute name="output">false</attribute>
-                <attribute name="denormalization_context">
-                    <attribute name="groups">shop:customer:password:update</attribute>
-                </attribute>
                 <attribute name="args">
                     <attribute name="shopUserId">
                         <attribute name="type">String</attribute>
@@ -103,7 +74,38 @@ an email on mikolaj.krol@bitbag.pl.
                     </attribute>
                 </attribute>
             </operation>
+
+            <operation name="shop_send_reset_password_email">
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Account\SendResetPasswordEmail</attribute>
+                <attribute name="args">
+                    <attribute name="email">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="localeCode">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+
+            <operation name="shop_reset_password">
+                <attribute name="method">PATCH</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Account\ResetPassword</attribute>
+                <attribute name="args">
+                    <attribute name="newPassword">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="confirmedNewPassword">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="resetPasswordToken">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
         </graphql>
+
         <attribute name="validation_groups">sylius</attribute>
 
         <collectionOperations>

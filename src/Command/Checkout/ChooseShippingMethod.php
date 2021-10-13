@@ -1,12 +1,10 @@
 <?php
 
 /*
- * This file has been created by developers from BitBag.
- * Feel free to contact us once you face any issues or want to start
- * another great project.
- * You can find more information about us on https://bitbag.shop and write us
- * an email on mikolaj.krol@bitbag.pl.
- */
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
 
 declare(strict_types=1);
 
@@ -22,11 +20,13 @@ class ChooseShippingMethod implements OrderTokenValueAwareInterface, Subresource
 
     public ?string $shipmentId;
 
-    /** @psalm-immutable */
     public string $shippingMethodCode;
 
-    public function __construct(string $orderTokenValue, string $shippingMethodCode, string $shipmentId)
-    {
+    public function __construct(
+        string $orderTokenValue,
+        string $shippingMethodCode,
+        string $shipmentId
+    ) {
         $this->orderTokenValue = $orderTokenValue;
         $this->shippingMethodCode = $shippingMethodCode;
         $this->shipmentId = $shipmentId;
@@ -55,5 +55,25 @@ class ChooseShippingMethod implements OrderTokenValueAwareInterface, Subresource
     public function getSubresourceIdAttributeKey(): string
     {
         return 'shipmentId';
+    }
+
+    public function getShipmentId(): ?string
+    {
+        return $this->shipmentId;
+    }
+
+    public function setShipmentId(?string $shipmentId): void
+    {
+        $this->shipmentId = $shipmentId;
+    }
+
+    public function getShippingMethodCode(): string
+    {
+        return $this->shippingMethodCode;
+    }
+
+    public function setShippingMethodCode(string $shippingMethodCode): void
+    {
+        $this->shippingMethodCode = $shippingMethodCode;
     }
 }

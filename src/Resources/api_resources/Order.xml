@@ -1,13 +1,9 @@
 <?xml version="1.0" ?>
 
 <!--
-
-This file has been created by developers from BitBag.
-Feel free to contact us once you face any issues or want to start
-another great project.
-You can find more information about us on https://bitbag.shop and write us
-an email on mikolaj.krol@bitbag.pl.
-
+This file was created by developers working at BitBag
+Do you need more information about us and what we do? Visit our https://bitbag.io website!
+We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
 -->
 
 <resources xmlns="https://api-platform.com/schema/metadata"
@@ -16,15 +12,7 @@ an email on mikolaj.krol@bitbag.pl.
 >
     <resource class="%sylius.model.order.class%" shortName="Order">
         <graphql>
-
-            <operation name="item_query">
-                <attribute name="method">GET</attribute>
-                <attribute name="args">
-                    <attribute name="tokenValue">
-                        <attribute name="type">String</attribute>
-                    </attribute>
-                </attribute>
-            </operation>
+            <operation name="item_query" />
 
             <operation name="shop_post">
                 <attribute name="method">POST</attribute>
@@ -86,14 +74,28 @@ an email on mikolaj.krol@bitbag.pl.
                 </attribute>
             </operation>
 
-            <operation name="shop_address">
+            <operation name="shop_add_shipping_address">
                 <attribute name="method">PATCH</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\AddressOrder</attribute>
+                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\ShippingAddressOrder</attribute>
                 <attribute name="args">
-                    <attribute name="id">
+                    <attribute name="email">
                         <attribute name="type">String</attribute>
                     </attribute>
+                    <attribute name="orderTokenValue">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="shippingAddress">
+                        <attribute name="type">AddressInput!</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+
+            <operation name="shop_add_billing_address">
+                <attribute name="method">PATCH</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\BillingAddressOrder</attribute>
+                <attribute name="args">
                     <attribute name="email">
                         <attribute name="type">String</attribute>
                     </attribute>
@@ -101,10 +103,7 @@ an email on mikolaj.krol@bitbag.pl.
                         <attribute name="type">String</attribute>
                     </attribute>
                     <attribute name="billingAddress">
-                        <attribute name="type">AddressInput</attribute>
-                    </attribute>
-                    <attribute name="shippingAddress">
-                        <attribute name="type">AddressInput</attribute>
+                        <attribute name="type">AddressInput!</attribute>
                     </attribute>
                 </attribute>
             </operation>
@@ -192,12 +191,6 @@ an email on mikolaj.krol@bitbag.pl.
                 </attribute>
             </operation>
         </graphql>
-
-        <attribute name="normalization_context">
-            <attribute name="groups">
-                <attribute>admin:order:read</attribute>
-            </attribute>
-        </attribute>
 
         <attribute name="validation_groups">sylius</attribute>
 
@@ -594,8 +587,15 @@ an email on mikolaj.krol@bitbag.pl.
         <property name="adjustments" writable="false">
             <subresource resourceClass="%sylius.model.adjustment.class%" />
         </property>
-        <property name="billingAddress" writable="true" />
-        <property name="shippingAddress" writable="false" />
+        <property name="promotions" writable="true" readable="true">
+            <subresource resourceClass="%sylius.model.promotion.class%" />
+        </property>
+        <property name="promotionCoupon" writable="true" readable="true" >
+            <subresource resourceClass="%sylius.model.promotion_coupon.class%" />
+        </property>
+        <property name="billingAddress" writable="true" readable="true"/>
+        <property name="shippingAddress" writable="false" readable="true"/>
         <property name="localeCode" writable="true" />
+        <property name="createdAt" writable="false" readable="true"/>
     </resource>
 </resources>

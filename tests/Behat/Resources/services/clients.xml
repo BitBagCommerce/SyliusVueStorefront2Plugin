@@ -10,6 +10,7 @@
             <argument type="service" id="test.client" />
             <argument type="service" id="sylius.behat.shared_storage" />
             <argument type="string">Bearer</argument>
+            <argument type="string">%bitbag_sylius_graphql.test_endpoint%</argument>
         </service>
 
     </services>
