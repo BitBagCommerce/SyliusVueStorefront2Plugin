@@ -73,12 +73,9 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
             'code' => $chooseShippingMethod->shippingMethodCode,
         ])->willReturn($shippingMethod);
 
-//        Assert::notNull($shippingMethod, 'Shipping method has not been found');
-
         $cartId = 1;
         $cart->getId()->willReturn($cartId);
         $shipmentRepository->findOneByOrderId($chooseShippingMethod->shipmentId, $cartId)->willReturn($shipment);
-//        Assert::notNull($shipment, 'Can not find shipment with given identifier.');
 
         $eligibilityChecker->isEligible($shipment, $shippingMethod)->willReturn(true);
 

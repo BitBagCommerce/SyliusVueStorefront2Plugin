@@ -97,7 +97,6 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         PaymentRepositoryInterface $paymentRepository,
         FactoryInterface $stateMachineFactory,
-        PaymentMethodChangerInterface $paymentMethodChanger,
         OrderInterface $cart,
         PaymentMethodInterface $paymentMethod,
         PaymentInterface $payment,
@@ -110,9 +109,6 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         $paymentId = $choosePaymentMethod->paymentId;
 
         $cart->getState()->willReturn(OrderInterface::STATE_CART);
-        if ($cart->getState() === OrderInterface::STATE_NEW) {
-            $paymentMethodChanger->changePaymentMethod($paymentMethodCode, $paymentId, $cart);
-        }
 
         $paymentMethodRepository->findOneBy([
             'code' => $paymentMethodCode,
@@ -141,8 +137,6 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         $choosePaymentMethod = new ChoosePaymentMethod('token', 'cash', 'paymentId');
         $orderRepository->findOneBy(['tokenValue' => $choosePaymentMethod->orderTokenValue])->willReturn($cart);
 
-//        Assert::notNull($cart, 'Cart has not been found.');
-
         $paymentMethodCode = $choosePaymentMethod->paymentMethodCode;
         $paymentId = $choosePaymentMethod->paymentId;
 
@@ -169,8 +163,6 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
     ): void {
         $choosePaymentMethod = new ChoosePaymentMethod('token', 'cash', 'paymentId');
         $orderRepository->findOneBy(['tokenValue' => $choosePaymentMethod->orderTokenValue])->willReturn($cart);
-
-//        Assert::notNull($cart, 'Cart has not been found.');
 
         $paymentMethodCode = $choosePaymentMethod->paymentMethodCode;
         $paymentId = $choosePaymentMethod->paymentId;

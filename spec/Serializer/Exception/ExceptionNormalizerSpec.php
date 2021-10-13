@@ -21,7 +21,6 @@ final class ExceptionNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(ExceptionNormalizer::class);
     }
 
-    /** @throws \Throwable */
     function it_normalizes_error(): void
     {
         $errorMessage = 'Some error message';

@@ -24,7 +24,7 @@ use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
-final class RefreshTokenResolverSpec extends ObjectBehavior
+class RefreshTokenResolverSpec extends ObjectBehavior
 {
     function let(
         EntityManagerInterface $entityManager,

@@ -80,7 +80,6 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
         return $order;
     }
 
-    /** @throws \Exception */
     private function applyCustomer(OrderInterface $order, BillingAddressOrder $addressOrder): void
     {
         /** @var ShopUserInterface|null $loggedIn */

@@ -13,7 +13,6 @@ namespace BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout;
 use BitBag\SyliusGraphqlPlugin\Command\Checkout\ChoosePaymentMethod;
 use InvalidArgumentException;
 use SM\Factory\FactoryInterface;
-use SM\SMException;
 use Sylius\Bundle\ApiBundle\Changer\PaymentMethodChangerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
@@ -59,9 +58,6 @@ final class ChoosePaymentMethodHandler implements MessageHandlerInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @throws SMException
-     */
     public function __invoke(ChoosePaymentMethod $command): OrderInterface
     {
         /** @var OrderInterface|null $cart */

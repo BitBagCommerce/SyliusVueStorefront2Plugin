@@ -23,9 +23,8 @@ use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-use Webmozart\Assert\Assert;
 
-final class LoginResolverSpec extends ObjectBehavior
+class LoginResolverSpec extends ObjectBehavior
 {
     function let(
         EntityManagerInterface $entityManager,
@@ -80,9 +79,6 @@ final class LoginResolverSpec extends ObjectBehavior
         $userSalt = 'SALT';
         $user->getPassword()->willReturn($userPassword);
         $user->getSalt()->willReturn($userSalt);
-
-        Assert::notNull($userPassword);
-        Assert::notNull($userSalt);
 
         $encoder->isPasswordValid($userPassword, $password, $userSalt)->shouldBeCalled()->willReturn(true);
 

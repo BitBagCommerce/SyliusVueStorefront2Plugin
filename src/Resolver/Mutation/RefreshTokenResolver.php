@@ -58,10 +58,7 @@ final class RefreshTokenResolver implements MutationResolverInterface
     }
 
     /**
-     * @param ShopUserTokenInterface|object|null $item
-     *
-     * @throws \Exception
-     */
+     * @param ShopUserTokenInterface|object|null $item */
     public function __invoke($item, array $context): ?ShopUserTokenInterface
     {
         if (!isset($context['args']['input'])) {

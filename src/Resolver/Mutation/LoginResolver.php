@@ -58,8 +58,6 @@ final class LoginResolver implements MutationResolverInterface
     }
 
     /**
-     * @throws \Exception
-     *
      * @param ShopUserTokenInterface|object|null $item
      *
      * @psalm-suppress DeprecatedClass

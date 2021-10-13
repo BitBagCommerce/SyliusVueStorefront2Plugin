@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusGraphqlPlugin\DataTransformer;
 
-use Exception;
 use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 use Sylius\Bundle\ApiBundle\DataTransformer\CommandDataTransformerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -19,11 +18,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class OrderTokenValueAwareInputCommandDataTransformer implements CommandDataTransformerInterface
 {
-    /**
-     * @param OrderTokenValueAwareInterface|mixed $object
-     *
-     * @throws Exception
-     */
+    /** @param OrderTokenValueAwareInterface|mixed $object */
     public function transform($object, string $to, array $context = []): OrderTokenValueAwareInterface
     {
         Assert::isInstanceOf($object, OrderTokenValueAwareInterface::class);

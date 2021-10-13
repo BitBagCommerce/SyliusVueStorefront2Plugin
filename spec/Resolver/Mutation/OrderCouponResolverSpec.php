@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusGraphqlPlugin\Resolver\Mutation;
 
 use BitBag\SyliusGraphqlPlugin\Resolver\Mutation\OrderCouponResolver;
-use GraphQL\Error\Error;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Bundle\ApiBundle\Context\UserContextInterface;
@@ -21,7 +20,7 @@ use Sylius\Component\Promotion\Model\PromotionCouponInterface;
 use Sylius\Component\User\Model\UserInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class OrderCouponResolverSpec extends ObjectBehavior
+class OrderCouponResolverSpec extends ObjectBehavior
 {
     function let(
         OrderRepositoryInterface $orderRepository,
@@ -72,7 +71,6 @@ final class OrderCouponResolverSpec extends ObjectBehavior
     function it_throws_an_exception_when_order_nor_found(
         OrderRepositoryInterface $orderRepository,
         UserContextInterface $userContext,
-        OrderInterface $order,
         UserInterface $user
     ): void
     {
@@ -84,7 +82,6 @@ final class OrderCouponResolverSpec extends ObjectBehavior
             ],
         ];
 
-        /** @var array $input */
         $input = $context['args']['input'];
         $orderToken = (string) $input['orderTokenValue'];
 

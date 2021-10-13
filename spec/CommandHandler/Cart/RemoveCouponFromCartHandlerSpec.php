@@ -83,7 +83,7 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
             ->during('__invoke', [$command]);
     }
 
-    function it_throws_an_exception_when_promotion_not_found(
+    function it_throws_an_exception_when_promotion_is_not_found(
         OrderRepositoryInterface $orderRepository,
         OrderInterface $cart,
         PromotionCouponInterface $promotionCoupon,

@@ -152,9 +152,7 @@ final class GraphqlClient implements GraphqlClientInterface
         return $this->sharedStorage->get(self::LAST_GRAPHQL_RESPONSE);
     }
 
-    /**
-     * @throws Exception
-     */
+/** @throws Exception */
     public function getLastResponseArrayContent(): array
     {
         $response = $this->getLastResponse();
@@ -185,9 +183,7 @@ final class GraphqlClient implements GraphqlClientInterface
         return null;
     }
 
-    /**
-     * @throws Exception
-     */
+/** @throws Exception */
     public function flattenArray(array $responseArray): array
     {
         $this->checkIfResponseProperlyFormatted($responseArray);
@@ -215,9 +211,7 @@ final class GraphqlClient implements GraphqlClientInterface
         return $result;
     }
 
-    /**
-     * Converts the request parameters into a JSON string and uses it as request content.
-     */
+    /** Converts the request parameters into a JSON string and uses it as request content. */
     private function sendJsonRequest(
         string $method,
         string $uri,
@@ -226,10 +220,7 @@ final class GraphqlClient implements GraphqlClientInterface
         bool $changeHistory = true
     ): Crawler {
         $content = json_encode($parameters);
-
-        $this->client->setServerParameter('CONTENT_TYPE', 'application/json');
-        $this->client->setServerParameter('HTTP_ACCEPT', 'application/json');
-
+        $this->setJsonServerHeaders();
         return $this->client->request($method, $uri, [], [], $server, $content, $changeHistory);
     }
 
@@ -274,5 +265,11 @@ final class GraphqlClient implements GraphqlClientInterface
     private function isErrorSectionPresentInResponse(array $responseArray): bool
     {
         return array_key_exists('errors', $responseArray) && is_array($responseArray['errors']);
+    }
+
+    private function setJsonServerHeaders(): void
+    {
+        $this->client->setServerParameter('CONTENT_TYPE', 'application/json');
+        $this->client->setServerParameter('HTTP_ACCEPT', 'application/json');
     }
 }

@@ -48,7 +48,6 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
         $this->shouldImplement(MessageHandlerInterface::class);
     }
 
-    /** @throws \Exception */
     function it_is_invokable(
         UserRepositoryInterface $userRepository,
         MetadataInterface $metadata,
