@@ -55,7 +55,7 @@ final class ApplyCouponToCartHandlerSpec extends ObjectBehavior
         $cart->setPromotionCoupon($promotionCoupon->getWrappedObject())->shouldBeCalled();
         $orderProcessor->process($cart->getWrappedObject())->shouldBeCalled();
 
-        $eventDispatcher->dispatch(Argument::any(), ApplyCouponToCartHandler::EVENT_NAME)->willReturn(Argument::any());
+        $eventDispatcher->dispatch(Argument::any(), ApplyCouponToCartHandler::EVENT_NAME)->shouldBeCalled();
 
         $this->__invoke($command);
     }

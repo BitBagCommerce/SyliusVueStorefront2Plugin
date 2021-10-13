@@ -59,7 +59,7 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
         $orderItemQuantityModifier->modify($orderItem->getWrappedObject(), $command->quantity)->shouldBeCalled();
         $orderProcessor->process($cart->getWrappedObject())->shouldBeCalled();
 
-        $eventDispatcher->dispatch(Argument::any(), ChangeItemQuantityInCartHandler::EVENT_NAME)->willReturn(Argument::any());
+        $eventDispatcher->dispatch(Argument::any(), ChangeItemQuantityInCartHandler::EVENT_NAME)->shouldBeCalled();
 
         $this->__invoke($command);
     }

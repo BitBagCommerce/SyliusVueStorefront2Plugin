@@ -36,7 +36,7 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         FactoryInterface $stateMachineFactory,
         PaymentMethodChangerInterface $paymentMethodChanger,
         EventDispatcherInterface $eventDispatcher
-    ) {
+    ): void {
         $this->beConstructedWith(
             $orderRepository,
             $paymentMethodRepository,
@@ -87,12 +87,12 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         $payment->setMethod($paymentMethod)->shouldBeCalled();
         $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_SELECT_PAYMENT)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(Argument::any(), ChoosePaymentMethodHandler::EVENT_NAME)->willReturn(Argument::any());
+        $eventDispatcher->dispatch(Argument::any(), ChoosePaymentMethodHandler::EVENT_NAME)->shouldBeCalled();
 
         $this->__invoke($choosePaymentMethod)->shouldReturn($cart);
     }
 
-    function it_throws_exception_when_payment_cannot_be_assigned(
+    function it_throws_an_exception_when_payment_cannot_be_assigned(
         OrderRepositoryInterface $orderRepository,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         PaymentRepositoryInterface $paymentRepository,
@@ -130,7 +130,7 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
             ->during('__invoke', [$choosePaymentMethod]);
     }
 
-    function it_throws_exception_when_cannot_find_payment(
+    function it_throws_an_exception_when_cannot_find_payment(
         OrderRepositoryInterface $orderRepository,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         PaymentRepositoryInterface $paymentRepository,
@@ -161,7 +161,7 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
             ->during('__invoke', [$choosePaymentMethod]);
     }
 
-    function it_throws_exception_when_cannot_find_payment_method(
+    function it_throws_an_exception_when_cannot_find_payment_method(
         OrderRepositoryInterface $orderRepository,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         PaymentMethodChangerInterface $paymentMethodChanger,
@@ -187,7 +187,7 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
             ->during('__invoke', [$choosePaymentMethod]);
     }
 
-    function it_throws_exception_when_cannot_find_cart(
+    function it_throws_an_exception_when_cannot_find_cart(
         OrderRepositoryInterface $orderRepository
     ): void {
         $choosePaymentMethod = new ChoosePaymentMethod('token', 'cash', 'paymentId');

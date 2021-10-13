@@ -18,6 +18,7 @@ use Sylius\Component\Promotion\Model\PromotionCouponInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Webmozart\Assert\Assert;
 
 final class OrderCouponResolver implements MutationResolverInterface
 {
@@ -39,9 +40,7 @@ final class OrderCouponResolver implements MutationResolverInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param object|null $item
-     */
+    /** @param object|null $item */
     public function __invoke($item, array $context): ?PromotionCouponInterface
     {
         if (!isset($context['args']['input'])) {
@@ -55,8 +54,9 @@ final class OrderCouponResolver implements MutationResolverInterface
 
         $user = $this->userContext->getUser();
 
-        /** @var OrderInterface $order */
+        /** @var OrderInterface|null $order */
         $order = $this->orderRepository->findOneBy(['tokenValue' => $orderToken]);
+        Assert::notNull($order);
 
         /** @psalm-suppress TooManyArguments */
         $this->eventDispatcher->dispatch(new GenericEvent($order, $input), self::EVENT_NAME);

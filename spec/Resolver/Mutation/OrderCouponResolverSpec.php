@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusGraphqlPlugin\Resolver\Mutation;
 
 use BitBag\SyliusGraphqlPlugin\Resolver\Mutation\OrderCouponResolver;
+use GraphQL\Error\Error;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Bundle\ApiBundle\Context\UserContextInterface;
@@ -63,8 +64,35 @@ final class OrderCouponResolverSpec extends ObjectBehavior
 
         $order->getPromotionCoupon()->willReturn($promotionCoupon);
 
-        $eventDispatcher->dispatch(Argument::any(), OrderCouponResolver::EVENT_NAME)->willReturn(Argument::any());
+        $eventDispatcher->dispatch(Argument::any(), OrderCouponResolver::EVENT_NAME)->shouldBeCalled();
 
         $this->__invoke(null, $context)->shouldReturn($promotionCoupon);
+    }
+
+    function it_throws_an_exception_when_order_nor_found(
+        OrderRepositoryInterface $orderRepository,
+        UserContextInterface $userContext,
+        OrderInterface $order,
+        UserInterface $user
+    ): void
+    {
+        $context = [
+            'args' => [
+                'input' => [
+                    'orderTokenValue' => 'token',
+                ],
+            ],
+        ];
+
+        /** @var array $input */
+        $input = $context['args']['input'];
+        $orderToken = (string) $input['orderTokenValue'];
+
+        $userContext->getUser()->willReturn($user);
+
+        $orderRepository->findOneBy(['tokenValue' => $orderToken])->willReturn(null);
+
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('__invoke', [null,$context]);
     }
 }

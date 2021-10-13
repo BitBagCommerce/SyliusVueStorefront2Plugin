@@ -75,8 +75,8 @@ final class RefreshTokenResolver implements MutationResolverInterface
 
         $refreshToken = $this->refreshTokenRepository->findOneBy(['refreshToken' => $refreshTokenString]);
 
-        $this->validateRefreshToken($refreshToken, $refreshTokenString);
         Assert::notNull($refreshToken);
+        $this->validateRefreshToken($refreshToken, $refreshTokenString);
 
         /** @var ShopUserInterface $user */
         $user = $this->userRepository->findOneBy(['username' => $refreshToken->getUsername()]);

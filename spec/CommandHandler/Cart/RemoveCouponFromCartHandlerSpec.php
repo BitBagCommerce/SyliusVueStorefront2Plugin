@@ -57,20 +57,20 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         $promotionCouponRepository->findOneBy(['code' => $couponCode])->willReturn($promotionCoupon);
         $promotionCoupon->getPromotion()->willReturn($promotion);
 
-        $cart->removePromotion($promotion)->shouldBeCalledOnce();
+        $cart->removePromotion($promotion)->shouldBeCalled();
 
         $cart->getPromotionCoupon()->willReturn($cartCoupon);
         $cartCoupon->getCode()->willReturn($couponCode);
         $cart->setPromotionCoupon(null)->shouldBeCalled();
 
-        $orderProcessor->process($cart)->shouldBeCalledOnce();
+        $orderProcessor->process($cart)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(Argument::any(), RemoveCouponFromCartHandler::EVENT_NAME)->willReturn(Argument::any());
+        $eventDispatcher->dispatch(Argument::any(), RemoveCouponFromCartHandler::EVENT_NAME)->shouldBeCalled();
 
         $this->__invoke($command);
     }
 
-    function it_throws_an_exception_when_cart_not_found(
+    function it_throws_an_exception_when_cart_is_not_found(
         OrderRepositoryInterface $orderRepository
     ): void {
         $tokenValue = 'token';

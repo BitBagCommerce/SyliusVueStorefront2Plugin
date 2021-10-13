@@ -85,12 +85,12 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         $shipment->setMethod($shippingMethod)->shouldBeCalled();
         $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_SELECT_SHIPPING)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(Argument::any(), ChooseShippingMethodHandler::EVENT_NAME)->willReturn(Argument::any());
+        $eventDispatcher->dispatch(Argument::any(), ChooseShippingMethodHandler::EVENT_NAME)->shouldBeCalled();
 
         $this->__invoke($chooseShippingMethod);
     }
 
-    function it_throws_exception_on_null_cart(
+    function it_throws_an_exception_on_null_cart(
         OrderRepositoryInterface $orderRepository
     ): void {
         $chooseShippingMethod = new ChooseShippingMethod('token', 'ups', 'shipmentId');
@@ -99,7 +99,7 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
             ->during('__invoke', [$chooseShippingMethod]);
     }
 
-    function it_throws_exception_on_null_shipping_method(
+    function it_throws_an_exception_on_null_shipping_method(
         OrderRepositoryInterface $orderRepository,
         ShippingMethodRepositoryInterface $shippingMethodRepository,
         FactoryInterface $stateMachineFactory,
@@ -121,7 +121,7 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
             ->during('__invoke', [$chooseShippingMethod]);
     }
 
-    function it_throws_exception_on_null_shipment(
+    function it_throws_an_exception_on_null_shipment(
         OrderRepositoryInterface $orderRepository,
         ShippingMethodRepositoryInterface $shippingMethodRepository,
         ShipmentRepositoryInterface $shipmentRepository,

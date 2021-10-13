@@ -43,7 +43,7 @@ final class OrderAddressStateResolverSpec extends ObjectBehavior
 
         $stateMachine->can(OrderCheckoutTransitions::TRANSITION_ADDRESS)->willReturn(true);
 
-        $order->getBillingAddress()->shouldBeCalledOnce();
+        $order->getBillingAddress()->shouldBeCalled();
 
         $stateMachine->apply(OrderCheckoutTransitions::TRANSITION_ADDRESS);
 

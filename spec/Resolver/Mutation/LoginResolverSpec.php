@@ -34,8 +34,15 @@ final class LoginResolverSpec extends ObjectBehavior
         EncoderFactoryInterface $encoderFactory,
         ShopUserTokenFactoryInterface $tokenFactory,
         EventDispatcherInterface $eventDispatcher
-    ) {
-        $this->beConstructedWith($entityManager, $userRepository, $orderRepository, $encoderFactory, $tokenFactory, $eventDispatcher);
+    ): void {
+        $this->beConstructedWith(
+            $entityManager,
+            $userRepository,
+            $orderRepository,
+            $encoderFactory,
+            $tokenFactory,
+            $eventDispatcher
+        );
     }
 
     function it_is_initializable(): void
@@ -62,7 +69,6 @@ final class LoginResolverSpec extends ObjectBehavior
             ],
         ];
 
-        /** @var array $input */
         $input = $context['args']['input'];
         $username = (string) $input['username'];
         $password = (string) $input['password'];
@@ -78,12 +84,12 @@ final class LoginResolverSpec extends ObjectBehavior
         Assert::notNull($userPassword);
         Assert::notNull($userSalt);
 
-        $encoder->isPasswordValid($userPassword, $password, $userSalt)->shouldBeCalledOnce()->willReturn(true);
+        $encoder->isPasswordValid($userPassword, $password, $userSalt)->shouldBeCalled()->willReturn(true);
 
         $tokenFactory->getRefreshToken($user)->willReturn($refreshToken);
         $tokenFactory->create($user, $refreshToken)->willReturn($shopUserToken);
 
-        $eventDispatcher->dispatch(Argument::any(), LoginResolver::EVENT_NAME)->willReturn(Argument::any());
+        $eventDispatcher->dispatch(Argument::any(), LoginResolver::EVENT_NAME)->shouldBeCalled();
 
         $this->__invoke(null, $context);
     }
@@ -139,7 +145,6 @@ final class LoginResolverSpec extends ObjectBehavior
         $user->getPassword()->willReturn($userPassword);
         $user->getSalt()->willReturn($userSalt);
 
-        $encoder->isPasswordValid($userPassword, $password, $userSalt)->shouldBeCalledOnce();
         $encoder->isPasswordValid($userPassword, $password, $userSalt)->willReturn(false);
 
         $this

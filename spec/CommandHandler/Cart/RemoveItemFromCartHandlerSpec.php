@@ -54,18 +54,15 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         $orderItem->getOrder()->willReturn($cart);
         $cart->getTokenValue()->willReturn($tokenValue);
 
-        $orderModifier->removeFromOrder($cart->getWrappedObject(), $orderItem->getWrappedObject())->shouldBeCalledOnce();
+        $orderModifier->removeFromOrder($cart->getWrappedObject(), $orderItem->getWrappedObject())->shouldBeCalled();
 
-        $eventDispatcher->dispatch(Argument::any(), RemoveItemFromCartHandler::EVENT_NAME)->willReturn(Argument::any());
+        $eventDispatcher->dispatch(Argument::any(), RemoveItemFromCartHandler::EVENT_NAME)->shouldBeCalled();
 
         $this->__invoke($removeItemFromCart);
     }
 
-    function it_thorws_exception_when_cart_not_found(
-        OrderItemRepositoryInterface $orderItemRepository,
-        OrderModifierInterface $orderModifier,
-        OrderItemInterface $orderItem,
-        OrderInterface $cart
+    function it_throws_an_exception_when_cart_is_not_found(
+        OrderItemRepositoryInterface $orderItemRepository
     ): void {
         $tokenValue = 'token';
         $removeItemFromCart = new RemoveItemFromCart($tokenValue, "222");
@@ -79,9 +76,8 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
             ->during('__invoke', [$removeItemFromCart]);
     }
 
-    function it_thorws_exception_when_tokens_mismatch(
+    function it_throws_an_exception_when_tokens_mismatch(
         OrderItemRepositoryInterface $orderItemRepository,
-        OrderModifierInterface $orderModifier,
         OrderItemInterface $orderItem,
         OrderInterface $cart
     ): void {

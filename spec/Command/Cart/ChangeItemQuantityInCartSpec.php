@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
 
 final class ChangeItemQuantityInCartSpec extends ObjectBehavior
 {
-    function let()
+    function let(): void
     {
         $this->beConstructedWith(1, 'orderItemId', 'orderTokenValue');
     }
@@ -25,7 +25,7 @@ final class ChangeItemQuantityInCartSpec extends ObjectBehavior
         $this->shouldHaveType(ChangeItemQuantityInCart::class);
     }
 
-    function it_gets_subresource_id_attributeKey(): void
+    function it_gets_subresource_id_attribute_key(): void
     {
         $this->getSubresourceIdAttributeKey()->shouldReturn('orderItemId');
     }

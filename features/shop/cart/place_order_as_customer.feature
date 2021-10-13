@@ -41,12 +41,12 @@ Feature: Submitting order
         And I set 'productVariant' field to value "secondProductVariantIri"
         And I set 'id' field to value "orderId"
         Then I send that GraphQL request as authorised user
-        And I save key 'order.items.edges.1.node._id' of this response as "secondOrderItemId"
+        And I save key 'order.items.edges.1.node._id' of this response as "secondOrderItemId" as "string"
         And total price for items should equal to "102000"
 
         When I prepare remove product from cart operation
         And I set 'id' field to value "orderId"
-        And I set 'orderItemId' field to value "firstOrderItemId"
+        And I set 'orderItemId' field to previously saved "string" value "firstOrderItemId"
         Then I send that GraphQL request as authorised user
         And total price for items should equal to "100000"
 
@@ -56,14 +56,14 @@ Feature: Submitting order
         And I save key 'collection.0.id' of this response as "userAddressShipping"
 
         When I prepare operation choose address saved as "userAddressShipping" as shipping
-        And I set 'email' field to "gfreeman@mail.com"
+        And I set 'email' field to "gfreeman@resistance.com"
         And I set 'orderTokenValue' field to value "orderToken"
         And I send that GraphQL request as authorised user
         And This response should contain "order.shippingAddress.firstName" equal to "Gordon"
         And I save key 'order.shipments.edges.0.node._id' of this response as "orderShipmentId"
 
         When I prepare operation to add order billing address
-        And I set 'email' field to "alyx.vance@resistance.com"
+        And I set 'email' field to "gfreeman@resistance.com"
         And I set 'orderTokenValue' field to value "orderToken"
         And I set 'billingAddress' object "firstName" property to "Alyx"
         And I set 'billingAddress' object "lastName" property to "Vance"

@@ -35,7 +35,13 @@ final class RefreshTokenResolverSpec extends ObjectBehavior
     ): void {
         $entityManager->getRepository(RefreshToken::class)->willReturn($refreshTokenRepository);
         $lifespan = '2592000';
-        $this->beConstructedWith($entityManager, $tokenFactory, $userRepository, $eventDispatcher, $lifespan);
+        $this->beConstructedWith(
+            $entityManager,
+            $tokenFactory,
+            $userRepository,
+            $eventDispatcher,
+            $lifespan
+        );
     }
 
     function it_is_initializable(): void
@@ -78,16 +84,16 @@ final class RefreshTokenResolverSpec extends ObjectBehavior
         $refreshTokenExpirationDate = new \DateTime('+1 month');
         $refreshToken->setValid($refreshTokenExpirationDate);
 
-        $entityManager->flush()->shouldBeCalledOnce();
+        $entityManager->flush()->shouldBeCalled();
 
         $tokenFactory->create($user, $refreshToken)->willReturn($shopUserToken);
 
-        $eventDispatcher->dispatch(Argument::any(), RefreshTokenResolver::EVENT_NAME)->willReturn(Argument::any());
+        $eventDispatcher->dispatch(Argument::any(), RefreshTokenResolver::EVENT_NAME)->shouldBeCalled();
 
         $this->__invoke(null, $context)->shouldReturn($shopUserToken);
     }
 
-    function it_throws_an_exception_if_token_invalid(
+    function it_throws_an_exception_if_token_is_invalid(
         EntityManagerInterface $entityManager,
         ObjectRepository $refreshTokenRepository,
         RefreshTokenInterface $refreshToken
@@ -110,6 +116,32 @@ final class RefreshTokenResolverSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(AuthenticationException::class)
+            ->during('__invoke', [null, $context]);
+    }
+
+    function it_throws_an_exception_when_token_is_not_found(
+        EntityManagerInterface $entityManager,
+        ObjectRepository $refreshTokenRepository,
+        RefreshTokenInterface $refreshToken
+    ): void {
+        $refreshTokenClass = 'Path/To/RefreshTokenClass';
+        $context = [
+            'args' => [
+                'input' => [
+                    'refreshToken' => 'token',
+                ],
+            ],
+        ];
+
+        $input = $context['args']['input'];
+        $refreshTokenString = (string) $input['refreshToken'];
+
+        $entityManager->getRepository($refreshTokenClass)->willReturn($refreshTokenRepository);
+
+        $refreshTokenRepository->findOneBy(['refreshToken' => $refreshTokenString])->willReturn(null);
+
+        $this
+            ->shouldThrow(\InvalidArgumentException::class)
             ->during('__invoke', [null, $context]);
     }
 }

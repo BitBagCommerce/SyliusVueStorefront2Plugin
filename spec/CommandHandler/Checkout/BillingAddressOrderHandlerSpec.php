@@ -35,7 +35,14 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         UserContextInterface $userContext
     ): void
     {
-        $this->beConstructedWith($orderRepository, $manager, $customerProvider, $addressStateResolver, $userContext, $eventDispatcher);
+        $this->beConstructedWith(
+            $orderRepository,
+            $manager,
+            $customerProvider,
+            $addressStateResolver,
+            $userContext,
+            $eventDispatcher
+        );
     }
 
     function it_is_initializable(): void
@@ -64,7 +71,7 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         $userContext->getUser()->willReturn(null);
         $customerProvider->provide($email)->willReturn($newCustomer);
         $manager->contains($newCustomer)->willReturn(false);
-        $order->setCustomer($newCustomer)->shouldBeCalledOnce();
+        $order->setCustomer($newCustomer)->shouldBeCalled();
 
         $order->getCustomer()->willReturn($customer);
         $order->setBillingAddress($addressOrder->billingAddress);
@@ -72,12 +79,12 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         $addressStateResolver->resolve($order)->shouldBeCalled();
         $manager->persist($order)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(Argument::any(), BillingAddressOrderHandler::EVENT_NAME)->willReturn(Argument::any());
+        $eventDispatcher->dispatch(Argument::any(), BillingAddressOrderHandler::EVENT_NAME)->shouldBeCalled();
 
         $this->__invoke($addressOrder);
     }
 
-    function it_throws_exception_when_cannot_find_cart(
+    function it_throws_an_exception_when_cannot_find_cart(
         OrderRepositoryInterface $orderRepository
     ): void
     {

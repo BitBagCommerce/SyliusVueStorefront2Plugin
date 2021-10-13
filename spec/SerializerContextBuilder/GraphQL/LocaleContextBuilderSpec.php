@@ -21,7 +21,7 @@ final class LocaleContextBuilderSpec extends ObjectBehavior
     function let(
         SerializerContextBuilderInterface $decoratedContextBuilder,
         LocaleContextInterface $localeContext
-    ) {
+    ): void {
         $this->beConstructedWith($decoratedContextBuilder, $localeContext);
     }
 

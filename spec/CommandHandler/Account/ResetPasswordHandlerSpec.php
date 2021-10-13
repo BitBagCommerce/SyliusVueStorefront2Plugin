@@ -30,7 +30,12 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
         PasswordUpdaterInterface $passwordUpdater,
         EventDispatcherInterface $eventDispatcher
     ): void {
-        $this->beConstructedWith($userRepository, $metadata, $passwordUpdater, $eventDispatcher);
+        $this->beConstructedWith(
+            $userRepository,
+            $metadata,
+            $passwordUpdater,
+            $eventDispatcher
+        );
     }
 
     function it_is_initializable(): void
@@ -67,12 +72,24 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
         $user->getPasswordResetToken()->willReturn('token');
 
         $user->setPlainPassword($command->newPassword)->shouldBeCalled();
-        $passwordUpdater->updatePassword($user->getWrappedObject())->shouldBeCalledOnce();
+        $passwordUpdater->updatePassword($user->getWrappedObject())->shouldBeCalled();
 
         $user->getCustomer()->willReturn($customer);
 
-        $eventDispatcher->dispatch(Argument::any(), ResetPasswordHandler::EVENT_NAME)->willReturn(Argument::any());
+        $eventDispatcher->dispatch(Argument::any(), ResetPasswordHandler::EVENT_NAME)->shouldBeCalled();
 
         $this->__invoke($command);
+    }
+
+    function it_throws_an_exception_when_user_nor_found(
+        UserRepositoryInterface $userRepository
+    ): void
+    {
+        $command = new ResetPassword('newS3ret', 'newS3ret', 'token');
+
+        $userRepository->findOneBy(['passwordResetToken' => 'token'])->willReturn(false);
+
+        $this->shouldThrow(\InvalidArgumentException::class)
+            ->during('__invoke', [$command]);
     }
 }

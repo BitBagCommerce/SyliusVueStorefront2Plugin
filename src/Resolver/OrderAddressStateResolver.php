@@ -15,7 +15,7 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\OrderCheckoutTransitions;
 use Webmozart\Assert\Assert;
 
-final class OrderAddressStateResolver implements OrderAddressStateResolverInterface
+class OrderAddressStateResolver implements OrderAddressStateResolverInterface
 {
     private StateMachineFactoryInterface $stateMachineFactory;
 

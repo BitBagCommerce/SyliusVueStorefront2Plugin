@@ -46,12 +46,8 @@ final class ResetPasswordHandler implements MessageHandlerInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @throws \Exception
-     *
-     * @return CustomerInterface
-     */
-    public function __invoke(ResetPassword $command)
+    /** @throws \Exception */
+    public function __invoke(ResetPassword $command): CustomerInterface
     {
         /** @var ShopUserInterface|null $user */
         $user = $this->userRepository->findOneBy(['passwordResetToken' => $command->resetPasswordToken]);

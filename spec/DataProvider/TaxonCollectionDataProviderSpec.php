@@ -44,7 +44,13 @@ final class TaxonCollectionDataProviderSpec extends ObjectBehavior
         $collectionExtensions = [
             $queryResultCollectionExtension->getWrappedObject(),
         ];
-        $this->beConstructedWith($taxonRepository, $paginationExtension, $userContext, $queryNameGenerator, $collectionExtensions);
+        $this->beConstructedWith(
+            $taxonRepository,
+            $paginationExtension,
+            $userContext,
+            $queryNameGenerator,
+            $collectionExtensions
+        );
     }
 
     function it_is_initializable(): void
@@ -73,7 +79,7 @@ final class TaxonCollectionDataProviderSpec extends ObjectBehavior
         $userContext->getUser()->willReturn($user);
         $roles = ['ROLE_API_ACCESS'];
         $user->getRoles()->willReturn($roles);
-        $taxonRepository->findAll()->shouldBeCalledOnce();
+        $taxonRepository->findAll()->shouldBeCalled();
 
         $this->getCollection('class', 'operation', $context);
     }

@@ -52,6 +52,7 @@ final class ApplyCouponToCartHandler implements MessageHandlerInterface
 
         /**
          * @var OrderInterface|null $cart
+         *
          * @psalm-suppress PossiblyNullArgument
          */
         $cart = $this->orderRepository->findCartByTokenValue($command->getOrderTokenValue());

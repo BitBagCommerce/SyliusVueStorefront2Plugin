@@ -18,9 +18,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 final class BitBagSyliusGraphqlExtension extends Extension
 {
-    /**
-     * @psalm-suppress MixedArgument
-     */
+    /** @psalm-suppress MixedArgument */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
@@ -37,9 +35,7 @@ final class BitBagSyliusGraphqlExtension extends Extension
         return new Configuration();
     }
 
-    /**
-     * @return string
-     */
+    /** @return string */
     public function getAlias()
     {
         return 'bitbag_sylius_graphql';

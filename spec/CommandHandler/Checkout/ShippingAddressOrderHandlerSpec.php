@@ -59,12 +59,12 @@ final class ShippingAddressOrderHandlerSpec extends ObjectBehavior
         $addressStateResolver->resolve($order)->shouldBeCalled();
         $manager->persist($order)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(Argument::any(), ShippingAddressOrderHandler::EVENT_NAME)->willReturn(Argument::any());
+        $eventDispatcher->dispatch(Argument::any(), ShippingAddressOrderHandler::EVENT_NAME)->shouldBeCalled();
 
         $this->__invoke($addressOrder);
     }
 
-    function it_throws_exception_when_cannot_find_cart(
+    function it_throws_an_exception_when_cannot_find_cart(
         OrderRepositoryInterface $orderRepository
     ): void
     {

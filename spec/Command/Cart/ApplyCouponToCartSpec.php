@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
 
 final class ApplyCouponToCartSpec extends ObjectBehavior
 {
-    function let()
+    function let(): void
     {
         $this->beConstructedWith('couponCode', 'orderTokenValue');
     }

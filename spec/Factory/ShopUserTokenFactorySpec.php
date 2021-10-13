@@ -55,7 +55,7 @@ final class ShopUserTokenFactorySpec extends ObjectBehavior
 
         $shopUserToken->setUser($user->getWrappedObject());
 
-        $this->create($user, $refreshToken)->shouldReturnAnInstanceOf(ShopUserTokenInterface::class);
+        $this->create($user, $refreshToken)->shouldBeLike($shopUserToken);
     }
 
     function it_gets_refresh_token(
@@ -70,12 +70,12 @@ final class ShopUserTokenFactorySpec extends ObjectBehavior
         $user->getUsernameCanonical()->willReturn($username);
         $refreshToken->setUsername($username)->shouldBeCalled();
 
-        $refreshToken->setRefreshToken()->shouldBeCalledOnce();
+        $refreshToken->setRefreshToken()->shouldBeCalled();
 
-        $refreshToken->setValid(Argument::type(\DateTime::class))->shouldBeCalledOnce();
+        $refreshToken->setValid(Argument::type(\DateTime::class))->shouldBeCalled();
 
-        $entityManager->persist($refreshToken)->shouldBeCalledOnce();
-        $entityManager->flush()->shouldBeCalledOnce();
+        $entityManager->persist($refreshToken)->shouldBeCalled();
+        $entityManager->flush()->shouldBeCalled();
 
         $this->getRefreshToken($user)->shouldReturn($refreshToken);
     }
