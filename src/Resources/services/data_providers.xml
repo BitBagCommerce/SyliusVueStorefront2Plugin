@@ -22,5 +22,14 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="tagged" tag="api_platform.doctrine.orm.query_extension.collection" />
             <tag name="api_platform.collection_data_provider" priority="15" />
         </service>
+
+        <service id="bitbag.sylius_graphql_plugin.data_provider.country_collection_data_provider"
+                 class="BitBag\SyliusGraphqlPlugin\DataProvider\CountryCollectionDataProvider">
+            <argument type="service" id="sylius.repository.country" />
+            <argument type="service" id="api_platform.doctrine.orm.query_extension.pagination" />
+            <argument type="service" id="api_platform.core.bridge.doctrine.orm.util.query_name_generator" />
+            <argument type="tagged" tag="api_platform.doctrine.orm.query_extension.collection" />
+            <tag name="api_platform.collection_data_provider" priority="15" />
+        </service>
     </services>
 </container>
