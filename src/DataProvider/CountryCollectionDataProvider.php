@@ -16,14 +16,13 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensio
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
-use Doctrine\ORM\QueryBuilder;
+use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Addressing\Model\CountryInterface;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 
 /** @experimental */
 final class CountryCollectionDataProvider implements CollectionDataProviderInterface, RestrictedDataProviderInterface
 {
-    private RepositoryInterface $countryRepository;
+    private EntityRepository $countryRepository;
 
     private PaginationExtension $paginationExtension;
 
@@ -33,7 +32,7 @@ final class CountryCollectionDataProvider implements CollectionDataProviderInter
     private QueryNameGeneratorInterface $queryNameGenerator;
 
     public function __construct(
-        RepositoryInterface $countryRepository,
+        EntityRepository $countryRepository,
         PaginationExtension $paginationExtension,
         QueryNameGeneratorInterface $queryNameGenerator,
         iterable $collectionExtensions
@@ -51,10 +50,6 @@ final class CountryCollectionDataProvider implements CollectionDataProviderInter
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
-        if (!method_exists($this->countryRepository, 'createQueryBuilder')) {
-            throw new \RuntimeException('The repository class must have a "createQueryBuilder" method.');
-        }
-        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->countryRepository->createQueryBuilder('o');
 
         /** @var QueryCollectionExtensionInterface $extension */
