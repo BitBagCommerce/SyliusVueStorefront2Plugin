@@ -17,6 +17,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 <attribute name="filters">
                     <attribute>sylius.api.shipping_method_enabled_filter</attribute>
                     <attribute>sylius.api.shipping_method_channel_code_filter</attribute>
+                    <attribute>sylius.api.shipping_method_zone_filter</attribute>
                 </attribute>
             </operation>
 
@@ -27,6 +28,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <attribute name="filters">
             <attribute>sylius.api.shipping_method_enabled_filter</attribute>
             <attribute>sylius.api.shipping_method_channel_code_filter</attribute>
+            <attribute>sylius.api.shipping_method_zone_filter</attribute>
         </attribute>
 
         <attribute name="order">
@@ -134,6 +136,9 @@ We are hiring developers from all over the world. Join us and start your new, ex
                     </attribute>
                 </attribute>
             </attribute>
+        </property>
+        <property name="zone" readable="true" writable="true">
+            <subresource resourceClass="%sylius.model.zone.class%" />
         </property>
     </resource>
 </resources>
