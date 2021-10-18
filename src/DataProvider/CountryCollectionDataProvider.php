@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusGraphqlPlugin\DataProvider;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\PaginationExtension;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryResultCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
@@ -24,7 +24,7 @@ final class CountryCollectionDataProvider implements CollectionDataProviderInter
 {
     private EntityRepository $countryRepository;
 
-    private PaginationExtension $paginationExtension;
+    private ContextAwareQueryResultCollectionExtensionInterface $paginationExtension;
 
     /** @see QueryCollectionExtensionInterface */
     private iterable $collectionExtensions;
@@ -33,7 +33,7 @@ final class CountryCollectionDataProvider implements CollectionDataProviderInter
 
     public function __construct(
         EntityRepository $countryRepository,
-        PaginationExtension $paginationExtension,
+        ContextAwareQueryResultCollectionExtensionInterface $paginationExtension,
         QueryNameGeneratorInterface $queryNameGenerator,
         iterable $collectionExtensions
     ) {
