@@ -42,8 +42,8 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <property name="id" identifier="true" readable="true" />
         <property name="token" description="JWT Token" />
         <property name="refreshToken" description="JWT Refresh Token" />
-        <property name="user" description="User" readable="true">
-            <subresource resourceClass="%sylius.model.shop_user.class%" maxDepth="3" />
+        <property name="user" description="Sylius Shop User" readable="true">
+            <subresource resourceClass="%sylius.model.shop_user.class%"/>
         </property>
 
     </resource>
