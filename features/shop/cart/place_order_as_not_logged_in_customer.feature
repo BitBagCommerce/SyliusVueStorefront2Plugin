@@ -30,14 +30,14 @@ Feature: Submitting order
         When I prepare add product to cart operation
         And I set 'quantity' field to integer 2
         And I set 'productVariant' field to value "firstProductVariantIri"
-        And I set 'id' field to value "orderId"
+        And I set 'orderTokenValue' field to value "orderToken"
         Then I send that GraphQL request
         And I save key 'order.items.edges.0.node._id' of this response as "firstOrderItemId" as "string"
 
         When I prepare add product to cart operation
         And I set 'quantity' field to integer 1
         And I set 'productVariant' field to value "secondProductVariantIri"
-        And I set 'id' field to value "orderId"
+        And I set 'orderTokenValue' field to value "orderToken"
         Then I send that GraphQL request
         And I save key 'order.items.edges.1.node._id' of this response as "secondOrderItemId" as "string"
         And total price for items should equal to "8000"

@@ -30,6 +30,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="sylius.order_item_quantity_modifier" />
             <argument type="service" id="sylius.order_processing.order_processor" />
             <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="sylius.availability_checker" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
@@ -101,6 +102,17 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="sylius.repository.promotion_coupon" />
             <argument type="service" id="sylius.order_processing.order_processor" />
             <argument type="service" id="event_dispatcher" />
+            <tag name="messenger.message_handler" bus="sylius.command_bus" />
+            <tag name="messenger.message_handler" bus="sylius_default.bus" />
+        </service>
+
+        <service id="BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\AddItemToCartHandler">
+            <argument type="service" id="sylius.repository.order" />
+            <argument type="service" id="sylius.order_modifier" />
+            <argument type="service" id="sylius.factory.order_item" />
+            <argument type="service" id="sylius.order_item_quantity_modifier" />
+            <argument type="service" id="sylius.availability_checker" />
+            <argument type="service" id="api_platform.iri_converter" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
