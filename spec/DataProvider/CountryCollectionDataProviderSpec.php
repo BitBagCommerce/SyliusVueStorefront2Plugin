@@ -36,8 +36,7 @@ final class CountryCollectionDataProviderSpec extends ObjectBehavior
         ManagerRegistry $managerRegistry,
         ResourceMetadataFactoryInterface $resourceMetadataFactory,
         QueryResultCollectionExtensionInterface $queryResultCollectionExtension
-    ): void
-    {
+    ): void {
         $pagination = new Pagination($resourceMetadataFactory->getWrappedObject());
         $paginationExtension = new PaginationExtension(
             $managerRegistry->getWrappedObject(),
@@ -73,9 +72,7 @@ final class CountryCollectionDataProviderSpec extends ObjectBehavior
         PaginatorInterface $paginator,
         QueryNameGeneratorInterface $queryNameGenerator,
         QueryResultCollectionExtensionInterface $queryResultCollectionExtension
-    ): void
-    {
-
+    ): void {
         $collectionExtensions = [
             $queryResultCollectionExtension->getWrappedObject(),
         ];
@@ -99,9 +96,8 @@ final class CountryCollectionDataProviderSpec extends ObjectBehavior
 
         $paginationExtension->getResult($queryBuilder->getWrappedObject(), $resourceClass, $operationName, $context)->willReturn($paginator);
 
-        $this->getCollection($resourceClass, $operationName, $context);
+        $this->getCollection($resourceClass, $operationName, $context)->shouldReturn($paginator);
     }
-
 
     function it_returns_query_result_collection_iterable(
         ContextAwareQueryResultCollectionExtensionInterface $paginationExtension,
@@ -111,9 +107,7 @@ final class CountryCollectionDataProviderSpec extends ObjectBehavior
         PaginatorInterface $paginator,
         QueryNameGeneratorInterface $queryNameGenerator,
         QueryResultCollectionExtensionInterface $queryResultCollectionExtension
-    ): void
-    {
-
+    ): void {
         $collectionExtensions = [
             $queryResultCollectionExtension->getWrappedObject(),
         ];
@@ -137,7 +131,6 @@ final class CountryCollectionDataProviderSpec extends ObjectBehavior
 
         $queryResultCollectionExtension->getResult($queryBuilder->getWrappedObject())->willReturn($paginator);
 
-        $this->getCollection($resourceClass, $operationName, $context);
+        $this->getCollection($resourceClass, $operationName, $context)->shouldReturn($paginator);
     }
-
 }

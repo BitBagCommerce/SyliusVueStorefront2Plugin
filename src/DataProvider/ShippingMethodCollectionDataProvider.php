@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusGraphqlPlugin\DataProvider;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\PaginationExtension;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryResultCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
@@ -25,7 +25,7 @@ final class ShippingMethodCollectionDataProvider implements CollectionDataProvid
 {
     private EntityRepository $shippingMethodRepository;
 
-    private PaginationExtension $paginationExtension;
+    private ContextAwareQueryResultCollectionExtensionInterface $paginationExtension;
 
     /** @see QueryCollectionExtensionInterface */
     private iterable $collectionExtensions;
@@ -34,7 +34,7 @@ final class ShippingMethodCollectionDataProvider implements CollectionDataProvid
 
     public function __construct(
         EntityRepository $shippingMethodRepository,
-        PaginationExtension $paginationExtension,
+        ContextAwareQueryResultCollectionExtensionInterface $paginationExtension,
         QueryNameGeneratorInterface $queryNameGenerator,
         iterable $collectionExtensions
     ) {

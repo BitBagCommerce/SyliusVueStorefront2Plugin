@@ -15,7 +15,6 @@ use BitBag\SyliusGraphqlPlugin\Controller\DeleteOrderItemAction;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 

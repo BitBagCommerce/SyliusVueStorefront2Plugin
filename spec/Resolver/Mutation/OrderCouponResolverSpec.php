@@ -72,8 +72,7 @@ class OrderCouponResolverSpec extends ObjectBehavior
         OrderRepositoryInterface $orderRepository,
         UserContextInterface $userContext,
         UserInterface $user
-    ): void
-    {
+    ): void {
         $context = [
             'args' => [
                 'input' => [
@@ -90,6 +89,6 @@ class OrderCouponResolverSpec extends ObjectBehavior
         $orderRepository->findOneBy(['tokenValue' => $orderToken])->willReturn(null);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [null,$context]);
+            ->during('__invoke', [null, $context]);
     }
 }

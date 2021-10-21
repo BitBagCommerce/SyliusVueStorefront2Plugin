@@ -28,8 +28,7 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         OrderProcessorInterface $orderProcessor,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+    ): void {
         $this->beConstructedWith($orderItemRepository, $orderItemQuantityModifier, $orderProcessor, $eventDispatcher);
     }
 
@@ -45,8 +44,7 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
         OrderItemInterface $orderItem,
         OrderInterface $cart,
         EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+    ): void {
         $orderToken = 'token';
         $command = new ChangeItemQuantityInCart(10, 'itemId', $orderToken);
 
@@ -68,8 +66,7 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_token_is_invalid(
         OrderItemRepositoryInterface $orderItemRepository
-    ): void
-    {
+    ): void {
         $orderToken = 'token';
         $command = new ChangeItemQuantityInCart(10, 'itemId', $orderToken);
 
