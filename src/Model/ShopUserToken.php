@@ -17,18 +17,18 @@ class ShopUserToken implements ShopUserTokenInterface
 {
     private int $id;
 
-    private ?string $token;
+    private string $token;
 
-    private ?string $refreshToken;
+    private string $refreshToken;
 
     private ?ShopUserInterface $user;
 
-    public function getToken(): ?string
+    public function getToken(): string
     {
         return $this->token;
     }
 
-    public function setToken(?string $token): void
+    public function setToken(string $token): void
     {
         $this->token = $token;
     }
@@ -53,12 +53,12 @@ class ShopUserToken implements ShopUserTokenInterface
         $this->user = $user;
     }
 
-    public function getRefreshToken(): ?string
+    public function getRefreshToken(): string
     {
         return $this->refreshToken;
     }
 
-    public function setRefreshToken(?string $refreshToken): void
+    public function setRefreshToken(string $refreshToken): void
     {
         $this->refreshToken = $refreshToken;
     }
