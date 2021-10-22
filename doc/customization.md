@@ -129,22 +129,23 @@ $ bin/console debug:container --parameters | grep bitbag
     ```php
     <?php
     
-    
+    declare(strict_types=1);
+   
     namespace App\DTO;
     
     class SomeOperationOutput
     {
-    
         public int $id; //id is required for IRI generation
         public string $data;
         public SomeClass $object;
-    
     }
     ```
 
     * Create Transfomer:
     ```php
     <?php
+   
+    declare(strict_types=1);
     
     namespace App\DataTransformer;
     

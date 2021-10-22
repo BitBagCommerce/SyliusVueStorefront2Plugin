@@ -17,12 +17,12 @@ use ApiPlatform\Core\Metadata\Resource\ResourceMetadata;
 /** @experimental  */
 final class ReflectionClassResourceMetadataFactory implements ResourceMetadataFactoryInterface
 {
-    private ?ResourceMetadataFactoryInterface $decorated;
+    private ?ResourceMetadataFactoryInterface $decoratedResourceMetadataFactory;
 
     public function __construct(
         ResourceMetadataFactoryInterface $decorated = null
     ) {
-        $this->decorated = $decorated;
+        $this->decoratedResourceMetadataFactory = $decorated;
     }
 
     /**
@@ -33,12 +33,10 @@ final class ReflectionClassResourceMetadataFactory implements ResourceMetadataFa
     public function create(string $resourceClass): ResourceMetadata
     {
         $parentResourceMetadata = null;
-        if (null !== $this->decorated) {
+        if (null !== $this->decoratedResourceMetadataFactory) {
             try {
-                $parentResourceMetadata = $this->decorated->create($resourceClass);
-            } catch (ResourceClassNotFoundException $resourceNotFoundException) {
-                // Ignore not found exception from decorated factories
-            }
+                $parentResourceMetadata = $this->decoratedResourceMetadataFactory->create($resourceClass);
+            } catch (ResourceClassNotFoundException $resourceNotFoundException) {}
         }
 
         if (null !== $parentResourceMetadata) {
@@ -58,11 +56,7 @@ final class ReflectionClassResourceMetadataFactory implements ResourceMetadataFa
         return $this->createFromReflection(new ResourceMetadata(), $reflectionClass);
     }
 
-    /**
-     * Returns the metadata from the decorated factory if available or throws an exception.
-     *
-     * @throws ResourceClassNotFoundException
-     */
+    /** @throws ResourceClassNotFoundException */
     private function handleNotFound(?ResourceMetadata $parentPropertyMetadata, string $resourceClass): ResourceMetadata
     {
         if (null !== $parentPropertyMetadata) {

@@ -18,28 +18,37 @@ use ApiPlatform\Core\Metadata\Resource\ResourceMetadata;
 /** @experimental */
 final class InterfaceExtractorResourceMetadataFactory implements ResourceMetadataFactoryInterface
 {
-    private ?ResourceMetadataFactoryInterface $decorated;
+    const GRAPHQL_PROPERTIES = [
+        'shortName',
+        'description',
+        'iri',
+        'itemOperations',
+        'collectionOperations',
+        'subresourceOperations',
+        'graphql',
+        'attributes'
+    ];
+
+    private ?ResourceMetadataFactoryInterface $decoratedResourceMetadataFactory;
 
     private ExtractorInterface $extractor;
 
     public function __construct(
         ExtractorInterface $extractor,
-        ResourceMetadataFactoryInterface $decorated = null
+        ResourceMetadataFactoryInterface $decoratedResourceMetadataFactory = null
     ) {
         $this->extractor = $extractor;
-        $this->decorated = $decorated;
+        $this->decoratedResourceMetadataFactory = $decoratedResourceMetadataFactory;
     }
 
     /** @inheritdoc */
     public function create(string $resourceClass): ResourceMetadata
     {
         $parentResourceMetadata = null;
-        if (null !== $this->decorated) {
+        if (null !== $this->decoratedResourceMetadataFactory) {
             try {
-                $parentResourceMetadata = $this->decorated->create($resourceClass);
-            } catch (ResourceClassNotFoundException $resourceNotFoundException) {
-                // Ignore not found exception from decorated factories
-            }
+                $parentResourceMetadata = $this->decoratedResourceMetadataFactory->create($resourceClass);
+            } catch (ResourceClassNotFoundException $resourceNotFoundException) {}
         }
 
         if (null !== $parentResourceMetadata) {
@@ -55,9 +64,7 @@ final class InterfaceExtractorResourceMetadataFactory implements ResourceMetadat
         return $this->createFromInterface(new ResourceMetadata(), $resourceClass);
     }
 
-    /**
-     * @throws ResourceClassNotFoundException
-     */
+    /** @throws ResourceClassNotFoundException */
     private function createFromInterface(ResourceMetadata $resourceMetadata, string $resourceClass): ResourceMetadata
     {
         $baseResourceClass = (string) preg_replace('/Interface/', '', $resourceClass);
@@ -71,8 +78,11 @@ final class InterfaceExtractorResourceMetadataFactory implements ResourceMetadat
             $this->handleNotFound($resourceMetadata, $resourceClass);
         }
 
-        foreach (['shortName', 'description', 'iri', 'itemOperations', 'collectionOperations', 'subresourceOperations', 'graphql', 'attributes'] as $property) {
-            if (!array_key_exists($property, $metadata) || (null === $metadata[$property] || null !== $resourceMetadata->{'get' . ucfirst($property)}())) {
+        foreach (self::GRAPHQL_PROPERTIES as $property) {
+            if (
+                !array_key_exists($property, $metadata) ||
+                (null === $metadata[$property] || null !== $resourceMetadata->{'get' . ucfirst($property)}())
+            ) {
                 continue;
             }
 
@@ -83,11 +93,7 @@ final class InterfaceExtractorResourceMetadataFactory implements ResourceMetadat
         return $resourceMetadata;
     }
 
-    /**
-     * Returns the metadata from the decorated factory if available or throws an exception.
-     *
-     * @throws ResourceClassNotFoundException
-     */
+    /** @throws ResourceClassNotFoundException */
     private function handleNotFound(?ResourceMetadata $parentPropertyMetadata, string $resourceClass): ResourceMetadata
     {
         if (null !== $parentPropertyMetadata) {
