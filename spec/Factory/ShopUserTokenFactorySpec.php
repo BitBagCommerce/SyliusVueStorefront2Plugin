@@ -12,7 +12,6 @@ namespace spec\BitBag\SyliusGraphqlPlugin\Factory;
 
 use BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactory;
 use BitBag\SyliusGraphqlPlugin\Model\ShopUserToken;
-use BitBag\SyliusGraphqlPlugin\Model\ShopUserTokenInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;

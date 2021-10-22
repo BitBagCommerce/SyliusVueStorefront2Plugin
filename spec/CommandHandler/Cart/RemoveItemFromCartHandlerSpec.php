@@ -28,7 +28,11 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         OrderModifierInterface $orderModifier,
         EventDispatcherInterface $eventDispatcher
     ): void {
-        $this->beConstructedWith($orderItemRepository, $orderModifier, $eventDispatcher);
+        $this->beConstructedWith(
+            $orderItemRepository,
+            $orderModifier,
+            $eventDispatcher
+        );
     }
 
     function it_is_initializable(): void
@@ -44,7 +48,7 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher
     ): void {
         $tokenValue = 'token';
-        $removeItemFromCart = new RemoveItemFromCart($tokenValue, "222");
+        $removeItemFromCart = new RemoveItemFromCart($tokenValue, '222');
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $removeItemFromCart->itemId,
@@ -65,7 +69,7 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         OrderItemRepositoryInterface $orderItemRepository
     ): void {
         $tokenValue = 'token';
-        $removeItemFromCart = new RemoveItemFromCart($tokenValue, "222");
+        $removeItemFromCart = new RemoveItemFromCart($tokenValue, '222');
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $removeItemFromCart->itemId,
@@ -83,7 +87,7 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
     ): void {
         $tokenValue = 'token';
         $differentTokenValue = 'different_token';
-        $removeItemFromCart = new RemoveItemFromCart($tokenValue, "222");
+        $removeItemFromCart = new RemoveItemFromCart($tokenValue, '222');
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $removeItemFromCart->itemId,
