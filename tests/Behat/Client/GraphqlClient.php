@@ -236,6 +236,7 @@ final class GraphqlClient implements GraphqlClientInterface
 
         if (!array_key_exists($key, $flatResponse)) {
             $message = array_key_exists('debugMessage', $flatResponse) ? $flatResponse['debugMessage'] : $flatResponse;
+            $trace = array_key_exists('trace', $flatResponse) ? $flatResponse['trace'] : $flatResponse;
 
             throw new Exception(
                 sprintf(
