@@ -31,7 +31,18 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <operation name="shop_add_item">
                 <attribute name="method">PATCH</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">Sylius\Bundle\ApiBundle\Command\Cart\AddItemToCart</attribute>
+                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Cart\AddItemToCart</attribute>
+                <attribute name="args">
+                    <attribute name="orderTokenValue">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="quantity">
+                        <attribute name="type">Int</attribute>
+                    </attribute>
+                    <attribute name="productVariant">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                </attribute>
             </operation>
 
             <operation name="shop_remove_item">
