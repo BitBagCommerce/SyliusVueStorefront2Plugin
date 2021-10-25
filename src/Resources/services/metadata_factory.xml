@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+This file was created by developers working at BitBag
+Do you need more information about us and what we do? Visit our https://bitbag.io website!
+We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+-->
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd"
+>
+    <services>
+        <service
+            id="api_platform.metadata.resource.metadata_factory.interface"
+            decorates="api_platform.metadata.resource.metadata_factory"
+            class="BitBag\SyliusGraphqlPlugin\Metadata\Resource\Factory\InterfaceExtractorResourceMetadataFactory"
+            decoration-priority="100"
+        >
+            <argument type="service" id="api_platform.metadata.extractor.xml" />
+            <argument type="service" id="api_platform.metadata.resource.metadata_factory.interface.inner" />
+        </service>
+
+        <service
+            id="api_platform.metadata.resource.metadata_factory.reflection"
+            decorates="api_platform.metadata.resource.metadata_factory"
+            class="BitBag\SyliusGraphqlPlugin\Metadata\Resource\Factory\ReflectionClassResourceMetadataFactory"
+            decoration-priority="200"
+        >
+            <argument type="service" id="api_platform.metadata.resource.metadata_factory.reflection.inner" />
+        </service>
+    </services>
+</container>

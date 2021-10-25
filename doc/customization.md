@@ -115,6 +115,76 @@ $ bin/console debug:container --parameters | grep bitbag
     </serializer>
     ```
 
+4. Adding DTO
+
+    * Add Output DTO to operation configuration:
+   
+    ```xml
+    <operation>
+    ...
+        <attribute name="output">App\DTO\SomeOperationOutput</attribute>
+    </operation>
+    ```
+    * Create DTO:
+    ```php
+    <?php
+    
+    declare(strict_types=1);
+   
+    namespace App\DTO;
+    
+    class SomeOperationOutput
+    {
+        public int $id; //id is required for IRI generation
+        public string $data;
+        public SomeClass $object;
+    }
+    ```
+
+    * Create Transfomer:
+    ```php
+    <?php
+   
+    declare(strict_types=1);
+    
+    namespace App\DataTransformer;
+    
+    use ApiPlatform\Core\DataTransformer\DataTransformerInterface;
+    
+    class SomeOperationOutputDataTransformer implements DataTransformerInterface
+    {
+    
+        public function transform(
+            $object, 
+            string $to, 
+            array $context = []
+        ): SomeOperationOutput
+        {
+            $output = new SomeOperationOutput();
+    
+            $output->id = $object->getId();
+            $output->object = $object->getObject();
+            $output->data = $object->getData();
+    
+            return $output;
+        }
+    
+        public function supportsTransformation($data, string $to, array $context = []): bool
+        {
+            //OperationModel is a class that You resolver would return 
+            //or just the resource class in which your operation is defined
+            return $data instanceof OperationModel && $to === SomeOperationOutput::class;
+        }
+    }
+   ```
+   
+    * Register Transformer:
+   ```xml
+   <service id="my_app.data_transformer.some_operation_output_data_transformer"
+            class="App\DataTransformer\SomeOperationOutputDataTransformer">
+        <tag name="api_platform.data_transformer" />
+   </service>
+   ```
 
 ## Testing
 ***

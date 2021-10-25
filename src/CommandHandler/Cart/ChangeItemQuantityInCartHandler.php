@@ -13,6 +13,7 @@ namespace BitBag\SyliusGraphqlPlugin\CommandHandler\Cart;
 use BitBag\SyliusGraphqlPlugin\Command\Cart\ChangeItemQuantityInCart;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Processor\OrderProcessorInterface;
 use Sylius\Component\Order\Repository\OrderItemRepositoryInterface;
@@ -34,16 +35,20 @@ final class ChangeItemQuantityInCartHandler implements MessageHandlerInterface
 
     private EventDispatcherInterface $eventDispatcher;
 
+    private AvailabilityCheckerInterface $availabilityChecker;
+
     public function __construct(
         OrderItemRepositoryInterface $orderItemRepository,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         OrderProcessorInterface $orderProcessor,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        AvailabilityCheckerInterface $availabilityChecker
     ) {
         $this->orderItemRepository = $orderItemRepository;
         $this->orderItemQuantityModifier = $orderItemQuantityModifier;
         $this->orderProcessor = $orderProcessor;
         $this->eventDispatcher = $eventDispatcher;
+        $this->availabilityChecker = $availabilityChecker;
     }
 
     public function __invoke(ChangeItemQuantityInCart $command): OrderInterface
@@ -60,6 +65,16 @@ final class ChangeItemQuantityInCartHandler implements MessageHandlerInterface
         $cart = $orderItem->getOrder();
 
         Assert::same($cart->getTokenValue(), $command->orderTokenValue);
+
+        $variant = $orderItem->getVariant();
+        Assert::notNull($variant);
+
+        $isStockSufficient = $this->availabilityChecker->isStockSufficient(
+            $variant,
+            $command->quantity
+        );
+
+        Assert::true($isStockSufficient, 'There are no that many items on stock.');
 
         $this->orderItemQuantityModifier->modify($orderItem, $command->quantity);
         $this->orderProcessor->process($cart);

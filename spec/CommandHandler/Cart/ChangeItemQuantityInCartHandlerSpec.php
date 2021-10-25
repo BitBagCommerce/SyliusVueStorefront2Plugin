@@ -16,6 +16,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
+use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Processor\OrderProcessorInterface;
 use Sylius\Component\Order\Repository\OrderItemRepositoryInterface;
@@ -27,9 +29,16 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
         OrderItemRepositoryInterface $orderItemRepository,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         OrderProcessorInterface $orderProcessor,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        AvailabilityCheckerInterface $availabilityChecker
     ): void {
-        $this->beConstructedWith($orderItemRepository, $orderItemQuantityModifier, $orderProcessor, $eventDispatcher);
+        $this->beConstructedWith(
+            $orderItemRepository,
+            $orderItemQuantityModifier,
+            $orderProcessor,
+            $eventDispatcher,
+            $availabilityChecker
+        );
     }
 
     function it_is_initializable(): void
@@ -43,7 +52,9 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
         OrderProcessorInterface $orderProcessor,
         OrderItemInterface $orderItem,
         OrderInterface $cart,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        AvailabilityCheckerInterface $availabilityChecker,
+        ProductVariantInterface $variant
     ): void {
         $orderToken = 'token';
         $command = new ChangeItemQuantityInCart(10, 'itemId', $orderToken);
@@ -55,6 +66,9 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
 
         $orderItem->getOrder()->willReturn($cart);
         $cart->getTokenValue()->willReturn($orderToken);
+
+        $orderItem->getVariant()->willReturn($variant);
+        $availabilityChecker->isStockSufficient($variant, $command->quantity)->willReturn(true);
 
         $orderItemQuantityModifier->modify($orderItem->getWrappedObject(), $command->quantity)->shouldBeCalled();
         $orderProcessor->process($cart->getWrappedObject())->shouldBeCalled();

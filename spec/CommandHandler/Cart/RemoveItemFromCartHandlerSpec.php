@@ -28,7 +28,11 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         OrderModifierInterface $orderModifier,
         EventDispatcherInterface $eventDispatcher
     ): void {
-        $this->beConstructedWith($orderItemRepository, $orderModifier, $eventDispatcher);
+        $this->beConstructedWith(
+            $orderItemRepository,
+            $orderModifier,
+            $eventDispatcher
+        );
     }
 
     function it_is_initializable(): void
