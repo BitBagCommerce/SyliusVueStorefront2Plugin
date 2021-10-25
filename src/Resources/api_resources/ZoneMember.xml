@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+
+<!--
+This file was created by developers working at BitBag
+Do you need more information about us and what we do? Visit our https://bitbag.io website!
+We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+-->
+
+<resources xmlns="https://api-platform.com/schema/metadata"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
+>
+    <resource class="%sylius.model.zone_member.class%" shortName="ZoneMember">
+        <graphql>
+            <operation name="item_query"/>
+            <operation name="collection_query">
+                <attribute name="pagination_type">page</attribute>
+            </operation>
+
+            <operation name="item_query" />
+        </graphql>
+
+        <attribute name="route_prefix">admin</attribute>
+
+        <attribute name="validation_groups">sylius</attribute>
+
+        <collectionOperations />
+
+        <itemOperations>
+            <itemOperation name="admin_get">
+                <attribute name="method">GET</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">admin:zone_member:read</attribute>
+                </attribute>
+            </itemOperation>
+        </itemOperations>
+
+        <property name="id" identifier="false" writable="false" />
+        <property name="code" identifier="true" required="true" />
+        <property name="belongsTo" readable="true" writable="true" />
+    </resource>
+</resources>
