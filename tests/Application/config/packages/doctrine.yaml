@@ -11,6 +11,8 @@ doctrine:
         server_version: '5.7'
         charset: UTF8
         url: '%env(resolve:DATABASE_URL)%'
+        types:
+            json_array: Doctrine\DBAL\Types\JsonType
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         auto_mapping: true
