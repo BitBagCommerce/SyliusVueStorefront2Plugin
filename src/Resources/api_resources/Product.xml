@@ -21,6 +21,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
                     <attribute>sylius.api.product_taxon_code_filter</attribute>
                     <attribute>sylius.api.product_taxon_slug_filter</attribute>
                     <attribute>sylius.api.product_price_filter</attribute>
+                    <attribute>sylius.api.product_attribute_filter</attribute>
                 </attribute>
             </operation>
 
@@ -34,6 +35,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <attribute>sylius.api.product_taxon_code_filter</attribute>
             <attribute>sylius.api.product_taxon_slug_filter</attribute>
             <attribute>sylius.api.product_price_filter</attribute>
+            <attribute>sylius.api.product_attribute_filter</attribute>
         </attribute>
 
         <attribute name="validation_groups">sylius</attribute>
