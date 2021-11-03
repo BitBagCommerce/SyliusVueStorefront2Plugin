@@ -36,15 +36,19 @@ To check automatically generated API Doc for graphql in Your project - visit one
   api_graphql_graphql_playground      /api/v2/graphql/graphql_playground
 ```
 
-Please note that many of used functions and approaches both on Sylius and API Platform with Graphql support are still marked as experimental
+Please note that many of used functions and approaches both on Sylius and API Platform with Graphql support are still marked as experimental.
+
+**This plugin is needed, if you want to integrate Sylius with Vue Storefront 2.
+Please check out the awesome frontend integration package from our Realtainment friends to make it happen: https://github.com/RealtainmentBerlin/vuestorefront-sylius**
 
 ### Requirements
 
 The plugin uses following 3rd party 
 
-"sylius/sylius": "^1.10" as it supports API Platform from that version
-"webonyx/graphql-php" : at stable version
-"gesdinet/jwt-refresh-token-bundle" for logging purposes
+
+`"sylius/sylius": "^1.10"` as it supports API Platform from that version<br />
+`"webonyx/graphql-php": at stable version`<br />
+`"gesdinet/jwt-refresh-token-bundle"` for logging purposes
 
 ## We are here to help
 This **open-source plugin was developed to help the Sylius community**. If you have any additional questions, would like help with installing or configuring the plugin or need any assistance with your Sylius project - let us know!
