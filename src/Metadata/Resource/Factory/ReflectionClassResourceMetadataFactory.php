@@ -36,7 +36,8 @@ final class ReflectionClassResourceMetadataFactory implements ResourceMetadataFa
         if (null !== $this->decoratedResourceMetadataFactory) {
             try {
                 $parentResourceMetadata = $this->decoratedResourceMetadataFactory->create($resourceClass);
-            } catch (ResourceClassNotFoundException $resourceNotFoundException) {}
+            } catch (ResourceClassNotFoundException $resourceNotFoundException) {
+            }
         }
 
         if (null !== $parentResourceMetadata) {

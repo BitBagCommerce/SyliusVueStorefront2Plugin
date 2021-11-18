@@ -18,7 +18,7 @@ use ApiPlatform\Core\Metadata\Resource\ResourceMetadata;
 /** @experimental */
 final class InterfaceExtractorResourceMetadataFactory implements ResourceMetadataFactoryInterface
 {
-    const GRAPHQL_PROPERTIES = [
+    public const GRAPHQL_PROPERTIES = [
         'shortName',
         'description',
         'iri',
@@ -26,7 +26,7 @@ final class InterfaceExtractorResourceMetadataFactory implements ResourceMetadat
         'collectionOperations',
         'subresourceOperations',
         'graphql',
-        'attributes'
+        'attributes',
     ];
 
     private ?ResourceMetadataFactoryInterface $decoratedResourceMetadataFactory;
@@ -48,7 +48,8 @@ final class InterfaceExtractorResourceMetadataFactory implements ResourceMetadat
         if (null !== $this->decoratedResourceMetadataFactory) {
             try {
                 $parentResourceMetadata = $this->decoratedResourceMetadataFactory->create($resourceClass);
-            } catch (ResourceClassNotFoundException $resourceNotFoundException) {}
+            } catch (ResourceClassNotFoundException $resourceNotFoundException) {
+            }
         }
 
         if (null !== $parentResourceMetadata) {
