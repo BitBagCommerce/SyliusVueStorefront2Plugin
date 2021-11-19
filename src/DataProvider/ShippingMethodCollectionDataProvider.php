@@ -53,9 +53,13 @@ final class ShippingMethodCollectionDataProvider implements CollectionDataProvid
     {
         $queryBuilder = $this->shippingMethodRepository->createQueryBuilder('o');
 
-        /** @var ContextAwareQueryCollectionExtensionInterface $extension */
+        /** @var QueryCollectionExtensionInterface $extension */
         foreach ($this->collectionExtensions as $extension) {
-            $extension->applyToCollection($queryBuilder, $this->queryNameGenerator, $resourceClass, $operationName, $context);
+            if ($extension instanceof ContextAwareQueryCollectionExtensionInterface) {
+                $extension->applyToCollection($queryBuilder, $this->queryNameGenerator, $resourceClass, $operationName, $context);
+            } else {
+                $extension->applyToCollection($queryBuilder, $this->queryNameGenerator, $resourceClass, $operationName);
+            }
 
             if ($extension instanceof QueryResultCollectionExtensionInterface && $extension->supportsResult($resourceClass, $operationName)) {
                 return $extension->getResult($queryBuilder);
