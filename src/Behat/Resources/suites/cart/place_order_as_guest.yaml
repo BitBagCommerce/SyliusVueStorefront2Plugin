@@ -1,0 +1,21 @@
+default:
+    suites:
+        graphql_place_order_guest:
+            contexts:
+                - bitbag.sylius_graphql_plugin.context.address
+                - bitbag.sylius_graphql_plugin.context.cart
+                - bitbag.sylius_graphql_plugin.context.customer
+                - bitbag.sylius_graphql_plugin.context.graphql
+                - bitbag.sylius_graphql_plugin.context.checkout
+                - bitbag.sylius_graphql_plugin.context.product
+                - sylius.behat.context.hook.doctrine_orm
+                - sylius.behat.context.setup.channel
+                - sylius.behat.context.setup.customer
+                - sylius.behat.context.setup.product
+                - sylius.behat.context.setup.promotion
+                - sylius.behat.context.setup.shipping
+                - sylius.behat.context.setup.payment
+                - sylius.behat.context.transform.lexical
+                - sylius.behat.context.transform.shared_storage
+            filters:
+                tags: "@place_order_guest && @graphql"
