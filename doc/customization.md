@@ -3,13 +3,13 @@
 
 ### Available services you can [decorate](https://symfony.com/doc/current/service_container/service_decoration.html) and forms you can [extend](http://symfony.com/doc/current/form/create_form_type_extension.html)
 ```bash
-$ bin/console debug:container | grep bitbag_sylius_graphql
+$ bin/console debug:container | grep bitbag.sylius_graphql
 ```
 
 ### There are generic events dispatched after completion of every custom mutation and command handler .e.g.
 
 ```php
-    public const EVENT_NAME = 'bitbag_sylius_graphql.some_handler.complete';
+    public const EVENT_NAME = 'bitbag.sylius_graphql.some_handler.complete';
 
     public function __invoke(Command $command)
     {
