@@ -28,13 +28,13 @@ use Sylius\Component\Attribute\AttributeType\SelectAttributeType;
 use Sylius\Component\Attribute\Model\AttributeInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Filters the collection by value of given attribute IRI
  */
 class AttributeFilter extends AbstractContextAwareFilter implements FilterInterface
 {
-
     use PropertyHelperTrait;
 
     private IriConverterInterface $iriConverter;
@@ -54,8 +54,7 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
         LoggerInterface $logger = null,
         array $properties = null,
         NameConverterInterface $nameConverter = null
-    )
-    {
+    ) {
         parent::__construct(
             $managerRegistry,
             $requestStack,
@@ -68,40 +67,36 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
     }
 
     /**
-     * @param string $property
-     * @param $values
-     * @param QueryBuilder $queryBuilder
-     * @param QueryNameGeneratorInterface $queryNameGenerator
-     * @param string $resourceClass
-     * @param string|null $operationName
+     * @param mixed $value
      */
     protected function filterProperty(
         string $property,
-        $values,
+        $value,
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         string $operationName = null
-    ): void
-    {
+    ): void {
         if (
-            !\is_array($values) ||
+            !\is_array($value) ||
             !$this->isPropertyEnabled($property, $resourceClass)
         ) {
             return;
         }
 
-        $attributeId = $this->getAttributeId($values, $property);
-        $value = $this->getValue($values, $property);
-        if (null === $attributeId || null === $value) {
+        $attributeId = $this->getAttributeId($value, $property);
+        $extractedValue = $this->extractValue($value, $property);
+        if (null === $attributeId || null === $extractedValue) {
             return;
         }
 
         $alias = $queryBuilder->getRootAliases()[0];
 
-        if ($this->isPropertyNested($property.".id", $resourceClass)) {
-            [$alias] = $this->addJoinsForNestedProperty($property.".id", $alias, $queryBuilder, $queryNameGenerator, $resourceClass);
+        if ($this->isPropertyNested($property . '.id', $resourceClass)) {
+            [$alias] = $this->addJoinsForNestedProperty($property . '.id', $alias, $queryBuilder, $queryNameGenerator, $resourceClass);
         }
+
+        Assert::string($alias);
 
         $this->addWhere(
             $queryBuilder,
@@ -109,7 +104,7 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
             $alias,
             $property,
             $attributeId,
-            $value
+            $extractedValue
         );
     }
 
@@ -122,24 +117,27 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
         string $attributeId,
         $value,
         string $operator = self::OPERATOR_EXACT
-    ): void
-    {
+    ): void {
         $valueParameter = $queryNameGenerator->generateParameterName($field);
 
         /** @var AttributeInterface $attribute */
         $attribute = $this->iriConverter->getItemFromIri($attributeId);
         $attributeType = $attribute->getType();
+        Assert::notNull($attributeType);
         $value = $this->normalizeValue($value, $attributeType);
 
         switch ($operator) {
             case self::OPERATOR_EXACT:
                 $queryBuilder
                     ->andWhere(
-                        sprintf('%s.%s = :%s',
+                        sprintf(
+                            '%s.%s = :%s',
                             $alias,
                             $attributeType,
-                            $valueParameter))
-                    ->setParameter($valueParameter,$value);
+                            $valueParameter
+                        )
+                    )
+                    ->setParameter($valueParameter, $value);
 
                 break;
             case self::OPERATOR_PARTIAL:
@@ -165,7 +163,7 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
         }
 
         /** @var string $property */
-        foreach ($properties as $property => $unused) {
+        foreach (array_keys($properties) as $property) {
             $description += $this->getFilterDescription($property, self::ATTRIBUTE_ID);
             $description += $this->getFilterDescription($property, self::VALUE);
         }
@@ -189,7 +187,7 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
 
     private function getAttributeId(array $values, string $property): ?string
     {
-        if (key_exists(self::ATTRIBUTE_ID, $values)) {
+        if (array_key_exists(self::ATTRIBUTE_ID, $values)) {
             /** @var string $attributeId */
             $attributeId = $values[self::ATTRIBUTE_ID];
         } else {
@@ -200,7 +198,7 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
                         self::ATTRIBUTE_ID,
                         $property
                     )
-                )
+                ),
             ]);
 
             return null;
@@ -209,10 +207,9 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
         return $attributeId;
     }
 
-    private function getValue(array $values, string $property): ?string
+    private function extractValue(array $values, string $property): ?string
     {
-
-        if (key_exists(self::VALUE, $values)) {
+        if (array_key_exists(self::VALUE, $values)) {
             /** @var string $value */
             $value = $values[self::VALUE];
         } else {
@@ -223,7 +220,7 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
                         self::VALUE,
                         $property
                     )
-                )
+                ),
             ]);
 
             return null;
@@ -233,31 +230,41 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
     }
 
     /**
-     * @return int|float|string|null|bool|\DateTime
+     * @param ?mixed $value
+     *
+     * @return int|float|string|bool|\DateTime|null
+     *
      * @throws \Exception
      */
-    private function normalizeValue(string $value, string $type)
+    private function normalizeValue($value, string $type)
     {
-
         switch ($type) {
             case CheckboxAttributeType::TYPE:
                 $value = (bool) $value;
+
                 break;
             case DateAttributeType::TYPE:
             case DatetimeAttributeType::TYPE:
+                Assert::string($value);
                 $value = new \DateTime($value);
+
                 break;
             case IntegerAttributeType::TYPE:
                 $value = (int) $value;
+
                 break;
             case PercentAttributeType::TYPE:
                 $value = (float) $value;
+
                 break;
             case SelectAttributeType::TYPE:
                 //assume IRI ?
                 //TODO::
                 $value = (bool) $value;
+
                 break;
+            default:
+                $value = (null !== $value) ? (string) $value : null;
         }
 
         return $value;
