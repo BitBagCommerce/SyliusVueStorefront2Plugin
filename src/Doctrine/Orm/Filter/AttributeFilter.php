@@ -203,7 +203,7 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
 
     private function extractValue(array $values, string $property): ?string
     {
-        if (array_key_exists(self::VALUE, $values)) {
+        if (!array_key_exists(self::VALUE, $values)) {
             $this->getLogger()->notice('Invalid filter ignored', [
                 'exception' => new InvalidArgumentException(
                     sprintf(
