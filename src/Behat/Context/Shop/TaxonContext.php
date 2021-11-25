@@ -37,10 +37,6 @@ final class TaxonContext implements Context
     {
         $expectedData = '
         collection {
-            root{
-                id
-                slug
-            }
             id
             _id
             name
@@ -56,10 +52,12 @@ final class TaxonContext implements Context
             createdAt
             updatedAt
             translations{
-            collection{
-                slug
-                name
-                locale
+                collection{
+                    id
+                    name
+                    slug
+                    description
+                }
             }
         }';
 
