@@ -105,14 +105,9 @@ class OperationRequest implements OperationRequestInterface
         ];
     }
 
-    /** @todo Implement in later stages of development */
     private function formatFilters(): string
     {
-        $output = '';
-        foreach ($this->filters as $filter) {
-        }
-
-        return $output;
+        return '';
     }
 
     private function addFiltersToQuery(): void
