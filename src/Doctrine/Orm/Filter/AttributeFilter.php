@@ -95,12 +95,10 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
             [$alias] = $this->addJoinsForNestedProperty($property . '.id', $alias, $queryBuilder, $queryNameGenerator, $resourceClass);
         }
 
-        Assert::string($alias);
-
         $this->addWhere(
             $queryBuilder,
             $queryNameGenerator,
-            $alias,
+            (string) $alias,
             $property,
             $attributeId,
             $extractedValue
