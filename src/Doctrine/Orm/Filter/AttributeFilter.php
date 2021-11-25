@@ -85,9 +85,9 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
         }
 
         $aliases = $queryBuilder->getRootAliases();
-        if(count($aliases) > 0){
+        if (count($aliases) > 0) {
             $alias = reset($aliases);
-        }else{
+        } else {
             return;
         }
 
@@ -219,7 +219,7 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
             return null;
         }
 
-        return (string) $values[self::VALUE];;
+        return (string) $values[self::VALUE];
     }
 
     /**
