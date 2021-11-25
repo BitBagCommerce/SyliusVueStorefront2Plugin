@@ -23,6 +23,5 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
         <service id="BitBag\SyliusGraphqlPlugin\Doctrine\Orm\Filter\AttributeFilter"
                  alias="bitbag.sylius_graphql.doctrine.orm.attribute_filter" />
-
     </services>
 </container>
