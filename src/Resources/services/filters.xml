@@ -21,17 +21,17 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="bitbag_sylius_graphql.filters.product_slug_filter"
-                 parent="api_platform.doctrine.orm.search_filter"
+        <service id="sylius.api.product_attribute_filter"
+                 parent="bitbag.sylius_graphql.doctrine.orm.attribute_filter"
                  autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
-                <argument key="attributes.stringValue">partial</argument>
-                <argument key="attributes.slug">partial</argument>
+                <argument key="attributes" />
             </argument>
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.product_price_filter" parent="api_platform.doctrine.orm.range_filter"
+        <service id="sylius.api.product_price_filter"
+                 parent="api_platform.doctrine.orm.range_filter"
                  autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="variants.channelPricings.price" />
