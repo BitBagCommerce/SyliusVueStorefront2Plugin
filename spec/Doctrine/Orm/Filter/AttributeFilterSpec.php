@@ -30,7 +30,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Webmozart\Assert\Assert;
 
-class AttributeFilter extends AbstractContextAwareFilter implements FilterInterface
+/**
+ * Filters the collection by value of given attribute IRI
+ */
+class AttributeFilterSpec extends AbstractContextAwareFilter implements FilterInterface
 {
     use PropertyHelperTrait;
 
@@ -63,7 +66,9 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
         $this->iriConverter = $iriConverter;
     }
 
-    /** @param mixed $value */
+    /**
+     * @param mixed $value
+     */
     protected function filterProperty(
         string $property,
         $value,
@@ -72,11 +77,12 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
         string $resourceClass,
         string $operationName = null
     ): void {
-        if ($this->isWrongValueOrProperty($value, $property, $resourceClass)) {
+        if (
+            !\is_array($value) ||
+            !$this->isPropertyEnabled($property, $resourceClass)
+        ) {
             return;
         }
-
-        Assert::isArray($value);
 
         $attributeId = $this->getAttributeId($value, $property);
         $extractedValue = $this->extractValue($value, $property);
@@ -84,12 +90,7 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
             return;
         }
 
-        $aliases = $queryBuilder->getRootAliases();
-        if(count($aliases) > 0){
-            $alias = reset($aliases);
-        }else{
-            return;
-        }
+        $alias = $queryBuilder->getRootAliases()[0];
 
         if ($this->isPropertyNested($property . '.id', $resourceClass)) {
             [$alias] = $this->addJoinsForNestedProperty($property . '.id', $alias, $queryBuilder, $queryNameGenerator, $resourceClass);
@@ -186,7 +187,10 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
 
     private function getAttributeId(array $values, string $property): ?string
     {
-        if (!array_key_exists(self::ATTRIBUTE_ID, $values)) {
+        if (array_key_exists(self::ATTRIBUTE_ID, $values)) {
+            /** @var string $attributeId */
+            $attributeId = $values[self::ATTRIBUTE_ID];
+        } else {
             $this->getLogger()->notice('Invalid filter ignored', [
                 'exception' => new InvalidArgumentException(
                     sprintf(
@@ -200,12 +204,15 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
             return null;
         }
 
-        return (string) $values[self::ATTRIBUTE_ID];
+        return $attributeId;
     }
 
     private function extractValue(array $values, string $property): ?string
     {
         if (array_key_exists(self::VALUE, $values)) {
+            /** @var string $value */
+            $value = $values[self::VALUE];
+        } else {
             $this->getLogger()->notice('Invalid filter ignored', [
                 'exception' => new InvalidArgumentException(
                     sprintf(
@@ -219,7 +226,7 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
             return null;
         }
 
-        return (string) $values[self::VALUE];;
+        return $value;
     }
 
     /**
@@ -251,7 +258,9 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
 
                 break;
             case SelectAttributeType::TYPE:
-                $value = (string) $value;
+                //assume IRI ?
+                //TODO::
+                $value = (bool) $value;
 
                 break;
             default:
@@ -259,12 +268,5 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
         }
 
         return $value;
-    }
-
-    /** @param mixed $value */
-    protected function isWrongValueOrProperty($value, string $property, string $resourceClass): bool
-    {
-        return !\is_array($value) ||
-            !$this->isPropertyEnabled($property, $resourceClass);
     }
 }

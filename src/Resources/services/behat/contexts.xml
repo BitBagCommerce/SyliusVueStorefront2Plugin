@@ -68,6 +68,5 @@
             <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
         </service>
-
     </services>
 </container>

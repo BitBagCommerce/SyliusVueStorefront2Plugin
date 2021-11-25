@@ -10,7 +10,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <imports>
-        <import resource="../services/**/*.xml" />
+        <import resource="../services/*.xml" />
     </imports>
 
 </container>

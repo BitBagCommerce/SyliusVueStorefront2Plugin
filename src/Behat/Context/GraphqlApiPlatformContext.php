@@ -180,7 +180,7 @@ final class GraphqlApiPlatformContext implements Context
 
                 break;
             default:
-                $value = is_array($value) ? (array) $value: (string) $value;
+                $value = is_array($value) ? $value: (string) $value;
                 break;
         }
 
