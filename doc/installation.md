@@ -16,6 +16,16 @@
             BitBag\SyliusGraphqlPlugin\BitBagSyliusGraphqlPlugin::class => ['all' => true],
         ];
     ```
+    
+
+1. Add plugin mapping path to your `config/packages/api_platform.yaml` file as a last element:
+
+    ```yaml
+        api_platform:
+            mapping:
+                paths:
+                    - '%kernel.project_dir%/vendor/bitbag/graphql-plugin/src/Resources/api_resources'
+    ```
 
 1. Import required config by adding  `config/packages/bitbag_sylius_graphql_plugin.yaml` file:
 
