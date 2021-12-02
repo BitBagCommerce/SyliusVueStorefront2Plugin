@@ -26,6 +26,17 @@
                 paths:
                     - '%kernel.project_dir%/vendor/bitbag/graphql-plugin/src/Resources/api_resources'
     ```
+    
+
+1. Add plugin serialisation files path to your `config/packages/framewrok.yaml` file (Remeber to include here Your own serialisation files path, without it - fields using serialisation groups wont be visible in GraphQL Schema):
+
+    ```yaml
+        framework:    
+            serializer:
+                mapping:
+                    paths:
+                        - '%kernel.project_dir%/vendor/bitbag/graphql-plugin/src/Resources/serialization'
+    ```
 
 1. Import required config by adding  `config/packages/bitbag_sylius_graphql_plugin.yaml` file:
 
