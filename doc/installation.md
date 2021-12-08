@@ -44,7 +44,7 @@
     # config/packages/bitbag_sylius_graphql_plugin.yaml
     
     imports:
-        - { resource: "@BitBagSyliusGraphqlPlugin/Resources/config/config.yml" }
+        - { resource: "@BitBagSyliusGraphqlPlugin/Resources/config/services.yml" }
     ```    
    
     There are 2 plugin parameters that You can adjsut:
