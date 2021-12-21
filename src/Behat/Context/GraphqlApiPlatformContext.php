@@ -152,7 +152,7 @@ final class GraphqlApiPlatformContext implements Context
     {
         /** @psalm-suppress MixedAssignment */
         $responseValueAtKey = $this->client->getValueAtKey($key);
-        Assert::same($value, $responseValueAtKey);
+        Assert::same($responseValueAtKey,$value);
     }
 
     /**
@@ -238,13 +238,15 @@ final class GraphqlApiPlatformContext implements Context
 
     /**
      * @Then I add :filterName filter to this operation with :value value
+     * @Then I add :filterName filter to this operation with :type value :value 
      *
      * @param mixed $value
      */
-    public function iAddFilterToThisOperation(string $filterName, $value): void
+    public function iAddFilterToThisOperation(string $filterName, $value, string $type = null): void
     {
         $operation = $this->client->getLastOperationRequest();
         Assert::isInstanceOf($operation, OperationRequestInterface::class);
+        $value = $this->castToType($value, $type);
         $operation->addFilter($filterName, $value);
     }
 }
