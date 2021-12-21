@@ -107,7 +107,29 @@ class OperationRequest implements OperationRequestInterface
 
     private function formatFilters(): string
     {
-        return '';
+        $filters = $this->getFilters();
+
+        if (count($filters) <= 0) {
+            return '';
+        }
+
+        $filtersData = '';
+
+        /**
+         * @var string $filterName
+         * @var mixed $filterValue
+         */
+        foreach ($filters as $filterName => $filterValue) {
+            $filtersData .= sprintf(
+                "%s: %s,\n",
+                $filterName,
+                (string) $filterValue
+            );
+        }
+
+        return sprintf('(
+            %s
+        )', $filtersData);
     }
 
     private function addFiltersToQuery(): void

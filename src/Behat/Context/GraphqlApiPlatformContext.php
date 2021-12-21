@@ -235,4 +235,16 @@ final class GraphqlApiPlatformContext implements Context
 
         return null;
     }
+
+    /**
+     * @Then I add :filterName filter to this operation with :value value
+     *
+     * @param mixed $value
+     */
+    public function iAddFilterToThisOperation(string $filterName, $value): void
+    {
+        $operation = $this->client->getLastOperationRequest();
+        Assert::isInstanceOf($operation, OperationRequestInterface::class);
+        $operation->addFilter($filterName, $value);
+    }
 }
