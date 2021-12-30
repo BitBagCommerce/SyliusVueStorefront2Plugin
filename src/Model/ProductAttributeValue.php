@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusGraphqlPlugin\Model;
 
 use Sylius\Component\Attribute\Model\AttributeInterface;
-use Sylius\Component\Attribute\Model\AttributeValue as BaseAttributeValue;
+use Sylius\Component\Product\Model\ProductAttributeValue as BaseAttributeValue;
 use Webmozart\Assert\Assert;
 
 class ProductAttributeValue extends BaseAttributeValue
