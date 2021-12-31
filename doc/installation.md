@@ -68,7 +68,7 @@
                     alias: BitBag\SyliusGraphqlPlugin
     ```
    
-4. In _sylius.yaml add mappings for promotion and product attribute so graphql can see them properly
+4. In _sylius.yaml add mappings for product attribute and taxonomy repository so graphql can see them properly
 
     ```yml
     sylius_attribute:
@@ -80,14 +80,11 @@
                     classes:
                         model: BitBag\SyliusGraphqlPlugin\Model\ProductAttributeValue
     
-    sylius_promotion:
-        resources:
-            promotion_coupon:
-                classes:
-                    model: Sylius\Component\Promotion\Model\PromotionCoupon
-            promotion:
-                classes:
-                    model: Sylius\Component\Core\Model\Promotion    
+    sylius_taxonomy:
+       resources:
+          taxon:
+             classes:
+                repository: BitBag\SyliusGraphqlPlugin\Doctrine\Repository\TaxonRepository
     ```
 
 5. Import routing in routes.yaml
