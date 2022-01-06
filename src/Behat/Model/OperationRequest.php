@@ -128,6 +128,7 @@ class OperationRequest implements OperationRequestInterface
         )', $filtersData);
     }
 
+    /** @param mixed $filterValue */
     private function formatFilter(string $filterName, $filterValue): string
     {
         $processedValue = (string) $filterValue;
