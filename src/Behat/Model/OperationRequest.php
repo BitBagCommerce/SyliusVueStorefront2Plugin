@@ -132,7 +132,7 @@ class OperationRequest implements OperationRequestInterface
     {
         $processedValue = (string) $filterValue;
 
-        if (is_bool($filterValue)) {
+        if (true === is_bool($filterValue)) {
             $processedValue = $filterValue ? 'true' : 'false';
         }
 
