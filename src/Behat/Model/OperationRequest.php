@@ -120,16 +120,27 @@ class OperationRequest implements OperationRequestInterface
          * @var mixed $filterValue
          */
         foreach ($filters as $filterName => $filterValue) {
-            $filtersData .= sprintf(
-                "%s: %s,\n",
-                $filterName,
-                (string) $filterValue
-            );
+            $filtersData .= $this->formatFilter($filterName, $filterValue);
         }
 
         return sprintf('(
             %s
         )', $filtersData);
+    }
+
+    private function formatFilter(string $filterName, $filterValue): string
+    {
+        $processedValue = (string) $filterValue;
+
+        if (is_bool($filterValue)) {
+            $processedValue = $filterValue ? 'true' : 'false';
+        }
+
+        return sprintf(
+            "%s: %s,\n",
+            $filterName,
+            $processedValue
+        );
     }
 
     private function addFiltersToQuery(): void
