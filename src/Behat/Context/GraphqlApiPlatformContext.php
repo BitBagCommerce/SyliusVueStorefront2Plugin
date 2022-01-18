@@ -145,13 +145,22 @@ final class GraphqlApiPlatformContext implements Context
     /**
      * @param mixed $value
      * @Then This response should contain :key equal to :value
+     * @Then This response should contain :key equal to :value as :type
      *
      * @throws Exception
      */
-    public function thatResponseShouldContainKeyWithValue(string $key, $value): void
-    {
+    public function thatResponseShouldContainKeyWithValue(
+        string $key,
+        $value,
+        string $type = null
+    ): void {
         /** @psalm-suppress MixedAssignment */
         $responseValueAtKey = $this->client->getValueAtKey($key);
+
+        if (null !== $type) {
+            $value = $this->castToType($value, $type);
+        }
+
         Assert::same($responseValueAtKey, $value);
     }
 
