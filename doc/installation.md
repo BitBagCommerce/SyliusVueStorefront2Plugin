@@ -34,7 +34,7 @@
     ```
     
 
-5. Add plugin serialisation files path to your `config/packages/framewrok.yaml` file (Remeber to include here Your own serialisation files path, without it - fields using serialisation groups wont be visible in GraphQL Schema):
+5. Add plugin serialization files path to your `config/packages/framework.yaml` file (Remeber to include here Your own serialization files path, without it - fields using serialization groups wont be visible in GraphQL Schema):
 
     ```yaml
         framework:    
