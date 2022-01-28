@@ -7,7 +7,7 @@
     composer require bitbag/graphql-plugin
     ```
 
-1. Add plugin dependencies to your `config/bundles.php` file:
+2. Add plugin dependencies to your `config/bundles.php` file:
 
     ```php
         return [
@@ -16,9 +16,15 @@
             BitBag\SyliusGraphqlPlugin\BitBagSyliusGraphqlPlugin::class => ['all' => true],
         ];
     ```
-    
+   
+3. Enable API
+    In `config/services.yaml`
+    ```yaml
+        sylius_api:
+            enabled: true
+    ```
 
-1. Add plugin mapping path to your `config/packages/api_platform.yaml` file as a last element:
+4. Add plugin mapping path to your `config/packages/api_platform.yaml` file as a last element:
 
     ```yaml
         api_platform:
@@ -28,7 +34,7 @@
     ```
     
 
-1. Add plugin serialisation files path to your `config/packages/framewrok.yaml` file (Remeber to include here Your own serialisation files path, without it - fields using serialisation groups wont be visible in GraphQL Schema):
+5. Add plugin serialization files path to your `config/packages/framework.yaml` file (Remeber to include here Your own serialization files path, without it - fields using serialization groups wont be visible in GraphQL Schema):
 
     ```yaml
         framework:    
@@ -38,7 +44,7 @@
                         - '%kernel.project_dir%/vendor/bitbag/graphql-plugin/src/Resources/serialization'
     ```
 
-1. Import required config by adding  `config/packages/bitbag_sylius_graphql_plugin.yaml` file:
+6. Import required config by adding  `config/packages/bitbag_sylius_graphql_plugin.yaml` file:
 
     ```yaml
     # config/packages/bitbag_sylius_graphql_plugin.yaml
@@ -54,7 +60,7 @@
         refresh_token_lifespan: 2592000 #that its default value
         test_endpoint: 'http://127.0.0.1:8080/api/v2/graphql' #that its default value
     ```
-2. Add doctrine mapping:
+7. Add doctrine mapping:
 
     ```yml
     doctrine:
@@ -68,7 +74,7 @@
                     alias: BitBag\SyliusGraphqlPlugin
     ```
    
-4. In _sylius.yaml add mappings for product attribute and taxonomy repository so graphql can see them properly
+8. In _sylius.yaml add mappings for product attribute and taxonomy repository so graphql can see them properly
 
     ```yml
     sylius_attribute:
@@ -87,7 +93,7 @@
                 repository: BitBag\SyliusGraphqlPlugin\Doctrine\Repository\TaxonRepository
     ```
 
-5. Import routing in routes.yaml
+9. Import routing in routes.yaml
 
     ```yml
     bitbag_sylius_graphql_plugin:
