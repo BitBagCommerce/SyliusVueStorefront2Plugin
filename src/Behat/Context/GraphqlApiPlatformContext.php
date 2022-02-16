@@ -164,6 +164,15 @@ final class GraphqlApiPlatformContext implements Context
         Assert::same($responseValueAtKey, $value);
     }
 
+    /** @Then :key in the response should be empty */
+    public function keyInTheResponseShouldBeEmpty(string $key): void
+    {
+        /** @psalm-suppress MixedAssignment */
+        $responseValueAtKey = $this->client->getValueAtKey($key);
+
+        Assert::isEmpty($responseValueAtKey);
+    }
+
     /**
      * @param mixed $value
      *
