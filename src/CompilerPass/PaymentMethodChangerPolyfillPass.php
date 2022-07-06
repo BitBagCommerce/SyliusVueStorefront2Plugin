@@ -21,10 +21,12 @@ class PaymentMethodChangerPolyfillPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container)
     {
-        if ($container->has(self::OLD_NAME)) {
-            return;
+        if (!$container->has(self::OLD_NAME)) {
+            $container->setAlias(self::OLD_NAME, self::NEW_NAME);
         }
 
-        $container->setAlias(self::OLD_NAME, self::NEW_NAME);
+        if (!$container->has('sylius.api.context.user')) {
+            $container->setAlias('sylius.api.context.user', 'Sylius\Bundle\ApiBundle\Context\UserContextInterface');
+        }
     }
 }
