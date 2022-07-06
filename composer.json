@@ -52,7 +52,8 @@
         "allow-plugins": {
             "composer/package-versions-deprecated": false,
             "dealerdirect/phpcodesniffer-composer-installer": false,
-            "phpstan/extension-installer": false
+            "phpstan/extension-installer": false,
+            "symfony/thanks": true
         }
     },
     "extra": {
