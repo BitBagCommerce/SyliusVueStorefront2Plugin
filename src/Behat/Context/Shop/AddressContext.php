@@ -68,7 +68,7 @@ final class AddressContext implements Context
             postcode
         }';
 
-        $operation = $this->client->prepareOperation('shop_postAddress', $expectedData);
+        $operation = $this->client->prepareOperation('shop_post_address', $expectedData);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
 

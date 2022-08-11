@@ -1,6 +1,7 @@
 imports:
+    - { resource: "@BitBagSyliusGraphqlPlugin/Resources/config/config.yaml" }
     - { resource: "@BitBagSyliusGraphqlPlugin/Resources/config/services.xml" }
 
 bitbag_sylius_graphql:
     refresh_token_lifespan: 2592000
-    
+    test_endpoint: 'http://127.0.0.1:8080/api/v2/graphql'

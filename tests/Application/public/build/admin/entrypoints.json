@@ -1,0 +1,9 @@
+{
+  "entrypoints": {
+    "admin-entry": {
+      "js": [
+        "/build/admin/admin-entry.js"
+      ]
+    }
+  }
+}
