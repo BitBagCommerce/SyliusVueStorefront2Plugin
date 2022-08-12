@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+
+<!--
+This file was created by developers working at BitBag
+Do you need more information about us and what we do? Visit our https://bitbag.io website!
+We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+-->
+
+<resources xmlns="https://api-platform.com/schema/metadata"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
+>
+    <resource class="%sylius.model.shipping_method_translation.class%" shortName="ShippingMethodTranslation">
+        <graphql>
+            <operation name="collection_query">
+                <attribute name="pagination_type">page</attribute>
+            </operation>
+
+            <operation name="item_query" />
+        </graphql>
+
+        <attribute name="validation_groups">sylius</attribute>
+
+        <collectionOperations />
+
+        <itemOperations>
+            <itemOperation name="admin_get">
+                <attribute name="method">GET</attribute>
+                <attribute name="path">/admin/shipping-method-translations/{id}</attribute>
+            </itemOperation>
+
+            <itemOperation name="shop_get">
+                <attribute name="method">GET</attribute>
+                <attribute name="path">/shop/shipping-method-translations/{id}</attribute>
+            </itemOperation>
+        </itemOperations>
+
+        <property name="id" identifier="true" writable="false" />
+        <property name="name" identifier="false" required="true" />
+        <property name="description" identifier="false" />
+        <property name="locale" identifier="false" required="true" />
+    </resource>
+</resources>
