@@ -69,6 +69,9 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <itemOperation name="shop_get">
                 <attribute name="method">GET</attribute>
                 <attribute name="path">/shop/countries/{code}</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:country:read</attribute>
+                </attribute>
             </itemOperation>
 
             <itemOperation name="admin_put">

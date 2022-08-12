@@ -145,7 +145,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <property name="id" identifier="true" writable="false" />
         <property name="firstName" writable="true" />
         <property name="lastName" writable="true" />
-        <property name="city" writable="true"/>
+        <property name="city" writable="true" />
         <property name="street" writable="true" />
         <property name="postcode" writable="true" />
         <property name="countryCode" writable="true" />

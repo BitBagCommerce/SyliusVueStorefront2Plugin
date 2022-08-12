@@ -26,11 +26,21 @@
 
 4. Add plugin mapping path to your `config/packages/api_platform.yaml` file as a last element:
 
+- Sylius 1.10
+
     ```yaml
         api_platform:
             mapping:
                 paths:
-                    - '%kernel.project_dir%/vendor/bitbag/graphql-plugin/src/Resources/api_resources'
+                    - '%kernel.project_dir%/vendor/bitbag/graphql-plugin/src/Resources/api_resources/1.10'
+    ```
+- Sylius 1.11
+
+    ```yaml
+        api_platform:
+            mapping:
+                paths:
+                    - '%kernel.project_dir%/vendor/bitbag/graphql-plugin/src/Resources/api_resources/1.11'
     ```
     
 

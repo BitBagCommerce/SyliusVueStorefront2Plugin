@@ -1,3 +1,7 @@
+parameters:
+    sylius_major_version: !php/const Sylius\Bundle\CoreBundle\Application\Kernel::MAJOR_VERSION
+    sylius_minor_version: !php/const Sylius\Bundle\CoreBundle\Application\Kernel::MINOR_VERSION
+
 api_platform:
     mapping:
         paths:

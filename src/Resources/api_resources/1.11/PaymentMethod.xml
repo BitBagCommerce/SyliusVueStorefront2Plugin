@@ -48,6 +48,23 @@ We are hiring developers from all over the world. Join us and start your new, ex
             </itemOperation>
         </itemOperations>
 
+        <subresourceOperations>
+            <subresourceOperation name="api_orders_payments_methods_get_subresource">
+                <attribute name="normalization_context">
+                    <attribute name="groups">
+                        <attribute>shop:payment_method:read</attribute>
+                    </attribute>
+                </attribute>
+            </subresourceOperation>
+            <subresourceOperation name="api_payments_methods_get_subresource">
+                <attribute name="normalization_context">
+                    <attribute name="groups">
+                        <attribute>shop:payment_method:read</attribute>
+                    </attribute>
+                </attribute>
+            </subresourceOperation>
+        </subresourceOperations>
+
         <property name="id" identifier="false" writable="false" />
         <property name="code" identifier="true" writable="false" />
         <property name="name" writable="true" />

@@ -1,5 +1,4 @@
 imports:
-    - { resource: "@BitBagSyliusGraphqlPlugin/Resources/config/config.yaml" }
     - { resource: "@BitBagSyliusGraphqlPlugin/Resources/config/services.xml" }
 
 bitbag_sylius_graphql:

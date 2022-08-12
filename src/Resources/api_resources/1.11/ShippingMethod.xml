@@ -73,7 +73,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 <attribute name="method">PATCH</attribute>
                 <attribute name="path">/admin/shipping-methods/{code}/archive</attribute>
                 <attribute name="input">false</attribute>
-                <attribute name="controller">sylius.api.archiving_shipping_method_applicator:archive</attribute>
+                <attribute name="controller">Sylius\Bundle\ApiBundle\Applicator\ArchivingShippingMethodApplicatorInterface:archive</attribute>
                 <attribute name="openapi_context">
                     <attribute name="summary">Archives Shipping Method</attribute>
                 </attribute>
@@ -83,7 +83,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 <attribute name="method">PATCH</attribute>
                 <attribute name="path">/admin/shipping-methods/{code}/restore</attribute>
                 <attribute name="input">false</attribute>
-                <attribute name="controller">sylius.api.archiving_shipping_method_applicator:restore</attribute>
+                <attribute name="controller">Sylius\Bundle\ApiBundle\Applicator\ArchivingShippingMethodApplicatorInterface:restore</attribute>
                 <attribute name="openapi_context">
                     <attribute name="summary">Restores archived Shipping Method</attribute>
                 </attribute>
@@ -95,9 +95,9 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 <attribute name="method">GET</attribute>
                 <attribute name="path">/admin/shipping-methods</attribute>
                 <attribute name="filters">
-                    <attribute>sylius.api.filter_archived_shipping_methods</attribute>
+                    <attribute>sylius.api.archived_shipping_methods_filter</attribute>
                     <attribute>sylius.api.shipping_method_order_filter</attribute>
-                    <attribute>sylius.api.translation_order_name_and_locale_filter</attribute>
+                    <attribute>Sylius\Bundle\ApiBundle\Filter\Doctrine\TranslationOrderNameAndLocaleFilter</attribute>
                 </attribute>
                 <attribute name="normalization_context">
                     <attribute name="groups">admin:shipping_method:read</attribute>
@@ -112,6 +112,25 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 </attribute>
             </collectionOperation>
         </collectionOperations>
+
+        <subresourceOperations>
+            <subresourceOperation name="api_orders_shipments_methods_get_subresource">
+                <attribute name="method">GET</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">
+                        <attribute>shop:shipping_method:read</attribute>
+                    </attribute>
+                </attribute>
+            </subresourceOperation>
+            <subresourceOperation name="api_shipments_methods_get_subresource">
+                <attribute name="method">GET</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">
+                        <attribute>shop:shipping_method:read</attribute>
+                    </attribute>
+                </attribute>
+            </subresourceOperation>
+        </subresourceOperations>
 
         <property name="id" identifier="false" writable="false" />
         <property name="code" identifier="true" required="true" />
