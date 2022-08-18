@@ -14,7 +14,13 @@ sylius_attribute:
             subject: Sylius\Component\Core\Model\Product
             attribute_value:
                 classes:
-                    model: BitBag\SyliusGraphqlPlugin\Model\ProductAttributeValue  
+                    model: BitBag\SyliusGraphqlPlugin\Model\ProductAttributeValue
+
+sylius_order:
+    resources:
+        order:
+            classes:
+                model: Tests\BitBag\SyliusGraphqlPlugin\Entity\Order\Order
     
 sylius_taxonomy:
     resources:

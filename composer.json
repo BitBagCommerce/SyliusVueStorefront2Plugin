@@ -65,7 +65,10 @@
     "autoload": {
         "psr-4": {
             "BitBag\\SyliusGraphqlPlugin\\": "src/",
-            "Tests\\BitBag\\SyliusGraphqlPlugin\\": "tests/"
+            "Tests\\BitBag\\SyliusGraphqlPlugin\\": [
+                "tests/",
+                "tests/Application/src"
+            ]
         }
     },
     "autoload-dev": {

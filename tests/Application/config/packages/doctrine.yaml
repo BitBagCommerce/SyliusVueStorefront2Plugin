@@ -23,3 +23,9 @@ doctrine:
                 dir: '%kernel.project_dir%/../../src/Resources/doctrine/model'
                 prefix: 'BitBag\SyliusGraphqlPlugin\Model'
                 alias: BitBag\SyliusGraphqlPlugin
+            Tests:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Resources/doctrine'
+                prefix: 'Tests\BitBag\SyliusGraphqlPlugin\Entity'
+                alias: Tests\BitBag\SyliusGraphqlPlugin

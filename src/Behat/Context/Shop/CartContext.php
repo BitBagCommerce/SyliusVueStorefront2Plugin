@@ -189,7 +189,6 @@ final class CartContext implements Context
     {
         $expectedData = '
         order {
-
             billingAddress{
                 firstName
                 lastName
