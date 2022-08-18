@@ -19,7 +19,7 @@ class PaymentMethodChangerPolyfillPass implements CompilerPassInterface
 
     private const NEW_NAME = 'Sylius\Bundle\ApiBundle\Changer\PaymentMethodChangerInterface';
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->has(self::OLD_NAME)) {
             $container->setAlias(self::OLD_NAME, self::NEW_NAME);
