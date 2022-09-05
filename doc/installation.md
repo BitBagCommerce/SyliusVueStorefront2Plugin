@@ -26,7 +26,7 @@
         - { resource: "@BitBagSyliusGraphqlPlugin/Resources/config/config.yml" }
     ```    
    
-    There are 2 plugin parameters that You can adjsut:
+    There are 2 plugin parameters that You can adjust:
    
     ```yml
     bitbag_sylius_graphql:
