@@ -28,14 +28,13 @@ final class CountryCollectionDataProviderSpec extends ObjectBehavior
         QueryNameGeneratorInterface $queryNameGenerator,
         ManagerRegistry $managerRegistry,
         ResourceMetadataFactoryInterface $resourceMetadataFactory,
-        QueryResultCollectionExtensionInterface $queryResultCollectionExtension
-    ): void
-    {
+        QueryResultCollectionExtensionInterface $queryResultCollectionExtension,
+    ): void {
         $pagination = new Pagination($resourceMetadataFactory->getWrappedObject());
         $paginationExtension = new PaginationExtension(
             $managerRegistry->getWrappedObject(),
             $resourceMetadataFactory->getWrappedObject(),
-            $pagination
+            $pagination,
         );
         $collectionExtensions = [
             $queryResultCollectionExtension->getWrappedObject(),
@@ -44,7 +43,7 @@ final class CountryCollectionDataProviderSpec extends ObjectBehavior
             $countryRepository,
             $paginationExtension,
             $queryNameGenerator,
-            $collectionExtensions
+            $collectionExtensions,
         );
     }
 
@@ -57,5 +56,4 @@ final class CountryCollectionDataProviderSpec extends ObjectBehavior
     {
         $this->supports(get_class($country->getWrappedObject()))->shouldReturn(true);
     }
-
 }

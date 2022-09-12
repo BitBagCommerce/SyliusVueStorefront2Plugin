@@ -34,7 +34,7 @@ final class OrderAddressStateResolverSpec extends ObjectBehavior
     function it_resolves(
         StateMachineFactoryInterface $stateMachineFactory,
         StateMachineInterface $stateMachine,
-        OrderInterface $order
+        OrderInterface $order,
     ): void {
         $stateMachineFactory->get($order, OrderCheckoutTransitions::GRAPH)->willReturn($stateMachine);
 
@@ -54,7 +54,7 @@ final class OrderAddressStateResolverSpec extends ObjectBehavior
         StateMachineFactoryInterface $stateMachineFactory,
         StateMachineInterface $stateMachine,
         OrderInterface $order,
-        SMException $exception
+        SMException $exception,
     ): void {
         $stateMachineFactory->get($order, OrderCheckoutTransitions::GRAPH)->willReturn($stateMachine);
 
@@ -65,6 +65,7 @@ final class OrderAddressStateResolverSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(InvalidArgumentException::class)
-            ->during('resolve', [$order]);
+            ->during('resolve', [$order])
+        ;
     }
 }

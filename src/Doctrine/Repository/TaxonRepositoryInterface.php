@@ -18,6 +18,6 @@ interface TaxonRepositoryInterface extends RepositoryInterface
 {
     public function createChildrenByChannelMenuTaxonQueryBuilder(
         ?TaxonInterface $menuTaxon = null,
-        ?string $locale = null
+        ?string $locale = null,
     ): QueryBuilder;
 }

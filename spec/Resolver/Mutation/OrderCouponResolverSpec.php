@@ -25,7 +25,7 @@ class OrderCouponResolverSpec extends ObjectBehavior
     function let(
         OrderRepositoryInterface $orderRepository,
         UserContextInterface $userContext,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith($orderRepository, $userContext, $eventDispatcher);
     }
@@ -41,7 +41,7 @@ class OrderCouponResolverSpec extends ObjectBehavior
         OrderInterface $order,
         PromotionCouponInterface $promotionCoupon,
         UserInterface $user,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $context = [
             'args' => [
@@ -71,9 +71,8 @@ class OrderCouponResolverSpec extends ObjectBehavior
     function it_throws_an_exception_when_order_nor_found(
         OrderRepositoryInterface $orderRepository,
         UserContextInterface $userContext,
-        UserInterface $user
-    ): void
-    {
+        UserInterface $user,
+    ): void {
         $context = [
             'args' => [
                 'input' => [
@@ -90,6 +89,7 @@ class OrderCouponResolverSpec extends ObjectBehavior
         $orderRepository->findOneBy(['tokenValue' => $orderToken])->willReturn(null);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [null,$context]);
+            ->during('__invoke', [null, $context])
+        ;
     }
 }

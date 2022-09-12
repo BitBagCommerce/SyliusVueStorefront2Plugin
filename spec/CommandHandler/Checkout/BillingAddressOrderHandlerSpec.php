@@ -32,16 +32,15 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         CustomerProviderInterface $customerProvider,
         OrderAddressStateResolverInterface $addressStateResolver,
         EventDispatcherInterface $eventDispatcher,
-        UserContextInterface $userContext
-    ): void
-    {
+        UserContextInterface $userContext,
+    ): void {
         $this->beConstructedWith(
             $orderRepository,
             $manager,
             $customerProvider,
             $addressStateResolver,
             $userContext,
-            $eventDispatcher
+            $eventDispatcher,
         );
     }
 
@@ -59,9 +58,8 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         CustomerInterface $customer,
         \Sylius\Component\Core\Model\CustomerInterface $newCustomer,
         EventDispatcherInterface $eventDispatcher,
-        UserContextInterface $userContext
-    ): void
-    {
+        UserContextInterface $userContext,
+    ): void {
         $email = 'jd@mail.com';
         $addressOrder = new BillingAddressOrder($email, 'token');
         $tokenValue = $addressOrder->orderTokenValue;
@@ -85,15 +83,15 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_cannot_find_cart(
-        OrderRepositoryInterface $orderRepository
-    ): void
-    {
+        OrderRepositoryInterface $orderRepository,
+    ): void {
         $addressOrder = new BillingAddressOrder('jd@mail.com', 'token');
         $tokenValue = $addressOrder->orderTokenValue;
 
         $orderRepository->findCartByTokenValue($tokenValue)->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$addressOrder]);
+            ->during('__invoke', [$addressOrder])
+        ;
     }
 }

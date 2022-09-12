@@ -43,7 +43,7 @@ final class SendResetPasswordEmailHandler implements MessageHandlerInterface
         ChannelContextInterface $channelContext,
         UserRepositoryInterface $userRepository,
         GeneratorInterface $generator,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ) {
         $this->emailSender = $emailSender;
         $this->channelContext = $channelContext;
@@ -70,7 +70,7 @@ final class SendResetPasswordEmailHandler implements MessageHandlerInterface
                 'user' => $user,
                 'localeCode' => $command->localeCode,
                 'channel' => $channel,
-            ]
+            ],
         );
 
         $customer = $user->getCustomer();

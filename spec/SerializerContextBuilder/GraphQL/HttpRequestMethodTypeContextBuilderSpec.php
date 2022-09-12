@@ -22,7 +22,7 @@ final class HttpRequestMethodTypeContextBuilderSpec extends ObjectBehavior
 {
     function let(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        ResourceMetadataFactoryInterface $resourceMetadataFactory
+        ResourceMetadataFactoryInterface $resourceMetadataFactory,
     ): void {
         $this->beConstructedWith($decoratedContextBuilder, $resourceMetadataFactory);
     }
@@ -34,7 +34,7 @@ final class HttpRequestMethodTypeContextBuilderSpec extends ObjectBehavior
 
     function it_creates_context_for_default_operation(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        ResourceMetadataFactoryInterface $resourceMetadataFactory
+        ResourceMetadataFactoryInterface $resourceMetadataFactory,
     ): void {
         $context = [
             ContextKeys::HTTP_REQUEST_METHOD_TYPE => Request::METHOD_GET,
@@ -48,20 +48,20 @@ final class HttpRequestMethodTypeContextBuilderSpec extends ObjectBehavior
             $resourceClass,
             $operationName,
             $resolverContext,
-            $normalization
+            $normalization,
         )->willReturn($context);
 
         $this->create(
             $resourceClass,
             $operationName,
             $resolverContext,
-            $normalization
+            $normalization,
         )->shouldReturn($context);
     }
 
     function it_creates_context_for_other_operation(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        ResourceMetadataFactoryInterface $resourceMetadataFactory
+        ResourceMetadataFactoryInterface $resourceMetadataFactory,
     ): void {
         $context = [];
         $resourceClass = 'Class/Name';
@@ -75,7 +75,7 @@ final class HttpRequestMethodTypeContextBuilderSpec extends ObjectBehavior
             $resourceClass,
             $operationName,
             $resolverContext,
-            $normalization
+            $normalization,
         )->willReturn($context);
 
         $resourceMetadata = new ResourceMetadata(
@@ -83,7 +83,7 @@ final class HttpRequestMethodTypeContextBuilderSpec extends ObjectBehavior
             'description',
             'some/iri',
             [],
-            []
+            [],
         );
 
         $resourceMetadataFactory->create($resourceClass)->willReturn($resourceMetadata);
@@ -92,7 +92,7 @@ final class HttpRequestMethodTypeContextBuilderSpec extends ObjectBehavior
             $resourceClass,
             $operationName,
             $resolverContext,
-            $normalization
+            $normalization,
         )->shouldReturn($context);
     }
 }

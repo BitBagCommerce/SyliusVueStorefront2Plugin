@@ -34,7 +34,7 @@ class OrderAddressStateResolver implements OrderAddressStateResolverInterface
 
         Assert::true(
             $stateMachine->can(OrderCheckoutTransitions::TRANSITION_ADDRESS),
-            sprintf('Order with %s token cannot be addressed.', $token)
+            sprintf('Order with %s token cannot be addressed.', $token),
         );
 
         if ($this->orderHasAddresses($order)) {

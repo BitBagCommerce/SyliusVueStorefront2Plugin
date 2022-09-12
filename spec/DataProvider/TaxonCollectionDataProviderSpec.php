@@ -33,13 +33,13 @@ final class TaxonCollectionDataProviderSpec extends ObjectBehavior
         QueryNameGeneratorInterface $queryNameGenerator,
         ManagerRegistry $managerRegistry,
         ResourceMetadataFactoryInterface $resourceMetadataFactory,
-        QueryResultCollectionExtensionInterface $queryResultCollectionExtension
+        QueryResultCollectionExtensionInterface $queryResultCollectionExtension,
     ): void {
         $pagination = new Pagination($resourceMetadataFactory->getWrappedObject());
         $paginationExtension = new PaginationExtension(
             $managerRegistry->getWrappedObject(),
             $resourceMetadataFactory->getWrappedObject(),
-            $pagination
+            $pagination,
         );
         $collectionExtensions = [
             $queryResultCollectionExtension->getWrappedObject(),
@@ -49,7 +49,7 @@ final class TaxonCollectionDataProviderSpec extends ObjectBehavior
             $paginationExtension,
             $userContext,
             $queryNameGenerator,
-            $collectionExtensions
+            $collectionExtensions,
         );
     }
 
@@ -68,7 +68,7 @@ final class TaxonCollectionDataProviderSpec extends ObjectBehavior
         TaxonInterface $channelMenuTaxon,
         UserContextInterface $userContext,
         ShopUserInterface $user,
-        TaxonRepositoryInterface $taxonRepository
+        TaxonRepositoryInterface $taxonRepository,
     ) {
         $context = [
             ContextKeys::CHANNEL => $channel,

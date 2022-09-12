@@ -31,15 +31,14 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
         ChannelContextInterface $channelContext,
         UserRepositoryInterface $userRepository,
         GeneratorInterface $generator,
-        EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+        EventDispatcherInterface $eventDispatcher,
+    ): void {
         $this->beConstructedWith(
             $emailSender,
             $channelContext,
             $userRepository,
             $generator,
-            $eventDispatcher
+            $eventDispatcher,
         );
     }
 
@@ -56,9 +55,8 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
         ShopUserInterface $user,
         ChannelInterface $channel,
         CustomerInterface $customer,
-        EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+        EventDispatcherInterface $eventDispatcher,
+    ): void {
         $resetToken = 'hdhgvshjvbwje';
 
         $command = new SendResetPasswordEmail('en_US', 'john.d@gmail.com');
@@ -77,7 +75,7 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
                 'user' => $user->getWrappedObject(),
                 'localeCode' => $command->localeCode,
                 'channel' => $channel->getWrappedObject(),
-            ]
+            ],
         )->shouldBeCalled();
 
         $user->getCustomer()->willReturn($customer);
@@ -87,14 +85,14 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_user_nor_found(
-        UserRepositoryInterface $userRepository
-    ): void
-    {
+        UserRepositoryInterface $userRepository,
+    ): void {
         $command = new SendResetPasswordEmail('en_US', 'john.d@gmail.com');
 
         $userRepository->findOneByEmail($command->email)->willReturn(null);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$command]);
+            ->during('__invoke', [$command])
+        ;
     }
 }

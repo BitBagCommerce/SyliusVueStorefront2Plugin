@@ -24,7 +24,7 @@ final class InterfaceExtractorResourceMetadataFactory implements ResourceMetadat
 
     public function __construct(
         ExtractorInterface $extractor,
-        ResourceMetadataFactoryInterface $decorated = null
+        ResourceMetadataFactoryInterface $decorated = null,
     ) {
         $this->extractor = $extractor;
         $this->decorated = $decorated;

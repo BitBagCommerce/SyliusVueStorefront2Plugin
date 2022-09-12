@@ -29,7 +29,7 @@ final class ProductResourceListener
     public function __construct(
         CacheManager $cacheManager,
         DataManager $dataManager,
-        FilterManager $filterManager
+        FilterManager $filterManager,
     ) {
         $this->cacheManager = $cacheManager;
         $this->dataManager = $dataManager;
@@ -72,7 +72,6 @@ final class ProductResourceListener
                     }
                 }
             } catch (RuntimeException $exception) {
-
             }
         }
     }

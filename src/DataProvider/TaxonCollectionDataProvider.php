@@ -42,7 +42,7 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
         PaginationExtension $paginationExtension,
         UserContextInterface $userContext,
         QueryNameGeneratorInterface $queryNameGenerator,
-        iterable $collectionExtensions
+        iterable $collectionExtensions,
     ) {
         $this->taxonRepository = $taxonRepository;
         $this->paginationExtension = $paginationExtension;
@@ -69,7 +69,7 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
         }
 
         $queryBuilder = $this->taxonRepository->createChildrenByChannelMenuTaxonQueryBuilder(
-            $channelMenuTaxon
+            $channelMenuTaxon,
         );
 
         /** @var QueryCollectionExtensionInterface $extension */
@@ -85,7 +85,7 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
             $queryBuilder,
             $resourceClass,
             $operationName,
-            $context
+            $context,
         );
     }
 

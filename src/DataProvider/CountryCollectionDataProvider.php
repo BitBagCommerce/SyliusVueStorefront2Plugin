@@ -35,7 +35,7 @@ final class CountryCollectionDataProvider implements CollectionDataProviderInter
         EntityRepository $countryRepository,
         PaginationExtension $paginationExtension,
         QueryNameGeneratorInterface $queryNameGenerator,
-        iterable $collectionExtensions
+        iterable $collectionExtensions,
     ) {
         $this->countryRepository = $countryRepository;
         $this->paginationExtension = $paginationExtension;
@@ -65,7 +65,7 @@ final class CountryCollectionDataProvider implements CollectionDataProviderInter
             $queryBuilder,
             $resourceClass,
             $operationName,
-            $context
+            $context,
         );
     }
 }

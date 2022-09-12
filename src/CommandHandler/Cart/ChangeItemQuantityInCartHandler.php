@@ -42,7 +42,7 @@ final class ChangeItemQuantityInCartHandler implements MessageHandlerInterface
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         OrderProcessorInterface $orderProcessor,
         EventDispatcherInterface $eventDispatcher,
-        AvailabilityCheckerInterface $availabilityChecker
+        AvailabilityCheckerInterface $availabilityChecker,
     ) {
         $this->orderItemRepository = $orderItemRepository;
         $this->orderItemQuantityModifier = $orderItemQuantityModifier;
@@ -56,7 +56,7 @@ final class ChangeItemQuantityInCartHandler implements MessageHandlerInterface
         /** @var OrderItemInterface|null $orderItem */
         $orderItem = $this->orderItemRepository->findOneByIdAndCartTokenValue(
             $command->orderItemId,
-            $command->orderTokenValue
+            $command->orderTokenValue,
         );
 
         Assert::notNull($orderItem);
@@ -71,7 +71,7 @@ final class ChangeItemQuantityInCartHandler implements MessageHandlerInterface
 
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(
             $variant,
-            $command->quantity
+            $command->quantity,
         );
 
         Assert::true($isStockSufficient, 'There are no that many items on stock.');

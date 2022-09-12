@@ -16,7 +16,6 @@ use PhpSpec\ObjectBehavior;
 
 final class ReflectionClassResourceMetadataFactorySpec extends ObjectBehavior
 {
-
     public function let(): void
     {
         $this->beConstructedWith(null);
@@ -24,10 +23,11 @@ final class ReflectionClassResourceMetadataFactorySpec extends ObjectBehavior
 
     public function it_throws_exception_when_class_not_exist(): void
     {
-        $resourceClass = "This/Class/Does/NotExist";
+        $resourceClass = 'This/Class/Does/NotExist';
 
         $this->shouldThrow(ResourceClassNotFoundException::class)
-            ->during('create', [$resourceClass]);
+            ->during('create', [$resourceClass])
+        ;
     }
 
     public function it_creates_metadata(): void
@@ -40,5 +40,4 @@ final class ReflectionClassResourceMetadataFactorySpec extends ObjectBehavior
 
         $this->create($resourceClass)->shouldBeLike($resourceMetadata);
     }
-
 }

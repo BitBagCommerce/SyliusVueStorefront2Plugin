@@ -28,13 +28,13 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
         UserRepositoryInterface $userRepository,
         MetadataInterface $metadata,
         PasswordUpdaterInterface $passwordUpdater,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith(
             $userRepository,
             $metadata,
             $passwordUpdater,
-            $eventDispatcher
+            $eventDispatcher,
         );
     }
 
@@ -54,7 +54,7 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
         PasswordUpdaterInterface $passwordUpdater,
         ShopUserInterface $user,
         CustomerInterface $customer,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $command = new ResetPassword('newS3ret', 'newS3ret', 'token');
 
@@ -81,14 +81,14 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_user_nor_found(
-        UserRepositoryInterface $userRepository
-    ): void
-    {
+        UserRepositoryInterface $userRepository,
+    ): void {
         $command = new ResetPassword('newS3ret', 'newS3ret', 'token');
 
         $userRepository->findOneBy(['passwordResetToken' => 'token'])->willReturn(false);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$command]);
+            ->during('__invoke', [$command])
+        ;
     }
 }

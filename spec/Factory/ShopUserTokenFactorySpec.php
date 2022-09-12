@@ -12,7 +12,6 @@ namespace spec\BitBag\SyliusGraphqlPlugin\Factory;
 
 use BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactory;
 use BitBag\SyliusGraphqlPlugin\Model\ShopUserToken;
-use BitBag\SyliusGraphqlPlugin\Model\ShopUserTokenInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
@@ -26,7 +25,7 @@ final class ShopUserTokenFactorySpec extends ObjectBehavior
     function let(
         EntityManagerInterface $entityManager,
         JWTTokenManagerInterface $jwtManager,
-        RefreshTokenManagerInterface $refreshJwtManager
+        RefreshTokenManagerInterface $refreshJwtManager,
     ): void {
         $this->beConstructedWith($entityManager, $jwtManager, $refreshJwtManager);
     }
@@ -39,7 +38,7 @@ final class ShopUserTokenFactorySpec extends ObjectBehavior
     function it_creates_shop_user_token(
         JWTTokenManagerInterface $jwtManager,
         ShopUserInterface $user,
-        RefreshTokenInterface $refreshToken
+        RefreshTokenInterface $refreshToken,
     ): void {
         $shopUserToken = new ShopUserToken();
         $token = 'token';
@@ -62,7 +61,7 @@ final class ShopUserTokenFactorySpec extends ObjectBehavior
         EntityManagerInterface $entityManager,
         RefreshTokenManagerInterface $refreshJwtManager,
         RefreshTokenInterface $refreshToken,
-        ShopUserInterface $user
+        ShopUserInterface $user,
     ): void {
         $refreshJwtManager->create()->willReturn($refreshToken);
 

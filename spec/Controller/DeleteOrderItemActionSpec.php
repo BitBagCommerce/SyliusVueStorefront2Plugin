@@ -15,7 +15,6 @@ use BitBag\SyliusGraphqlPlugin\Controller\DeleteOrderItemAction;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -32,7 +31,7 @@ final class DeleteOrderItemActionSpec extends ObjectBehavior
     }
 
     function it_is_invokable(
-        MessageBusInterface $commandBus
+        MessageBusInterface $commandBus,
     ): void {
         $attributes = [
             'id' => 'id',
@@ -42,7 +41,7 @@ final class DeleteOrderItemActionSpec extends ObjectBehavior
 
         $command = new RemoveItemFromCart(
             (string) $request->attributes->get('id'),
-            (string) $request->attributes->get('itemId')
+            (string) $request->attributes->get('itemId'),
         );
 
         $envelope = Envelope::wrap($command);

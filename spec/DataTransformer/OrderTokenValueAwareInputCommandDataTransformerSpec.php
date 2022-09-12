@@ -24,7 +24,7 @@ final class OrderTokenValueAwareInputCommandDataTransformerSpec extends ObjectBe
 
     function it_transforms_object_to_populate(
         OrderTokenValueAwareInterface $object,
-        OrderInterface $cart
+        OrderInterface $cart,
     ): void {
         $context = [
             'object_to_populate' => $cart,
@@ -40,7 +40,7 @@ final class OrderTokenValueAwareInputCommandDataTransformerSpec extends ObjectBe
     }
 
     function it_transforms_object_with_property(
-        OrderTokenValueAwareInterface $object
+        OrderTokenValueAwareInterface $object,
     ): void {
         $context = [];
         $tokenValue = 'token';
@@ -52,7 +52,7 @@ final class OrderTokenValueAwareInputCommandDataTransformerSpec extends ObjectBe
     }
 
     function it_supports_transformation(
-        OrderTokenValueAwareInterface $object
+        OrderTokenValueAwareInterface $object,
     ): void {
         $this->supportsTransformation($object)->shouldReturn(true);
     }

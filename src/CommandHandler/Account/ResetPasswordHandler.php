@@ -38,7 +38,7 @@ final class ResetPasswordHandler implements MessageHandlerInterface
         UserRepositoryInterface $userRepository,
         MetadataInterface $metadata,
         PasswordUpdaterInterface $passwordUpdater,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ) {
         $this->userRepository = $userRepository;
         $this->metadata = $metadata;

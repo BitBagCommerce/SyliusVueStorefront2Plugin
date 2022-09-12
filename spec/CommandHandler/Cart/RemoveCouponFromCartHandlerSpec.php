@@ -28,7 +28,7 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         OrderRepositoryInterface $orderRepository,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         OrderProcessorInterface $orderProcessor,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith($orderRepository, $promotionCouponRepository, $orderProcessor, $eventDispatcher);
     }
@@ -46,7 +46,7 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         PromotionCouponInterface $cartCoupon,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         PromotionInterface $promotion,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $tokenValue = 'token';
         $couponCode = 'PROMO';
@@ -71,7 +71,7 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_cart_is_not_found(
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
     ): void {
         $tokenValue = 'token';
         $couponCode = 'PROMO';
@@ -80,14 +80,15 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         $orderRepository->findCartByTokenValue($tokenValue)->willReturn(null);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$command]);
+            ->during('__invoke', [$command])
+        ;
     }
 
     function it_throws_an_exception_when_promotion_is_not_found(
         OrderRepositoryInterface $orderRepository,
         OrderInterface $cart,
         PromotionCouponInterface $promotionCoupon,
-        PromotionCouponRepositoryInterface $promotionCouponRepository
+        PromotionCouponRepositoryInterface $promotionCouponRepository,
     ): void {
         $tokenValue = 'token';
         $couponCode = 'PROMO';
@@ -99,6 +100,7 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         $promotionCoupon->getPromotion()->willReturn(null);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$command]);
+            ->during('__invoke', [$command])
+        ;
     }
 }

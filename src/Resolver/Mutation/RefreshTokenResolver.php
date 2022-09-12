@@ -47,7 +47,7 @@ final class RefreshTokenResolver implements MutationResolverInterface
         ShopUserTokenFactoryInterface $tokenFactory,
         UserRepositoryInterface $userRepository,
         EventDispatcherInterface $eventDispatcher,
-        string $refreshTokenLifetime
+        string $refreshTokenLifetime,
     ) {
         $this->entityManager = $entityManager;
         $this->shopUserTokenFactory = $tokenFactory;
@@ -92,7 +92,7 @@ final class RefreshTokenResolver implements MutationResolverInterface
     {
         if (null === $refreshToken || !$refreshToken->isValid()) {
             throw new AuthenticationException(
-                sprintf('Refresh token "%s" is invalid.', $refreshTokenString)
+                sprintf('Refresh token "%s" is invalid.', $refreshTokenString),
             );
         }
     }

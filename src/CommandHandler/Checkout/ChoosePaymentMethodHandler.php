@@ -48,7 +48,7 @@ final class ChoosePaymentMethodHandler implements MessageHandlerInterface
         PaymentRepositoryInterface $paymentRepository,
         FactoryInterface $stateMachineFactory,
         PaymentMethodChangerInterface $paymentMethodChanger,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ) {
         $this->orderRepository = $orderRepository;
         $this->paymentMethodRepository = $paymentMethodRepository;
@@ -94,9 +94,9 @@ final class ChoosePaymentMethodHandler implements MessageHandlerInterface
 
             Assert::true(
                 $stateMachine->can(
-                    OrderCheckoutTransitions::TRANSITION_SELECT_PAYMENT
+                    OrderCheckoutTransitions::TRANSITION_SELECT_PAYMENT,
                 ),
-                'Order cannot have payment method assigned.'
+                'Order cannot have payment method assigned.',
             );
 
             $payment->setMethod($paymentMethod);

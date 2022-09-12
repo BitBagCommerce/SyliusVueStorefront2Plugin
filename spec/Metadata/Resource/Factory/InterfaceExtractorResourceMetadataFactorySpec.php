@@ -14,29 +14,25 @@ use ApiPlatform\Core\Exception\ResourceClassNotFoundException;
 use ApiPlatform\Core\Metadata\Extractor\ExtractorInterface;
 use ApiPlatform\Core\Metadata\Resource\ResourceMetadata;
 use PhpSpec\ObjectBehavior;
-use spec\SM\DummyObject;
 use Sylius\Component\Core\Model\ShopUser;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
 final class InterfaceExtractorResourceMetadataFactorySpec extends ObjectBehavior
 {
-
     public function let(
-        ExtractorInterface $extractor
-    ): void
-    {
+        ExtractorInterface $extractor,
+    ): void {
         $this->beConstructedWith($extractor, null);
     }
 
     public function it_creates_metadata(
-        ExtractorInterface $extractor
-    ): void
-    {
+        ExtractorInterface $extractor,
+    ): void {
         $resourceClass = ShopUserInterface::class;
         $resources = [
             ShopUser::class => [
-                'shortName' => 'ShopUser'
-            ]
+                'shortName' => 'ShopUser',
+            ],
         ];
 
         $extractor->getResources()->willReturn($resources);
@@ -52,10 +48,10 @@ final class InterfaceExtractorResourceMetadataFactorySpec extends ObjectBehavior
 
     public function it_throws_exception_when_class_not_exist(): void
     {
-        $resourceClass = "This/Class/Does/NotExist";
+        $resourceClass = 'This/Class/Does/NotExist';
 
         $this->shouldThrow(ResourceClassNotFoundException::class)
-            ->during('create', [$resourceClass]);
+            ->during('create', [$resourceClass])
+        ;
     }
-
 }

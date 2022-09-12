@@ -29,7 +29,7 @@ class ShopUserTokenFactory implements ShopUserTokenFactoryInterface
     public function __construct(
         EntityManagerInterface $entityManager,
         JWTTokenManagerInterface $jwtManager,
-        RefreshTokenManagerInterface $refreshJwtManager
+        RefreshTokenManagerInterface $refreshJwtManager,
     ) {
         $this->entityManager = $entityManager;
         $this->jwtManager = $jwtManager;
@@ -38,7 +38,7 @@ class ShopUserTokenFactory implements ShopUserTokenFactoryInterface
 
     public function create(
         ShopUserInterface $user,
-        RefreshTokenInterface $refreshToken
+        RefreshTokenInterface $refreshToken,
     ): ShopUserTokenInterface {
         $shopUserToken = new ShopUserToken();
         $token = $this->jwtManager->create($user);

@@ -30,9 +30,8 @@ final class ShippingAddressOrderHandlerSpec extends ObjectBehavior
         ObjectManager $manager,
         CustomerProviderInterface $customerProvider,
         OrderAddressStateResolverInterface $addressStateResolver,
-        EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+        EventDispatcherInterface $eventDispatcher,
+    ): void {
         $this->beConstructedWith($orderRepository, $manager, $customerProvider, $addressStateResolver, $eventDispatcher);
     }
 
@@ -47,9 +46,8 @@ final class ShippingAddressOrderHandlerSpec extends ObjectBehavior
         OrderAddressStateResolverInterface $addressStateResolver,
         OrderInterface $order,
         CustomerInterface $customer,
-        EventDispatcherInterface $eventDispatcher
-    ): void
-    {
+        EventDispatcherInterface $eventDispatcher,
+    ): void {
         $addressOrder = new ShippingAddressOrder('jd@mail.com', 'token');
         $tokenValue = $addressOrder->orderTokenValue;
 
@@ -65,15 +63,15 @@ final class ShippingAddressOrderHandlerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_cannot_find_cart(
-        OrderRepositoryInterface $orderRepository
-    ): void
-    {
+        OrderRepositoryInterface $orderRepository,
+    ): void {
         $addressOrder = new ShippingAddressOrder('jd@mail.com', 'token');
         $tokenValue = $addressOrder->orderTokenValue;
 
         $orderRepository->findCartByTokenValue($tokenValue)->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$addressOrder]);
+            ->during('__invoke', [$addressOrder])
+        ;
     }
 }

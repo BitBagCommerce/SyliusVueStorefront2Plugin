@@ -47,7 +47,7 @@ final class AddItemToCartHandler implements MessageHandlerInterface
         CartItemFactoryInterface $cartItemFactory,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         AvailabilityCheckerInterface $availabilityChecker,
-        IriConverterInterface $iriConverter
+        IriConverterInterface $iriConverter,
     ) {
         $this->orderRepository = $orderRepository;
         $this->orderModifier = $orderModifier;
@@ -76,7 +76,7 @@ final class AddItemToCartHandler implements MessageHandlerInterface
 
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(
             $productVariant,
-            $cartItem->getQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
+            $cartItem->getQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem),
         );
 
         Assert::true($isStockSufficient, 'There are no that many items on stock.');

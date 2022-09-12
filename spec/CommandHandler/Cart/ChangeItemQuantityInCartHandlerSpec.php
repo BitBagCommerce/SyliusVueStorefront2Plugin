@@ -30,9 +30,8 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         OrderProcessorInterface $orderProcessor,
         EventDispatcherInterface $eventDispatcher,
-        AvailabilityCheckerInterface $availabilityChecker
-    ): void
-    {
+        AvailabilityCheckerInterface $availabilityChecker,
+    ): void {
         $this->beConstructedWith($orderItemRepository, $orderItemQuantityModifier, $orderProcessor, $eventDispatcher, $availabilityChecker);
     }
 
@@ -49,22 +48,21 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
         OrderInterface $cart,
         EventDispatcherInterface $eventDispatcher,
         AvailabilityCheckerInterface $availabilityChecker,
-        ProductVariantInterface $variant
-    ): void
-    {
+        ProductVariantInterface $variant,
+    ): void {
         $orderToken = 'token';
         $command = new ChangeItemQuantityInCart(10, 'itemId', $orderToken);
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $command->orderItemId,
-            $command->orderTokenValue
+            $command->orderTokenValue,
         )->willReturn($orderItem);
 
         $orderItem->getOrder()->willReturn($cart);
         $cart->getTokenValue()->willReturn($orderToken);
 
         $orderItem->getVariant()->willReturn($variant);
-        $availabilityChecker->isStockSufficient($variant,$command->quantity)->willReturn(true);
+        $availabilityChecker->isStockSufficient($variant, $command->quantity)->willReturn(true);
 
         $orderItemQuantityModifier->modify($orderItem->getWrappedObject(), $command->quantity)->shouldBeCalled();
         $orderProcessor->process($cart->getWrappedObject())->shouldBeCalled();
@@ -75,19 +73,19 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_token_is_invalid(
-        OrderItemRepositoryInterface $orderItemRepository
-    ): void
-    {
+        OrderItemRepositoryInterface $orderItemRepository,
+    ): void {
         $orderToken = 'token';
         $command = new ChangeItemQuantityInCart(10, 'itemId', $orderToken);
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $command->orderItemId,
-            $command->orderTokenValue
+            $command->orderTokenValue,
         )->willReturn(null);
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$command]);
+            ->during('__invoke', [$command])
+        ;
     }
 }

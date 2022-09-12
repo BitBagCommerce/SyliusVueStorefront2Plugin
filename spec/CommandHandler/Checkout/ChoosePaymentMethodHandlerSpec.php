@@ -35,7 +35,7 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         PaymentRepositoryInterface $paymentRepository,
         FactoryInterface $stateMachineFactory,
         PaymentMethodChangerInterface $paymentMethodChanger,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith(
             $orderRepository,
@@ -43,7 +43,7 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
             $paymentRepository,
             $stateMachineFactory,
             $paymentMethodChanger,
-            $eventDispatcher
+            $eventDispatcher,
         );
     }
 
@@ -62,7 +62,7 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         PaymentMethodInterface $paymentMethod,
         PaymentInterface $payment,
         StateMachineInterface $stateMachine,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $choosePaymentMethod = new ChoosePaymentMethod('token', 'cash', 'paymentId');
         $orderRepository->findOneBy(['tokenValue' => $choosePaymentMethod->orderTokenValue])->willReturn($cart);
@@ -100,7 +100,7 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         OrderInterface $cart,
         PaymentMethodInterface $paymentMethod,
         PaymentInterface $payment,
-        StateMachineInterface $stateMachine
+        StateMachineInterface $stateMachine,
     ): void {
         $choosePaymentMethod = new ChoosePaymentMethod('token', 'cash', 'paymentId');
         $orderRepository->findOneBy(['tokenValue' => $choosePaymentMethod->orderTokenValue])->willReturn($cart);
@@ -123,7 +123,8 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         $stateMachine->can(OrderCheckoutTransitions::TRANSITION_SELECT_PAYMENT)->willReturn(false);
 
         $this->shouldThrow(\Webmozart\Assert\InvalidArgumentException::class)
-            ->during('__invoke', [$choosePaymentMethod]);
+            ->during('__invoke', [$choosePaymentMethod])
+        ;
     }
 
     function it_throws_an_exception_when_cannot_find_payment(
@@ -132,7 +133,7 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         PaymentRepositoryInterface $paymentRepository,
         PaymentMethodChangerInterface $paymentMethodChanger,
         OrderInterface $cart,
-        PaymentMethodInterface $paymentMethod
+        PaymentMethodInterface $paymentMethod,
     ): void {
         $choosePaymentMethod = new ChoosePaymentMethod('token', 'cash', 'paymentId');
         $orderRepository->findOneBy(['tokenValue' => $choosePaymentMethod->orderTokenValue])->willReturn($cart);
@@ -152,14 +153,15 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         $paymentRepository->findOneByOrderId($paymentId, $cartId)->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$choosePaymentMethod]);
+            ->during('__invoke', [$choosePaymentMethod])
+        ;
     }
 
     function it_throws_an_exception_when_cannot_find_payment_method(
         OrderRepositoryInterface $orderRepository,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         PaymentMethodChangerInterface $paymentMethodChanger,
-        OrderInterface $cart
+        OrderInterface $cart,
     ): void {
         $choosePaymentMethod = new ChoosePaymentMethod('token', 'cash', 'paymentId');
         $orderRepository->findOneBy(['tokenValue' => $choosePaymentMethod->orderTokenValue])->willReturn($cart);
@@ -176,16 +178,18 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         ])->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$choosePaymentMethod]);
+            ->during('__invoke', [$choosePaymentMethod])
+        ;
     }
 
     function it_throws_an_exception_when_cannot_find_cart(
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
     ): void {
         $choosePaymentMethod = new ChoosePaymentMethod('token', 'cash', 'paymentId');
         $orderRepository->findOneBy(['tokenValue' => $choosePaymentMethod->orderTokenValue])->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$choosePaymentMethod]);
+            ->during('__invoke', [$choosePaymentMethod])
+        ;
     }
 }

@@ -46,7 +46,7 @@ final class HttpRequestMethodTypeContextBuilder implements SerializerContextBuil
 
     public function __construct(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        ResourceMetadataFactoryInterface $resourceMetadataFactory
+        ResourceMetadataFactoryInterface $resourceMetadataFactory,
     ) {
         $this->decoratedContextBuilder = $decoratedContextBuilder;
         $this->resourceMetadataFactory = $resourceMetadataFactory;
@@ -56,19 +56,19 @@ final class HttpRequestMethodTypeContextBuilder implements SerializerContextBuil
         string $resourceClass,
         string $operationName,
         array $resolverContext,
-        bool $normalization
+        bool $normalization,
     ): array {
         $context = $this->decoratedContextBuilder->create(
             $resourceClass,
             $operationName,
             $resolverContext,
-            $normalization
+            $normalization,
         );
 
         try {
             if (true === $this->isDefaultOperation($operationName)) {
                 $context[ContextKeys::HTTP_REQUEST_METHOD_TYPE] = $this->getMethodTypeForDefaultOperation(
-                    $operationName
+                    $operationName,
                 );
 
                 return $context;
@@ -94,7 +94,7 @@ final class HttpRequestMethodTypeContextBuilder implements SerializerContextBuil
             }
 
             $context[ContextKeys::HTTP_REQUEST_METHOD_TYPE] = strtoupper(
-                (string) $availableCustomOperations[$operationName]['method']
+                (string) $availableCustomOperations[$operationName]['method'],
             );
         } catch (ResourceClassNotFoundException $exception) {
         }

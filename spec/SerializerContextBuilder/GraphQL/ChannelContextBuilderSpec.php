@@ -21,7 +21,7 @@ final class ChannelContextBuilderSpec extends ObjectBehavior
 {
     function let(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        ChannelContextInterface $channelContext
+        ChannelContextInterface $channelContext,
     ): void {
         $this->beConstructedWith($decoratedContextBuilder, $channelContext);
     }
@@ -34,7 +34,7 @@ final class ChannelContextBuilderSpec extends ObjectBehavior
     function it_creates_context(
         SerializerContextBuilderInterface $decoratedContextBuilder,
         ChannelContextInterface $channelContext,
-        ChannelInterface $channel
+        ChannelInterface $channel,
     ): void {
         $context = [];
         $resourceClass = 'Class/Name';
@@ -48,7 +48,7 @@ final class ChannelContextBuilderSpec extends ObjectBehavior
             $resourceClass,
             $operationName,
             $resolverContext,
-            $normalization
+            $normalization,
         )->willReturn($context);
 
         $channelContext->getChannel()->willReturn($channel);
@@ -61,7 +61,7 @@ final class ChannelContextBuilderSpec extends ObjectBehavior
             $resourceClass,
             $operationName,
             $resolverContext,
-            $normalization
+            $normalization,
         )->shouldReturn($context);
     }
 }
