@@ -17,6 +17,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="collection">
                 <argument key="translations.name">partial</argument>
                 <argument key="translations.slug">partial</argument>
+                <argument key="translations.locale">exact</argument>
             </argument>
             <tag name="api_platform.filter" />
         </service>
@@ -170,14 +171,6 @@ We are hiring developers from all over the world. Join us and start your new, ex
                  autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="averageRating" />
-            </argument>
-            <tag name="api_platform.filter" />
-        </service>
-
-        <service id="sylius.api.product_translation_locale_filter" parent="api_platform.doctrine.orm.search_filter"
-                 autowire="false" autoconfigure="false" public="false">
-            <argument type="collection">
-                <argument key="translations.locale" />
             </argument>
             <tag name="api_platform.filter" />
         </service>

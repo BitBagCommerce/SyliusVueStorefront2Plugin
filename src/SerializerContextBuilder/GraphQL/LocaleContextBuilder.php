@@ -44,8 +44,16 @@ final class LocaleContextBuilder implements SerializerContextBuilderInterface
             $resolverContext,
             $normalization
         );
+//        var_dump(array_keys($resolverContext));
+//        var_dump();
 
         try {
+            if (isset($resolverContext['args']['translations_locale'])) {
+                $context[ContextKeys::LOCALE_CODE] = $resolverContext['args']['translations_locale'];
+
+                return $context;
+            }
+
             $context[ContextKeys::LOCALE_CODE] = $this->localeContext->getLocaleCode();
         } catch (LocaleNotFoundException $exception) {
         }

@@ -24,7 +24,6 @@ We are hiring developers from all over the world. Join us and start your new, ex
                     <attribute>sylius.api.product_price_order_filter</attribute>
                     <attribute>sylius.api.product_channel_code_filter</attribute>
                     <attribute>sylius.api.product_average_rating_filter</attribute>
-                    <attribute>sylius.api.product_translation_locale_filter</attribute>
                 </attribute>
             </operation>
 
@@ -41,7 +40,6 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <attribute>sylius.api.product_channel_code_filter</attribute>
             <attribute>sylius.api.product_price_filter</attribute>
             <attribute>sylius.api.product_average_rating_filter</attribute>
-            <attribute>sylius.api.product_translation_locale_filter</attribute>
         </attribute>
 
         <attribute name="validation_groups">sylius</attribute>
