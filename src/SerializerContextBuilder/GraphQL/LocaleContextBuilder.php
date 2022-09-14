@@ -14,6 +14,7 @@ use ApiPlatform\Core\GraphQl\Serializer\SerializerContextBuilderInterface;
 use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
 use Sylius\Component\Locale\Context\LocaleContextInterface;
 use Sylius\Component\Locale\Context\LocaleNotFoundException;
+use Sylius\Component\Product\Model\ProductAttributeValueInterface;
 
 /** @experimental */
 final class LocaleContextBuilder implements SerializerContextBuilderInterface
@@ -46,13 +47,16 @@ final class LocaleContextBuilder implements SerializerContextBuilderInterface
         );
 
         try {
-            if (isset($resolverContext['args']['translations_locale'])) {
-                $context[ContextKeys::LOCALE_CODE] = $resolverContext['args']['translations_locale'];
-
-                return $context;
-            }
-
             $context[ContextKeys::LOCALE_CODE] = $this->localeContext->getLocaleCode();
+            if (is_a($resourceClass, ProductAttributeValueInterface::class, true)) {
+                if (isset($resolverContext['args']['localeCode'])) {
+                    $context[ContextKeys::LOCALE_CODE] = $resolverContext['args']['localeCode'];
+                }
+            } else {
+                if (isset($resolverContext['args']['translations_locale'])) {
+                    $context[ContextKeys::LOCALE_CODE] = $resolverContext['args']['translations_locale'];
+                }
+            }
         } catch (LocaleNotFoundException $exception) {
         }
 

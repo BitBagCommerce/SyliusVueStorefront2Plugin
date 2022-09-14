@@ -13,6 +13,9 @@ We are hiring developers from all over the world. Join us and start your new, ex
     <resource class="%sylius.model.product_attribute.class%" shortName="ProductAttribute">
         <graphql>
             <operation name="item_query" />
+            <operation name="collection_query">
+                <attribute name="pagination_type">page</attribute>
+            </operation>
         </graphql>
 
         <attribute name="normalization_context">
@@ -28,5 +31,16 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <property name="configuration" required="false" />
         <property name="position" required="false" />
         <property name="translatable" required="false" />
+        <property name="translations" writable="true" readable="true">
+            <attribute name="openapi_context">
+                <attribute name="type">object</attribute>
+                <attribute name="example">
+                    <attribute name="en_US">
+                        <attribute name="name">string</attribute>
+                        <attribute name="locale">string</attribute>
+                    </attribute>
+                </attribute>
+            </attribute>
+        </property>
     </resource>
 </resources>
