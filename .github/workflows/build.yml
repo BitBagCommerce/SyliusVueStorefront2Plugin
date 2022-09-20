@@ -98,6 +98,7 @@ jobs:
                 run: |
                     composer config --no-plugins allow-plugins.symfony/thanks true
                     composer config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+                    composer config --no-plugins allow-plugins.phpstan/extension-installer true
                     composer install --no-interaction
 
             -   name: Get Yarn cache directory
