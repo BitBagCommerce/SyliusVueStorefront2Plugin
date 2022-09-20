@@ -52,7 +52,7 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $removeItemFromCart->itemId,
-            $removeItemFromCart->orderTokenValue
+            $removeItemFromCart->orderTokenValue,
         )->willReturn($orderItem);
 
         $orderItem->getOrder()->willReturn($cart);
@@ -73,11 +73,12 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $removeItemFromCart->itemId,
-            $removeItemFromCart->orderTokenValue
+            $removeItemFromCart->orderTokenValue,
         )->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$removeItemFromCart]);
+            ->during('__invoke', [$removeItemFromCart])
+        ;
     }
 
     function it_throws_an_exception_when_tokens_mismatch(
@@ -86,18 +87,18 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         OrderInterface $cart
     ): void {
         $tokenValue = 'token';
-        $differentTokenValue = 'different_token';
         $removeItemFromCart = new RemoveItemFromCart($tokenValue, '222');
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $removeItemFromCart->itemId,
-            $removeItemFromCart->orderTokenValue
+            $removeItemFromCart->orderTokenValue,
         )->willReturn($orderItem);
 
         $orderItem->getOrder()->willReturn($cart);
         $cart->getTokenValue()->willReturn($removeItemFromCart);
 
         $this->shouldThrow(\Error::class)
-            ->during('__invoke', [$removeItemFromCart]);
+            ->during('__invoke', [$removeItemFromCart])
+        ;
     }
 }

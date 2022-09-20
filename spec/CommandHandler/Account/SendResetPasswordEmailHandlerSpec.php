@@ -38,7 +38,7 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
             $channelContext,
             $userRepository,
             $generator,
-            $eventDispatcher
+            $eventDispatcher,
         );
     }
 
@@ -75,7 +75,7 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
                 'user' => $user->getWrappedObject(),
                 'localeCode' => $command->localeCode,
                 'channel' => $channel->getWrappedObject(),
-            ]
+            ],
         )->shouldBeCalled();
 
         $user->getCustomer()->willReturn($customer);
@@ -92,6 +92,7 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
         $userRepository->findOneByEmail($command->email)->willReturn(null);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$command]);
+            ->during('__invoke', [$command])
+        ;
     }
 }

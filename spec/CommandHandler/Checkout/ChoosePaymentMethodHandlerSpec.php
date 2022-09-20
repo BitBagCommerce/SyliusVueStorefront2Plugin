@@ -43,7 +43,7 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
             $paymentRepository,
             $stateMachineFactory,
             $paymentMethodChanger,
-            $eventDispatcher
+            $eventDispatcher,
         );
     }
 
@@ -123,7 +123,8 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         $stateMachine->can(OrderCheckoutTransitions::TRANSITION_SELECT_PAYMENT)->willReturn(false);
 
         $this->shouldThrow(\Webmozart\Assert\InvalidArgumentException::class)
-            ->during('__invoke', [$choosePaymentMethod]);
+            ->during('__invoke', [$choosePaymentMethod])
+        ;
     }
 
     function it_throws_an_exception_when_cannot_find_payment(
@@ -152,7 +153,8 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         $paymentRepository->findOneByOrderId($paymentId, $cartId)->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$choosePaymentMethod]);
+            ->during('__invoke', [$choosePaymentMethod])
+        ;
     }
 
     function it_throws_an_exception_when_cannot_find_payment_method(
@@ -176,7 +178,8 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         ])->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$choosePaymentMethod]);
+            ->during('__invoke', [$choosePaymentMethod])
+        ;
     }
 
     function it_throws_an_exception_when_cannot_find_cart(
@@ -186,6 +189,7 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         $orderRepository->findOneBy(['tokenValue' => $choosePaymentMethod->orderTokenValue])->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$choosePaymentMethod]);
+            ->during('__invoke', [$choosePaymentMethod])
+        ;
     }
 }

@@ -47,7 +47,7 @@ final class LocaleContextBuilderSpec extends ObjectBehavior
             $resourceClass,
             $operationName,
             $resolverContext,
-            $normalization
+            $normalization,
         )->willReturn($context);
 
         $localeContext->getLocaleCode()->willReturn('en_US');
@@ -56,7 +56,7 @@ final class LocaleContextBuilderSpec extends ObjectBehavior
             $resourceClass,
             $operationName,
             $resolverContext,
-            $normalization
+            $normalization,
         )->shouldReturn($context);
     }
 }

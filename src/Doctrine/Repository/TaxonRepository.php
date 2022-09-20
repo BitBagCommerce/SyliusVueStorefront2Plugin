@@ -27,6 +27,7 @@ final class TaxonRepository extends BaseTaxonRepository implements TaxonReposito
             ->andWhere('o.enabled = true')
             ->andWhere('parent.code = :parentCode')
             ->addOrderBy('o.position')
-            ->setParameter('parentCode', ($menuTaxon !== null) ? $menuTaxon->getCode() : 'category');
+            ->setParameter('parentCode', ($menuTaxon !== null) ? $menuTaxon->getCode() : 'category')
+        ;
     }
 }

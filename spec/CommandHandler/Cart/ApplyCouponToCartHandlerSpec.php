@@ -69,6 +69,7 @@ final class ApplyCouponToCartHandlerSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$command]);
+            ->during('__invoke', [$command])
+        ;
     }
 }

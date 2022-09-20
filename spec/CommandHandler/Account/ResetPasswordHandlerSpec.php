@@ -34,7 +34,7 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
             $userRepository,
             $metadata,
             $passwordUpdater,
-            $eventDispatcher
+            $eventDispatcher,
         );
     }
 
@@ -88,6 +88,7 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
         $userRepository->findOneBy(['passwordResetToken' => 'token'])->willReturn(false);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$command]);
+            ->during('__invoke', [$command])
+        ;
     }
 }

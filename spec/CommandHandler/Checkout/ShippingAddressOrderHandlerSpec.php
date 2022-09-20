@@ -71,6 +71,7 @@ final class ShippingAddressOrderHandlerSpec extends ObjectBehavior
         $orderRepository->findCartByTokenValue($tokenValue)->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$addressOrder]);
+            ->during('__invoke', [$addressOrder])
+        ;
     }
 }

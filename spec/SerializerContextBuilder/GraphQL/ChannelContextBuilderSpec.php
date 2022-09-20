@@ -48,7 +48,7 @@ final class ChannelContextBuilderSpec extends ObjectBehavior
             $resourceClass,
             $operationName,
             $resolverContext,
-            $normalization
+            $normalization,
         )->willReturn($context);
 
         $channelContext->getChannel()->willReturn($channel);
@@ -61,7 +61,7 @@ final class ChannelContextBuilderSpec extends ObjectBehavior
             $resourceClass,
             $operationName,
             $resolverContext,
-            $normalization
+            $normalization,
         )->shouldReturn($context);
     }
 }
