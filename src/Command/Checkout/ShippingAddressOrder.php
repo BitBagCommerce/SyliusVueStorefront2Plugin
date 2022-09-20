@@ -27,7 +27,7 @@ class ShippingAddressOrder implements OrderTokenValueAwareInterface
     public function __construct(
         ?string $email,
         ?string $orderTokenValue,
-        ?AddressInterface $shippingAddress = null,
+        ?AddressInterface $shippingAddress = null
     ) {
         $this->email = $email;
         $this->orderTokenValue = $orderTokenValue;

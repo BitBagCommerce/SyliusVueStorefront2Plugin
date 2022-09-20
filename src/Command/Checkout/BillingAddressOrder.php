@@ -27,7 +27,7 @@ class BillingAddressOrder implements OrderTokenValueAwareInterface
     public function __construct(
         ?string $email,
         ?string $orderTokenValue,
-        ?AddressInterface $billingAddress = null,
+        ?AddressInterface $billingAddress = null
     ) {
         $this->email = $email;
         $this->orderTokenValue = $orderTokenValue;

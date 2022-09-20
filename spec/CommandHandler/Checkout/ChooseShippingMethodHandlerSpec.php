@@ -35,7 +35,7 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         ShipmentRepositoryInterface $shipmentRepository,
         ShippingMethodEligibilityCheckerInterface $eligibilityChecker,
         FactoryInterface $stateMachineFactory,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $this->beConstructedWith(
             $orderRepository,
@@ -62,7 +62,7 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         ShippingMethodInterface $shippingMethod,
         StateMachineInterface $stateMachine,
         ShipmentInterface $shipment,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $chooseShippingMethod = new ChooseShippingMethod('token', 'ups', 'shipmentId');
         $orderRepository->findOneBy(['tokenValue' => $chooseShippingMethod->orderTokenValue])->willReturn($cart);
@@ -88,7 +88,7 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_on_null_cart(
-        OrderRepositoryInterface $orderRepository,
+        OrderRepositoryInterface $orderRepository
     ): void {
         $chooseShippingMethod = new ChooseShippingMethod('token', 'ups', 'shipmentId');
         $orderRepository->findOneBy(['tokenValue' => $chooseShippingMethod->orderTokenValue])->willReturn(null);
@@ -102,7 +102,7 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         ShippingMethodRepositoryInterface $shippingMethodRepository,
         FactoryInterface $stateMachineFactory,
         OrderInterface $cart,
-        StateMachineInterface $stateMachine,
+        StateMachineInterface $stateMachine
     ): void {
         $chooseShippingMethod = new ChooseShippingMethod('token', 'ups', 'shipmentId');
 
@@ -127,7 +127,7 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         FactoryInterface $stateMachineFactory,
         OrderInterface $cart,
         ShippingMethodInterface $shippingMethod,
-        StateMachineInterface $stateMachine,
+        StateMachineInterface $stateMachine
     ): void {
         $chooseShippingMethod = new ChooseShippingMethod('token', 'ups', 'shipmentId');
         $orderRepository->findOneBy(['tokenValue' => $chooseShippingMethod->orderTokenValue])->willReturn($cart);

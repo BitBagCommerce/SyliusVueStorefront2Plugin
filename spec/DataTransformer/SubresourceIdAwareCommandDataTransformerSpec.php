@@ -31,7 +31,7 @@ final class SubresourceIdAwareCommandDataTransformerSpec extends ObjectBehavior
 
     function it_transforms(
         SubresourceIdAwareInterface $object,
-        RequestStack $requestStack,
+        RequestStack $requestStack
     ): void {
         $attributeKey = 'key';
         $subresourceId = 'id';
@@ -51,9 +51,8 @@ final class SubresourceIdAwareCommandDataTransformerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception(
-        SubresourceIdAwareInterface $object,
         RequestStack $requestStack,
-        Request $request,
+        Request $request
     ): void {
         $requestStack->getCurrentRequest()->willReturn($request);
 

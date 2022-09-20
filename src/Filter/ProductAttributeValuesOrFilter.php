@@ -104,9 +104,9 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
         $this->cacheAttributes(array_keys($value));
 
         $alias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->setParameter("localeCode", $this->channelContext->getChannel()->getDefaultLocale()->getCode());
+        $queryBuilder->setParameter('localeCode', $this->channelContext->getChannel()->getDefaultLocale()->getCode());
 
-        $i=0;
+        $i = 0;
         foreach ($value as $attributeCode => $attributeValues) {
             if (!isset($this->storageTypes[$attributeCode])) {
                 continue;
@@ -116,7 +116,7 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
             $supportedStorages = [
                 AttributeValueInterface::STORAGE_INTEGER,
                 AttributeValueInterface::STORAGE_FLOAT,
-                AttributeValueInterface::STORAGE_TEXT
+                AttributeValueInterface::STORAGE_TEXT,
             ];
 
             if (!in_array($storage, $supportedStorages)) {
@@ -129,35 +129,37 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
             $queryBuilder->setParameter(":attributeId$i", $this->attributesIds[$attributeCode]);
 
             switch ($storage) {
-                case AttributeValueInterface::STORAGE_INTEGER: {
+                case AttributeValueInterface::STORAGE_INTEGER:
                     $queryBuilder->andWhere("cav$i.integer >= :value1$i");
                     $queryBuilder->andWhere("cav$i.integer <= :value2$i");
                     $queryBuilder->setParameter("value1$i", reset($attributeValues));
                     $queryBuilder->setParameter("value2$i", end($attributeValues));
-                } break;
-                case AttributeValueInterface::STORAGE_FLOAT: {
+
+                 break;
+                case AttributeValueInterface::STORAGE_FLOAT:
                     $queryBuilder->andWhere("cav$i.float >= :value1$i");
                     $queryBuilder->andWhere("cav$i.float <= :value2$i");
                     $queryBuilder->setParameter("value1$i", reset($attributeValues));
                     $queryBuilder->setParameter("value2$i", end($attributeValues));
-                } break;
-                case AttributeValueInterface::STORAGE_TEXT: {
+
+                 break;
+                case AttributeValueInterface::STORAGE_TEXT:
                     $queryBuilder->andWhere("cav$i.text IN(:values$i)");
                     $queryBuilder->setParameter("values$i", $attributeValues);
-                } break;
-                default: {
+
+                 break;
+                default:
                     continue 2;
-                }
             }
 
-            $i++;
+            ++$i;
         }
     }
 
     private function cacheAttributes(array $attributeCodes): void
     {
         $attributes = $this->productAttributeRepository->findBy([
-            'code' => $attributeCodes
+            'code' => $attributeCodes,
         ]);
 
         $this->storageTypes = [];
@@ -172,7 +174,6 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
 
     private function getAttributeIds(array $attributeCodes): array
     {
-
     }
 
     public function getDescription(
@@ -190,5 +191,4 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
             ],
         ];
     }
-
 }

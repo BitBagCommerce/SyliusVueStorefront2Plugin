@@ -31,7 +31,7 @@ class RefreshTokenResolverSpec extends ObjectBehavior
         ShopUserTokenFactoryInterface $tokenFactory,
         UserRepositoryInterface $userRepository,
         ObjectRepository $refreshTokenRepository,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $entityManager->getRepository(RefreshToken::class)->willReturn($refreshTokenRepository);
         $lifespan = '2592000';
@@ -56,7 +56,7 @@ class RefreshTokenResolverSpec extends ObjectBehavior
         ObjectRepository $refreshTokenRepository,
         ShopUserInterface $user,
         ShopUserTokenInterface $shopUserToken,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $refreshTokenClass = 'Path/To/RefreshTokenClass';
 
@@ -96,7 +96,7 @@ class RefreshTokenResolverSpec extends ObjectBehavior
     function it_throws_an_exception_if_token_is_invalid(
         EntityManagerInterface $entityManager,
         ObjectRepository $refreshTokenRepository,
-        RefreshTokenInterface $refreshToken,
+        RefreshTokenInterface $refreshToken
     ): void {
         $refreshTokenClass = 'Path/To/RefreshTokenClass';
         $context = [
@@ -122,8 +122,7 @@ class RefreshTokenResolverSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_token_is_not_found(
         EntityManagerInterface $entityManager,
-        ObjectRepository $refreshTokenRepository,
-        RefreshTokenInterface $refreshToken,
+        ObjectRepository $refreshTokenRepository
     ): void {
         $refreshTokenClass = 'Path/To/RefreshTokenClass';
         $context = [

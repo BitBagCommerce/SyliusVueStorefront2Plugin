@@ -42,7 +42,7 @@ final class ShippingAddressOrderHandler implements MessageHandlerInterface
         ObjectManager $manager,
         CustomerProviderInterface $customerProvider,
         OrderAddressStateResolverInterface $addressStateResolver,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->orderRepository = $orderRepository;
         $this->manager = $manager;

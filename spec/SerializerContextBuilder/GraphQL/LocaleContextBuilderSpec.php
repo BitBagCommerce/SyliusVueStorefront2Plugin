@@ -20,7 +20,7 @@ final class LocaleContextBuilderSpec extends ObjectBehavior
 {
     function let(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        LocaleContextInterface $localeContext,
+        LocaleContextInterface $localeContext
     ): void {
         $this->beConstructedWith($decoratedContextBuilder, $localeContext);
     }
@@ -32,7 +32,7 @@ final class LocaleContextBuilderSpec extends ObjectBehavior
 
     function it_creates(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        LocaleContextInterface $localeContext,
+        LocaleContextInterface $localeContext
     ): void {
         $resourceClass = 'Class/Name';
         $operationName = 'operation_name';

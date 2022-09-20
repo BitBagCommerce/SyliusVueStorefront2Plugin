@@ -27,7 +27,7 @@ final class ApplyCouponToCartHandlerSpec extends ObjectBehavior
         OrderRepositoryInterface $orderRepository,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         OrderProcessorInterface $orderProcessor,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $this->beConstructedWith($orderRepository, $promotionCouponRepository, $orderProcessor, $eventDispatcher);
     }
@@ -43,7 +43,7 @@ final class ApplyCouponToCartHandlerSpec extends ObjectBehavior
         OrderInterface $cart,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         PromotionCouponInterface $promotionCoupon,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $code = 'code';
         $command = new ApplyCouponToCart($code, 'token');
@@ -61,7 +61,7 @@ final class ApplyCouponToCartHandlerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_could_not_found_cart(
-        OrderRepositoryInterface $orderRepository,
+        OrderRepositoryInterface $orderRepository
     ): void {
         $command = new ApplyCouponToCart('code', 'token');
 

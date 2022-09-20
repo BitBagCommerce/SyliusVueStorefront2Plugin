@@ -26,7 +26,7 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
     function let(
         OrderItemRepositoryInterface $orderItemRepository,
         OrderModifierInterface $orderModifier,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $this->beConstructedWith(
             $orderItemRepository,
@@ -45,7 +45,7 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         OrderModifierInterface $orderModifier,
         OrderItemInterface $orderItem,
         OrderInterface $cart,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $tokenValue = 'token';
         $removeItemFromCart = new RemoveItemFromCart($tokenValue, '222');
@@ -66,7 +66,7 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_cart_is_not_found(
-        OrderItemRepositoryInterface $orderItemRepository,
+        OrderItemRepositoryInterface $orderItemRepository
     ): void {
         $tokenValue = 'token';
         $removeItemFromCart = new RemoveItemFromCart($tokenValue, '222');
@@ -84,10 +84,9 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
     function it_throws_an_exception_when_tokens_mismatch(
         OrderItemRepositoryInterface $orderItemRepository,
         OrderItemInterface $orderItem,
-        OrderInterface $cart,
+        OrderInterface $cart
     ): void {
         $tokenValue = 'token';
-        $differentTokenValue = 'different_token';
         $removeItemFromCart = new RemoveItemFromCart($tokenValue, '222');
 
         $orderItemRepository->findOneByIdAndCartTokenValue(

@@ -31,7 +31,7 @@ final class DeleteOrderItemActionSpec extends ObjectBehavior
     }
 
     function it_is_invokable(
-        MessageBusInterface $commandBus,
+        MessageBusInterface $commandBus
     ): void {
         $attributes = [
             'id' => 'id',

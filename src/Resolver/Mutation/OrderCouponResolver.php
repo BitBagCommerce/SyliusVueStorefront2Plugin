@@ -33,7 +33,7 @@ final class OrderCouponResolver implements MutationResolverInterface
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         UserContextInterface $userContext,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->orderRepository = $orderRepository;
         $this->userContext = $userContext;

@@ -32,7 +32,7 @@ class LoginResolverSpec extends ObjectBehavior
         OrderRepositoryInterface $orderRepository,
         EncoderFactoryInterface $encoderFactory,
         ShopUserTokenFactoryInterface $tokenFactory,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $this->beConstructedWith(
             $entityManager,
@@ -40,7 +40,7 @@ class LoginResolverSpec extends ObjectBehavior
             $orderRepository,
             $encoderFactory,
             $tokenFactory,
-            $eventDispatcher,
+            $eventDispatcher
         );
     }
 
@@ -57,7 +57,7 @@ class LoginResolverSpec extends ObjectBehavior
         ShopUserInterface $user,
         RefreshTokenInterface $refreshToken,
         ShopUserTokenInterface $shopUserToken,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $context = [
             'args' => [
@@ -91,7 +91,7 @@ class LoginResolverSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_on_wrong_username(
-        UserRepositoryInterface $userRepository,
+        UserRepositoryInterface $userRepository
     ): void {
         $context = [
             'args' => [
@@ -118,7 +118,7 @@ class LoginResolverSpec extends ObjectBehavior
         UserRepositoryInterface $userRepository,
         EncoderFactoryInterface $encoderFactory,
         PasswordEncoderInterface $encoder,
-        ShopUserInterface $user,
+        ShopUserInterface $user
     ): void {
         $context = [
             'args' => [

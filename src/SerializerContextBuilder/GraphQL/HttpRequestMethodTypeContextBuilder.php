@@ -46,7 +46,7 @@ final class HttpRequestMethodTypeContextBuilder implements SerializerContextBuil
 
     public function __construct(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        ResourceMetadataFactoryInterface $resourceMetadataFactory,
+        ResourceMetadataFactoryInterface $resourceMetadataFactory
     ) {
         $this->decoratedContextBuilder = $decoratedContextBuilder;
         $this->resourceMetadataFactory = $resourceMetadataFactory;
@@ -56,7 +56,7 @@ final class HttpRequestMethodTypeContextBuilder implements SerializerContextBuil
         string $resourceClass,
         string $operationName,
         array $resolverContext,
-        bool $normalization,
+        bool $normalization
     ): array {
         $context = $this->decoratedContextBuilder->create(
             $resourceClass,

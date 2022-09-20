@@ -48,7 +48,7 @@ final class ChoosePaymentMethodHandler implements MessageHandlerInterface
         PaymentRepositoryInterface $paymentRepository,
         FactoryInterface $stateMachineFactory,
         PaymentMethodChangerInterface $paymentMethodChanger,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->orderRepository = $orderRepository;
         $this->paymentMethodRepository = $paymentMethodRepository;

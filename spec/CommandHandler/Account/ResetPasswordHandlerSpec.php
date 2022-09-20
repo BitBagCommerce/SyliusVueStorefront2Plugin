@@ -28,7 +28,7 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
         UserRepositoryInterface $userRepository,
         MetadataInterface $metadata,
         PasswordUpdaterInterface $passwordUpdater,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $this->beConstructedWith(
             $userRepository,
@@ -54,7 +54,7 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
         PasswordUpdaterInterface $passwordUpdater,
         ShopUserInterface $user,
         CustomerInterface $customer,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $command = new ResetPassword('newS3ret', 'newS3ret', 'token');
 

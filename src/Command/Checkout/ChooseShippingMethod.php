@@ -25,7 +25,7 @@ class ChooseShippingMethod implements OrderTokenValueAwareInterface, Subresource
     public function __construct(
         string $orderTokenValue,
         string $shippingMethodCode,
-        string $shipmentId,
+        string $shipmentId
     ) {
         $this->orderTokenValue = $orderTokenValue;
         $this->shippingMethodCode = $shippingMethodCode;

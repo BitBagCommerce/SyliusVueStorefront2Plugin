@@ -25,7 +25,7 @@ class OrderCouponResolverSpec extends ObjectBehavior
     function let(
         OrderRepositoryInterface $orderRepository,
         UserContextInterface $userContext,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $this->beConstructedWith($orderRepository, $userContext, $eventDispatcher);
     }
@@ -41,7 +41,7 @@ class OrderCouponResolverSpec extends ObjectBehavior
         OrderInterface $order,
         PromotionCouponInterface $promotionCoupon,
         UserInterface $user,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ): void {
         $context = [
             'args' => [

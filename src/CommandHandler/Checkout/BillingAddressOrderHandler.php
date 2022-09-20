@@ -48,7 +48,7 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
         CustomerProviderInterface $customerProvider,
         OrderAddressStateResolverInterface $addressStateResolver,
         UserContextInterface $userContext,
-        EventDispatcherInterface $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->orderRepository = $orderRepository;
         $this->manager = $manager;

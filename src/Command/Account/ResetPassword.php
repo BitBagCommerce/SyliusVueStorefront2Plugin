@@ -22,7 +22,7 @@ class ResetPassword
     public function __construct(
         string $newPassword,
         string $confirmedNewPassword,
-        string $resetPasswordToken,
+        string $resetPasswordToken
     ) {
         $this->newPassword = $newPassword;
         $this->confirmedNewPassword = $confirmedNewPassword;

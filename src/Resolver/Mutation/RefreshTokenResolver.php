@@ -47,7 +47,7 @@ final class RefreshTokenResolver implements MutationResolverInterface
         ShopUserTokenFactoryInterface $tokenFactory,
         UserRepositoryInterface $userRepository,
         EventDispatcherInterface $eventDispatcher,
-        string $refreshTokenLifetime,
+        string $refreshTokenLifetime
     ) {
         $this->entityManager = $entityManager;
         $this->shopUserTokenFactory = $tokenFactory;

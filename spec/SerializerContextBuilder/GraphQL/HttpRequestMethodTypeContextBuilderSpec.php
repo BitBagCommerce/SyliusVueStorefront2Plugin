@@ -22,7 +22,7 @@ final class HttpRequestMethodTypeContextBuilderSpec extends ObjectBehavior
 {
     function let(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        ResourceMetadataFactoryInterface $resourceMetadataFactory,
+        ResourceMetadataFactoryInterface $resourceMetadataFactory
     ): void {
         $this->beConstructedWith($decoratedContextBuilder, $resourceMetadataFactory);
     }
@@ -33,8 +33,7 @@ final class HttpRequestMethodTypeContextBuilderSpec extends ObjectBehavior
     }
 
     function it_creates_context_for_default_operation(
-        SerializerContextBuilderInterface $decoratedContextBuilder,
-        ResourceMetadataFactoryInterface $resourceMetadataFactory,
+        SerializerContextBuilderInterface $decoratedContextBuilder
     ): void {
         $context = [
             ContextKeys::HTTP_REQUEST_METHOD_TYPE => Request::METHOD_GET,
@@ -61,7 +60,7 @@ final class HttpRequestMethodTypeContextBuilderSpec extends ObjectBehavior
 
     function it_creates_context_for_other_operation(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        ResourceMetadataFactoryInterface $resourceMetadataFactory,
+        ResourceMetadataFactoryInterface $resourceMetadataFactory
     ): void {
         $context = [];
         $resourceClass = 'Class/Name';
