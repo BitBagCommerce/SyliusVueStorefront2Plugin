@@ -13,17 +13,17 @@ namespace BitBag\SyliusGraphqlPlugin\Metadata\Resource\Factory;
 use ApiPlatform\Core\Exception\ResourceClassNotFoundException;
 use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
 use ApiPlatform\Core\Metadata\Resource\ResourceMetadata;
-use Symfony\Component\Translation\Extractor\ExtractorInterface;
+use ApiPlatform\Metadata\Extractor\ResourceExtractorInterface;
 
 /** @experimental */
 final class InterfaceExtractorResourceMetadataFactory implements ResourceMetadataFactoryInterface
 {
     private ?ResourceMetadataFactoryInterface $decorated;
 
-    private ExtractorInterface $extractor;
+    private ResourceExtractorInterface $extractor;
 
     public function __construct(
-        ExtractorInterface $extractor,
+        ResourceExtractorInterface $extractor,
         ResourceMetadataFactoryInterface $decorated = null,
     ) {
         $this->extractor = $extractor;
