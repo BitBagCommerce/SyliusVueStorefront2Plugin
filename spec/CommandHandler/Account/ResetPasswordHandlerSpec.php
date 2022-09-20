@@ -81,7 +81,7 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_user_nor_found(
-        UserRepositoryInterface $userRepository,
+        UserRepositoryInterface $userRepository
     ): void {
         $command = new ResetPassword('newS3ret', 'newS3ret', 'token');
 

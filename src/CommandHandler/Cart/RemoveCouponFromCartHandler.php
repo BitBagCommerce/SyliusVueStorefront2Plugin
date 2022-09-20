@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class RemoveCouponFromCartHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = 'bitbag_sylius_graphql.remove_coupon_from_cart.complete';
+    public const EVENT_NAME = 'bitbag.sylius_graphql.remove_coupon_from_cart.complete';
 
     private OrderRepositoryInterface $orderRepository;
 

@@ -30,9 +30,15 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         OrderProcessorInterface $orderProcessor,
         EventDispatcherInterface $eventDispatcher,
-        AvailabilityCheckerInterface $availabilityChecker,
+        AvailabilityCheckerInterface $availabilityChecker
     ): void {
-        $this->beConstructedWith($orderItemRepository, $orderItemQuantityModifier, $orderProcessor, $eventDispatcher, $availabilityChecker);
+        $this->beConstructedWith(
+            $orderItemRepository,
+            $orderItemQuantityModifier,
+            $orderProcessor,
+            $eventDispatcher,
+            $availabilityChecker
+        );
     }
 
     function it_is_initializable(): void
@@ -48,7 +54,7 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
         OrderInterface $cart,
         EventDispatcherInterface $eventDispatcher,
         AvailabilityCheckerInterface $availabilityChecker,
-        ProductVariantInterface $variant,
+        ProductVariantInterface $variant
     ): void {
         $orderToken = 'token';
         $command = new ChangeItemQuantityInCart(10, 'itemId', $orderToken);
@@ -73,7 +79,7 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_token_is_invalid(
-        OrderItemRepositoryInterface $orderItemRepository,
+        OrderItemRepositoryInterface $orderItemRepository
     ): void {
         $orderToken = 'token';
         $command = new ChangeItemQuantityInCart(10, 'itemId', $orderToken);

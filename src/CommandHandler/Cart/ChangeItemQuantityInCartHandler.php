@@ -25,7 +25,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class ChangeItemQuantityInCartHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = 'bitbag_sylius_graphql.change_item_quantity.complete';
+    public const EVENT_NAME = 'bitbag.sylius_graphql.change_item_quantity.complete';
 
     private OrderItemRepositoryInterface $orderItemRepository;
 
@@ -42,7 +42,7 @@ final class ChangeItemQuantityInCartHandler implements MessageHandlerInterface
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         OrderProcessorInterface $orderProcessor,
         EventDispatcherInterface $eventDispatcher,
-        AvailabilityCheckerInterface $availabilityChecker,
+        AvailabilityCheckerInterface $availabilityChecker
     ) {
         $this->orderItemRepository = $orderItemRepository;
         $this->orderItemQuantityModifier = $orderItemQuantityModifier;
@@ -71,7 +71,7 @@ final class ChangeItemQuantityInCartHandler implements MessageHandlerInterface
 
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(
             $variant,
-            $command->quantity,
+            $command->quantity
         );
 
         Assert::true($isStockSufficient, 'There are no that many items on stock.');

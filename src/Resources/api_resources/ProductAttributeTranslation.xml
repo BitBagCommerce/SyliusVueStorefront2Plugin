@@ -30,6 +30,6 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <property name="id" identifier="true" writable="false" />
         <property name="name" required="true" readable="true" />
-        <property name="locale" required="true" />
+        <property name="locale" readable="true" required="true" />
     </resource>
 </resources>

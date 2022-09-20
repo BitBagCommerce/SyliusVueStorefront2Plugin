@@ -6,7 +6,9 @@
 
 [![](https://img.shields.io/packagist/l/bitbag/graphql-plugin.svg) ](https://packagist.org/packages/bitbag/graphql-plugin "License") [ ![](https://img.shields.io/packagist/v/bitbag/graphql-plugin.svg) ](https://packagist.org/packages/bitbag/graphql-plugin "Version") [ ![](https://img.shields.io/travis/BitBagCommerce/SyliusGraphqlPlugin/master.svg) ](http://travis-ci.org/BitBagCommerce/SyliusGraphqlPlugin "Build status") [ ![](https://img.shields.io/scrutinizer/g/BitBagCommerce/SyliusGraphqlPlugin.svg) ](https://scrutinizer-ci.com/g/BitBagCommerce/SyliusGraphqlPlugin/ "Scrutinizer") [![](https://poser.pugx.org/bitbag/graphql-plugin/downloads)](https://packagist.org/packages/bitbag/graphql-plugin "Total Downloads") [![Slack](https://img.shields.io/badge/community%20chat-slack-FF1493.svg)](http://sylius-devs.slack.com) [![Support](https://img.shields.io/badge/support-contact%20author-blue])](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql)
 
-At BitBag we do believe in open source. However, we are able to do it just because of our awesome clients, who are kind enough to share some parts of our work with the community. Therefore, if you feel like there is a possibility for us working together, feel free to reach us out. You will find out more about our professional services, technologies and contact details at [https://bitbag.io/](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql).
+At BitBag we do believe in open source. However, we are able to do it just because of our awesome clients, who are kind enough to share some parts of our work with the community. Therefore, if you feel like there is a possibility for us to work  together, feel free to reach out. You will find out more about our professional services, technologies, and contact details at [https://bitbag.io/](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql).
+
+Like what we do? Want to join us? Check out our job listings on our [career page](https://bitbag.io/career/?utm_source=github&utm_medium=referral&utm_campaign=career). Not familiar with Symfony & Sylius yet, but still want to start with us? Join our [academy](https://bitbag.io/pl/akademia?utm_source=github&utm_medium=url&utm_campaign=akademia)!
 
 ## Table of Content
 
@@ -36,15 +38,19 @@ To check automatically generated API Doc for graphql in Your project - visit one
   api_graphql_graphql_playground      /api/v2/graphql/graphql_playground
 ```
 
-Please note that many of used functions and approaches both on Sylius and API Platform with Graphql support are still marked as experimental
+Please note that many of used functions and approaches both on Sylius and API Platform with Graphql support are still marked as experimental.
+
+**This plugin is needed, if you want to integrate Sylius with Vue Storefront 2.
+Please check out the awesome frontend integration package from our Realtainment friends to make it happen: https://github.com/RealtainmentBerlin/vuestorefront-sylius**
 
 ### Requirements
 
 The plugin uses following 3rd party 
 
-"sylius/sylius": "^1.10" as it supports API Platform from that version
-"webonyx/graphql-php" : at stable version
-"gesdinet/jwt-refresh-token-bundle" for logging purposes
+
+`"sylius/sylius": "^1.10"` as it supports API Platform from that version<br />
+`"webonyx/graphql-php": at stable version`<br />
+`"gesdinet/jwt-refresh-token-bundle"` for logging purposes
 
 ## We are here to help
 This **open-source plugin was developed to help the Sylius community**. If you have any additional questions, would like help with installing or configuring the plugin or need any assistance with your Sylius project - let us know!

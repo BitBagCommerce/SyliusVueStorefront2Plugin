@@ -20,7 +20,7 @@ final class ReflectionClassResourceMetadataFactory implements ResourceMetadataFa
     private ?ResourceMetadataFactoryInterface $decorated;
 
     public function __construct(
-        ResourceMetadataFactoryInterface $decorated = null,
+        ResourceMetadataFactoryInterface $decorated = null
     ) {
         $this->decorated = $decorated;
     }

@@ -15,16 +15,7 @@ sylius_attribute:
             subject: Sylius\Component\Core\Model\Product
             attribute_value:
                 classes:
-                    model: BitBag\SyliusGraphqlPlugin\Model\ProductAttributeValue
-
-sylius_promotion:
-    resources:
-        promotion_coupon:
-            classes:
-                model: Sylius\Component\Core\Model\PromotionCoupon
-        promotion:
-            classes:
-                model: Sylius\Component\Core\Model\Promotion    
+                    model: BitBag\SyliusGraphqlPlugin\Model\ProductAttributeValue  
     
 sylius_taxonomy:
     resources:

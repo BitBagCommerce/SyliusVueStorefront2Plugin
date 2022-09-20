@@ -1,13 +1,10 @@
 <?php
 
 /*
- * This file is part of the Sylius package.
- *
- * (c) Paweł Jędrzejewski
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
 
 declare(strict_types=1);
 
@@ -21,6 +18,7 @@ use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
+use Sylius\Component\Order\Model\OrderInterface as ModelOrderInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -47,7 +45,7 @@ final class AddItemToCartHandler implements MessageHandlerInterface
         CartItemFactoryInterface $cartItemFactory,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         AvailabilityCheckerInterface $availabilityChecker,
-        IriConverterInterface $iriConverter,
+        IriConverterInterface $iriConverter
     ) {
         $this->orderRepository = $orderRepository;
         $this->orderModifier = $orderModifier;
@@ -87,7 +85,7 @@ final class AddItemToCartHandler implements MessageHandlerInterface
         return $cart;
     }
 
-    private function getExistingCartItemQuantityFromCart(\Sylius\Component\Order\Model\OrderInterface $cart, OrderItemInterface $cartItem): int
+    private function getExistingCartItemQuantityFromCart(ModelOrderInterface $cart, OrderItemInterface $cartItem): int
     {
         foreach ($cart->getItems() as $existingCartItem) {
             if ($existingCartItem->equals($cartItem)) {

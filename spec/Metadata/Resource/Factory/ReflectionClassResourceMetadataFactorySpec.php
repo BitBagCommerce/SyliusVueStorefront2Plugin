@@ -26,8 +26,7 @@ final class ReflectionClassResourceMetadataFactorySpec extends ObjectBehavior
         $resourceClass = 'This/Class/Does/NotExist';
 
         $this->shouldThrow(ResourceClassNotFoundException::class)
-            ->during('create', [$resourceClass])
-        ;
+            ->during('create', [$resourceClass]);
     }
 
     public function it_creates_metadata(): void

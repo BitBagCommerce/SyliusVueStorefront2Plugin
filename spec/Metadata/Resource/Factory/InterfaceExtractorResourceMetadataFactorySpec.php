@@ -20,13 +20,13 @@ use Sylius\Component\Core\Model\ShopUserInterface;
 final class InterfaceExtractorResourceMetadataFactorySpec extends ObjectBehavior
 {
     public function let(
-        ExtractorInterface $extractor,
+        ExtractorInterface $extractor
     ): void {
         $this->beConstructedWith($extractor, null);
     }
 
     public function it_creates_metadata(
-        ExtractorInterface $extractor,
+        ExtractorInterface $extractor
     ): void {
         $resourceClass = ShopUserInterface::class;
         $resources = [
@@ -51,7 +51,6 @@ final class InterfaceExtractorResourceMetadataFactorySpec extends ObjectBehavior
         $resourceClass = 'This/Class/Does/NotExist';
 
         $this->shouldThrow(ResourceClassNotFoundException::class)
-            ->during('create', [$resourceClass])
-        ;
+            ->during('create', [$resourceClass]);
     }
 }

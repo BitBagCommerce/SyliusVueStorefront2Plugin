@@ -25,7 +25,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class ShippingAddressOrderHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = 'bitbag_sylius_graphql.set_order_shipping_address.complete';
+    public const EVENT_NAME = 'bitbag.sylius_graphql.set_order_shipping_address.complete';
 
     private OrderRepositoryInterface $orderRepository;
 

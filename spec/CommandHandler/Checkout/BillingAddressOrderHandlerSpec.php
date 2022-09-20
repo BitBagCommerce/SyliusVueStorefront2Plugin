@@ -32,7 +32,7 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         CustomerProviderInterface $customerProvider,
         OrderAddressStateResolverInterface $addressStateResolver,
         EventDispatcherInterface $eventDispatcher,
-        UserContextInterface $userContext,
+        UserContextInterface $userContext
     ): void {
         $this->beConstructedWith(
             $orderRepository,
@@ -58,7 +58,7 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         CustomerInterface $customer,
         \Sylius\Component\Core\Model\CustomerInterface $newCustomer,
         EventDispatcherInterface $eventDispatcher,
-        UserContextInterface $userContext,
+        UserContextInterface $userContext
     ): void {
         $email = 'jd@mail.com';
         $addressOrder = new BillingAddressOrder($email, 'token');
@@ -83,7 +83,7 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_when_cannot_find_cart(
-        OrderRepositoryInterface $orderRepository,
+        OrderRepositoryInterface $orderRepository
     ): void {
         $addressOrder = new BillingAddressOrder('jd@mail.com', 'token');
         $tokenValue = $addressOrder->orderTokenValue;

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusGraphqlPlugin\DataProvider;
 
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\PaginationExtension;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensionInterface;
@@ -74,7 +75,11 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
 
         /** @var QueryCollectionExtensionInterface $extension */
         foreach ($this->collectionExtensions as $extension) {
-            $extension->applyToCollection($queryBuilder, $this->queryNameGenerator, $resourceClass, $operationName);
+            if ($extension instanceof ContextAwareQueryCollectionExtensionInterface) {
+                $extension->applyToCollection($queryBuilder, $this->queryNameGenerator, $resourceClass, $operationName, $context);
+            } else {
+                $extension->applyToCollection($queryBuilder, $this->queryNameGenerator, $resourceClass, $operationName);
+            }
 
             if ($extension instanceof QueryResultCollectionExtensionInterface && $extension->supportsResult($resourceClass, $operationName)) {
                 return $extension->getResult($queryBuilder);

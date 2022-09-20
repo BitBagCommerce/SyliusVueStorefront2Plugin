@@ -71,7 +71,7 @@ class OrderCouponResolverSpec extends ObjectBehavior
     function it_throws_an_exception_when_order_nor_found(
         OrderRepositoryInterface $orderRepository,
         UserContextInterface $userContext,
-        UserInterface $user,
+        UserInterface $user
     ): void {
         $context = [
             'args' => [
@@ -89,7 +89,6 @@ class OrderCouponResolverSpec extends ObjectBehavior
         $orderRepository->findOneBy(['tokenValue' => $orderToken])->willReturn(null);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [null, $context])
-        ;
+            ->during('__invoke', [null, $context]);
     }
 }
