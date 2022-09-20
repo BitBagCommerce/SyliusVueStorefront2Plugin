@@ -13,10 +13,10 @@ namespace spec\BitBag\SyliusGraphqlPlugin\DataProvider;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryResultCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\PaginationExtension;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Core\DataProvider\Pagination;
-use ApiPlatform\Core\DataProvider\PaginatorInterface;
 use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\State\Pagination\PaginatorInterface;
 use BitBag\SyliusGraphqlPlugin\DataProvider\CountryCollectionDataProvider;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -41,7 +41,7 @@ final class CountryCollectionDataProviderSpec extends ObjectBehavior
         $paginationExtension = new PaginationExtension(
             $managerRegistry->getWrappedObject(),
             $resourceMetadataFactory->getWrappedObject(),
-            $pagination
+            $pagination,
         );
         $this->collectionExtensions = [
             $queryResultCollectionExtension->getWrappedObject(),

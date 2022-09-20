@@ -70,7 +70,7 @@ final class CountryCollectionDataProvider implements CollectionDataProviderInter
             $queryBuilder,
             $resourceClass,
             $operationName,
-            $context
+            $context,
         );
     }
 }

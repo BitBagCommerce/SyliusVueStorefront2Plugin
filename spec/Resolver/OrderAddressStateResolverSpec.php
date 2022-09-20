@@ -13,7 +13,6 @@ namespace spec\BitBag\SyliusGraphqlPlugin\Resolver;
 use BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolver;
 use PhpSpec\ObjectBehavior;
 use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
-use SM\SMException;
 use SM\StateMachine\StateMachineInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\OrderCheckoutTransitions;
@@ -53,8 +52,7 @@ final class OrderAddressStateResolverSpec extends ObjectBehavior
     function it_throws_an_exception_on_resolving(
         StateMachineFactoryInterface $stateMachineFactory,
         StateMachineInterface $stateMachine,
-        OrderInterface $order,
-        SMException $exception
+        OrderInterface $order
     ): void {
         $stateMachineFactory->get($order, OrderCheckoutTransitions::GRAPH)->willReturn($stateMachine);
 
@@ -65,6 +63,7 @@ final class OrderAddressStateResolverSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(InvalidArgumentException::class)
-            ->during('resolve', [$order]);
+            ->during('resolve', [$order])
+        ;
     }
 }

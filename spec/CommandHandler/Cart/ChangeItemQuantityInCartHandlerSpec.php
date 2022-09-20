@@ -61,7 +61,7 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $command->orderItemId,
-            $command->orderTokenValue
+            $command->orderTokenValue,
         )->willReturn($orderItem);
 
         $orderItem->getOrder()->willReturn($cart);
@@ -86,11 +86,12 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
 
         $orderItemRepository->findOneByIdAndCartTokenValue(
             $command->orderItemId,
-            $command->orderTokenValue
+            $command->orderTokenValue,
         )->willReturn(null);
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$command]);
+            ->during('__invoke', [$command])
+        ;
     }
 }
