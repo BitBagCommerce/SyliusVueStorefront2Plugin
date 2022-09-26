@@ -195,6 +195,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
                  class="BitBag\SyliusGraphqlPlugin\Filter\ProductAttributeValuesOrFilter"
                  public="false" abstract="true">
             <argument type="service" id="sylius.repository.product_attribute" />
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument type="service" id="sylius.context.channel" />
             <argument type="service" id="doctrine" />
             <argument>null</argument>
