@@ -80,7 +80,8 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         $orderRepository->findCartByTokenValue($tokenValue)->willReturn(null);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$command]);
+            ->during('__invoke', [$command])
+        ;
     }
 
     function it_throws_an_exception_when_promotion_is_not_found(
@@ -99,6 +100,7 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         $promotionCoupon->getPromotion()->willReturn(null);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$command]);
+            ->during('__invoke', [$command])
+        ;
     }
 }

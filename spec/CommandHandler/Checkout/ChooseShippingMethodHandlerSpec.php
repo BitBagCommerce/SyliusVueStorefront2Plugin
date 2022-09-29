@@ -43,7 +43,7 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
             $shipmentRepository,
             $eligibilityChecker,
             $stateMachineFactory,
-            $eventDispatcher
+            $eventDispatcher,
         );
     }
 
@@ -93,7 +93,8 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         $chooseShippingMethod = new ChooseShippingMethod('token', 'ups', 'shipmentId');
         $orderRepository->findOneBy(['tokenValue' => $chooseShippingMethod->orderTokenValue])->willReturn(null);
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$chooseShippingMethod]);
+            ->during('__invoke', [$chooseShippingMethod])
+        ;
     }
 
     function it_throws_an_exception_on_null_shipping_method(
@@ -115,7 +116,8 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         ])->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$chooseShippingMethod]);
+            ->during('__invoke', [$chooseShippingMethod])
+        ;
     }
 
     function it_throws_an_exception_on_null_shipment(
@@ -142,6 +144,7 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         $shipmentRepository->findOneByOrderId($chooseShippingMethod->shipmentId, $cartId)->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$chooseShippingMethod]);
+            ->during('__invoke', [$chooseShippingMethod])
+        ;
     }
 }

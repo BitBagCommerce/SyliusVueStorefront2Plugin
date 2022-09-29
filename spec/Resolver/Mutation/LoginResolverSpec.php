@@ -110,7 +110,8 @@ class LoginResolverSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(\Exception::class)
-            ->during('__invoke', [null, $context]);
+            ->during('__invoke', [null, $context])
+        ;
     }
 
     function it_throws_an_exception_on_wrong_password(
@@ -145,6 +146,7 @@ class LoginResolverSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(\Exception::class)
-            ->during('__invoke', [null, $context]);
+            ->during('__invoke', [null, $context])
+        ;
     }
 }

@@ -42,7 +42,7 @@ final class ChannelContextBuilder implements SerializerContextBuilderInterface
             $resourceClass,
             $operationName,
             $resolverContext,
-            $normalization
+            $normalization,
         );
 
         try {

@@ -11,12 +11,12 @@ declare(strict_types=1);
 namespace BitBag\SyliusGraphqlPlugin\DataProvider;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryResultCollectionExtensionInterface;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\PaginationExtension;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Core\Model\ShippingMethodInterface;
 
@@ -25,7 +25,7 @@ final class ShippingMethodCollectionDataProvider implements CollectionDataProvid
 {
     private EntityRepository $shippingMethodRepository;
 
-    private ContextAwareQueryResultCollectionExtensionInterface $paginationExtension;
+    private PaginationExtension $paginationExtension;
 
     /** @see QueryCollectionExtensionInterface */
     private iterable $collectionExtensions;
@@ -34,7 +34,7 @@ final class ShippingMethodCollectionDataProvider implements CollectionDataProvid
 
     public function __construct(
         EntityRepository $shippingMethodRepository,
-        ContextAwareQueryResultCollectionExtensionInterface $paginationExtension,
+        PaginationExtension $paginationExtension,
         QueryNameGeneratorInterface $queryNameGenerator,
         iterable $collectionExtensions
     ) {
@@ -53,13 +53,9 @@ final class ShippingMethodCollectionDataProvider implements CollectionDataProvid
     {
         $queryBuilder = $this->shippingMethodRepository->createQueryBuilder('o');
 
-        /** @var QueryCollectionExtensionInterface $extension */
+        /** @var ContextAwareQueryCollectionExtensionInterface $extension */
         foreach ($this->collectionExtensions as $extension) {
-            if ($extension instanceof ContextAwareQueryCollectionExtensionInterface) {
-                $extension->applyToCollection($queryBuilder, $this->queryNameGenerator, $resourceClass, $operationName, $context);
-            } else {
-                $extension->applyToCollection($queryBuilder, $this->queryNameGenerator, $resourceClass, $operationName);
-            }
+            $extension->applyToCollection($queryBuilder, $this->queryNameGenerator, $resourceClass, $operationName, $context);
 
             if ($extension instanceof QueryResultCollectionExtensionInterface && $extension->supportsResult($resourceClass, $operationName)) {
                 return $extension->getResult($queryBuilder);

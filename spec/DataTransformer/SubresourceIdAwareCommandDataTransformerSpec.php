@@ -51,7 +51,6 @@ final class SubresourceIdAwareCommandDataTransformerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception(
-        SubresourceIdAwareInterface $object,
         RequestStack $requestStack,
         Request $request
     ): void {
@@ -59,7 +58,8 @@ final class SubresourceIdAwareCommandDataTransformerSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(InvalidArgumentException::class)
-            ->during('transform', [null, '']);
+            ->during('transform', [null, ''])
+        ;
     }
 
     function it_checks_if_it_supports_transformation(SubresourceIdAwareInterface $object): void
