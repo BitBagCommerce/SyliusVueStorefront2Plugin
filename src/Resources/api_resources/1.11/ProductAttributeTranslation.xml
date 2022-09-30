@@ -15,12 +15,21 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <operation name="collection_query">
                 <attribute name="pagination_type">page</attribute>
             </operation>
-
-            <operation name="item_query" />
         </graphql>
 
+        <attribute name="validation_groups">sylius</attribute>
+
+        <collectionOperations />
+
+        <itemOperations>
+            <itemOperation name="shop_get">
+                <attribute name="method">GET</attribute>
+                <attribute name="path">/shop/product-attribute-translations/{id}</attribute>
+            </itemOperation>
+        </itemOperations>
+
         <property name="id" identifier="true" writable="false" />
-        <property name="name" readable="true" required="true" />
+        <property name="name" required="true" readable="true" />
         <property name="locale" readable="true" required="true" />
     </resource>
 </resources>

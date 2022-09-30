@@ -40,7 +40,7 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
             $customerProvider,
             $addressStateResolver,
             $userContext,
-            $eventDispatcher
+            $eventDispatcher,
         );
     }
 
@@ -91,6 +91,7 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         $orderRepository->findCartByTokenValue($tokenValue)->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$addressOrder]);
+            ->during('__invoke', [$addressOrder])
+        ;
     }
 }

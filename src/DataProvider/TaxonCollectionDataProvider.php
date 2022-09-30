@@ -22,6 +22,7 @@ use Sylius\Bundle\ApiBundle\Context\UserContextInterface;
 use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Webmozart\Assert\Assert;
 
 /** @experimental */
@@ -70,7 +71,7 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
         }
 
         $queryBuilder = $this->taxonRepository->createChildrenByChannelMenuTaxonQueryBuilder(
-            $channelMenuTaxon
+            $channelMenuTaxon,
         );
 
         /** @var QueryCollectionExtensionInterface $extension */
@@ -90,11 +91,11 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
             $queryBuilder,
             $resourceClass,
             $operationName,
-            $context
+            $context,
         );
     }
 
-    private function isUserAllowedToGetAllTaxa(?\Symfony\Component\Security\Core\User\UserInterface $user): bool
+    private function isUserAllowedToGetAllTaxa(?UserInterface $user): bool
     {
         /** @psalm-suppress DeprecatedClass */
         return $user !== null && in_array('ROLE_API_ACCESS', $user->getRoles(), true);

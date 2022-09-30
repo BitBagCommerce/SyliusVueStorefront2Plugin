@@ -40,7 +40,7 @@ class RefreshTokenResolverSpec extends ObjectBehavior
             $tokenFactory,
             $userRepository,
             $eventDispatcher,
-            $lifespan
+            $lifespan,
         );
     }
 
@@ -116,13 +116,13 @@ class RefreshTokenResolverSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(AuthenticationException::class)
-            ->during('__invoke', [null, $context]);
+            ->during('__invoke', [null, $context])
+        ;
     }
 
     function it_throws_an_exception_when_token_is_not_found(
         EntityManagerInterface $entityManager,
-        ObjectRepository $refreshTokenRepository,
-        RefreshTokenInterface $refreshToken
+        ObjectRepository $refreshTokenRepository
     ): void {
         $refreshTokenClass = 'Path/To/RefreshTokenClass';
         $context = [
@@ -142,6 +142,7 @@ class RefreshTokenResolverSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [null, $context]);
+            ->during('__invoke', [null, $context])
+        ;
     }
 }

@@ -17,6 +17,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="collection">
                 <argument key="translations.name">partial</argument>
                 <argument key="translations.slug">partial</argument>
+                <argument key="translations.locale">exact</argument>
             </argument>
             <tag name="api_platform.filter" />
         </service>
@@ -148,5 +149,71 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.filter" />
         </service>
 
+        <service id="sylius.api.product_order_filter" parent="api_platform.doctrine.orm.order_filter">
+            <argument type="collection">
+                <argument key="code" />
+                <argument key="translations.name" />
+                <argument key="averageRating" />
+                <argument key="createdAt" />
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
+
+        <service id="sylius.api.product_channel_code_filter" parent="api_platform.doctrine.orm.search_filter"
+                 autowire="false" autoconfigure="false" public="false">
+            <argument type="collection">
+                <argument key="channels.code">exact</argument>
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
+
+        <service id="sylius.api.product_average_rating_filter" parent="api_platform.doctrine.orm.range_filter"
+                 autowire="false" autoconfigure="false" public="false">
+            <argument type="collection">
+                <argument key="averageRating" />
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
+
+        <service id="sylius.api.product_price_order_filter" parent="api_platform.doctrine.orm.order_filter">
+            <argument type="collection">
+                <argument key="variants.channelPricings.price" />
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
+
+        <service id="bitbag.api.product_attribute_value_locale_code_filter"
+                 parent="api_platform.doctrine.orm.search_filter"
+                 autowire="false" autoconfigure="false" public="false">
+            <argument type="collection">
+                <argument key="localeCode">exact</argument>
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
+
+        <service id="bitbag.api.product_attribute_values_filter.abstract"
+                 class="BitBag\SyliusGraphqlPlugin\Filter\ProductAttributeValuesOrFilter"
+                 public="false" abstract="true">
+            <argument type="service" id="sylius.repository.product_attribute" />
+            <argument type="service" id="sylius.context.channel" />
+            <argument type="service" id="doctrine" />
+            <argument>null</argument>
+            <argument type="service" id="api_platform.iri_converter" />
+            <argument type="service" id="api_platform.property_accessor" />
+            <argument type="service" id="logger" on-invalid="ignore" />
+            <argument key="$identifiersExtractor" type="service" id="api_platform.identifiers_extractor.cached" on-invalid="ignore" />
+            <argument key="$nameConverter" type="service" id="api_platform.name_converter" on-invalid="ignore" />
+        </service>
+
+        <service id="bitbag.api.product_attribute_values_filter"
+                 parent="bitbag.api.product_attribute_values_filter.abstract"
+                 autowire="false"
+                 autoconfigure="false">
+            <argument type="collection">
+                <argument key="attributes.stringValue">All</argument>ź
+            </argument>
+
+            <tag name="api_platform.filter" />
+        </service>
     </services>
 </container>

@@ -92,7 +92,7 @@ final class RefreshTokenResolver implements MutationResolverInterface
     {
         if (null === $refreshToken || !$refreshToken->isValid()) {
             throw new AuthenticationException(
-                sprintf('Refresh token "%s" is invalid.', $refreshTokenString)
+                sprintf('Refresh token "%s" is invalid.', $refreshTokenString),
             );
         }
     }

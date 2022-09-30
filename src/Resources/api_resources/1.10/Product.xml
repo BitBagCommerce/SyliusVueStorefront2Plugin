@@ -21,7 +21,10 @@ We are hiring developers from all over the world. Join us and start your new, ex
                     <attribute>sylius.api.product_taxon_code_filter</attribute>
                     <attribute>sylius.api.product_taxon_slug_filter</attribute>
                     <attribute>sylius.api.product_price_filter</attribute>
-                    <attribute>sylius.api.product_attribute_filter</attribute>
+                    <attribute>sylius.api.product_price_order_filter</attribute>
+                    <attribute>sylius.api.product_channel_code_filter</attribute>
+                    <attribute>sylius.api.product_average_rating_filter</attribute>
+                    <attribute>bitbag.api.product_attribute_values_filter</attribute>
                 </attribute>
             </operation>
 
@@ -33,9 +36,12 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <attribute>sylius.api.product_slug_filter</attribute>
             <attribute>sylius.api.product_order_filter</attribute>
             <attribute>sylius.api.product_taxon_code_filter</attribute>
+            <attribute>sylius.api.product_price_order_filter</attribute>
             <attribute>sylius.api.product_taxon_slug_filter</attribute>
+            <attribute>sylius.api.product_channel_code_filter</attribute>
             <attribute>sylius.api.product_price_filter</attribute>
-            <attribute>sylius.api.product_attribute_filter</attribute>
+            <attribute>sylius.api.product_average_rating_filter</attribute>
+            <attribute>bitbag.api.product_attribute_values_filter</attribute>
         </attribute>
 
         <attribute name="validation_groups">sylius</attribute>
@@ -143,7 +149,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <property name="productTaxons" readable="true" writable="true" />
         <property name="reviews" required="false" />
         <property name="options" required="false" />
-        <property name="attributes" required="false" >
+        <property name="attributes" required="false">
             <subresource resourceClass="BitBag\SyliusGraphqlPlugin\Model\ProductAttributeValue" />
         </property>
         <property name="channels" required="false" />

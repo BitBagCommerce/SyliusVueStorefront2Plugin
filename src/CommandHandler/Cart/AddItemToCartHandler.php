@@ -18,6 +18,7 @@ use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
+use Sylius\Component\Order\Model\OrderInterface as ModelOrderInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -73,7 +74,7 @@ final class AddItemToCartHandler implements MessageHandlerInterface
 
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(
             $productVariant,
-            $addItemToCart->quantity + $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
+            $cartItem->getQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem),
         );
 
         Assert::true($isStockSufficient, 'There are no that many items on stock.');
@@ -84,7 +85,7 @@ final class AddItemToCartHandler implements MessageHandlerInterface
         return $cart;
     }
 
-    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): int
+    private function getExistingCartItemQuantityFromCart(ModelOrderInterface $cart, OrderItemInterface $cartItem): int
     {
         foreach ($cart->getItems() as $existingCartItem) {
             if ($existingCartItem->equals($cartItem)) {

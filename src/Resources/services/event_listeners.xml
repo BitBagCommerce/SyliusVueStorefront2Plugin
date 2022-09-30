@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults autowire="false" autoconfigure="false" public="false" />
+
+        <service
+            id="app.event_listener.product_resource_listener"
+            class="BitBag\SyliusGraphqlPlugin\EventListener\ProductResourceListener"
+        >
+            <argument type="service" id="liip_imagine.cache.manager" />
+            <argument type="service" id="liip_imagine.data.manager" />
+            <argument type="service" id="liip_imagine.filter.manager" />
+
+            <tag
+                name="doctrine.orm.entity_listener"
+                event="postPersist"
+                entity="Sylius\Component\Core\Model\Product"
+                method="resolveThumbnailsForFixtures"
+            />
+            <tag name="kernel.event_listener" event="sylius.product.post_create" method="resolveThumbnails" priority="-300" />
+            <tag name="kernel.event_listener" event="sylius.product.post_update" method="resolveThumbnails" priority="-300" />
+        </service>
+    </services>
+</container>

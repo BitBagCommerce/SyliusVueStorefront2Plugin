@@ -39,7 +39,7 @@ final class TaxonCollectionDataProviderSpec extends ObjectBehavior
         $paginationExtension = new PaginationExtension(
             $managerRegistry->getWrappedObject(),
             $resourceMetadataFactory->getWrappedObject(),
-            $pagination
+            $pagination,
         );
         $collectionExtensions = [
             $queryResultCollectionExtension->getWrappedObject(),
@@ -49,7 +49,7 @@ final class TaxonCollectionDataProviderSpec extends ObjectBehavior
             $paginationExtension,
             $userContext,
             $queryNameGenerator,
-            $collectionExtensions
+            $collectionExtensions,
         );
     }
 

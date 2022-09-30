@@ -70,7 +70,7 @@ final class SendResetPasswordEmailHandler implements MessageHandlerInterface
                 'user' => $user,
                 'localeCode' => $command->localeCode,
                 'channel' => $channel,
-            ]
+            ],
         );
 
         $customer = $user->getCustomer();

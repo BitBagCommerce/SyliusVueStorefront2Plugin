@@ -62,13 +62,13 @@ final class HttpRequestMethodTypeContextBuilder implements SerializerContextBuil
             $resourceClass,
             $operationName,
             $resolverContext,
-            $normalization
+            $normalization,
         );
 
         try {
             if (true === $this->isDefaultOperation($operationName)) {
                 $context[ContextKeys::HTTP_REQUEST_METHOD_TYPE] = $this->getMethodTypeForDefaultOperation(
-                    $operationName
+                    $operationName,
                 );
 
                 return $context;
@@ -94,7 +94,7 @@ final class HttpRequestMethodTypeContextBuilder implements SerializerContextBuil
             }
 
             $context[ContextKeys::HTTP_REQUEST_METHOD_TYPE] = strtoupper(
-                (string) $availableCustomOperations[$operationName]['method']
+                (string) $availableCustomOperations[$operationName]['method'],
             );
         } catch (ResourceClassNotFoundException $exception) {
         }

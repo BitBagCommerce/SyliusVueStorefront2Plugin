@@ -41,7 +41,7 @@ final class DeleteOrderItemActionSpec extends ObjectBehavior
 
         $command = new RemoveItemFromCart(
             (string) $request->attributes->get('id'),
-            (string) $request->attributes->get('itemId')
+            (string) $request->attributes->get('itemId'),
         );
 
         $envelope = Envelope::wrap($command);
