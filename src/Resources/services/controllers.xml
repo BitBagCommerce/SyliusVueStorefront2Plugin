@@ -19,5 +19,15 @@ We are hiring developers from all over the world. Join us and start your new, ex
         >
             <argument type="service" id="sylius_default.bus" />
         </service>
+
+        <service
+            id="bitbag.sylius_graphql_plugin.controller.shop_user_post_verify"
+            class="BitBag\SyliusGraphqlPlugin\Controller\ShopUserPostVerifyController"
+        >
+            <argument type="string">%env(VSF2_HOST)%</argument>
+            <argument type="service" id="router" />
+
+            <tag name="controller.service_arguments" />
+        </service>
     </services>
 </container>

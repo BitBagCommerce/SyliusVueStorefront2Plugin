@@ -14,7 +14,7 @@ use ApiPlatform\Core\Api\IdentifiersExtractorInterface;
 use ApiPlatform\Core\Api\IriConverterInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
@@ -23,6 +23,7 @@ use Sylius\Component\Attribute\Model\AttributeValueInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Product\Model\ProductAttributeInterface;
+use Sylius\Component\Product\Model\ProductAttributeValueInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -38,16 +39,15 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
 
     protected EntityRepository $productAttributeRepository;
 
+    protected EntityManagerInterface $entityManager;
+
     protected ChannelContextInterface $channelContext;
 
-    private const PROPERTY_NAME = 'attributes';
-
-    private array $storageTypes;
-
-    private array $attributesIds;
+    protected const PROPERTY_NAME = 'attributes';
 
     public function __construct(
         EntityRepository $productAttributeRepository,
+        EntityManagerInterface $entityManager,
         ChannelContextInterface $channelContext,
         ManagerRegistry $managerRegistry,
         ?RequestStack $requestStack,
@@ -69,6 +69,7 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
         $this->channelContext = $channelContext;
         $this->productAttributeRepository = $productAttributeRepository;
+        $this->entityManager = $entityManager;
     }
 
     protected function getIriConverter(): IriConverterInterface
@@ -101,18 +102,25 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
             return;
         }
 
-        $this->cacheAttributes(array_keys($value));
+        $localeCode = $this->channelContext->getChannel()->getDefaultLocale()->getCode();
+
+        $storageTypes = $this->getAttributesStorageTypes(array_keys($value));
+        $productIds = $this->findAttributedProductIds(
+            $value,
+            $storageTypes,
+            $localeCode
+        );
 
         $alias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->setParameter('localeCode', $this->channelContext->getChannel()->getDefaultLocale()->getCode());
+        $queryBuilder->setParameter('localeCode', $localeCode);
 
         $i = 0;
         foreach ($value as $attributeCode => $attributeValues) {
-            if (!isset($this->storageTypes[$attributeCode])) {
+            if (!isset($storageTypes[$attributeCode])) {
                 continue;
             }
 
-            $storage = $this->storageTypes[$attributeCode];
+            $storage = $storageTypes[$attributeCode];
             $supportedStorages = [
                 AttributeValueInterface::STORAGE_INTEGER,
                 AttributeValueInterface::STORAGE_FLOAT,
@@ -123,57 +131,85 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
                 continue;
             }
 
-            $queryBuilder->join("$alias.attributes", "cav$i", Join::WITH, "cav$i.localeCode = :localeCode");
-
-            $queryBuilder->andWhere("cav$i.attribute = :attributeId$i");
-            $queryBuilder->setParameter(":attributeId$i", $this->attributesIds[$attributeCode]);
-
-            switch ($storage) {
-                case AttributeValueInterface::STORAGE_INTEGER:
-                    $queryBuilder->andWhere("cav$i.integer >= :value1$i");
-                    $queryBuilder->andWhere("cav$i.integer <= :value2$i");
-                    $queryBuilder->setParameter("value1$i", reset($attributeValues));
-                    $queryBuilder->setParameter("value2$i", end($attributeValues));
-
-                 break;
-                case AttributeValueInterface::STORAGE_FLOAT:
-                    $queryBuilder->andWhere("cav$i.float >= :value1$i");
-                    $queryBuilder->andWhere("cav$i.float <= :value2$i");
-                    $queryBuilder->setParameter("value1$i", reset($attributeValues));
-                    $queryBuilder->setParameter("value2$i", end($attributeValues));
-
-                 break;
-                case AttributeValueInterface::STORAGE_TEXT:
-                    $queryBuilder->andWhere("cav$i.text IN(:values$i)");
-                    $queryBuilder->setParameter("values$i", $attributeValues);
-
-                 break;
-                default:
-                    continue 2;
-            }
+            $queryBuilder->andWhere($alias.".id IN(:productIds$i)");
+            $queryBuilder->setParameter("productIds$i", $productIds[$attributeCode]);
 
             ++$i;
         }
     }
 
-    private function cacheAttributes(array $attributeCodes): void
+    private function getAttributesStorageTypes(array $attributeCodes): array
     {
         $attributes = $this->productAttributeRepository->findBy([
             'code' => $attributeCodes,
         ]);
 
-        $this->storageTypes = [];
-        $this->attributesIds = [];
+        $storageTypes = [];
 
         /** @var ProductAttributeInterface $attribute */
         foreach ($attributes as $attribute) {
-            $this->storageTypes[$attribute->getCode()] = $attribute->getStorageType();
-            $this->attributesIds[$attribute->getCode()] = $attribute->getId();
+            $storageTypes[$attribute->getCode()] = $attribute->getStorageType();
         }
+
+        return $storageTypes;
     }
 
-    private function getAttributeIds(array $attributeCodes): array
-    {
+    private function findAttributedProductIds(
+        array $attributes,
+        array $storageTypes,
+        string $localeCode
+    ): array {
+        $results = [];
+
+        foreach ($attributes as $attributeCode => $attributeValues) {
+            $qb = $this->entityManager->createQueryBuilder();
+
+            $qb->select('s.id')
+                ->from(ProductAttributeValueInterface::class, 'av')
+                ->join('av.attribute', 'a')
+                ->join('av.subject', 's');
+
+            if (!isset($storageTypes[$attributeCode])) {
+                continue;
+            }
+
+            $storage = $storageTypes[$attributeCode];
+
+            switch ($storage) {
+                case AttributeValueInterface::STORAGE_INTEGER:
+                    $qb->andWhere("av.integer >= :value1");
+                    $qb->andWhere("av.integer <= :value2");
+                    $qb->setParameter("value1", reset($attributeValues));
+                    $qb->setParameter("value2", end($attributeValues));
+
+                    break;
+                case AttributeValueInterface::STORAGE_FLOAT:
+                    $qb->andWhere("av.float >= :value1");
+                    $qb->andWhere("av.float <= :value2");
+                    $qb->setParameter("value1", reset($attributeValues));
+                    $qb->setParameter("value2", end($attributeValues));
+
+                    break;
+                case AttributeValueInterface::STORAGE_TEXT:
+                    $qb->where("av.text IN(:attributeValues)")
+                        ->setParameter("attributeValues", $attributeValues);
+
+                    break;
+                default:
+                    continue 2;
+            }
+
+            $results[$attributeCode] = $qb->andWhere("a.code = :attributeCode")
+                ->andWhere("av.localeCode = :localeCode")
+                ->setParameter("localeCode", $localeCode)
+                ->setParameter("attributeCode", $attributeCode)
+                ->getQuery()
+                ->getSingleColumnResult();
+        }
+
+        return $results;
+
+
     }
 
     public function getDescription(
