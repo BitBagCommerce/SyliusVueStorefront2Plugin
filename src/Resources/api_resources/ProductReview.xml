@@ -17,6 +17,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 <attribute name="filters">
                     <attribute>sylius.api.product_review.product_id_filter</attribute>
                     <attribute>sylius.api.product_review.author_id_filter</attribute>
+                    <attribute>sylius.api.product_review.status_filter</attribute>
                 </attribute>
             </operation>
 
@@ -72,6 +73,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <attribute name="filters">
             <attribute>sylius.api.product_review.product_id_filter</attribute>
             <attribute>sylius.api.product_review.author_id_filter</attribute>
+            <attribute>sylius.api.product_review.status_filter</attribute>
         </attribute>
 
         <attribute name="validation_groups">sylius</attribute>
