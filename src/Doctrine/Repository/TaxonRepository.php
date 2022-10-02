@@ -20,12 +20,13 @@ final class TaxonRepository extends BaseTaxonRepository implements TaxonReposito
         ?TaxonInterface $menuTaxon = null,
         ?string $locale = null
     ): QueryBuilder {
+        $rand = rand(0, PHP_INT_MAX);
         return $this->createTranslationBasedQueryBuilder($locale)
-            ->addSelect('child')
-            ->innerJoin('o.parent', 'parent')
-            ->leftJoin('o.children', 'child')
+            ->addSelect('child'.$rand)
+            ->innerJoin('o.parent', 'parent'.$rand)
+            ->leftJoin('o.children', 'child'.$rand)
             ->andWhere('o.enabled = true')
-            ->andWhere('parent.code = :parentCode')
+            ->andWhere('parent'.$rand.'.code = :parentCode')
             ->addOrderBy('o.position')
             ->setParameter('parentCode', ($menuTaxon !== null) ? $menuTaxon->getCode() : 'category')
         ;
