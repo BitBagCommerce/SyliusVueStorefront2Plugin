@@ -84,6 +84,9 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <property name="id" identifier="false" writable="false" />
         <property name="code" identifier="true" required="true" />
+        <property name="children" identifier="false" readable="true">
+            <subresource resourceClass="%sylius.model.taxon.class%" />
+        </property>
         <property name="translations" readable="true" writable="true" />
     </resource>
 </resources>
