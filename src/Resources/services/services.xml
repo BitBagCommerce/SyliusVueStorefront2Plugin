@@ -22,5 +22,10 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="Sylius\Bundle\ApiBundle\Context\UserContextInterface" />
         </service>
 
+        <service id="Sylius\Bundle\ApiBundle\DataTransformer\OrderTokenValueAwareInputCommandDataTransformer" />
+
+        <service id="Sylius\Bundle\ApiBundle\DataTransformer\SubresourceIdAwareCommandDataTransformer">
+            <argument type="service" id="request_stack" />
+        </service>
     </services>
 </container>
