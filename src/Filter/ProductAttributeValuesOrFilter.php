@@ -112,7 +112,6 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
         );
 
         $alias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->setParameter('localeCode', $localeCode);
 
         $i = 0;
         foreach ($value as $attributeCode => $attributeValues) {
