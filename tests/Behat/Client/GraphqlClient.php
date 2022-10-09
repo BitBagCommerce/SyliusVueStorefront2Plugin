@@ -8,12 +8,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Behat\Client;
+namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Client;
 
-use BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequest;
-use BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 use Exception;
-use const JSON_ERROR_NONE;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 use Sylius\Behat\Service\SharedStorageInterface;
@@ -23,7 +20,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequest;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 use Webmozart\Assert\Assert;
+use const JSON_ERROR_NONE;
 
 final class GraphqlClient implements GraphqlClientInterface
 {

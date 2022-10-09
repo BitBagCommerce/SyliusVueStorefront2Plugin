@@ -8,12 +8,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Behat\Client;
+namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Client;
 
-use BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 
 interface GraphqlClientInterface
 {

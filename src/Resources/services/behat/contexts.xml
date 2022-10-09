@@ -6,13 +6,13 @@
         <defaults public="true" />
 
         <service id="bitbag.sylius_graphql_plugin.context.graphql"
-                 class="BitBag\SyliusGraphqlPlugin\Behat\Context\GraphqlApiPlatformContext">
+                 class="Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\GraphqlApiPlatformContext">
             <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
         </service>
 
         <service id="bitbag.sylius_graphql_plugin.context.customer"
-                 class="BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\CustomerContext">
+                 class="Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\CustomerContext">
             <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
             <argument type="service" id="sylius.repository.shop_user" />
@@ -21,19 +21,19 @@
         </service>
 
         <service id="bitbag.sylius_graphql_plugin.context.login"
-                 class="BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\LoginContext">
+                 class="Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\LoginContext">
             <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
         </service>
 
         <service id="bitbag.sylius_graphql_plugin.context.registration"
-                 class="BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\RegistrationContext">
+                 class="Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\RegistrationContext">
             <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
         </service>
 
         <service id="bitbag.sylius_graphql_plugin.context.address"
-                 class="BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\AddressContext">
+                 class="Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\AddressContext">
             <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
             <argument type="service" id="sylius.repository.address" />
@@ -42,7 +42,7 @@
         </service>
 
         <service id="bitbag.sylius_graphql_plugin.context.product"
-                 class="BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\ProductContext">
+                 class="Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\ProductContext">
             <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
             <argument type="service" id="sylius.repository.product" />
@@ -50,7 +50,7 @@
         </service>
 
         <service id="bitbag.sylius_graphql_plugin.context.cart"
-                 class="BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\CartContext">
+                 class="Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\CartContext">
             <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
             <argument type="service" id="sylius.repository.order" />
@@ -58,13 +58,13 @@
         </service>
 
         <service id="bitbag.sylius_graphql_plugin.context.checkout"
-                 class="BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\CheckoutContext">
+                 class="Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\CheckoutContext">
             <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
         </service>
 
         <service id="bitbag.sylius_graphql_plugin.context.taxon"
-                 class="BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\TaxonContext">
+                 class="Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop\TaxonContext">
             <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
         </service>
