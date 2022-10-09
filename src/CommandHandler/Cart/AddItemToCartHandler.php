@@ -45,7 +45,7 @@ final class AddItemToCartHandler implements MessageHandlerInterface
         CartItemFactoryInterface $cartItemFactory,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         AvailabilityCheckerInterface $availabilityChecker,
-        IriConverterInterface $iriConverter
+        IriConverterInterface $iriConverter,
     ) {
         $this->orderRepository = $orderRepository;
         $this->orderModifier = $orderModifier;

@@ -8,15 +8,15 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Behat\Context\Shop;
+namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
-use BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClient;
-use BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
-use BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClient;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 
 final class ProductContext implements Context
 {
@@ -32,7 +32,7 @@ final class ProductContext implements Context
         GraphqlClientInterface $client,
         SharedStorageInterface $sharedStorage,
         ProductRepositoryInterface $productRepository,
-        IriConverterInterface $iriConverter
+        IriConverterInterface $iriConverter,
     ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
@@ -67,19 +67,15 @@ final class ProductContext implements Context
                 }
             }
             productTaxons {
-                edges {
-                    node {
-                        id
-                    }
+                collection {
+                    id
                 }
             }
             attributes {
-                edges {
-                    node {
-                        stringValue
-                        code
-                        name
-                    }
+                collection {
+                    stringValue
+                    code
+                    name
                 }
             }
             shortDescription

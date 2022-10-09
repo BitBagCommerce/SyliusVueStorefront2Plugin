@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Behat\Context;
+namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Context;
 
 use Behat\Behat\Context\Context;
-use BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
-use BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 use Exception;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
 use Webmozart\Assert\Assert;
 
 /** Context for GraphQL. */
@@ -152,7 +152,7 @@ final class GraphqlApiPlatformContext implements Context
     public function thatResponseShouldContainKeyWithValue(
         string $key,
         $value,
-        string $type = null
+        string $type = null,
     ): void {
         /** @psalm-suppress MixedAssignment */
         $responseValueAtKey = $this->client->getValueAtKey($key);

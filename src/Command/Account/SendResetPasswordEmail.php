@@ -19,7 +19,7 @@ class SendResetPasswordEmail
 
     public function __construct(
         string $localeCode,
-        string $email
+        string $email,
     ) {
         $this->localeCode = $localeCode;
         $this->email = $email;

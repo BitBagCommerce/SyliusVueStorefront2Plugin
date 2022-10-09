@@ -25,7 +25,7 @@ class ChangeItemQuantityInCart implements OrderTokenValueAwareInterface, Subreso
     public function __construct(
         int $quantity,
         ?string $orderItemId = null,
-        ?string $orderTokenValue = null
+        ?string $orderTokenValue = null,
     ) {
         $this->quantity = $quantity;
         $this->orderItemId = $orderItemId;
@@ -35,7 +35,7 @@ class ChangeItemQuantityInCart implements OrderTokenValueAwareInterface, Subreso
     public static function createFromData(
         string $tokenValue,
         string $orderItemId,
-        int $quantity
+        int $quantity,
     ): self {
         $command = new self($quantity);
 

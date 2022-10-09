@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Behat\Context\Shop;
+namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop;
 
 use Behat\Behat\Context\Context;
-use BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClient;
-use BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClient;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
 
 final class LoginContext implements Context
 {
@@ -17,7 +17,7 @@ final class LoginContext implements Context
 
     public function __construct(
         GraphqlClientInterface $client,
-        SharedStorageInterface $sharedStorage
+        SharedStorageInterface $sharedStorage,
     ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;

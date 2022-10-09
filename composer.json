@@ -73,7 +73,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "spec\\BitBag\\SyliusGraphqlPlugin\\": "spec/"
+            "spec\\BitBag\\SyliusGraphqlPlugin\\": "spec/",
+            "Tests\\BitBag\\SyliusGraphqlPlugin\\Behat\\": "tests/Behat"
         },
         "classmap": [
             "tests/Application/Kernel.php"

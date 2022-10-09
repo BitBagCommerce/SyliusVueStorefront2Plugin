@@ -56,7 +56,7 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
         LoggerInterface $logger = null,
         array $properties = null,
         IdentifiersExtractorInterface $identifiersExtractor = null,
-        NameConverterInterface $nameConverter = null
+        NameConverterInterface $nameConverter = null,
     ) {
         parent::__construct($managerRegistry, $requestStack, $logger, $properties, $nameConverter);
 
@@ -88,7 +88,7 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
+        string $operationName = null,
     ) {
         if ($property !== self::PROPERTY_NAME) {
             return;
@@ -108,7 +108,7 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
         $productIds = $this->findAttributedProductIds(
             $value,
             $storageTypes,
-            $localeCode
+            $localeCode,
         );
 
         $alias = $queryBuilder->getRootAliases()[0];
@@ -130,7 +130,7 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
                 continue;
             }
 
-            $queryBuilder->andWhere($alias.".id IN(:productIds$i)");
+            $queryBuilder->andWhere($alias . ".id IN(:productIds$i)");
             $queryBuilder->setParameter("productIds$i", $productIds[$attributeCode]);
 
             ++$i;
@@ -156,7 +156,7 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
     private function findAttributedProductIds(
         array $attributes,
         array $storageTypes,
-        string $localeCode
+        string $localeCode,
     ): array {
         $results = [];
 
@@ -166,7 +166,8 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
             $qb->select('s.id')
                 ->from(ProductAttributeValueInterface::class, 'av')
                 ->join('av.attribute', 'a')
-                ->join('av.subject', 's');
+                ->join('av.subject', 's')
+            ;
 
             if (!isset($storageTypes[$attributeCode])) {
                 continue;
@@ -176,43 +177,43 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
 
             switch ($storage) {
                 case AttributeValueInterface::STORAGE_INTEGER:
-                    $qb->andWhere("av.integer >= :value1");
-                    $qb->andWhere("av.integer <= :value2");
-                    $qb->setParameter("value1", reset($attributeValues));
-                    $qb->setParameter("value2", end($attributeValues));
+                    $qb->andWhere('av.integer >= :value1');
+                    $qb->andWhere('av.integer <= :value2');
+                    $qb->setParameter('value1', reset($attributeValues));
+                    $qb->setParameter('value2', end($attributeValues));
 
                     break;
                 case AttributeValueInterface::STORAGE_FLOAT:
-                    $qb->andWhere("av.float >= :value1");
-                    $qb->andWhere("av.float <= :value2");
-                    $qb->setParameter("value1", reset($attributeValues));
-                    $qb->setParameter("value2", end($attributeValues));
+                    $qb->andWhere('av.float >= :value1');
+                    $qb->andWhere('av.float <= :value2');
+                    $qb->setParameter('value1', reset($attributeValues));
+                    $qb->setParameter('value2', end($attributeValues));
 
                     break;
                 case AttributeValueInterface::STORAGE_TEXT:
-                    $qb->where("av.text IN(:attributeValues)")
-                        ->setParameter("attributeValues", $attributeValues);
+                    $qb->where('av.text IN(:attributeValues)')
+                        ->setParameter('attributeValues', $attributeValues)
+                    ;
 
                     break;
                 default:
                     continue 2;
             }
 
-            $results[$attributeCode] = $qb->andWhere("a.code = :attributeCode")
-                ->andWhere("av.localeCode = :localeCode")
-                ->setParameter("localeCode", $localeCode)
-                ->setParameter("attributeCode", $attributeCode)
+            $results[$attributeCode] = $qb->andWhere('a.code = :attributeCode')
+                ->andWhere('av.localeCode = :localeCode')
+                ->setParameter('localeCode', $localeCode)
+                ->setParameter('attributeCode', $attributeCode)
                 ->getQuery()
-                ->getSingleColumnResult();
+                ->getSingleColumnResult()
+            ;
         }
 
         return $results;
-
-
     }
 
     public function getDescription(
-        string $resourceClass
+        string $resourceClass,
     ): array {
         return [
             'attributes' => [

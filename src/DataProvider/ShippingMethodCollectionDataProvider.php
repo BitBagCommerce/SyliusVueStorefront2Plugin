@@ -36,7 +36,7 @@ final class ShippingMethodCollectionDataProvider implements CollectionDataProvid
         EntityRepository $shippingMethodRepository,
         PaginationExtension $paginationExtension,
         QueryNameGeneratorInterface $queryNameGenerator,
-        iterable $collectionExtensions
+        iterable $collectionExtensions,
     ) {
         $this->shippingMethodRepository = $shippingMethodRepository;
         $this->paginationExtension = $paginationExtension;
@@ -66,7 +66,7 @@ final class ShippingMethodCollectionDataProvider implements CollectionDataProvid
             $queryBuilder,
             $resourceClass,
             $operationName,
-            $context
+            $context,
         );
     }
 }

@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Behat\Model;
+namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Model;
 
 use Symfony\Component\HttpFoundation\Request;
 

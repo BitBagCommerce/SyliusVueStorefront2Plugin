@@ -29,7 +29,7 @@ final class SubresourceIdAwareCommandDataTransformer implements CommandDataTrans
     public function transform(
         $object,
         string $to,
-        array $context = []
+        array $context = [],
     ): SubresourceIdAwareInterface {
         Assert::isInstanceOf($object, SubresourceIdAwareInterface::class);
         if (null !== $object->getSubresourceId()) {

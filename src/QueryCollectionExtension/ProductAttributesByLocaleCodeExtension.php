@@ -23,7 +23,7 @@ final class ProductAttributesByLocaleCodeExtension implements ContextAwareQueryC
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         string $operationName = null,
-        array $context = []
+        array $context = [],
     ): void {
         if (!is_a($resourceClass, ProductAttributeValueInterface::class, true)) {
             return;
@@ -34,6 +34,7 @@ final class ProductAttributesByLocaleCodeExtension implements ContextAwareQueryC
 
         $queryBuilder
             ->andWhere(sprintf('%s.localeCode = :localeCode', $rootAlias))
-            ->setParameter('localeCode', $localeCode);
+            ->setParameter('localeCode', $localeCode)
+        ;
     }
 }

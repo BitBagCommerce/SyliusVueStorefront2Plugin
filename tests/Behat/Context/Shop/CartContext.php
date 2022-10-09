@@ -8,15 +8,15 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Behat\Context\Shop;
+namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
-use BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClient;
-use BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClient;
+use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
@@ -33,7 +33,7 @@ final class CartContext implements Context
         GraphqlClientInterface $client,
         SharedStorageInterface $sharedStorage,
         OrderRepositoryInterface $orderRepository,
-        IriConverterInterface $iriConverter
+        IriConverterInterface $iriConverter,
     ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;

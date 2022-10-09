@@ -36,7 +36,7 @@ final class CountryCollectionDataProvider implements CollectionDataProviderInter
         EntityRepository $countryRepository,
         ContextAwareQueryResultCollectionExtensionInterface $paginationExtension,
         QueryNameGeneratorInterface $queryNameGenerator,
-        iterable $collectionExtensions
+        iterable $collectionExtensions,
     ) {
         $this->countryRepository = $countryRepository;
         $this->paginationExtension = $paginationExtension;
