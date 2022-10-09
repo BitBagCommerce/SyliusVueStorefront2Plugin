@@ -18,7 +18,7 @@ final class TaxonRepository extends BaseTaxonRepository implements TaxonReposito
 {
     public function createChildrenByChannelMenuTaxonQueryBuilder(
         ?TaxonInterface $menuTaxon = null,
-        ?string $locale = null
+        ?string $locale = null,
     ): QueryBuilder {
         return $this->createTranslationBasedQueryBuilder($locale)
             ->addSelect('child')

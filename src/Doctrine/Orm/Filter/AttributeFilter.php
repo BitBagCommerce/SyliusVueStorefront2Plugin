@@ -50,14 +50,14 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
         ?RequestStack $requestStack = null,
         LoggerInterface $logger = null,
         array $properties = null,
-        NameConverterInterface $nameConverter = null
+        NameConverterInterface $nameConverter = null,
     ) {
         parent::__construct(
             $managerRegistry,
             $requestStack,
             $logger,
             $properties,
-            $nameConverter
+            $nameConverter,
         );
 
         $this->iriConverter = $iriConverter;
@@ -70,7 +70,7 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
+        string $operationName = null,
     ): void {
         if ($this->isWrongValueOrProperty($value, $property, $resourceClass)) {
             return;
@@ -101,7 +101,7 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
             (string) $alias,
             $property,
             $attributeId,
-            $extractedValue
+            $extractedValue,
         );
     }
 
@@ -113,7 +113,7 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
         string $field,
         string $attributeId,
         $value,
-        string $operator = self::OPERATOR_EXACT
+        string $operator = self::OPERATOR_EXACT,
     ): void {
         $valueParameter = $queryNameGenerator->generateParameterName($field);
 
@@ -131,10 +131,11 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
                             '%s.%s = :%s',
                             $alias,
                             $attributeType,
-                            $valueParameter
-                        )
+                            $valueParameter,
+                        ),
                     )
-                    ->setParameter($valueParameter, $value);
+                    ->setParameter($valueParameter, $value)
+                ;
 
                 break;
             case self::OPERATOR_PARTIAL:
@@ -144,7 +145,8 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
 
                 $queryBuilder
                     ->andWhere(sprintf('%s.%s > :%s', $alias, $field, $valueParameter))
-                    ->setParameter($valueParameter, $value);
+                    ->setParameter($valueParameter, $value)
+                ;
 
                 break;
         }
@@ -190,8 +192,8 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
                     sprintf(
                         '%s is required for "%s" property',
                         self::ATTRIBUTE_ID,
-                        $property
-                    )
+                        $property,
+                    ),
                 ),
             ]);
 
@@ -209,8 +211,8 @@ class AttributeFilter extends AbstractContextAwareFilter implements FilterInterf
                     sprintf(
                         '%s is required for "%s" property',
                         self::VALUE,
-                        $property
-                    )
+                        $property,
+                    ),
                 ),
             ]);
 

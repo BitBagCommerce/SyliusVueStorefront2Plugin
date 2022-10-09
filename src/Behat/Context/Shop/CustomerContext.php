@@ -37,7 +37,7 @@ final class CustomerContext implements Context
         SharedStorageInterface $sharedStorage,
         UserRepositoryInterface $userRepository,
         ShopUserTokenFactoryInterface $tokenFactory,
-        IriConverterInterface $iriConverter
+        IriConverterInterface $iriConverter,
     ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;

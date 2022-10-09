@@ -45,7 +45,7 @@ final class GraphqlClient implements GraphqlClientInterface
         AbstractBrowser $client,
         SharedStorageInterface $sharedStorage,
         string $authorizationHeader,
-        string $uri
+        string $uri,
     ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
@@ -57,7 +57,7 @@ final class GraphqlClient implements GraphqlClientInterface
     public function prepareOperation(
         string $name,
         string $formattedExpectedData,
-        string $method = Request::METHOD_POST
+        string $method = Request::METHOD_POST,
     ): OperationRequestInterface {
         $operation = '
         mutation <name> ($input: <name>Input!) {
@@ -78,7 +78,7 @@ final class GraphqlClient implements GraphqlClientInterface
     public function prepareQuery(
         string $name,
         string $formattedExpectedData,
-        string $method = Request::METHOD_POST
+        string $method = Request::METHOD_POST,
     ): OperationRequestInterface {
         $operation = '
         query <name> {
@@ -135,7 +135,7 @@ final class GraphqlClient implements GraphqlClientInterface
             $operation->getMethod(),
             $this->uri,
             $operation->getFormatted(),
-            $this->headers->all()
+            $this->headers->all(),
         );
 
         /** @var Response $response */
@@ -230,7 +230,7 @@ final class GraphqlClient implements GraphqlClientInterface
         string $uri,
         array $parameters = [],
         array $server = [],
-        bool $changeHistory = true
+        bool $changeHistory = true,
     ): Crawler {
         $content = json_encode($parameters);
         Assert::string($content);
@@ -254,8 +254,8 @@ final class GraphqlClient implements GraphqlClientInterface
                 sprintf(
                     "Last response did not have any key named %s \n%s",
                     $key,
-                    print_r($flatResponse, true)
-                )
+                    print_r($flatResponse, true),
+                ),
             );
         }
 

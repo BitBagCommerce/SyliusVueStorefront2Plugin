@@ -23,7 +23,7 @@ final class CheckoutContext implements Context
 
     public function __construct(
         GraphqlClientInterface $client,
-        SharedStorageInterface $sharedStorage
+        SharedStorageInterface $sharedStorage,
     ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;

@@ -33,7 +33,7 @@ final class CartContext implements Context
         GraphqlClientInterface $client,
         SharedStorageInterface $sharedStorage,
         OrderRepositoryInterface $orderRepository,
-        IriConverterInterface $iriConverter
+        IriConverterInterface $iriConverter,
     ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;

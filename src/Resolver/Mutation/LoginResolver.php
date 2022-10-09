@@ -47,7 +47,7 @@ final class LoginResolver implements MutationResolverInterface
         OrderRepositoryInterface $orderRepository,
         EncoderFactoryInterface $encoderFactory,
         ShopUserTokenFactoryInterface $tokenFactory,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ) {
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;

@@ -30,7 +30,7 @@ class OperationRequest implements OperationRequestInterface
         string $name,
         string $query,
         array $variables = [],
-        string $method = Request::METHOD_POST
+        string $method = Request::METHOD_POST,
     ) {
         $this->operationName = $name;
         $this->query = $query;
@@ -140,7 +140,7 @@ class OperationRequest implements OperationRequestInterface
         return sprintf(
             "%s: %s,\n",
             $filterName,
-            $processedValue
+            $processedValue,
         );
     }
 

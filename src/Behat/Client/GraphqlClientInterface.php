@@ -20,13 +20,13 @@ interface GraphqlClientInterface
     public function prepareOperation(
         string $name,
         string $formattedExpectedData,
-        string $method = Request::METHOD_POST
+        string $method = Request::METHOD_POST,
     ): OperationRequestInterface;
 
     public function prepareQuery(
         string $name,
         string $formattedExpectedData,
-        string $method = Request::METHOD_POST
+        string $method = Request::METHOD_POST,
     ): OperationRequestInterface;
 
     public function getToken(): ?string;

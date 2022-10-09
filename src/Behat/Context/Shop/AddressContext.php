@@ -39,7 +39,7 @@ final class AddressContext implements Context
         SharedStorageInterface $sharedStorage,
         AddressRepositoryInterface $addressRepository,
         UserRepositoryInterface $userRepository,
-        IriConverterInterface $iriConverter
+        IriConverterInterface $iriConverter,
     ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;

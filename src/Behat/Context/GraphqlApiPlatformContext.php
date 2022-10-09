@@ -152,7 +152,7 @@ final class GraphqlApiPlatformContext implements Context
     public function thatResponseShouldContainKeyWithValue(
         string $key,
         $value,
-        string $type = null
+        string $type = null,
     ): void {
         /** @psalm-suppress MixedAssignment */
         $responseValueAtKey = $this->client->getValueAtKey($key);

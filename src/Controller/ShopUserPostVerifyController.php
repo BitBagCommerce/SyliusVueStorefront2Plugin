@@ -23,7 +23,7 @@ final class ShopUserPostVerifyController
 
     public function __construct(
         ?string $vsf2Host,
-        RouterInterface $router
+        RouterInterface $router,
     ) {
         $this->vsf2Host = $vsf2Host;
         $this->router = $router;
@@ -36,7 +36,7 @@ final class ShopUserPostVerifyController
         }
 
         return new RedirectResponse(
-            $this->router->generate('sylius_shop_account_dashboard')
+            $this->router->generate('sylius_shop_account_dashboard'),
         );
     }
 }

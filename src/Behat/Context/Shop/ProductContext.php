@@ -32,7 +32,7 @@ final class ProductContext implements Context
         GraphqlClientInterface $client,
         SharedStorageInterface $sharedStorage,
         ProductRepositoryInterface $productRepository,
-        IriConverterInterface $iriConverter
+        IriConverterInterface $iriConverter,
     ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;

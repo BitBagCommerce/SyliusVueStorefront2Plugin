@@ -25,7 +25,7 @@ class AddItemToCart implements OrderTokenValueAwareInterface
     public function __construct(
         string $productVariant,
         int $quantity,
-        string $orderTokenValue
+        string $orderTokenValue,
     ) {
         $this->productVariant = $productVariant;
         $this->quantity = $quantity;
