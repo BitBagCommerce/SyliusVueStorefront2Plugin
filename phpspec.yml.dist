@@ -1,4 +1,4 @@
 suites:
     main:
-        namespace: BitBag\SyliusGraphqlPlugin
-        psr4_prefix: BitBag\SyliusGraphqlPlugin
+        namespace: BitBag\SyliusVueStorefront2Plugin
+        psr4_prefix: BitBag\SyliusVueStorefront2Plugin
