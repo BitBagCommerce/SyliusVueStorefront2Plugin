@@ -23,6 +23,7 @@ use Sylius\Component\Attribute\Model\AttributeValueInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Locale\Model\LocaleInterface;
 use Sylius\Component\Product\Model\ProductAttributeInterface;
 use Sylius\Component\Product\Model\ProductAttributeValueInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -68,7 +69,6 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
         $this->iriConverter = $iriConverter;
         $this->identifiersExtractor = $identifiersExtractor;
 
-        $this->propertyAccessor = $propertyAccessor;
         if ($propertyAccessor !== null) {
             $this->propertyAccessor = $propertyAccessor;
         } else {
@@ -113,7 +113,12 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
 
         /** @var ChannelInterface $channel */
         $channel = $this->channelContext->getChannel();
-        $localeCode = $channel->getDefaultLocale()->getCode();
+
+        /** @var LocaleInterface $locale */
+        $locale = $channel->getDefaultLocale();
+
+        /** @var string $localeCode */
+        $localeCode = $locale->getCode();
 
         $storageTypes = $this->getAttributesStorageTypes(array_keys($value));
         $productIds = $this->findAttributedProductIds(
@@ -137,7 +142,7 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
                 AttributeValueInterface::STORAGE_TEXT,
             ];
 
-            if (!in_array($storage, $supportedStorages, false)) {
+            if (!in_array($storage, $supportedStorages, true)) {
                 continue;
             }
 
