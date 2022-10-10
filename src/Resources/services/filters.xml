@@ -158,7 +158,9 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.product_order_filter" parent="api_platform.doctrine.orm.order_filter">
+        <service id="sylius.api.product_order_filter"
+                 parent="api_platform.doctrine.orm.order_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="code" />
                 <argument key="translations.name" />
@@ -168,7 +170,8 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.product_channel_code_filter" parent="api_platform.doctrine.orm.search_filter"
+        <service id="sylius.api.product_channel_code_filter"
+                 parent="api_platform.doctrine.orm.search_filter"
                  autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="channels.code">exact</argument>
@@ -176,7 +179,8 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.product_average_rating_filter" parent="api_platform.doctrine.orm.range_filter"
+        <service id="sylius.api.product_average_rating_filter"
+                 parent="api_platform.doctrine.orm.range_filter"
                  autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="averageRating" />
@@ -184,7 +188,9 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.filter" />
         </service>
 
-        <service id="sylius.api.product_price_order_filter" parent="api_platform.doctrine.orm.order_filter">
+        <service id="sylius.api.product_price_order_filter"
+                 parent="api_platform.doctrine.orm.order_filter"
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="variants.channelPricings.price" />
             </argument>
@@ -217,8 +223,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service id="bitbag.api.product_attribute_values_filter"
                  parent="bitbag.api.product_attribute_values_filter.abstract"
-                 autowire="false"
-                 autoconfigure="false">
+                 autowire="false" autoconfigure="false" public="false">
             <argument type="collection">
                 <argument key="attributes.stringValue">All</argument>ź
             </argument>
