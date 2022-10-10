@@ -26,7 +26,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class SendResetPasswordEmailHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = 'bitbag.sylius_graphql.send_reset_password_email.complete';
+    public const EVENT_NAME = 'bitbag.sylius_vue_storefront2.send_reset_password_email.complete';
 
     private SenderInterface $emailSender;
 

@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class ResetPasswordHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = 'bitbag.sylius_graphql.reset_password.complete';
+    public const EVENT_NAME = 'bitbag.sylius_vue_storefront2.reset_password.complete';
 
     private UserRepositoryInterface $userRepository;
 

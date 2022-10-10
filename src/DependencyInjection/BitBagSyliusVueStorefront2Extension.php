@@ -26,8 +26,8 @@ final class BitBagSyliusVueStorefront2Extension extends Extension
 
         $loader->load('services.xml');
 
-        $container->setParameter('bitbag_sylius_graphql.refresh_token_lifespan', $config['refresh_token_lifespan']);
-        $container->setParameter('bitbag_sylius_graphql.test_endpoint', $config['test_endpoint']);
+        $container->setParameter('bitbag_sylius_vue_storefront2.refresh_token_lifespan', $config['refresh_token_lifespan']);
+        $container->setParameter('bitbag_sylius_vue_storefront2.test_endpoint', $config['test_endpoint']);
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container): ConfigurationInterface
@@ -38,6 +38,6 @@ final class BitBagSyliusVueStorefront2Extension extends Extension
     /** @return string */
     public function getAlias()
     {
-        return 'bitbag_sylius_graphql';
+        return 'bitbag_sylius_vue_storefront2';
     }
 }

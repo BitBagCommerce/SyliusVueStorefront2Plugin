@@ -21,7 +21,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service
-            id="bitbag.sylius_graphql_plugin.controller.shop_user_post_verify"
+            id="bitbag.sylius_vue_storefront2_plugin.controller.shop_user_post_verify"
             class="BitBag\SyliusVueStorefront2Plugin\Controller\ShopUserPostVerifyController"
         >
             <argument type="string">%env(VSF2_HOST)%</argument>

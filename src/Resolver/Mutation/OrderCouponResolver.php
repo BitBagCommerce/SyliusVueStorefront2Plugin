@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
 
 final class OrderCouponResolver implements MutationResolverInterface
 {
-    public const EVENT_NAME = 'bitbag.sylius_graphql.mutation_resolver.order_coupon.complete';
+    public const EVENT_NAME = 'bitbag.sylius_vue_storefront2.mutation_resolver.order_coupon.complete';
 
     private OrderRepositoryInterface $orderRepository;
 

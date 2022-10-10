@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class ApplyCouponToCartHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = 'bitbag.sylius_graphql.apply_coupon_to_cart.complete';
+    public const EVENT_NAME = 'bitbag.sylius_vue_storefront2.apply_coupon_to_cart.complete';
 
     private OrderRepositoryInterface $orderRepository;
 

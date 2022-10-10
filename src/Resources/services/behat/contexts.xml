@@ -5,67 +5,67 @@
     <services>
         <defaults public="true" />
 
-        <service id="bitbag.sylius_graphql_plugin.context.graphql"
+        <service id="bitbag.sylius_vue_storefront2_plugin.context.graphql"
                  class="Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context\GraphqlApiPlatformContext">
-            <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
         </service>
 
-        <service id="bitbag.sylius_graphql_plugin.context.customer"
+        <service id="bitbag.sylius_vue_storefront2_plugin.context.customer"
                  class="Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context\Shop\CustomerContext">
-            <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
             <argument type="service" id="sylius.repository.shop_user" />
-            <argument type="service" id="bitbag.sylius_graphql_plugin.factory.shop_user_token_factory" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.factory.shop_user_token_factory" />
             <argument type="service" id="api_platform.iri_converter" />
         </service>
 
-        <service id="bitbag.sylius_graphql_plugin.context.login"
+        <service id="bitbag.sylius_vue_storefront2_plugin.context.login"
                  class="Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context\Shop\LoginContext">
-            <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
         </service>
 
-        <service id="bitbag.sylius_graphql_plugin.context.registration"
+        <service id="bitbag.sylius_vue_storefront2_plugin.context.registration"
                  class="Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context\Shop\RegistrationContext">
-            <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
         </service>
 
-        <service id="bitbag.sylius_graphql_plugin.context.address"
+        <service id="bitbag.sylius_vue_storefront2_plugin.context.address"
                  class="Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context\Shop\AddressContext">
-            <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
             <argument type="service" id="sylius.repository.address" />
             <argument type="service" id="sylius.repository.shop_user" />
             <argument type="service" id="api_platform.iri_converter" />
         </service>
 
-        <service id="bitbag.sylius_graphql_plugin.context.product"
+        <service id="bitbag.sylius_vue_storefront2_plugin.context.product"
                  class="Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context\Shop\ProductContext">
-            <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
             <argument type="service" id="sylius.repository.product" />
             <argument type="service" id="api_platform.iri_converter" />
         </service>
 
-        <service id="bitbag.sylius_graphql_plugin.context.cart"
+        <service id="bitbag.sylius_vue_storefront2_plugin.context.cart"
                  class="Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context\Shop\CartContext">
-            <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="api_platform.iri_converter" />
         </service>
 
-        <service id="bitbag.sylius_graphql_plugin.context.checkout"
+        <service id="bitbag.sylius_vue_storefront2_plugin.context.checkout"
                  class="Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context\Shop\CheckoutContext">
-            <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
         </service>
 
-        <service id="bitbag.sylius_graphql_plugin.context.taxon"
+        <service id="bitbag.sylius_vue_storefront2_plugin.context.taxon"
                  class="Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context\Shop\TaxonContext">
-            <argument type="service" id="bitbag.sylius_graphql_plugin.behat.client.graphql_client" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
         </service>
     </services>

@@ -23,7 +23,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.collection_data_provider" priority="15" />
         </service>
 
-        <service id="bitbag.sylius_graphql_plugin.data_provider.country_collection_data_provider"
+        <service id="bitbag.sylius_vue_storefront2_plugin.data_provider.country_collection_data_provider"
                  class="BitBag\SyliusVueStorefront2Plugin\DataProvider\CountryCollectionDataProvider">
             <argument type="service" id="sylius.repository.country" />
             <argument type="service" id="api_platform.doctrine.orm.query_extension.pagination" />
@@ -32,7 +32,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.collection_data_provider" priority="15" />
         </service>
 
-        <service id="bitbag.sylius_graphql_plugin.data_provider.shipping_method_collection_data_provider"
+        <service id="bitbag.sylius_vue_storefront2_plugin.data_provider.shipping_method_collection_data_provider"
                  class="BitBag\SyliusVueStorefront2Plugin\DataProvider\ShippingMethodCollectionDataProvider">
             <argument type="service" id="sylius.repository.shipping_method" />
             <argument type="service" id="api_platform.doctrine.orm.query_extension.pagination" />

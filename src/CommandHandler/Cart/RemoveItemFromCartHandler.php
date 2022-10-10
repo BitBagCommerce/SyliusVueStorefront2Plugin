@@ -23,7 +23,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class RemoveItemFromCartHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = 'bitbag.sylius_graphql.remove_item_from_cart.complete';
+    public const EVENT_NAME = 'bitbag.sylius_vue_storefront2.remove_item_from_cart.complete';
 
     private OrderItemRepositoryInterface $orderItemRepository;
 

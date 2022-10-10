@@ -28,7 +28,7 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class ChoosePaymentMethodHandler implements MessageHandlerInterface
 {
-    public const EVENT_NAME = 'bitbag.sylius_graphql.choose_order_payment_method.complete';
+    public const EVENT_NAME = 'bitbag.sylius_vue_storefront2.choose_order_payment_method.complete';
 
     private OrderRepositoryInterface $orderRepository;
 

@@ -23,7 +23,7 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('bitbag_sylius_graphql');
+        $treeBuilder = new TreeBuilder('bitbag_sylius_vue_storefront2');
         /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 

@@ -44,10 +44,10 @@
                         - '%kernel.project_dir%/vendor/bitbag/graphql-plugin/src/Resources/serialization'
     ```
 
-6. Import required config by adding  `config/packages/bitbag_sylius_graphql_plugin.yaml` file:
+6. Import required config by adding  `config/packages/bitbag_sylius_vue_storefront2_plugin.yaml` file:
 
     ```yaml
-    # config/packages/bitbag_sylius_graphql_plugin.yaml
+    # config/packages/bitbag_sylius_vue_storefront2_plugin.yaml
     
     imports:
         - { resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/services.xml" }
@@ -56,7 +56,7 @@
     There are 2 plugin parameters that You can adjust:
    
     ```yml
-    bitbag_sylius_graphql:
+    bitbag_sylius_vue_storefront2:
         refresh_token_lifespan: 2592000 #that its default value
         test_endpoint: 'http://127.0.0.1:8080/api/v2/graphql' #that its default value
     ```
@@ -96,6 +96,6 @@
 9. Import routing in routes.yaml
 
     ```yml
-    bitbag_sylius_graphql_plugin:
+    bitbag_sylius_vue_storefront2_plugin:
         resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/routing.yml"
    ```

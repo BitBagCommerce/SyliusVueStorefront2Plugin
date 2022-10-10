@@ -1,2 +1,2 @@
-bitbag_sylius_graphql_plugin:
+bitbag_sylius_vue_storefront2_plugin:
     resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/routing.yml"

@@ -27,7 +27,7 @@ use Webmozart\Assert\Assert;
 
 final class RefreshTokenResolver implements MutationResolverInterface
 {
-    public const EVENT_NAME = 'bitbag.sylius_graphql.mutation_resolver.refresh_token.complete';
+    public const EVENT_NAME = 'bitbag.sylius_vue_storefront2.mutation_resolver.refresh_token.complete';
 
     private EntityManagerInterface $entityManager;
 

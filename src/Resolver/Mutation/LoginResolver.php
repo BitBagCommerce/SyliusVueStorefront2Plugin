@@ -26,7 +26,7 @@ use Webmozart\Assert\Assert;
 /** @psalm-suppress DeprecatedClass */
 final class LoginResolver implements MutationResolverInterface
 {
-    public const EVENT_NAME = 'bitbag.sylius_graphql.mutation_resolver.login.complete';
+    public const EVENT_NAME = 'bitbag.sylius_vue_storefront2.mutation_resolver.login.complete';
 
     private EncoderFactoryInterface $encoderFactory;
 

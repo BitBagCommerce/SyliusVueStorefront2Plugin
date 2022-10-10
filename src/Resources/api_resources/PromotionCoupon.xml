@@ -14,7 +14,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <attribute name="validation_groups">sylius</attribute>
         <graphql>
             <operation name="shop_get_order">
-                <attribute name="mutation">bitbag.sylius_graphql_plugin.resolver.mutation.order_coupon_resolver</attribute>
+                <attribute name="mutation">bitbag.sylius_vue_storefront2_plugin.resolver.mutation.order_coupon_resolver</attribute>
                 <attribute name="write">false</attribute>
                 <attribute name="args">
                     <attribute name="orderTokenValue">

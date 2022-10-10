@@ -13,13 +13,13 @@ sylius_shop_user_verification:
     defaults:
         _controller: sylius.controller.shop_user:verifyAction
         _sylius:
-            redirect: bitbag_sylius_graphql_shop_user_post_verify
+            redirect: bitbag_sylius_vue_storefront2_shop_user_post_verify
             
-bitbag_sylius_graphql_shop_user_post_verify:
+bitbag_sylius_vue_storefront2_shop_user_post_verify:
     path: /post-verify-action
     methods: [GET]
-    controller: bitbag.sylius_graphql_plugin.controller.shop_user_post_verify:postVerifyAction
+    controller: bitbag.sylius_vue_storefront2_plugin.controller.shop_user_post_verify:postVerifyAction
 
-bitbag_sylius_graphql_shop_product_show:
+bitbag_sylius_vue_storefront2_shop_product_show:
     path: /p/{id}/{slug}
     methods: [ GET ]
