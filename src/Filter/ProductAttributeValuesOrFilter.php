@@ -21,6 +21,7 @@ use Psr\Log\LoggerInterface;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use Sylius\Component\Attribute\Model\AttributeValueInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Product\Model\ProductAttributeInterface;
 use Sylius\Component\Product\Model\ProductAttributeValueInterface;
@@ -66,7 +67,14 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
 
         $this->iriConverter = $iriConverter;
         $this->identifiersExtractor = $identifiersExtractor;
-        $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
+
+        $this->propertyAccessor = $propertyAccessor;
+        if ($propertyAccessor !== null) {
+            $this->propertyAccessor = $propertyAccessor;
+        } else {
+            $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+        }
+
         $this->channelContext = $channelContext;
         $this->productAttributeRepository = $productAttributeRepository;
         $this->entityManager = $entityManager;
@@ -82,6 +90,7 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
         return $this->propertyAccessor;
     }
 
+    /** @return void */
     protected function filterProperty(
         string $property,
         $value,
@@ -102,7 +111,9 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
             return;
         }
 
-        $localeCode = $this->channelContext->getChannel()->getDefaultLocale()->getCode();
+        /** @var ChannelInterface $channel */
+        $channel = $this->channelContext->getChannel();
+        $localeCode = $channel->getDefaultLocale()->getCode();
 
         $storageTypes = $this->getAttributesStorageTypes(array_keys($value));
         $productIds = $this->findAttributedProductIds(
@@ -126,7 +137,7 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
                 AttributeValueInterface::STORAGE_TEXT,
             ];
 
-            if (!in_array($storage, $supportedStorages)) {
+            if (!in_array($storage, $supportedStorages, false)) {
                 continue;
             }
 
