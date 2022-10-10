@@ -6,7 +6,7 @@
         <defaults public="true" />
 
         <service id="bitbag.sylius_graphql_plugin.behat.client.graphql_client"
-                 class="Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClient">
+                 class="Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClient">
             <argument type="service" id="test.client" />
             <argument type="service" id="sylius.behat.shared_storage" />
             <argument type="string">Bearer</argument>

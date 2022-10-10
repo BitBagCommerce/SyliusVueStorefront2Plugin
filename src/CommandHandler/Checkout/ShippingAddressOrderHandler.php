@@ -8,10 +8,10 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout;
+namespace BitBag\SyliusVueStorefront2Plugin\CommandHandler\Checkout;
 
-use BitBag\SyliusGraphqlPlugin\Command\Checkout\ShippingAddressOrder;
-use BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolverInterface;
+use BitBag\SyliusVueStorefront2Plugin\Command\Checkout\ShippingAddressOrder;
+use BitBag\SyliusVueStorefront2Plugin\Resolver\OrderAddressStateResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface;
 use Sylius\Component\Core\Model\AddressInterface;

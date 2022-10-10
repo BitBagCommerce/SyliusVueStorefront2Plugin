@@ -15,14 +15,14 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service
             id="sylius.api.data_transformer.subresource_id_aware_data_transformer"
-            class="BitBag\SyliusGraphqlPlugin\DataTransformer\SubresourceIdAwareCommandDataTransformer"
+            class="BitBag\SyliusVueStorefront2Plugin\DataTransformer\SubresourceIdAwareCommandDataTransformer"
         >
             <argument type="service" id="request_stack" />
             <tag name="sylius.api.command_data_transformer" />
         </service>
 
         <service id="sylius.api.data_transformer.order_token_value_aware_input_data_transformer"
-                 class="BitBag\SyliusGraphqlPlugin\DataTransformer\OrderTokenValueAwareInputCommandDataTransformer">
+                 class="BitBag\SyliusVueStorefront2Plugin\DataTransformer\OrderTokenValueAwareInputCommandDataTransformer">
             <tag name="sylius.api.command_data_transformer" />
         </service>
     </services>

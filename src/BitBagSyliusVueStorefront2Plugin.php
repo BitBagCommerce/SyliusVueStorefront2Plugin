@@ -8,21 +8,21 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin;
+namespace BitBag\SyliusVueStorefront2Plugin;
 
-use BitBag\SyliusGraphqlPlugin\DependencyInjection\BitBagSyliusGraphqlExtension;
+use BitBag\SyliusVueStorefront2Plugin\DependencyInjection\BitBagSyliusVueStorefront2Extension;
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Webmozart\Assert\Assert;
 
-final class BitBagSyliusGraphqlPlugin extends Bundle
+final class BitBagSyliusVueStorefront2Plugin extends Bundle
 {
     use SyliusPluginTrait;
 
     public function getContainerExtension(): ?ExtensionInterface
     {
-        if (!$this->containerExtension instanceof BitBagSyliusGraphqlExtension) {
+        if (!$this->containerExtension instanceof BitBagSyliusVueStorefront2Extension) {
             $extension = $this->createContainerExtension();
             Assert::notNull($extension);
             $this->containerExtension = $extension;

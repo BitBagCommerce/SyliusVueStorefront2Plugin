@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\DataTransformer;
+namespace BitBag\SyliusVueStorefront2Plugin\DataTransformer;
 
 use Sylius\Bundle\ApiBundle\Command\SubresourceIdAwareInterface;
 use Sylius\Bundle\ApiBundle\DataTransformer\CommandDataTransformerInterface;

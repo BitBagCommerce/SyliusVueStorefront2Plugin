@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Serializer\Exception;
+namespace BitBag\SyliusVueStorefront2Plugin\Serializer\Exception;
 
 use Exception;
 use GraphQL\Error\Error;

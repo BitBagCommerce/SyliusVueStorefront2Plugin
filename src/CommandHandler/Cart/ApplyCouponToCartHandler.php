@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\CommandHandler\Cart;
+namespace BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart;
 
-use BitBag\SyliusGraphqlPlugin\Command\Cart\ApplyCouponToCart;
+use BitBag\SyliusVueStorefront2Plugin\Command\Cart\ApplyCouponToCart;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Order\Processor\OrderProcessorInterface;

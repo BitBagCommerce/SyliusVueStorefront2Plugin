@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Model;
+namespace BitBag\SyliusVueStorefront2Plugin\Model;
 
 use Sylius\Component\Attribute\Model\AttributeInterface;
 use Sylius\Component\Product\Model\ProductAttributeValue as BaseAttributeValue;

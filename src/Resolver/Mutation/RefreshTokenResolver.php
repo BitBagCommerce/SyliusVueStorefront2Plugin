@@ -8,11 +8,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Resolver\Mutation;
+namespace BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation;
 
 use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
-use BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactoryInterface;
-use BitBag\SyliusGraphqlPlugin\Model\ShopUserTokenInterface;
+use BitBag\SyliusVueStorefront2Plugin\Factory\ShopUserTokenFactoryInterface;
+use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserTokenInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectRepository;

@@ -8,10 +8,10 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\CommandHandler\Cart;
+namespace BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
-use BitBag\SyliusGraphqlPlugin\Command\Cart\AddItemToCart;
+use BitBag\SyliusVueStorefront2Plugin\Command\Cart\AddItemToCart;
 use Sylius\Component\Core\Factory\CartItemFactoryInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;

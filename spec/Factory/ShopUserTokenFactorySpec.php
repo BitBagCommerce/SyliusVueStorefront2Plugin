@@ -8,10 +8,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\Factory;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\Factory;
 
-use BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactory;
-use BitBag\SyliusGraphqlPlugin\Model\ShopUserToken;
+use BitBag\SyliusVueStorefront2Plugin\Factory\ShopUserTokenFactory;
+use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserToken;
 use Doctrine\ORM\EntityManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;

@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\DataProvider;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\DataProvider;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryResultCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\PaginationExtension;
@@ -17,7 +17,7 @@ use ApiPlatform\Core\DataProvider\Pagination;
 use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\State\Pagination\PaginatorInterface;
-use BitBag\SyliusGraphqlPlugin\DataProvider\CountryCollectionDataProvider;
+use BitBag\SyliusVueStorefront2Plugin\DataProvider\CountryCollectionDataProvider;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;

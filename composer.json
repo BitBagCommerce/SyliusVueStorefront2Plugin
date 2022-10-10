@@ -1,10 +1,11 @@
 {
-    "name": "bitbag/graphql-plugin",
+    "name": "bitbag/vue-storefront2-plugin",
     "type": "sylius-plugin",
-    "description": "GraphQL Plugin on top of ApiPlatform for Sylius",
+    "description": "Sylius backend integration for Vue Storefront 2",
     "keywords": [
         "sylius",
         "sylius-plugin",
+        "vue-storefront2",
         "graphql",
         "api-platform"
     ],
@@ -64,8 +65,8 @@
     },
     "autoload": {
         "psr-4": {
-            "BitBag\\SyliusGraphqlPlugin\\": "src/",
-            "Tests\\BitBag\\SyliusGraphqlPlugin\\": [
+            "BitBag\\SyliusVueStorefront2Plugin\\": "src/",
+            "Tests\\BitBag\\SyliusVueStorefront2Plugin\\": [
                 "tests/",
                 "tests/Application/src"
             ]
@@ -73,8 +74,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "spec\\BitBag\\SyliusGraphqlPlugin\\": "spec/",
-            "Tests\\BitBag\\SyliusGraphqlPlugin\\Behat\\": "tests/Behat"
+            "spec\\BitBag\\SyliusVueStorefront2Plugin\\": "spec/",
+            "Tests\\BitBag\\SyliusVueStorefront2Plugin\\Behat\\": "tests/Behat"
         },
         "classmap": [
             "tests/Application/Kernel.php"

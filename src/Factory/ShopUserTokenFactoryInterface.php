@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Factory;
+namespace BitBag\SyliusVueStorefront2Plugin\Factory;
 
-use BitBag\SyliusGraphqlPlugin\Model\ShopUserTokenInterface;
+use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserTokenInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 

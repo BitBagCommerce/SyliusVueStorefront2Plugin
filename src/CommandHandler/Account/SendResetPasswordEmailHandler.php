@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\CommandHandler\Account;
+namespace BitBag\SyliusVueStorefront2Plugin\CommandHandler\Account;
 
-use BitBag\SyliusGraphqlPlugin\Command\Account\SendResetPasswordEmail;
+use BitBag\SyliusVueStorefront2Plugin\Command\Account\SendResetPasswordEmail;
 use Sylius\Bundle\CoreBundle\Mailer\Emails;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;

@@ -8,10 +8,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\Controller;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\Controller;
 
-use BitBag\SyliusGraphqlPlugin\Command\Cart\RemoveItemFromCart;
-use BitBag\SyliusGraphqlPlugin\Controller\DeleteOrderItemAction;
+use BitBag\SyliusVueStorefront2Plugin\Command\Cart\RemoveItemFromCart;
+use BitBag\SyliusVueStorefront2Plugin\Controller\DeleteOrderItemAction;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

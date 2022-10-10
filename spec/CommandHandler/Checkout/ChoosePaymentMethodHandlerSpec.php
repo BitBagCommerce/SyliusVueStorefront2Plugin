@@ -8,10 +8,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\CommandHandler\Checkout;
 
-use BitBag\SyliusGraphqlPlugin\Command\Checkout\ChoosePaymentMethod;
-use BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout\ChoosePaymentMethodHandler;
+use BitBag\SyliusVueStorefront2Plugin\Command\Checkout\ChoosePaymentMethod;
+use BitBag\SyliusVueStorefront2Plugin\CommandHandler\Checkout\ChoosePaymentMethodHandler;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use SM\Factory\FactoryInterface;

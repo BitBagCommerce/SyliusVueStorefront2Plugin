@@ -14,7 +14,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <defaults autowire="false" autoconfigure="false" public="false" />
 
         <service id="sylius.api.collection_data_provider.taxon"
-                 class="BitBag\SyliusGraphqlPlugin\DataProvider\TaxonCollectionDataProvider">
+                 class="BitBag\SyliusVueStorefront2Plugin\DataProvider\TaxonCollectionDataProvider">
             <argument type="service" id="sylius.repository.taxon" />
             <argument type="service" id="api_platform.doctrine.orm.query_extension.pagination" />
             <argument type="service" id="Sylius\Bundle\ApiBundle\Context\UserContextInterface" />
@@ -24,7 +24,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service id="bitbag.sylius_graphql_plugin.data_provider.country_collection_data_provider"
-                 class="BitBag\SyliusGraphqlPlugin\DataProvider\CountryCollectionDataProvider">
+                 class="BitBag\SyliusVueStorefront2Plugin\DataProvider\CountryCollectionDataProvider">
             <argument type="service" id="sylius.repository.country" />
             <argument type="service" id="api_platform.doctrine.orm.query_extension.pagination" />
             <argument type="service" id="api_platform.core.bridge.doctrine.orm.util.query_name_generator" />
@@ -33,7 +33,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service id="bitbag.sylius_graphql_plugin.data_provider.shipping_method_collection_data_provider"
-                 class="BitBag\SyliusGraphqlPlugin\DataProvider\ShippingMethodCollectionDataProvider">
+                 class="BitBag\SyliusVueStorefront2Plugin\DataProvider\ShippingMethodCollectionDataProvider">
             <argument type="service" id="sylius.repository.shipping_method" />
             <argument type="service" id="api_platform.doctrine.orm.query_extension.pagination" />
             <argument type="service" id="api_platform.core.bridge.doctrine.orm.util.query_name_generator" />

@@ -14,7 +14,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <defaults autowire="false" autoconfigure="false" public="false" />
 
         <service id="Sylius\Bundle\ApiBundle\CommandHandler\Cart\RemoveItemFromCartHandler"
-            class="BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\RemoveItemFromCartHandler">
+            class="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart\RemoveItemFromCartHandler">
             <argument type="service" id="sylius.repository.order_item" />
             <argument type="service" id="sylius.order_modifier" />
             <argument type="service" id="event_dispatcher" />
@@ -24,7 +24,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service
             id="Sylius\Bundle\ApiBundle\CommandHandler\Cart\ChangeItemQuantityInCartHandler"
-            class="BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\ChangeItemQuantityInCartHandler"
+            class="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart\ChangeItemQuantityInCartHandler"
         >
             <argument type="service" id="sylius.repository.order_item" />
             <argument type="service" id="sylius.order_item_quantity_modifier" />
@@ -37,7 +37,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service
             id="Sylius\Bundle\ApiBundle\CommandHandler\Checkout\ChooseShippingMethodHandler"
-            class="BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout\ChooseShippingMethodHandler"
+            class="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Checkout\ChooseShippingMethodHandler"
         >
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.repository.shipping_method" />
@@ -51,7 +51,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service
             id="Sylius\Bundle\ApiBundle\CommandHandler\Checkout\ChoosePaymentMethodHandler"
-            class="BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout\ChoosePaymentMethodHandler"
+            class="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Checkout\ChoosePaymentMethodHandler"
         >
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.repository.payment_method" />
@@ -63,7 +63,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
 
-        <service id="BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout\ShippingAddressOrderHandler" >
+        <service id="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Checkout\ShippingAddressOrderHandler" >
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.manager.order" />
             <argument type="service" id="Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface" />
@@ -73,7 +73,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
 
-        <service id="BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout\BillingAddressOrderHandler" >
+        <service id="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Checkout\BillingAddressOrderHandler" >
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.manager.order" />
             <argument type="service" id="Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface" />
@@ -85,7 +85,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service id="Sylius\Bundle\ApiBundle\CommandHandler\Cart\ApplyCouponToCartHandler"
-                 class="BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\ApplyCouponToCartHandler"
+                 class="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart\ApplyCouponToCartHandler"
         >
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.repository.promotion_coupon" />
@@ -95,8 +95,8 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
 
-        <service class="BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\RemoveCouponFromCartHandler"
-                 id="BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\RemoveCouponFromCartHandler"
+        <service class="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart\RemoveCouponFromCartHandler"
+                 id="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart\RemoveCouponFromCartHandler"
         >
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.repository.promotion_coupon" />
@@ -106,7 +106,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
 
-        <service id="BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\AddItemToCartHandler">
+        <service id="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart\AddItemToCartHandler">
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.order_modifier" />
             <argument type="service" id="sylius.factory.order_item" />
@@ -117,7 +117,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
 
-        <service id="BitBag\SyliusGraphqlPlugin\CommandHandler\Account\SendResetPasswordEmailHandler" >
+        <service id="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Account\SendResetPasswordEmailHandler" >
             <argument type="service" id="sylius.email_sender" />
             <argument type="service" id="sylius.context.channel.single_channel" />
             <argument type="service" id="sylius.repository.shop_user" />
@@ -127,7 +127,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
 
-        <service id="BitBag\SyliusGraphqlPlugin\CommandHandler\Account\ResetPasswordHandler" >
+        <service id="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Account\ResetPasswordHandler" >
             <argument type="service" id="sylius.repository.shop_user" />
             <argument type="service">
                 <service class="Sylius\Component\Resource\Metadata\MetadataInterface">

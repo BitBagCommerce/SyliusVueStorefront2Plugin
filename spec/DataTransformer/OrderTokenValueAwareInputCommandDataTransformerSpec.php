@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\DataTransformer;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\DataTransformer;
 
-use BitBag\SyliusGraphqlPlugin\DataTransformer\OrderTokenValueAwareInputCommandDataTransformer;
+use BitBag\SyliusVueStorefront2Plugin\DataTransformer\OrderTokenValueAwareInputCommandDataTransformer;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 use Sylius\Component\Core\Model\OrderInterface;

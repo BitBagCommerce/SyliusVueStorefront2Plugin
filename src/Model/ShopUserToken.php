@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Model;
+namespace BitBag\SyliusVueStorefront2Plugin\Model;
 
 use Sylius\Component\Core\Model\ShopUserInterface;
 

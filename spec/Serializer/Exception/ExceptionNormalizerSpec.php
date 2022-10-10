@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\Serializer\Exception;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\Serializer\Exception;
 
-use BitBag\SyliusGraphqlPlugin\Serializer\Exception\ExceptionNormalizer;
+use BitBag\SyliusVueStorefront2Plugin\Serializer\Exception\ExceptionNormalizer;
 use GraphQL\Error\Error;
 use PhpSpec\ObjectBehavior;
 

@@ -201,7 +201,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service id="bitbag.api.product_attribute_values_filter.abstract"
-                 class="BitBag\SyliusGraphqlPlugin\Filter\ProductAttributeValuesOrFilter"
+                 class="BitBag\SyliusVueStorefront2Plugin\Filter\ProductAttributeValuesOrFilter"
                  public="false" abstract="true">
             <argument type="service" id="sylius.repository.product_attribute" />
             <argument type="service" id="doctrine.orm.default_entity_manager" />

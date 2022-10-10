@@ -14,7 +14,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <service
             id="api_platform.metadata.resource.metadata_factory.interface"
             decorates="api_platform.metadata.resource.metadata_factory"
-            class="BitBag\SyliusGraphqlPlugin\Metadata\Resource\Factory\InterfaceExtractorResourceMetadataFactory"
+            class="BitBag\SyliusVueStorefront2Plugin\Metadata\Resource\Factory\InterfaceExtractorResourceMetadataFactory"
             decoration-priority="100"
         >
             <argument type="service" id="api_platform.metadata.extractor.xml" />
@@ -24,7 +24,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <service
             id="api_platform.metadata.resource.metadata_factory.reflection"
             decorates="api_platform.metadata.resource.metadata_factory"
-            class="BitBag\SyliusGraphqlPlugin\Metadata\Resource\Factory\ReflectionClassResourceMetadataFactory"
+            class="BitBag\SyliusVueStorefront2Plugin\Metadata\Resource\Factory\ReflectionClassResourceMetadataFactory"
             decoration-priority="200"
         >
             <argument type="service" id="api_platform.metadata.resource.metadata_factory.reflection.inner" />

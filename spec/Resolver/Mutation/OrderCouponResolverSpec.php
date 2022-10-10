@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\Resolver\Mutation;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation;
 
-use BitBag\SyliusGraphqlPlugin\Resolver\Mutation\OrderCouponResolver;
+use BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation\OrderCouponResolver;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Bundle\ApiBundle\Context\UserContextInterface;

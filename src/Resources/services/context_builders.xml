@@ -15,7 +15,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service
             id="sylius_api.serializer_context_builder.graphql.channel"
-            class="BitBag\SyliusGraphqlPlugin\SerializerContextBuilder\GraphQL\ChannelContextBuilder"
+            class="BitBag\SyliusVueStorefront2Plugin\SerializerContextBuilder\GraphQL\ChannelContextBuilder"
             decorates="api_platform.graphql.serializer.context_builder"
             decoration-priority="64"
         >
@@ -25,7 +25,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service
             id="sylius_api.serializer_context_builder.graphql.locale"
-            class="BitBag\SyliusGraphqlPlugin\SerializerContextBuilder\GraphQL\LocaleContextBuilder"
+            class="BitBag\SyliusVueStorefront2Plugin\SerializerContextBuilder\GraphQL\LocaleContextBuilder"
             decorates="api_platform.graphql.serializer.context_builder"
             decoration-priority="64"
         >
@@ -35,7 +35,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service
             id="sylius_api.serializer_context_builder.graphql.http_request_method_type"
-            class="BitBag\SyliusGraphqlPlugin\SerializerContextBuilder\GraphQL\HttpRequestMethodTypeContextBuilder"
+            class="BitBag\SyliusVueStorefront2Plugin\SerializerContextBuilder\GraphQL\HttpRequestMethodTypeContextBuilder"
             decorates="api_platform.graphql.serializer.context_builder"
             decoration-priority="64"
         >

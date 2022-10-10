@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Client;
+namespace Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client;
 
 use Exception;
 use RecursiveArrayIterator;
@@ -20,8 +20,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequest;
-use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
+use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Model\OperationRequest;
+use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Model\OperationRequestInterface;
 use Webmozart\Assert\Assert;
 use const JSON_ERROR_NONE;
 

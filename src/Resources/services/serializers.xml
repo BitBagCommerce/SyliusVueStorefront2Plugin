@@ -12,7 +12,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <defaults autowire="false" autoconfigure="false" public="false" />
 
         <service id="bitbag.sylius_graphql_plugin.serializer.exception.exception_normalizer"
-                 class="BitBag\SyliusGraphqlPlugin\Serializer\Exception\ExceptionNormalizer">
+                 class="BitBag\SyliusVueStorefront2Plugin\Serializer\Exception\ExceptionNormalizer">
             <tag name="serializer.normalizer" priority="20" />
         </service>
 

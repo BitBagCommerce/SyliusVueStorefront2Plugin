@@ -1,6 +1,6 @@
-# [![](https://bitbag.io/wp-content/uploads/2021/10/graphql.png)](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql)
+# [![](https://bitbag.io/wp-content/uploads/2022/10/SyliusVueStorefront2Plugin-1.png )](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql)
 
-# BitBag SyliusGraphqlPlugin
+# BitBag SyliusVueStorefront2Plugin
 
 ----
 
@@ -26,11 +26,12 @@ Like what we do? Want to join us? Check out our job listings on our [career page
 
 ## Overview
 
-This plugin allows you to expose all critical models and operations as graphql queries and mutations<br />
-It uses api-platform with xml mappings for models
-It also handles JWT communication
+This plugin allows you to integrate Sylius backend with Vue Storefront 2 application. 
 
-To check automatically generated API Doc for graphql in Your project - visit one of following endpoints.
+This plugin allows you to expose all critical models and operations as graphql queries and mutations<br />
+It unlocks graphql-based API on top of ApiPlatform and JWT.
+
+To check automatically generated GraphQL API Doc for your Vue Storefront 2 application - visit one of the following endpoints.
 
 ```
   api_graphql_entrypoint              /api/v2/graphql                                                                   
@@ -40,17 +41,14 @@ To check automatically generated API Doc for graphql in Your project - visit one
 
 Please note that many of used functions and approaches both on Sylius and API Platform with Graphql support are still marked as experimental.
 
-**This plugin is needed, if you want to integrate Sylius with Vue Storefront 2.
-Please check out the awesome frontend integration package from our Realtainment friends to make it happen: https://github.com/RealtainmentBerlin/vuestorefront-sylius**
-
 ### Requirements
 
-The plugin uses following 3rd party 
+The plugin uses following 3rd party packages: 
 
 
-`"sylius/sylius": "^1.10"` as it supports API Platform from that version<br />
-`"webonyx/graphql-php": at stable version`<br />
-`"gesdinet/jwt-refresh-token-bundle"` for logging purposes
+- `"sylius/sylius": "~1.11.0"`<br />
+- `"webonyx/graphql-php": ^14.9`<br />
+- `"gesdinet/jwt-refresh-token-bundle": ^0.12.0`
 
 ## We are here to help
 This **open-source plugin was developed to help the Sylius community**. If you have any additional questions, would like help with installing or configuring the plugin or need any assistance with your Sylius project - let us know!

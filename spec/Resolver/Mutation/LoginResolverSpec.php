@@ -8,11 +8,11 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\Resolver\Mutation;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation;
 
-use BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactoryInterface;
-use BitBag\SyliusGraphqlPlugin\Model\ShopUserTokenInterface;
-use BitBag\SyliusGraphqlPlugin\Resolver\Mutation\LoginResolver;
+use BitBag\SyliusVueStorefront2Plugin\Factory\ShopUserTokenFactoryInterface;
+use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserTokenInterface;
+use BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation\LoginResolver;
 use Doctrine\ORM\EntityManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use PhpSpec\ObjectBehavior;

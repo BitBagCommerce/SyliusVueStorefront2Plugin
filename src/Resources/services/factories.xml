@@ -13,7 +13,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service
             id="bitbag.sylius_graphql_plugin.factory.shop_user_token_factory"
-            class="BitBag\SyliusGraphqlPlugin\Factory\ShopUserTokenFactory"
+            class="BitBag\SyliusVueStorefront2Plugin\Factory\ShopUserTokenFactory"
         >
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="lexik_jwt_authentication.jwt_manager" />

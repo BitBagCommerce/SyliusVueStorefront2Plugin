@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\Command\Cart;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\Command\Cart;
 
-use BitBag\SyliusGraphqlPlugin\Command\Cart\ApplyCouponToCart;
+use BitBag\SyliusVueStorefront2Plugin\Command\Cart\ApplyCouponToCart;
 use PhpSpec\ObjectBehavior;
 
 final class ApplyCouponToCartSpec extends ObjectBehavior

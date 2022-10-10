@@ -12,7 +12,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <defaults autowire="false" autoconfigure="false" public="false" />
 
         <service id="bitbag.sylius_graphql_plugin.resolver.mutation.login_resolver"
-                 class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\LoginResolver">
+                 class="BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation\LoginResolver">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="sylius.repository.shop_user" />
             <argument type="service" id="sylius.repository.order" />
@@ -23,7 +23,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service id="bitbag.sylius_graphql_plugin.resolver.mutation.order_coupon_resolver"
-                 class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\OrderCouponResolver">
+                 class="BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation\OrderCouponResolver">
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="Sylius\Bundle\ApiBundle\Context\UserContextInterface" />
             <argument type="service" id="event_dispatcher" />
@@ -31,7 +31,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service id="bitbag.sylius_graphql_plugin.resolver.mutation.refresh_token_resolver"
-                 class="BitBag\SyliusGraphqlPlugin\Resolver\Mutation\RefreshTokenResolver">
+                 class="BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation\RefreshTokenResolver">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="bitbag.sylius_graphql_plugin.factory.shop_user_token_factory" />
             <argument type="service" id="sylius.repository.shop_user" />
@@ -41,7 +41,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service id="bitbag.sylius_graphql_plugin.resolver.order_address_state_resolver"
-                 class="BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolver">
+                 class="BitBag\SyliusVueStorefront2Plugin\Resolver\OrderAddressStateResolver">
             <argument type="service" id="sm.factory" />
         </service>
     </services>

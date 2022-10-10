@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Controller;
+namespace BitBag\SyliusVueStorefront2Plugin\Controller;
 
-use BitBag\SyliusGraphqlPlugin\Command\Cart\RemoveItemFromCart;
+use BitBag\SyliusVueStorefront2Plugin\Command\Cart\RemoveItemFromCart;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

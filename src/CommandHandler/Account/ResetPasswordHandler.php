@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\CommandHandler\Account;
+namespace BitBag\SyliusVueStorefront2Plugin\CommandHandler\Account;
 
-use BitBag\SyliusGraphqlPlugin\Command\Account\ResetPassword;
+use BitBag\SyliusVueStorefront2Plugin\Command\Account\ResetPassword;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Customer\Model\CustomerInterface;
 use Sylius\Component\Resource\Metadata\MetadataInterface;

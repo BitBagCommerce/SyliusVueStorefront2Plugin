@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\DataTransformer;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\DataTransformer;
 
-use BitBag\SyliusGraphqlPlugin\DataTransformer\SubresourceIdAwareCommandDataTransformer;
+use BitBag\SyliusVueStorefront2Plugin\DataTransformer\SubresourceIdAwareCommandDataTransformer;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ApiBundle\Command\SubresourceIdAwareInterface;
 use Symfony\Component\HttpFoundation\Request;

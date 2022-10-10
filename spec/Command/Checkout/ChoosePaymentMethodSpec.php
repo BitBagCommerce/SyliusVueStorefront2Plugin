@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\Command\Checkout;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\Command\Checkout;
 
-use BitBag\SyliusGraphqlPlugin\Command\Checkout\ChoosePaymentMethod;
+use BitBag\SyliusVueStorefront2Plugin\Command\Checkout\ChoosePaymentMethod;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ApiBundle\Command\OrderTokenValueAwareInterface;
 use Sylius\Bundle\ApiBundle\Command\PaymentMethodCodeAwareInterface;

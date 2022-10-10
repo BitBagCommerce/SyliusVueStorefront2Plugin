@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Resolver\Mutation;
+namespace BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation;
 
 use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
 use Sylius\Bundle\ApiBundle\Context\UserContextInterface;

@@ -8,10 +8,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\SerializerContextBuilder\GraphQL;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\SerializerContextBuilder\GraphQL;
 
 use ApiPlatform\Core\GraphQl\Serializer\SerializerContextBuilderInterface;
-use BitBag\SyliusGraphqlPlugin\SerializerContextBuilder\GraphQL\LocaleContextBuilder;
+use BitBag\SyliusVueStorefront2Plugin\SerializerContextBuilder\GraphQL\LocaleContextBuilder;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
 use Sylius\Component\Locale\Context\LocaleContextInterface;

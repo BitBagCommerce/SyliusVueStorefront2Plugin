@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Context;
+namespace Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context;
 
 use Behat\Behat\Context\Context;
 use Exception;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
-use Tests\BitBag\SyliusGraphqlPlugin\Behat\Model\OperationRequestInterface;
+use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClientInterface;
+use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Model\OperationRequestInterface;
 use Webmozart\Assert\Assert;
 
 /** Context for GraphQL. */

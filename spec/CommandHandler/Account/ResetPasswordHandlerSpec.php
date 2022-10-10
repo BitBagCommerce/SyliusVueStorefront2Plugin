@@ -8,10 +8,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\CommandHandler\Account;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\CommandHandler\Account;
 
-use BitBag\SyliusGraphqlPlugin\Command\Account\ResetPassword;
-use BitBag\SyliusGraphqlPlugin\CommandHandler\Account\ResetPasswordHandler;
+use BitBag\SyliusVueStorefront2Plugin\Command\Account\ResetPassword;
+use BitBag\SyliusVueStorefront2Plugin\CommandHandler\Account\ResetPasswordHandler;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Component\Core\Model\ShopUserInterface;

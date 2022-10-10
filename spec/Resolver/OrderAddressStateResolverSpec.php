@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\Resolver;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\Resolver;
 
-use BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolver;
+use BitBag\SyliusVueStorefront2Plugin\Resolver\OrderAddressStateResolver;
 use PhpSpec\ObjectBehavior;
 use SM\Factory\FactoryInterface as StateMachineFactoryInterface;
 use SM\StateMachine\StateMachineInterface;

@@ -8,10 +8,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\CommandHandler\Account;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\CommandHandler\Account;
 
-use BitBag\SyliusGraphqlPlugin\Command\Account\SendResetPasswordEmail;
-use BitBag\SyliusGraphqlPlugin\CommandHandler\Account\SendResetPasswordEmailHandler;
+use BitBag\SyliusVueStorefront2Plugin\Command\Account\SendResetPasswordEmail;
+use BitBag\SyliusVueStorefront2Plugin\CommandHandler\Account\SendResetPasswordEmailHandler;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Bundle\CoreBundle\Mailer\Emails;

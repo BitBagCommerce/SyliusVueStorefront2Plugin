@@ -8,15 +8,15 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\DataProvider;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\DataProvider;
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\PaginationExtension;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Core\DataProvider\Pagination;
 use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
-use BitBag\SyliusGraphqlPlugin\DataProvider\TaxonCollectionDataProvider;
-use BitBag\SyliusGraphqlPlugin\Doctrine\Repository\TaxonRepositoryInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataProvider\TaxonCollectionDataProvider;
+use BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\TaxonRepositoryInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ApiBundle\Context\UserContextInterface;

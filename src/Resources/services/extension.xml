@@ -13,7 +13,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service
             id="bitbag.api.doctrine.query_collection_extension.products_attributes_locale_code"
-            class="BitBag\SyliusGraphqlPlugin\QueryCollectionExtension\ProductAttributesByLocaleCodeExtension"
+            class="BitBag\SyliusVueStorefront2Plugin\QueryCollectionExtension\ProductAttributesByLocaleCodeExtension"
             public="false"
         >
             <tag name="api_platform.doctrine.orm.query_extension.collection" />

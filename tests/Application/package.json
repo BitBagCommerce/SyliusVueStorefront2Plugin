@@ -1,4 +1,10 @@
 {
+  "author": "Developers from BitBag",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BitBagCommerce/SyliusVueStorefront2Plugin"
+  },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
     "chart.js": "^2.9.3",
@@ -48,11 +54,5 @@
     "gulp": "gulp build",
     "lint": "yarn lint:js",
     "lint:js": "eslint gulpfile.babel.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Sylius/Sylius.git"
-  },
-  "author": "Paweł Jędrzejewski",
-  "license": "MIT"
+  }
 }

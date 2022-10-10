@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\Command\Cart;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\Command\Cart;
 
-use BitBag\SyliusGraphqlPlugin\Command\Cart\RemoveItemFromCart;
+use BitBag\SyliusVueStorefront2Plugin\Command\Cart\RemoveItemFromCart;
 use PhpSpec\ObjectBehavior;
 
 final class RemoveItemFromCartSpec extends ObjectBehavior

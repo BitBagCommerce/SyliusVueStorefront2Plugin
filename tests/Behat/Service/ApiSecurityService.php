@@ -8,14 +8,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Service;
+namespace Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Service;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Authentication\Token\JWTUserToken;
 use Sylius\Behat\Service\SecurityServiceInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\User\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
+use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClientInterface;
 use Webmozart\Assert\Assert;
 
 final class ApiSecurityService implements SecurityServiceInterface

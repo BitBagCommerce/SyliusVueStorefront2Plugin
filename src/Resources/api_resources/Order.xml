@@ -31,7 +31,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <operation name="shop_add_item">
                 <attribute name="method">PATCH</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Cart\AddItemToCart</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Cart\AddItemToCart</attribute>
                 <attribute name="args">
                     <attribute name="orderTokenValue">
                         <attribute name="type">String</attribute>
@@ -48,7 +48,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <operation name="shop_remove_item">
                 <attribute name="method">DELETE</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Cart\RemoveItemFromCart</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Cart\RemoveItemFromCart</attribute>
                 <attribute name="args">
                     <attribute name="id">
                         <attribute name="type">String</attribute>
@@ -62,7 +62,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <operation name="shop_change_quantity">
                 <attribute name="method">PATCH</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Cart\ChangeItemQuantityInCart</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Cart\ChangeItemQuantityInCart</attribute>
                 <attribute name="args">
                     <attribute name="id">
                         <attribute name="type">String</attribute>
@@ -88,7 +88,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <operation name="shop_add_shipping_address">
                 <attribute name="method">PATCH</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\ShippingAddressOrder</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Checkout\ShippingAddressOrder</attribute>
                 <attribute name="args">
                     <attribute name="email">
                         <attribute name="type">String</attribute>
@@ -105,7 +105,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <operation name="shop_add_billing_address">
                 <attribute name="method">PATCH</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\BillingAddressOrder</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Checkout\BillingAddressOrder</attribute>
                 <attribute name="args">
                     <attribute name="email">
                         <attribute name="type">String</attribute>
@@ -122,7 +122,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <operation name="shop_select_shipping_method">
                 <attribute name="method">PATCH</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\ChooseShippingMethod</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Checkout\ChooseShippingMethod</attribute>
                 <attribute name="args">
                     <attribute name="shipmentId">
                         <attribute name="type">String</attribute>
@@ -139,7 +139,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <operation name="shop_select_payment_method">
                 <attribute name="method">PATCH</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Checkout\ChoosePaymentMethod</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Checkout\ChoosePaymentMethod</attribute>
                 <attribute name="args">
                     <attribute name="paymentId">
                         <attribute name="type">String</attribute>
@@ -156,7 +156,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <operation name="shop_apply_coupon">
                 <attribute name="method">PATCH</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Cart\ApplyCouponToCart</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Cart\ApplyCouponToCart</attribute>
                 <attribute name="args">
                     <attribute name="couponCode">
                         <attribute name="type">String</attribute>
@@ -170,7 +170,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <operation name="shop_remove_coupon">
                 <attribute name="method">PATCH</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Cart\RemoveCouponFromCart</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Cart\RemoveCouponFromCart</attribute>
                 <attribute name="args">
                     <attribute name="couponCode">
                         <attribute name="type">String</attribute>
@@ -488,7 +488,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 <attribute name="method">PATCH</attribute>
                 <attribute name="path">/shop/orders/{tokenValue}/items/{orderItemId}</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Cart\ChangeItemQuantityInCart</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Cart\ChangeItemQuantityInCart</attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:cart:change_quantity</attribute>
                 </attribute>

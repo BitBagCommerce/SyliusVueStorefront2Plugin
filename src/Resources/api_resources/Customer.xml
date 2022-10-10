@@ -77,7 +77,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
             <operation name="shop_send_reset_password_email">
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Account\SendResetPasswordEmail</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Account\SendResetPasswordEmail</attribute>
                 <attribute name="args">
                     <attribute name="email">
                         <attribute name="type">String!</attribute>
@@ -91,7 +91,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <operation name="shop_reset_password">
                 <attribute name="method">PATCH</attribute>
                 <attribute name="messenger">input</attribute>
-                <attribute name="input">BitBag\SyliusGraphqlPlugin\Command\Account\ResetPassword</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Account\ResetPassword</attribute>
                 <attribute name="args">
                     <attribute name="newPassword">
                         <attribute name="type">String!</attribute>

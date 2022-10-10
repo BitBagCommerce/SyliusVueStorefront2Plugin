@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\Command\Cart;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\Command\Cart;
 
-use BitBag\SyliusGraphqlPlugin\Command\Cart\ChangeItemQuantityInCart;
+use BitBag\SyliusVueStorefront2Plugin\Command\Cart\ChangeItemQuantityInCart;
 use PhpSpec\ObjectBehavior;
 
 final class ChangeItemQuantityInCartSpec extends ObjectBehavior

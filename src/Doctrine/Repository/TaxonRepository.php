@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Doctrine\Repository;
+namespace BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository;
 
 use Doctrine\ORM\QueryBuilder;
 use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository as BaseTaxonRepository;

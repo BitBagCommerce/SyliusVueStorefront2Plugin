@@ -8,10 +8,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\SerializerContextBuilder\GraphQL;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\SerializerContextBuilder\GraphQL;
 
 use ApiPlatform\Core\GraphQl\Serializer\SerializerContextBuilderInterface;
-use BitBag\SyliusGraphqlPlugin\SerializerContextBuilder\GraphQL\ChannelContextBuilder;
+use BitBag\SyliusVueStorefront2Plugin\SerializerContextBuilder\GraphQL\ChannelContextBuilder;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
 use Sylius\Component\Channel\Context\ChannelContextInterface;

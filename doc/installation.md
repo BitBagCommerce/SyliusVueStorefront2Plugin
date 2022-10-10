@@ -13,7 +13,7 @@
         return [
          ...
         
-            BitBag\SyliusGraphqlPlugin\BitBagSyliusGraphqlPlugin::class => ['all' => true],
+            BitBag\SyliusVueStorefront2Plugin\BitBagSyliusVueStorefront2Plugin::class => ['all' => true],
         ];
     ```
    
@@ -50,7 +50,7 @@
     # config/packages/bitbag_sylius_graphql_plugin.yaml
     
     imports:
-        - { resource: "@BitBagSyliusGraphqlPlugin/Resources/config/services.xml" }
+        - { resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/services.xml" }
     ```    
    
     There are 2 plugin parameters that You can adjust:
@@ -70,7 +70,7 @@
                     is_bundle: false
                     type: xml
                     dir: '%kernel.project_dir%/vendor/bitbag/graphql-plugin/src/Resources/doctrine/model'
-                    prefix: 'BitBag\SyliusGraphqlPlugin\Model'
+                    prefix: 'BitBag\SyliusVueStorefront2Plugin\Model'
                     alias: BitBag\SyliusGraphqlPlugin
     ```
    
@@ -84,18 +84,18 @@
                 subject: Sylius\Component\Core\Model\Product
                 attribute_value:
                     classes:
-                        model: BitBag\SyliusGraphqlPlugin\Model\ProductAttributeValue
+                        model: BitBag\SyliusVueStorefront2Plugin\Model\ProductAttributeValue
     
     sylius_taxonomy:
        resources:
           taxon:
              classes:
-                repository: BitBag\SyliusGraphqlPlugin\Doctrine\Repository\TaxonRepository
+                repository: BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\TaxonRepository
     ```
 
 9. Import routing in routes.yaml
 
     ```yml
     bitbag_sylius_graphql_plugin:
-        resource: "@BitBagSyliusGraphqlPlugin/Resources/config/routing.yml"
+        resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/routing.yml"
    ```

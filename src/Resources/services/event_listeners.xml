@@ -6,7 +6,7 @@
 
         <service
             id="app.event_listener.product_resource_listener"
-            class="BitBag\SyliusGraphqlPlugin\EventListener\ProductResourceListener"
+            class="BitBag\SyliusVueStorefront2Plugin\EventListener\ProductResourceListener"
         >
             <argument type="service" id="liip_imagine.cache.manager" />
             <argument type="service" id="liip_imagine.data.manager" />

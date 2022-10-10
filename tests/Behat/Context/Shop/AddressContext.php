@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\BitBag\SyliusGraphqlPlugin\Behat\Context\Shop;
+namespace Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context\Shop;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
@@ -18,8 +18,8 @@ use Sylius\Component\Core\Model\Customer;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Repository\AddressRepositoryInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
-use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClient;
-use Tests\BitBag\SyliusGraphqlPlugin\Behat\Client\GraphqlClientInterface;
+use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClient;
+use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClientInterface;
 use Webmozart\Assert\Assert;
 
 final class AddressContext implements Context

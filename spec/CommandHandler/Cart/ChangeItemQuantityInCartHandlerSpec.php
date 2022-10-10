@@ -8,10 +8,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\CommandHandler\Cart;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart;
 
-use BitBag\SyliusGraphqlPlugin\Command\Cart\ChangeItemQuantityInCart;
-use BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\ChangeItemQuantityInCartHandler;
+use BitBag\SyliusVueStorefront2Plugin\Command\Cart\ChangeItemQuantityInCart;
+use BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart\ChangeItemQuantityInCartHandler;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Component\Core\Model\OrderInterface;

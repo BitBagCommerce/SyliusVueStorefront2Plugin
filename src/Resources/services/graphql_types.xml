@@ -14,7 +14,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <defaults autowire="false" autoconfigure="false" public="false" />
 
         <service id="bitbag.sylius_graphql_plugin.types.address"
-                 class="BitBag\SyliusGraphqlPlugin\Types\AddressInput">
+                 class="BitBag\SyliusVueStorefront2Plugin\Types\AddressInput">
             <tag name="api_platform.graphql.type" />
         </service>
     </services>

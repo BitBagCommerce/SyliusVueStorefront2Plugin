@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout;
+namespace BitBag\SyliusVueStorefront2Plugin\CommandHandler\Checkout;
 
-use BitBag\SyliusGraphqlPlugin\Command\Checkout\ChooseShippingMethod;
+use BitBag\SyliusVueStorefront2Plugin\Command\Checkout\ChooseShippingMethod;
 use SM\Factory\FactoryInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ShippingMethodInterface;

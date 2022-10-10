@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Doctrine\Orm\Filter;
+namespace BitBag\SyliusVueStorefront2Plugin\Doctrine\Orm\Filter;
 
 use ApiPlatform\Core\Api\FilterInterface;
 use ApiPlatform\Core\Api\IriConverterInterface;

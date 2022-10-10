@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\Command\Account;
+namespace BitBag\SyliusVueStorefront2Plugin\Command\Account;
 
 /** @experimental */
 class SendResetPasswordEmail

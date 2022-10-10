@@ -8,11 +8,11 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\CommandHandler\Checkout;
 
-use BitBag\SyliusGraphqlPlugin\Command\Checkout\BillingAddressOrder;
-use BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout\BillingAddressOrderHandler;
-use BitBag\SyliusGraphqlPlugin\Resolver\OrderAddressStateResolverInterface;
+use BitBag\SyliusVueStorefront2Plugin\Command\Checkout\BillingAddressOrder;
+use BitBag\SyliusVueStorefront2Plugin\CommandHandler\Checkout\BillingAddressOrderHandler;
+use BitBag\SyliusVueStorefront2Plugin\Resolver\OrderAddressStateResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

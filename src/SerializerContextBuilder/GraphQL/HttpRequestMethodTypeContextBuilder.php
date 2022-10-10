@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\SerializerContextBuilder\GraphQL;
+namespace BitBag\SyliusVueStorefront2Plugin\SerializerContextBuilder\GraphQL;
 
 use ApiPlatform\Core\Exception\ResourceClassNotFoundException;
 use ApiPlatform\Core\GraphQl\Serializer\SerializerContextBuilderInterface;

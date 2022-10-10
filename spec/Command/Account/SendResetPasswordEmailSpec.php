@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\Command\Account;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\Command\Account;
 
-use BitBag\SyliusGraphqlPlugin\Command\Account\SendResetPasswordEmail;
+use BitBag\SyliusVueStorefront2Plugin\Command\Account\SendResetPasswordEmail;
 use PhpSpec\ObjectBehavior;
 
 final class SendResetPasswordEmailSpec extends ObjectBehavior

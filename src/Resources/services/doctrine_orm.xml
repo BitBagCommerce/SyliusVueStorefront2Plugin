@@ -12,7 +12,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <defaults autowire="false" autoconfigure="false" public="false" />
 
         <service id="bitbag.sylius_graphql.doctrine.orm.attribute_filter"
-                 class="BitBag\SyliusGraphqlPlugin\Doctrine\Orm\Filter\AttributeFilter"
+                 class="BitBag\SyliusVueStorefront2Plugin\Doctrine\Orm\Filter\AttributeFilter"
                  public="false"
                  abstract="true">
             <argument type="service" id="doctrine" />
@@ -21,7 +21,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="logger" on-invalid="ignore" />
             <argument key="$nameConverter" type="service" id="api_platform.name_converter" on-invalid="ignore" />
         </service>
-        <service id="BitBag\SyliusGraphqlPlugin\Doctrine\Orm\Filter\AttributeFilter"
+        <service id="BitBag\SyliusVueStorefront2Plugin\Doctrine\Orm\Filter\AttributeFilter"
                  alias="bitbag.sylius_graphql.doctrine.orm.attribute_filter" />
     </services>
 </container>

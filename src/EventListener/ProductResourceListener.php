@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\EventListener;
+namespace BitBag\SyliusVueStorefront2Plugin\EventListener;
 
 use Imagine\Exception\RuntimeException;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;

@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\Command\Account;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\Command\Account;
 
-use BitBag\SyliusGraphqlPlugin\Command\Account\ResetPassword;
+use BitBag\SyliusVueStorefront2Plugin\Command\Account\ResetPassword;
 use PhpSpec\ObjectBehavior;
 
 final class ResetPasswordSpec extends ObjectBehavior

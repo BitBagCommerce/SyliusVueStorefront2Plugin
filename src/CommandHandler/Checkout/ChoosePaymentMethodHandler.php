@@ -8,9 +8,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusGraphqlPlugin\CommandHandler\Checkout;
+namespace BitBag\SyliusVueStorefront2Plugin\CommandHandler\Checkout;
 
-use BitBag\SyliusGraphqlPlugin\Command\Checkout\ChoosePaymentMethod;
+use BitBag\SyliusVueStorefront2Plugin\Command\Checkout\ChoosePaymentMethod;
 use InvalidArgumentException;
 use SM\Factory\FactoryInterface;
 use Sylius\Bundle\ApiBundle\Changer\PaymentMethodChangerInterface;

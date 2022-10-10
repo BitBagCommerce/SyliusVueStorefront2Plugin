@@ -8,10 +8,10 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusGraphqlPlugin\CommandHandler\Cart;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart;
 
-use BitBag\SyliusGraphqlPlugin\Command\Cart\RemoveCouponFromCart;
-use BitBag\SyliusGraphqlPlugin\CommandHandler\Cart\RemoveCouponFromCartHandler;
+use BitBag\SyliusVueStorefront2Plugin\Command\Cart\RemoveCouponFromCart;
+use BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart\RemoveCouponFromCartHandler;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Component\Core\Model\OrderInterface;
