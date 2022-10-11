@@ -22,7 +22,7 @@ Like what we do? Want to join us? Check out our job listings on our [career page
 
 ## Overview
 
-This plugin allows you to integrate Sylius backend with Vue Storefront 2 application. 
+This plugin allows you to integrate Sylius backend with [Vue Storefront 2 integration](https://github.com/BitBagCommerce/SyliusVueStorefront2Frontend).
 
 This plugin allows you to expose all critical models and operations as graphql queries and mutations<br />
 It unlocks graphql-based API on top of ApiPlatform and JWT.
@@ -43,8 +43,8 @@ The plugin uses following 3rd party packages:
 
 
 - `"sylius/sylius": "~1.11.0"`<br />
-- `"webonyx/graphql-php": ^14.9`<br />
-- `"gesdinet/jwt-refresh-token-bundle": ^0.12.0`
+- `"webonyx/graphql-php": "^14.9"`<br />
+- `"gesdinet/jwt-refresh-token-bundle": "^0.12.0"`
 
 ## We are here to help
 This **open-source plugin was developed to help the Sylius community**. If you have any additional questions, would like help with installing or configuring the plugin or need any assistance with your Sylius project - let us know!
