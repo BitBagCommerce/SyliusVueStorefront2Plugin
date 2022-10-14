@@ -4,7 +4,7 @@
 1. Require plugin with composer:
 
     ```bash
-    composer require bitbag/graphql-plugin
+    composer require bitbag/vue-storefront2-plugin
     ```
 
 2. Add plugin dependencies to your `config/bundles.php` file:
@@ -30,7 +30,7 @@
         api_platform:
             mapping:
                 paths:
-                    - '%kernel.project_dir%/vendor/bitbag/graphql-plugin/src/Resources/api_resources'
+                    - '%kernel.project_dir%/vendor/bitbag/vue-storefront2-plugin/src/Resources/api_resources'
     ```
     
 
@@ -41,7 +41,7 @@
             serializer:
                 mapping:
                     paths:
-                        - '%kernel.project_dir%/vendor/bitbag/graphql-plugin/src/Resources/serialization'
+                        - '%kernel.project_dir%/vendor/bitbag/vue-storefront2-plugin/src/Resources/serialization'
     ```
 
 6. Import required config by adding  `config/packages/bitbag_sylius_vue_storefront2_plugin.yaml` file:
@@ -66,12 +66,12 @@
     doctrine:
         orm:
             mappings:
-                GraphqQL:
+                VueStorefront2:
                     is_bundle: false
                     type: xml
-                    dir: '%kernel.project_dir%/vendor/bitbag/graphql-plugin/src/Resources/doctrine/model'
+                    dir: '%kernel.project_dir%/vendor/bitbag/vue-storefront2-plugin/src/Resources/doctrine/model'
                     prefix: 'BitBag\SyliusVueStorefront2Plugin\Model'
-                    alias: BitBag\SyliusGraphqlPlugin
+                    alias: BitBag\SyliusVueStorefront2Plugin
     ```
    
 8. In _sylius.yaml add mappings for product attribute and taxonomy repository so graphql can see them properly
@@ -92,8 +92,10 @@
              classes:
                 repository: BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\TaxonRepository
     ```
+    
+9. If you're extending Sylius' `ProductAttributeValue` entity, please extend it by `BitBag\SyliusVueStorefront2Plugin\Model\ProductAttributeValue`.
 
-9. Import routing in routes.yaml
+10. Import routing in routes.yaml
 
     ```yml
     bitbag_sylius_vue_storefront2_plugin:
