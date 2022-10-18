@@ -65,6 +65,6 @@ This plugin's source code is completely free and released under the terms of the
 
 ## Contact
 
-If you want to contact us, the best way is to fill the form on [our website](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql) or send us an e-mail to hello@bitbag.io with your question(s). We guarantee that we answer as soon as we can!
+If you want to contact us, the best way to do it is over [our contact form](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql) or by sending us a direct e-mail at hello@bitbag.io.
 
 [![](https://bitbag.io/wp-content/uploads/2021/08/badges-bitbag.png)](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_graphql)
