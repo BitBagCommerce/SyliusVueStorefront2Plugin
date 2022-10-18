@@ -93,11 +93,32 @@
                 repository: BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\TaxonRepository
     ```
     
-9. If you're extending Sylius' `ProductAttributeValue` entity, please extend it by `BitBag\SyliusVueStorefront2Plugin\Model\ProductAttributeValue`.
+9. If you're extending Sylius' `ProductAttributeValue` entity, please use our trait inside: `BitBag\SyliusVueStorefront2Plugin\Model\ProductAttributeValueTrait`.
 
-10. Import routing in routes.yaml
+10. Please add the Doctrine mapping configuration into your project:
 
-    ```yml
-    bitbag_sylius_vue_storefront2_plugin:
-        resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/routing.yml"
-   ```
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping
+    xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                            http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+>
+    <entity name="Tests\BitBag\SyliusVueStorefront2Plugin\Entity\ProductAttributeValue" table="sylius_product_attribute_value">
+        <indexes>
+            <index name="locale_code" columns="locale_code" />
+        </indexes>
+    </entity>
+</doctrine-mapping>
+```
+
+Please change the `name` attribute to fit your entity name. If you've already the `ProductAttributeValue` mapping in your project, just add there the `<index>` part of mapping above.
+
+11. Import routing in routes.yaml
+
+```yml
+bitbag_sylius_vue_storefront2_plugin:
+    resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/routing.yml"
+```

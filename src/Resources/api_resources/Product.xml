@@ -150,7 +150,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <property name="reviews" required="false" />
         <property name="options" required="false" />
         <property name="attributes" required="false">
-            <subresource resourceClass="BitBag\SyliusVueStorefront2Plugin\Model\ProductAttributeValue" />
+            <subresource resourceClass="%sylius.model.product_attribute_value.class%" />
         </property>
         <property name="channels" required="false" />
         <property name="images" required="false" />

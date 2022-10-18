@@ -17,9 +17,15 @@ doctrine:
         auto_generate_proxy_classes: '%kernel.debug%'
         auto_mapping: true
         mappings:
-            GraphqQL:
+            SyliusVueStorefront2Plugin:
                 is_bundle: false
                 type: xml
                 dir: '%kernel.project_dir%/../../src/Resources/doctrine/model'
                 prefix: 'BitBag\SyliusVueStorefront2Plugin\Model'
-                alias: BitBag\SyliusGraphqlPlugin
+                alias: BitBag\SyliusVueStorefront2Plugin
+            TestsVueStorefront2Plugin:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Resources/config/doctrine'
+                prefix: 'Tests\BitBag\SyliusVueStorefront2Plugin\Entity'
+                alias: Tests\BitBag\SyliusVueStorefront2Plugin

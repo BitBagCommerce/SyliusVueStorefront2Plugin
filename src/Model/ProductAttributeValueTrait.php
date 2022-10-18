@@ -11,10 +11,9 @@ declare(strict_types=1);
 namespace BitBag\SyliusVueStorefront2Plugin\Model;
 
 use Sylius\Component\Attribute\Model\AttributeInterface;
-use Sylius\Component\Product\Model\ProductAttributeValue as BaseAttributeValue;
 use Webmozart\Assert\Assert;
 
-class ProductAttributeValue extends BaseAttributeValue
+trait ProductAttributeValueTrait
 {
     /** @return mixed|null */
     public function getValue()

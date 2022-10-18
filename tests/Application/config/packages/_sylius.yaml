@@ -15,7 +15,7 @@ sylius_attribute:
             subject: Sylius\Component\Core\Model\Product
             attribute_value:
                 classes:
-                    model: BitBag\SyliusVueStorefront2Plugin\Model\ProductAttributeValue  
+                    model: Tests\BitBag\SyliusVueStorefront2Plugin\Entity\ProductAttributeValue
     
 sylius_taxonomy:
     resources:
