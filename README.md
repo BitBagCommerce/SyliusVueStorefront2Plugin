@@ -8,6 +8,8 @@ Sylius Vue Storefront 2 back-end integration enabling PWA and mobile-first exper
 
 The plugin was developed by BitBag, the leading and biggest Sylius partner. We breath open-source in and out. If you like what we do, feel free to [contact us](https://bitbag.io/contact-us). We are opened for partnership realtions and if you look for an experienced, open-source team that will be able to deliver an outstanding eCommerce solution, feel free to reach us too!
 
+Like the package? Do not forget to leave us a star! ⭐
+
 ## Table of Content
 
 * [Overview](#overview)
