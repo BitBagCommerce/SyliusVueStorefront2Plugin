@@ -77,15 +77,6 @@
 8. In _sylius.yaml add mappings for product attribute and taxonomy repository so graphql can see them properly
 
     ```yml
-    sylius_attribute:
-        driver: doctrine/orm
-        resources:
-            product:
-                subject: Sylius\Component\Core\Model\Product
-                attribute_value:
-                    classes:
-                        model: BitBag\SyliusVueStorefront2Plugin\Model\ProductAttributeValue
-    
     sylius_taxonomy:
        resources:
           taxon:
@@ -93,7 +84,18 @@
                 repository: BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\TaxonRepository
     ```
     
-9. If you're extending Sylius' `ProductAttributeValue` entity, please use our trait inside: `BitBag\SyliusVueStorefront2Plugin\Model\ProductAttributeValueTrait`.
+9. If you're extending Sylius' `ProductAttributeValue` entity, please use our trait inside: `BitBag\SyliusVueStorefront2Plugin\Model\ProductAttributeValueTrait`. Otherwise, please create an entity, which uses the trait and setup the Sylius resource in _sylius.yaml:
+
+```yml
+    sylius_attribute:
+        driver: doctrine/orm
+        resources:
+            product:
+                subject: Sylius\Component\Core\Model\Product
+                attribute_value:
+                    classes:
+                        model: App\Entity\ProductAttributeValue
+```
 
 10. Please add the Doctrine mapping configuration into your project:
 
