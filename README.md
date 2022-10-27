@@ -16,7 +16,7 @@ Like the package? Do not forget to leave us a star! ⭐
 * [Support](#we-are-here-to-help)
 * [About us](#about-us)
     * [Community](#community)
-* [Demo](#demo-sylius-shop)
+* [Demo](https://vsf2-demo.bitbag.io/)
 * [License](#license)
 * [Contact](#contact)
 * [Installation](doc/installation.md)
