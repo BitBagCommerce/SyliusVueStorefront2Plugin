@@ -29,5 +29,15 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
             <tag name="controller.service_arguments" />
         </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.controller.thank_you_page"
+            class="BitBag\SyliusVueStorefront2Plugin\Controller\ThankYouPageController"
+        >
+            <argument type="string">%env(VSF2_HOST)%</argument>
+            <argument type="service" id="router" />
+
+            <tag name="controller.service_arguments" />
+        </service>
     </services>
 </container>

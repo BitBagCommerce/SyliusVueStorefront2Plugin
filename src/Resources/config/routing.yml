@@ -19,6 +19,11 @@ bitbag_sylius_vue_storefront2_shop_user_post_verify:
     path: /post-verify-action
     methods: [GET]
     controller: bitbag.sylius_vue_storefront2_plugin.controller.shop_user_post_verify:postVerifyAction
+            
+bitbag_sylius_vue_storefront2_thank_you_page:
+    path: /thank-you-redirect/{orderNumber}
+    methods: [GET]
+    controller: bitbag.sylius_vue_storefront2_plugin.controller.thank_you_page:redirectAction
 
 bitbag_sylius_vue_storefront2_shop_product_show:
     path: /p/{id}/{slug}
