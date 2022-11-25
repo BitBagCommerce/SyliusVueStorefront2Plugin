@@ -27,20 +27,10 @@ final class ResolveNextRouteAction implements ActionInterface
         /** @var PaymentInterface $payment */
         $payment = $request->getFirstModel();
 
-        if (
-            $payment->getState() === PaymentInterface::STATE_COMPLETED ||
-            $payment->getState() === PaymentInterface::STATE_AUTHORIZED
-        ) {
-            $request->setRouteName(
-                'bitbag_sylius_vue_storefront2_thank_you_page',
-            );
-            $request->setRouteParameters(['orderNumber' => $payment->getOrder()->getNumber()]);
-
-            return;
-        }
-
-        $request->setRouteName('sylius_shop_order_show');
-        $request->setRouteParameters(['tokenValue' => $payment->getOrder()->getTokenValue()]);
+        $request->setRouteName(
+            'bitbag_sylius_vue_storefront2_thank_you_page',
+        );
+        $request->setRouteParameters(['orderNumber' => $payment->getOrder()->getNumber()]);
     }
 
     public function supports($request): bool
