@@ -124,3 +124,18 @@ Please change the `name` attribute to fit your entity name. If you've already th
 bitbag_sylius_vue_storefront2_plugin:
     resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/routing.yml"
 ```
+
+12. Enable user authentication for graphql endpoint in security.yaml
+
+```yml
+security:
+    firewalls:
+        graphql_shop_user:
+            pattern: "%sylius.security.new_api_route%/graphql"
+            provider: sylius_api_shop_user_provider
+            stateless: true
+            anonymous: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+```
