@@ -16,21 +16,24 @@ namespace BitBag\SyliusVueStorefront2Plugin\Payum\Action;
 use Payum\Core\Action\ActionInterface;
 use Sylius\Bundle\PayumBundle\Request\ResolveNextRoute;
 use Sylius\Component\Core\Model\PaymentInterface;
+use Webmozart\Assert\Assert;
 
 final class ResolveNextRouteAction implements ActionInterface
 {
-    /**
-     * @param ResolveNextRoute $request
-     */
     public function execute($request): void
     {
+        Assert::isInstanceOf($request, ResolveNextRoute::class);
+
         /** @var PaymentInterface $payment */
         $payment = $request->getFirstModel();
 
         $request->setRouteName(
             'bitbag_sylius_vue_storefront2_thank_you_page',
         );
-        $request->setRouteParameters(['orderNumber' => $payment->getOrder()->getNumber()]);
+
+        $order = $payment->getOrder();
+        Assert::notNull($order);
+        $request->setRouteParameters(['orderNumber' => $order->getNumber()]);
     }
 
     public function supports($request): bool
