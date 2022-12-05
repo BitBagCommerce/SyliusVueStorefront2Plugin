@@ -24,11 +24,11 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 final class ResetPasswordHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         UserRepositoryInterface $userRepository,
         MetadataInterface $metadata,
         PasswordUpdaterInterface $passwordUpdater,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith(
             $userRepository,
@@ -38,23 +38,23 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ResetPasswordHandler::class);
     }
 
-    function it_implements_message_handler_interface(): void
+    public function it_implements_message_handler_interface(): void
     {
         $this->shouldImplement(MessageHandlerInterface::class);
     }
 
-    function it_is_invokable(
+    public function it_is_invokable(
         UserRepositoryInterface $userRepository,
         MetadataInterface $metadata,
         PasswordUpdaterInterface $passwordUpdater,
         ShopUserInterface $user,
         CustomerInterface $customer,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $command = new ResetPassword('newS3ret', 'newS3ret', 'token');
 
@@ -80,8 +80,8 @@ final class ResetPasswordHandlerSpec extends ObjectBehavior
         $this->__invoke($command);
     }
 
-    function it_throws_an_exception_when_user_nor_found(
-        UserRepositoryInterface $userRepository
+    public function it_throws_an_exception_when_user_nor_found(
+        UserRepositoryInterface $userRepository,
     ): void {
         $command = new ResetPassword('newS3ret', 'newS3ret', 'token');
 

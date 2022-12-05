@@ -16,12 +16,12 @@ use PhpSpec\ObjectBehavior;
 
 final class ExceptionNormalizerSpec extends ObjectBehavior
 {
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ExceptionNormalizer::class);
     }
 
-    function it_normalizes_error(): void
+    public function it_normalizes_error(): void
     {
         $errorMessage = 'Some error message';
 
@@ -40,7 +40,7 @@ final class ExceptionNormalizerSpec extends ObjectBehavior
         $this->normalize($object)->shouldReturn($error);
     }
 
-    function it_checks_if_it_supports_normalization(Error $data): void
+    public function it_checks_if_it_supports_normalization(Error $data): void
     {
         $exception = new \InvalidArgumentException();
         $error = new Error('Message', null, null, [], null, $exception);

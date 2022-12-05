@@ -20,18 +20,18 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class DeleteOrderItemActionSpec extends ObjectBehavior
 {
-    function let(MessageBusInterface $commandBus): void
+    public function let(MessageBusInterface $commandBus): void
     {
         $this->beConstructedWith($commandBus);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(DeleteOrderItemAction::class);
     }
 
-    function it_is_invokable(
-        MessageBusInterface $commandBus
+    public function it_is_invokable(
+        MessageBusInterface $commandBus,
     ): void {
         $attributes = [
             'id' => 'id',

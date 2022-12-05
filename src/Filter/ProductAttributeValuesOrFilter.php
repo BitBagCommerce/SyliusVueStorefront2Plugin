@@ -90,7 +90,6 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
         return $this->propertyAccessor;
     }
 
-    /** @return void */
     protected function filterProperty(
         string $property,
         $value,

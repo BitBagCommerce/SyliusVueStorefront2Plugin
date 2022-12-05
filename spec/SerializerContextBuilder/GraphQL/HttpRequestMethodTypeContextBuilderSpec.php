@@ -20,20 +20,20 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class HttpRequestMethodTypeContextBuilderSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        ResourceMetadataFactoryInterface $resourceMetadataFactory
+        ResourceMetadataFactoryInterface $resourceMetadataFactory,
     ): void {
         $this->beConstructedWith($decoratedContextBuilder, $resourceMetadataFactory);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(HttpRequestMethodTypeContextBuilder::class);
     }
 
-    function it_creates_context_for_default_operation(
-        SerializerContextBuilderInterface $decoratedContextBuilder
+    public function it_creates_context_for_default_operation(
+        SerializerContextBuilderInterface $decoratedContextBuilder,
     ): void {
         $context = [
             ContextKeys::HTTP_REQUEST_METHOD_TYPE => Request::METHOD_GET,
@@ -58,9 +58,9 @@ final class HttpRequestMethodTypeContextBuilderSpec extends ObjectBehavior
         )->shouldReturn($context);
     }
 
-    function it_creates_context_for_other_operation(
+    public function it_creates_context_for_other_operation(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        ResourceMetadataFactoryInterface $resourceMetadataFactory
+        ResourceMetadataFactoryInterface $resourceMetadataFactory,
     ): void {
         $context = [];
         $resourceClass = 'Class/Name';

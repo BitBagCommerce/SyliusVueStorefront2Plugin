@@ -17,14 +17,14 @@ use Sylius\Component\Core\Model\OrderInterface;
 
 final class OrderTokenValueAwareInputCommandDataTransformerSpec extends ObjectBehavior
 {
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(OrderTokenValueAwareInputCommandDataTransformer::class);
     }
 
-    function it_transforms_object_to_populate(
+    public function it_transforms_object_to_populate(
         OrderTokenValueAwareInterface $object,
-        OrderInterface $cart
+        OrderInterface $cart,
     ): void {
         $context = [
             'object_to_populate' => $cart,
@@ -39,8 +39,8 @@ final class OrderTokenValueAwareInputCommandDataTransformerSpec extends ObjectBe
         $this->transform($object, '', $context)->shouldReturn($object);
     }
 
-    function it_transforms_object_with_property(
-        OrderTokenValueAwareInterface $object
+    public function it_transforms_object_with_property(
+        OrderTokenValueAwareInterface $object,
     ): void {
         $context = [];
         $tokenValue = 'token';
@@ -51,8 +51,8 @@ final class OrderTokenValueAwareInputCommandDataTransformerSpec extends ObjectBe
         $this->transform($object, '', $context)->shouldReturn($object);
     }
 
-    function it_supports_transformation(
-        OrderTokenValueAwareInterface $object
+    public function it_supports_transformation(
+        OrderTokenValueAwareInterface $object,
     ): void {
         $this->supportsTransformation($object)->shouldReturn(true);
     }

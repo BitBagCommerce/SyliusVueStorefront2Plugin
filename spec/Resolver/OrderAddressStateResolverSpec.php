@@ -20,20 +20,20 @@ use Webmozart\Assert\InvalidArgumentException;
 
 final class OrderAddressStateResolverSpec extends ObjectBehavior
 {
-    function let(StateMachineFactoryInterface $stateMachineFactory): void
+    public function let(StateMachineFactoryInterface $stateMachineFactory): void
     {
         $this->beConstructedWith($stateMachineFactory);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(OrderAddressStateResolver::class);
     }
 
-    function it_resolves(
+    public function it_resolves(
         StateMachineFactoryInterface $stateMachineFactory,
         StateMachineInterface $stateMachine,
-        OrderInterface $order
+        OrderInterface $order,
     ): void {
         $stateMachineFactory->get($order, OrderCheckoutTransitions::GRAPH)->willReturn($stateMachine);
 
@@ -49,10 +49,10 @@ final class OrderAddressStateResolverSpec extends ObjectBehavior
         $this->resolve($order);
     }
 
-    function it_throws_an_exception_on_resolving(
+    public function it_throws_an_exception_on_resolving(
         StateMachineFactoryInterface $stateMachineFactory,
         StateMachineInterface $stateMachine,
-        OrderInterface $order
+        OrderInterface $order,
     ): void {
         $stateMachineFactory->get($order, OrderCheckoutTransitions::GRAPH)->willReturn($stateMachine);
 

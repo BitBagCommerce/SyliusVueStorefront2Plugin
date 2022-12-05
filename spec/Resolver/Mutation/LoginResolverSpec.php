@@ -28,14 +28,14 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class LoginResolverSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         EntityManagerInterface $entityManager,
         UserRepositoryInterface $userRepository,
         OrderRepositoryInterface $orderRepository,
         EncoderFactoryInterface $encoderFactory,
         ShopUserTokenFactoryInterface $tokenFactory,
         EventDispatcherInterface $eventDispatcher,
-        ChannelContextInterface $channelContext
+        ChannelContextInterface $channelContext,
     ): void {
         $this->beConstructedWith(
             $entityManager,
@@ -44,16 +44,16 @@ class LoginResolverSpec extends ObjectBehavior
             $encoderFactory,
             $tokenFactory,
             $eventDispatcher,
-            $channelContext
+            $channelContext,
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(LoginResolver::class);
     }
 
-    function it_is_invokable(
+    public function it_is_invokable(
         UserRepositoryInterface $userRepository,
         EncoderFactoryInterface $encoderFactory,
         ShopUserTokenFactoryInterface $tokenFactory,
@@ -63,7 +63,7 @@ class LoginResolverSpec extends ObjectBehavior
         ShopUserTokenInterface $shopUserToken,
         EventDispatcherInterface $eventDispatcher,
         ChannelContextInterface $channelContext,
-        ChannelInterface $channel
+        ChannelInterface $channel,
     ): void {
         $context = [
             'args' => [
@@ -101,8 +101,8 @@ class LoginResolverSpec extends ObjectBehavior
         $this->__invoke(null, $context);
     }
 
-    function it_throws_an_exception_on_wrong_username(
-        UserRepositoryInterface $userRepository
+    public function it_throws_an_exception_on_wrong_username(
+        UserRepositoryInterface $userRepository,
     ): void {
         $context = [
             'args' => [
@@ -125,13 +125,13 @@ class LoginResolverSpec extends ObjectBehavior
         ;
     }
 
-    function it_throws_an_exception_on_wrong_password(
+    public function it_throws_an_exception_on_wrong_password(
         UserRepositoryInterface $userRepository,
         EncoderFactoryInterface $encoderFactory,
         PasswordEncoderInterface $encoder,
         ShopUserInterface $user,
         ChannelContextInterface $channelContext,
-        ChannelInterface $channel
+        ChannelInterface $channel,
     ): void {
         $context = [
             'args' => [
@@ -168,13 +168,13 @@ class LoginResolverSpec extends ObjectBehavior
         ;
     }
 
-    function it_throws_exception_when_logging_in_unverified_user_when_channel_denies_it(
+    public function it_throws_exception_when_logging_in_unverified_user_when_channel_denies_it(
         UserRepositoryInterface $userRepository,
         EncoderFactoryInterface $encoderFactory,
         PasswordEncoderInterface $encoder,
         ShopUserInterface $user,
         ChannelContextInterface $channelContext,
-        ChannelInterface $channel
+        ChannelInterface $channel,
     ): void {
         $context = [
             'args' => [
@@ -202,10 +202,11 @@ class LoginResolverSpec extends ObjectBehavior
         $channel->isAccountVerificationRequired()->willReturn(true);
 
         $this->shouldThrow(\Exception::class)
-            ->during('__invoke', [null, $context]);
+            ->during('__invoke', [null, $context])
+        ;
     }
 
-    function it_doesnt_throw_exception_when_logging_in_unverified_user_but_channel_doesnt_deny_it(
+    public function it_doesnt_throw_exception_when_logging_in_unverified_user_but_channel_doesnt_deny_it(
         UserRepositoryInterface $userRepository,
         EncoderFactoryInterface $encoderFactory,
         ShopUserTokenFactoryInterface $tokenFactory,
@@ -215,7 +216,7 @@ class LoginResolverSpec extends ObjectBehavior
         ShopUserTokenInterface $shopUserToken,
         EventDispatcherInterface $eventDispatcher,
         ChannelContextInterface $channelContext,
-        ChannelInterface $channel
+        ChannelInterface $channel,
     ): void {
         $context = [
             'args' => [

@@ -23,29 +23,29 @@ use Webmozart\Assert\InvalidArgumentException;
 
 final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         OrderItemRepositoryInterface $orderItemRepository,
         OrderModifierInterface $orderModifier,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith(
             $orderItemRepository,
             $orderModifier,
-            $eventDispatcher
+            $eventDispatcher,
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(RemoveItemFromCartHandler::class);
     }
 
-    function it_is_invokable(
+    public function it_is_invokable(
         OrderItemRepositoryInterface $orderItemRepository,
         OrderModifierInterface $orderModifier,
         OrderItemInterface $orderItem,
         OrderInterface $cart,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $tokenValue = 'token';
         $removeItemFromCart = new RemoveItemFromCart($tokenValue, '222');
@@ -65,8 +65,8 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         $this->__invoke($removeItemFromCart);
     }
 
-    function it_throws_an_exception_when_cart_is_not_found(
-        OrderItemRepositoryInterface $orderItemRepository
+    public function it_throws_an_exception_when_cart_is_not_found(
+        OrderItemRepositoryInterface $orderItemRepository,
     ): void {
         $tokenValue = 'token';
         $removeItemFromCart = new RemoveItemFromCart($tokenValue, '222');
@@ -81,10 +81,10 @@ final class RemoveItemFromCartHandlerSpec extends ObjectBehavior
         ;
     }
 
-    function it_throws_an_exception_when_tokens_mismatch(
+    public function it_throws_an_exception_when_tokens_mismatch(
         OrderItemRepositoryInterface $orderItemRepository,
         OrderItemInterface $orderItem,
-        OrderInterface $cart
+        OrderInterface $cart,
     ): void {
         $tokenValue = 'token';
         $removeItemFromCart = new RemoveItemFromCart($tokenValue, '222');

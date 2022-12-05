@@ -29,13 +29,13 @@ use Webmozart\Assert\InvalidArgumentException;
 
 final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         OrderRepositoryInterface $orderRepository,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         PaymentRepositoryInterface $paymentRepository,
         FactoryInterface $stateMachineFactory,
         PaymentMethodChangerInterface $paymentMethodChanger,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith(
             $orderRepository,
@@ -47,12 +47,12 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ChoosePaymentMethodHandler::class);
     }
 
-    function it_is_invokable(
+    public function it_is_invokable(
         OrderRepositoryInterface $orderRepository,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         PaymentRepositoryInterface $paymentRepository,
@@ -62,7 +62,7 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         PaymentMethodInterface $paymentMethod,
         PaymentInterface $payment,
         StateMachineInterface $stateMachine,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $choosePaymentMethod = new ChoosePaymentMethod('token', 'cash', 'paymentId');
         $orderRepository->findOneBy(['tokenValue' => $choosePaymentMethod->orderTokenValue])->willReturn($cart);
@@ -92,7 +92,7 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         $this->__invoke($choosePaymentMethod)->shouldReturn($cart);
     }
 
-    function it_throws_an_exception_when_payment_cannot_be_assigned(
+    public function it_throws_an_exception_when_payment_cannot_be_assigned(
         OrderRepositoryInterface $orderRepository,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         PaymentRepositoryInterface $paymentRepository,
@@ -100,7 +100,7 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         OrderInterface $cart,
         PaymentMethodInterface $paymentMethod,
         PaymentInterface $payment,
-        StateMachineInterface $stateMachine
+        StateMachineInterface $stateMachine,
     ): void {
         $choosePaymentMethod = new ChoosePaymentMethod('token', 'cash', 'paymentId');
         $orderRepository->findOneBy(['tokenValue' => $choosePaymentMethod->orderTokenValue])->willReturn($cart);
@@ -127,13 +127,13 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         ;
     }
 
-    function it_throws_an_exception_when_cannot_find_payment(
+    public function it_throws_an_exception_when_cannot_find_payment(
         OrderRepositoryInterface $orderRepository,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         PaymentRepositoryInterface $paymentRepository,
         PaymentMethodChangerInterface $paymentMethodChanger,
         OrderInterface $cart,
-        PaymentMethodInterface $paymentMethod
+        PaymentMethodInterface $paymentMethod,
     ): void {
         $choosePaymentMethod = new ChoosePaymentMethod('token', 'cash', 'paymentId');
         $orderRepository->findOneBy(['tokenValue' => $choosePaymentMethod->orderTokenValue])->willReturn($cart);
@@ -157,11 +157,11 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         ;
     }
 
-    function it_throws_an_exception_when_cannot_find_payment_method(
+    public function it_throws_an_exception_when_cannot_find_payment_method(
         OrderRepositoryInterface $orderRepository,
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         PaymentMethodChangerInterface $paymentMethodChanger,
-        OrderInterface $cart
+        OrderInterface $cart,
     ): void {
         $choosePaymentMethod = new ChoosePaymentMethod('token', 'cash', 'paymentId');
         $orderRepository->findOneBy(['tokenValue' => $choosePaymentMethod->orderTokenValue])->willReturn($cart);
@@ -182,8 +182,8 @@ final class ChoosePaymentMethodHandlerSpec extends ObjectBehavior
         ;
     }
 
-    function it_throws_an_exception_when_cannot_find_cart(
-        OrderRepositoryInterface $orderRepository
+    public function it_throws_an_exception_when_cannot_find_cart(
+        OrderRepositoryInterface $orderRepository,
     ): void {
         $choosePaymentMethod = new ChoosePaymentMethod('token', 'cash', 'paymentId');
         $orderRepository->findOneBy(['tokenValue' => $choosePaymentMethod->orderTokenValue])->willReturn(null);
