@@ -12,6 +12,7 @@ Feature: Changing one customer password
     @graphql
     Scenario: Changing password
         When I prepare change customer password operation
+        Given on this channel account verification is not required
         And I set id of this user request to match "frankh@enclave.com"
         And I set 'currentPassword' field to "semperfi"
         And I set 'newPassword' field to "oilrig"

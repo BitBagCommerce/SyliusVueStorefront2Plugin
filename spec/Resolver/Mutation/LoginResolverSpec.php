@@ -17,6 +17,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
@@ -32,7 +34,8 @@ class LoginResolverSpec extends ObjectBehavior
         OrderRepositoryInterface $orderRepository,
         EncoderFactoryInterface $encoderFactory,
         ShopUserTokenFactoryInterface $tokenFactory,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ChannelContextInterface $channelContext
     ): void {
         $this->beConstructedWith(
             $entityManager,
@@ -40,7 +43,8 @@ class LoginResolverSpec extends ObjectBehavior
             $orderRepository,
             $encoderFactory,
             $tokenFactory,
-            $eventDispatcher
+            $eventDispatcher,
+            $channelContext
         );
     }
 
@@ -57,7 +61,9 @@ class LoginResolverSpec extends ObjectBehavior
         ShopUserInterface $user,
         RefreshTokenInterface $refreshToken,
         ShopUserTokenInterface $shopUserToken,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ChannelContextInterface $channelContext,
+        ChannelInterface $channel
     ): void {
         $context = [
             'args' => [
@@ -79,6 +85,11 @@ class LoginResolverSpec extends ObjectBehavior
         $userSalt = 'SALT';
         $user->getPassword()->willReturn($userPassword);
         $user->getSalt()->willReturn($userSalt);
+
+        $user->isVerified()->willReturn(true);
+
+        $channelContext->getChannel()->willReturn($channel);
+        $channel->isAccountVerificationRequired()->willReturn(true);
 
         $encoder->isPasswordValid($userPassword, $password, $userSalt)->shouldBeCalled()->willReturn(true);
 
@@ -118,7 +129,9 @@ class LoginResolverSpec extends ObjectBehavior
         UserRepositoryInterface $userRepository,
         EncoderFactoryInterface $encoderFactory,
         PasswordEncoderInterface $encoder,
-        ShopUserInterface $user
+        ShopUserInterface $user,
+        ChannelContextInterface $channelContext,
+        ChannelInterface $channel
     ): void {
         $context = [
             'args' => [
@@ -142,11 +155,101 @@ class LoginResolverSpec extends ObjectBehavior
         $user->getPassword()->willReturn($userPassword);
         $user->getSalt()->willReturn($userSalt);
 
+        $user->isVerified()->willReturn(true);
+
+        $channelContext->getChannel()->willReturn($channel);
+        $channel->isAccountVerificationRequired()->willReturn(true);
+
         $encoder->isPasswordValid($userPassword, $password, $userSalt)->willReturn(false);
 
         $this
             ->shouldThrow(\Exception::class)
             ->during('__invoke', [null, $context])
         ;
+    }
+
+    function it_throws_exception_when_logging_in_unverified_user_when_channel_denies_it(
+        UserRepositoryInterface $userRepository,
+        EncoderFactoryInterface $encoderFactory,
+        PasswordEncoderInterface $encoder,
+        ShopUserInterface $user,
+        ChannelContextInterface $channelContext,
+        ChannelInterface $channel
+    ): void {
+        $context = [
+            'args' => [
+                'input' => [
+                    'username' => 'username',
+                    'password' => 'somepass',
+                ],
+            ],
+        ];
+
+        $input = $context['args']['input'];
+        $username = (string) $input['username'];
+
+        $userRepository->findOneBy(['username' => $username])->willReturn($user);
+        $encoderFactory->getEncoder($user)->willReturn($encoder);
+
+        $userPassword = 'ENCODED_PASSWORD';
+        $userSalt = 'SALT';
+        $user->getPassword()->willReturn($userPassword);
+        $user->getSalt()->willReturn($userSalt);
+
+        $user->isVerified()->willReturn(false);
+
+        $channelContext->getChannel()->willReturn($channel);
+        $channel->isAccountVerificationRequired()->willReturn(true);
+
+        $this->shouldThrow(\Exception::class)
+            ->during('__invoke', [null, $context]);
+    }
+
+    function it_doesnt_throw_exception_when_logging_in_unverified_user_but_channel_doesnt_deny_it(
+        UserRepositoryInterface $userRepository,
+        EncoderFactoryInterface $encoderFactory,
+        ShopUserTokenFactoryInterface $tokenFactory,
+        PasswordEncoderInterface $encoder,
+        ShopUserInterface $user,
+        RefreshTokenInterface $refreshToken,
+        ShopUserTokenInterface $shopUserToken,
+        EventDispatcherInterface $eventDispatcher,
+        ChannelContextInterface $channelContext,
+        ChannelInterface $channel
+    ): void {
+        $context = [
+            'args' => [
+                'input' => [
+                    'username' => 'username',
+                    'password' => 'somepass',
+                ],
+            ],
+        ];
+
+        $input = $context['args']['input'];
+        $username = (string) $input['username'];
+        $password = (string) $input['password'];
+
+        $userRepository->findOneBy(['username' => $username])->willReturn($user);
+        $encoderFactory->getEncoder($user)->willReturn($encoder);
+
+        $userPassword = 'ENCODED_PASSWORD';
+        $userSalt = 'SALT';
+        $user->getPassword()->willReturn($userPassword);
+        $user->getSalt()->willReturn($userSalt);
+
+        $user->isVerified()->willReturn(false);
+
+        $channelContext->getChannel()->willReturn($channel);
+        $channel->isAccountVerificationRequired()->willReturn(false);
+
+        $encoder->isPasswordValid($userPassword, $password, $userSalt)->shouldBeCalled()->willReturn(true);
+
+        $tokenFactory->getRefreshToken($user)->willReturn($refreshToken);
+        $tokenFactory->create($user, $refreshToken)->willReturn($shopUserToken);
+
+        $eventDispatcher->dispatch(Argument::any(), LoginResolver::EVENT_NAME)->shouldBeCalled();
+
+        $this->__invoke(null, $context);
     }
 }

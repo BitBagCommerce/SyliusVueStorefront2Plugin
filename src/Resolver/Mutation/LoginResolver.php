@@ -14,6 +14,8 @@ use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
 use BitBag\SyliusVueStorefront2Plugin\Factory\ShopUserTokenFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserTokenInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Sylius\Component\Channel\Context\ChannelContextInterface;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
@@ -40,6 +42,8 @@ final class LoginResolver implements MutationResolverInterface
 
     private EventDispatcherInterface $eventDispatcher;
 
+    private ChannelContextInterface $channelContext;
+
     /** @psalm-suppress DeprecatedClass */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -48,6 +52,7 @@ final class LoginResolver implements MutationResolverInterface
         EncoderFactoryInterface $encoderFactory,
         ShopUserTokenFactoryInterface $tokenFactory,
         EventDispatcherInterface $eventDispatcher,
+        ChannelContextInterface $channelContext
     ) {
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
@@ -55,6 +60,7 @@ final class LoginResolver implements MutationResolverInterface
         $this->encoderFactory = $encoderFactory;
         $this->tokenFactory = $tokenFactory;
         $this->eventDispatcher = $eventDispatcher;
+        $this->channelContext = $channelContext;
     }
 
     /**
@@ -86,7 +92,12 @@ final class LoginResolver implements MutationResolverInterface
         Assert::notNull($userPassword);
         Assert::notNull($userSalt);
 
-        if ($encoder->isPasswordValid($userPassword, $password, $userSalt)) {
+        /** @var ChannelInterface $currentChannel */
+        $currentChannel = $this->channelContext->getChannel();
+
+        if ($currentChannel->isAccountVerificationRequired() && $user->isVerified() === false) {
+            throw new \Exception('User verification required.');
+        } else if ($encoder->isPasswordValid($userPassword, $password, $userSalt)) {
             $refreshToken = $this->tokenFactory->getRefreshToken($user);
             $shopUserToken = $this->tokenFactory->create($user, $refreshToken);
             $this->applyOrder($input, $user);

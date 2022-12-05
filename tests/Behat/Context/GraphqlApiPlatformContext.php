@@ -151,7 +151,7 @@ final class GraphqlApiPlatformContext implements Context
      */
     public function thatResponseShouldContainKeyWithValue(
         string $key,
-        $value,
+               $value,
         string $type = null,
     ): void {
         /** @psalm-suppress MixedAssignment */
@@ -162,6 +162,20 @@ final class GraphqlApiPlatformContext implements Context
         }
 
         Assert::same($responseValueAtKey, $value);
+    }
+
+    /**
+     * @param mixed $value
+     * @Then This response should not contain :key
+     *
+     * @throws Exception
+     */
+    public function thatResponseShouldNotContainKeyWithValue(
+        string $key
+    ): void {
+        if ($this->client->hasValueAtKey($key)) {
+            throw new \Exception(sprintf("The response shouldn't contain the %s key", $key));
+        }
     }
 
     /**
