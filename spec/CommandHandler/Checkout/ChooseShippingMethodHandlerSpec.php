@@ -29,13 +29,13 @@ use Webmozart\Assert\InvalidArgumentException;
 
 final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         OrderRepositoryInterface $orderRepository,
         ShippingMethodRepositoryInterface $shippingMethodRepository,
         ShipmentRepositoryInterface $shipmentRepository,
         ShippingMethodEligibilityCheckerInterface $eligibilityChecker,
         FactoryInterface $stateMachineFactory,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith(
             $orderRepository,
@@ -47,12 +47,12 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ChooseShippingMethodHandler::class);
     }
 
-    function it_is_invokable(
+    public function it_is_invokable(
         OrderRepositoryInterface $orderRepository,
         ShippingMethodRepositoryInterface $shippingMethodRepository,
         ShipmentRepositoryInterface $shipmentRepository,
@@ -62,7 +62,7 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         ShippingMethodInterface $shippingMethod,
         StateMachineInterface $stateMachine,
         ShipmentInterface $shipment,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $chooseShippingMethod = new ChooseShippingMethod('token', 'ups', 'shipmentId');
         $orderRepository->findOneBy(['tokenValue' => $chooseShippingMethod->orderTokenValue])->willReturn($cart);
@@ -87,8 +87,8 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         $this->__invoke($chooseShippingMethod);
     }
 
-    function it_throws_an_exception_on_null_cart(
-        OrderRepositoryInterface $orderRepository
+    public function it_throws_an_exception_on_null_cart(
+        OrderRepositoryInterface $orderRepository,
     ): void {
         $chooseShippingMethod = new ChooseShippingMethod('token', 'ups', 'shipmentId');
         $orderRepository->findOneBy(['tokenValue' => $chooseShippingMethod->orderTokenValue])->willReturn(null);
@@ -97,12 +97,12 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         ;
     }
 
-    function it_throws_an_exception_on_null_shipping_method(
+    public function it_throws_an_exception_on_null_shipping_method(
         OrderRepositoryInterface $orderRepository,
         ShippingMethodRepositoryInterface $shippingMethodRepository,
         FactoryInterface $stateMachineFactory,
         OrderInterface $cart,
-        StateMachineInterface $stateMachine
+        StateMachineInterface $stateMachine,
     ): void {
         $chooseShippingMethod = new ChooseShippingMethod('token', 'ups', 'shipmentId');
 
@@ -120,14 +120,14 @@ final class ChooseShippingMethodHandlerSpec extends ObjectBehavior
         ;
     }
 
-    function it_throws_an_exception_on_null_shipment(
+    public function it_throws_an_exception_on_null_shipment(
         OrderRepositoryInterface $orderRepository,
         ShippingMethodRepositoryInterface $shippingMethodRepository,
         ShipmentRepositoryInterface $shipmentRepository,
         FactoryInterface $stateMachineFactory,
         OrderInterface $cart,
         ShippingMethodInterface $shippingMethod,
-        StateMachineInterface $stateMachine
+        StateMachineInterface $stateMachine,
     ): void {
         $chooseShippingMethod = new ChooseShippingMethod('token', 'ups', 'shipmentId');
         $orderRepository->findOneBy(['tokenValue' => $chooseShippingMethod->orderTokenValue])->willReturn($cart);

@@ -22,23 +22,23 @@ use Sylius\Component\Core\Model\ShopUserInterface;
 
 final class ShopUserTokenFactorySpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         EntityManagerInterface $entityManager,
         JWTTokenManagerInterface $jwtManager,
-        RefreshTokenManagerInterface $refreshJwtManager
+        RefreshTokenManagerInterface $refreshJwtManager,
     ): void {
         $this->beConstructedWith($entityManager, $jwtManager, $refreshJwtManager);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ShopUserTokenFactory::class);
     }
 
-    function it_creates_shop_user_token(
+    public function it_creates_shop_user_token(
         JWTTokenManagerInterface $jwtManager,
         ShopUserInterface $user,
-        RefreshTokenInterface $refreshToken
+        RefreshTokenInterface $refreshToken,
     ): void {
         $shopUserToken = new ShopUserToken();
         $token = 'token';
@@ -57,11 +57,11 @@ final class ShopUserTokenFactorySpec extends ObjectBehavior
         $this->create($user, $refreshToken)->shouldBeLike($shopUserToken);
     }
 
-    function it_gets_refresh_token(
+    public function it_gets_refresh_token(
         EntityManagerInterface $entityManager,
         RefreshTokenManagerInterface $refreshJwtManager,
         RefreshTokenInterface $refreshToken,
-        ShopUserInterface $user
+        ShopUserInterface $user,
     ): void {
         $refreshJwtManager->create()->willReturn($refreshToken);
 

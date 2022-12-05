@@ -25,28 +25,28 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         OrderItemRepositoryInterface $orderItemRepository,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         OrderProcessorInterface $orderProcessor,
         EventDispatcherInterface $eventDispatcher,
-        AvailabilityCheckerInterface $availabilityChecker
+        AvailabilityCheckerInterface $availabilityChecker,
     ): void {
         $this->beConstructedWith(
             $orderItemRepository,
             $orderItemQuantityModifier,
             $orderProcessor,
             $eventDispatcher,
-            $availabilityChecker
+            $availabilityChecker,
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ChangeItemQuantityInCartHandler::class);
     }
 
-    function it_is_invokable(
+    public function it_is_invokable(
         OrderItemRepositoryInterface $orderItemRepository,
         OrderItemQuantityModifierInterface $orderItemQuantityModifier,
         OrderProcessorInterface $orderProcessor,
@@ -54,7 +54,7 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
         OrderInterface $cart,
         EventDispatcherInterface $eventDispatcher,
         AvailabilityCheckerInterface $availabilityChecker,
-        ProductVariantInterface $variant
+        ProductVariantInterface $variant,
     ): void {
         $orderToken = 'token';
         $command = new ChangeItemQuantityInCart(10, 'itemId', $orderToken);
@@ -78,8 +78,8 @@ final class ChangeItemQuantityInCartHandlerSpec extends ObjectBehavior
         $this->__invoke($command);
     }
 
-    function it_throws_an_exception_if_token_is_invalid(
-        OrderItemRepositoryInterface $orderItemRepository
+    public function it_throws_an_exception_if_token_is_invalid(
+        OrderItemRepositoryInterface $orderItemRepository,
     ): void {
         $orderToken = 'token';
         $command = new ChangeItemQuantityInCart(10, 'itemId', $orderToken);

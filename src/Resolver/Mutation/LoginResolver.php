@@ -52,7 +52,7 @@ final class LoginResolver implements MutationResolverInterface
         EncoderFactoryInterface $encoderFactory,
         ShopUserTokenFactoryInterface $tokenFactory,
         EventDispatcherInterface $eventDispatcher,
-        ChannelContextInterface $channelContext
+        ChannelContextInterface $channelContext,
     ) {
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
@@ -97,7 +97,8 @@ final class LoginResolver implements MutationResolverInterface
 
         if ($currentChannel->isAccountVerificationRequired() && $user->isVerified() === false) {
             throw new \Exception('User verification required.');
-        } else if ($encoder->isPasswordValid($userPassword, $password, $userSalt)) {
+        }
+        if ($encoder->isPasswordValid($userPassword, $password, $userSalt)) {
             $refreshToken = $this->tokenFactory->getRefreshToken($user);
             $shopUserToken = $this->tokenFactory->create($user, $refreshToken);
             $this->applyOrder($input, $user);

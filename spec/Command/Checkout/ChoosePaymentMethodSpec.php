@@ -18,32 +18,32 @@ use Sylius\Bundle\ApiBundle\Command\SubresourceIdAwareInterface;
 
 final class ChoosePaymentMethodSpec extends ObjectBehavior
 {
-    function let(): void
+    public function let(): void
     {
         $this->beConstructedWith('orderTokenValue', 'paymentMethodCode', 'paymentId');
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ChoosePaymentMethod::class);
     }
 
-    function it_gets_subresource_id_attribute_key(): void
+    public function it_gets_subresource_id_attribute_key(): void
     {
         $this->getSubresourceIdAttributeKey()->shouldReturn('paymentId');
     }
 
-    function it_implements_order_token_value_interface(): void
+    public function it_implements_order_token_value_interface(): void
     {
         $this->shouldImplement(OrderTokenValueAwareInterface::class);
     }
 
-    function it_implements_payment_method_code_aware_interface(): void
+    public function it_implements_payment_method_code_aware_interface(): void
     {
         $this->shouldImplement(PaymentMethodCodeAwareInterface::class);
     }
 
-    function it_implements_subresource_id_aware_interface(): void
+    public function it_implements_subresource_id_aware_interface(): void
     {
         $this->shouldImplement(SubresourceIdAwareInterface::class);
     }

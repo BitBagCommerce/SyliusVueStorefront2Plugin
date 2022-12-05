@@ -25,28 +25,28 @@ use Webmozart\Assert\InvalidArgumentException;
 
 final class ShippingAddressOrderHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         OrderRepositoryInterface $orderRepository,
         ObjectManager $manager,
         CustomerProviderInterface $customerProvider,
         OrderAddressStateResolverInterface $addressStateResolver,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith($orderRepository, $manager, $customerProvider, $addressStateResolver, $eventDispatcher);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ShippingAddressOrderHandler::class);
     }
 
-    function it_is_invokable(
+    public function it_is_invokable(
         OrderRepositoryInterface $orderRepository,
         ObjectManager $manager,
         OrderAddressStateResolverInterface $addressStateResolver,
         OrderInterface $order,
         CustomerInterface $customer,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $addressOrder = new ShippingAddressOrder('jd@mail.com', 'token');
         $tokenValue = $addressOrder->orderTokenValue;
@@ -62,8 +62,8 @@ final class ShippingAddressOrderHandlerSpec extends ObjectBehavior
         $this->__invoke($addressOrder);
     }
 
-    function it_throws_an_exception_when_cannot_find_cart(
-        OrderRepositoryInterface $orderRepository
+    public function it_throws_an_exception_when_cannot_find_cart(
+        OrderRepositoryInterface $orderRepository,
     ): void {
         $addressOrder = new ShippingAddressOrder('jd@mail.com', 'token');
         $tokenValue = $addressOrder->orderTokenValue;

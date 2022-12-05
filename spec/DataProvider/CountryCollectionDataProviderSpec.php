@@ -30,12 +30,12 @@ final class CountryCollectionDataProviderSpec extends ObjectBehavior
 {
     private iterable $collectionExtensions;
 
-    function let(
+    public function let(
         EntityRepository $countryRepository,
         QueryNameGeneratorInterface $queryNameGenerator,
         ManagerRegistry $managerRegistry,
         ResourceMetadataFactoryInterface $resourceMetadataFactory,
-        QueryResultCollectionExtensionInterface $queryResultCollectionExtension
+        QueryResultCollectionExtensionInterface $queryResultCollectionExtension,
     ): void {
         $pagination = new Pagination($resourceMetadataFactory->getWrappedObject());
         $paginationExtension = new PaginationExtension(
@@ -50,28 +50,28 @@ final class CountryCollectionDataProviderSpec extends ObjectBehavior
             $countryRepository,
             $paginationExtension,
             $queryNameGenerator,
-            $this->collectionExtensions
+            $this->collectionExtensions,
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(CountryCollectionDataProvider::class);
     }
 
-    function it_checks_if_supports(CountryInterface $country): void
+    public function it_checks_if_supports(CountryInterface $country): void
     {
         $this->supports(get_class($country->getWrappedObject()))->shouldReturn(true);
     }
 
-    function it_gets_a_collection(
+    public function it_gets_a_collection(
         ContextAwareQueryResultCollectionExtensionInterface $paginationExtension,
         ChannelInterface $channel,
         QueryBuilder $queryBuilder,
         EntityRepository $countryRepository,
         PaginatorInterface $paginator,
         QueryNameGeneratorInterface $queryNameGenerator,
-        QueryResultCollectionExtensionInterface $queryResultCollectionExtension
+        QueryResultCollectionExtensionInterface $queryResultCollectionExtension,
     ): void {
         $collectionExtensions = [
             $queryResultCollectionExtension->getWrappedObject(),
@@ -80,7 +80,7 @@ final class CountryCollectionDataProviderSpec extends ObjectBehavior
             $countryRepository,
             $paginationExtension->getWrappedObject(),
             $queryNameGenerator,
-            $collectionExtensions
+            $collectionExtensions,
         );
 
         $context = [
@@ -99,14 +99,14 @@ final class CountryCollectionDataProviderSpec extends ObjectBehavior
         $this->getCollection($resourceClass, $operationName, $context)->shouldReturn($paginator);
     }
 
-    function it_returns_query_result_collection_iterable(
+    public function it_returns_query_result_collection_iterable(
         ContextAwareQueryResultCollectionExtensionInterface $paginationExtension,
         ChannelInterface $channel,
         QueryBuilder $queryBuilder,
         EntityRepository $countryRepository,
         PaginatorInterface $paginator,
         QueryNameGeneratorInterface $queryNameGenerator,
-        QueryResultCollectionExtensionInterface $queryResultCollectionExtension
+        QueryResultCollectionExtensionInterface $queryResultCollectionExtension,
     ): void {
         $collectionExtensions = [
             $queryResultCollectionExtension->getWrappedObject(),
@@ -115,7 +115,7 @@ final class CountryCollectionDataProviderSpec extends ObjectBehavior
             $countryRepository,
             $paginationExtension->getWrappedObject(),
             $queryNameGenerator,
-            $collectionExtensions
+            $collectionExtensions,
         );
 
         $context = [

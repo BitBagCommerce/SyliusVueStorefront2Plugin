@@ -18,21 +18,21 @@ use Sylius\Component\Locale\Context\LocaleContextInterface;
 
 final class LocaleContextBuilderSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        LocaleContextInterface $localeContext
+        LocaleContextInterface $localeContext,
     ): void {
         $this->beConstructedWith($decoratedContextBuilder, $localeContext);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(LocaleContextBuilder::class);
     }
 
-    function it_creates(
+    public function it_creates(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        LocaleContextInterface $localeContext
+        LocaleContextInterface $localeContext,
     ): void {
         $resourceClass = 'Class/Name';
         $operationName = 'operation_name';

@@ -22,26 +22,26 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class OrderCouponResolverSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         OrderRepositoryInterface $orderRepository,
         UserContextInterface $userContext,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith($orderRepository, $userContext, $eventDispatcher);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(OrderCouponResolver::class);
     }
 
-    function it_is_invokable(
+    public function it_is_invokable(
         OrderRepositoryInterface $orderRepository,
         UserContextInterface $userContext,
         OrderInterface $order,
         PromotionCouponInterface $promotionCoupon,
         UserInterface $user,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $context = [
             'args' => [
@@ -68,10 +68,10 @@ class OrderCouponResolverSpec extends ObjectBehavior
         $this->__invoke(null, $context)->shouldReturn($promotionCoupon);
     }
 
-    function it_throws_an_exception_when_order_nor_found(
+    public function it_throws_an_exception_when_order_nor_found(
         OrderRepositoryInterface $orderRepository,
         UserContextInterface $userContext,
-        UserInterface $user
+        UserInterface $user,
     ): void {
         $context = [
             'args' => [
@@ -89,6 +89,7 @@ class OrderCouponResolverSpec extends ObjectBehavior
         $orderRepository->findOneBy(['tokenValue' => $orderToken])->willReturn(null);
 
         $this->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [null, $context]);
+            ->during('__invoke', [null, $context])
+        ;
     }
 }

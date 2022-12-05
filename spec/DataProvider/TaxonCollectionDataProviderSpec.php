@@ -27,13 +27,13 @@ use Sylius\Component\Core\Model\TaxonInterface;
 
 final class TaxonCollectionDataProviderSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         TaxonRepositoryInterface $taxonRepository,
         UserContextInterface $userContext,
         QueryNameGeneratorInterface $queryNameGenerator,
         ManagerRegistry $managerRegistry,
         ResourceMetadataFactoryInterface $resourceMetadataFactory,
-        QueryResultCollectionExtensionInterface $queryResultCollectionExtension
+        QueryResultCollectionExtensionInterface $queryResultCollectionExtension,
     ): void {
         $pagination = new Pagination($resourceMetadataFactory->getWrappedObject());
         $paginationExtension = new PaginationExtension(
@@ -53,22 +53,22 @@ final class TaxonCollectionDataProviderSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(TaxonCollectionDataProvider::class);
     }
 
-    function it_checks_if_supports(TaxonInterface $taxon): void
+    public function it_checks_if_supports(TaxonInterface $taxon): void
     {
         $this->supports(get_class($taxon->getWrappedObject()))->shouldReturn(true);
     }
 
-    function it_gets_all_collection_for_user_with_api_access(
+    public function it_gets_all_collection_for_user_with_api_access(
         ChannelInterface $channel,
         TaxonInterface $channelMenuTaxon,
         UserContextInterface $userContext,
         ShopUserInterface $user,
-        TaxonRepositoryInterface $taxonRepository
+        TaxonRepositoryInterface $taxonRepository,
     ) {
         $context = [
             ContextKeys::CHANNEL => $channel,

@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client;
 
 use Exception;
+use const JSON_ERROR_NONE;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 use Sylius\Behat\Service\SharedStorageInterface;
@@ -23,7 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Model\OperationRequest;
 use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Model\OperationRequestInterface;
 use Webmozart\Assert\Assert;
-use const JSON_ERROR_NONE;
 
 final class GraphqlClient implements GraphqlClientInterface
 {
