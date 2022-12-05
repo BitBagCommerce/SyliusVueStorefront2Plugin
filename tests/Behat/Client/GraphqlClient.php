@@ -262,6 +262,14 @@ final class GraphqlClient implements GraphqlClientInterface
         return $flatResponse[$key];
     }
 
+    public function hasValueAtKey(string $key): bool
+    {
+        $arrayContent = $this->getLastResponseArrayContent();
+        $flatResponse = $this->flattenArray($arrayContent);
+
+        return array_key_exists($key, $flatResponse);
+    }
+
     /** @throws Exception */
     private function checkIfResponseProperlyFormatted(array $responseArray): void
     {
