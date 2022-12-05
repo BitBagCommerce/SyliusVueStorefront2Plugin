@@ -15,12 +15,12 @@ use PhpSpec\ObjectBehavior;
 
 final class SendResetPasswordEmailSpec extends ObjectBehavior
 {
-    function let(): void
+    public function let(): void
     {
         $this->beConstructedWith('en_US', 'somemail@mail.com');
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(SendResetPasswordEmail::class);
     }

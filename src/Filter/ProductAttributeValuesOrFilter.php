@@ -90,7 +90,7 @@ final class ProductAttributeValuesOrFilter extends AbstractContextAwareFilter
         return $this->propertyAccessor;
     }
 
-    /** @return void */
+    /** @phpstan-ignore-next-line The abstract class' method doesn't have return type defined */
     protected function filterProperty(
         string $property,
         $value,

@@ -19,22 +19,22 @@ use Sylius\Component\Core\Model\ChannelInterface;
 
 final class ChannelContextBuilderSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         SerializerContextBuilderInterface $decoratedContextBuilder,
-        ChannelContextInterface $channelContext
+        ChannelContextInterface $channelContext,
     ): void {
         $this->beConstructedWith($decoratedContextBuilder, $channelContext);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ChannelContextBuilder::class);
     }
 
-    function it_creates_context(
+    public function it_creates_context(
         SerializerContextBuilderInterface $decoratedContextBuilder,
         ChannelContextInterface $channelContext,
-        ChannelInterface $channel
+        ChannelInterface $channel,
     ): void {
         $context = [];
         $resourceClass = 'Class/Name';

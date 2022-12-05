@@ -26,12 +26,12 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class RefreshTokenResolverSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         EntityManagerInterface $entityManager,
         ShopUserTokenFactoryInterface $tokenFactory,
         UserRepositoryInterface $userRepository,
         ObjectRepository $refreshTokenRepository,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $entityManager->getRepository(RefreshToken::class)->willReturn($refreshTokenRepository);
         $lifespan = '2592000';
@@ -44,19 +44,19 @@ class RefreshTokenResolverSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(RefreshTokenResolver::class);
     }
 
-    function it_is_invokable(
+    public function it_is_invokable(
         EntityManagerInterface $entityManager,
         ShopUserTokenFactoryInterface $tokenFactory,
         UserRepositoryInterface $userRepository,
         ObjectRepository $refreshTokenRepository,
         ShopUserInterface $user,
         ShopUserTokenInterface $shopUserToken,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $refreshTokenClass = 'Path/To/RefreshTokenClass';
 
@@ -93,10 +93,10 @@ class RefreshTokenResolverSpec extends ObjectBehavior
         $this->__invoke(null, $context)->shouldReturn($shopUserToken);
     }
 
-    function it_throws_an_exception_if_token_is_invalid(
+    public function it_throws_an_exception_if_token_is_invalid(
         EntityManagerInterface $entityManager,
         ObjectRepository $refreshTokenRepository,
-        RefreshTokenInterface $refreshToken
+        RefreshTokenInterface $refreshToken,
     ): void {
         $refreshTokenClass = 'Path/To/RefreshTokenClass';
         $context = [
@@ -120,9 +120,9 @@ class RefreshTokenResolverSpec extends ObjectBehavior
         ;
     }
 
-    function it_throws_an_exception_when_token_is_not_found(
+    public function it_throws_an_exception_when_token_is_not_found(
         EntityManagerInterface $entityManager,
-        ObjectRepository $refreshTokenRepository
+        ObjectRepository $refreshTokenRepository,
     ): void {
         $refreshTokenClass = 'Path/To/RefreshTokenClass';
         $context = [

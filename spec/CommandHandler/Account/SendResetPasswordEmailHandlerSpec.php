@@ -26,12 +26,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         SenderInterface $emailSender,
         ChannelContextInterface $channelContext,
         UserRepositoryInterface $userRepository,
         GeneratorInterface $generator,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith(
             $emailSender,
@@ -42,12 +42,12 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(SendResetPasswordEmailHandler::class);
     }
 
-    function it_is_invokable(
+    public function it_is_invokable(
         SenderInterface $emailSender,
         ChannelContextInterface $channelContext,
         UserRepositoryInterface $userRepository,
@@ -55,7 +55,7 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
         ShopUserInterface $user,
         ChannelInterface $channel,
         CustomerInterface $customer,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $resetToken = 'hdhgvshjvbwje';
 
@@ -84,8 +84,8 @@ final class SendResetPasswordEmailHandlerSpec extends ObjectBehavior
         $this->__invoke($command);
     }
 
-    function it_throws_an_exception_when_user_nor_found(
-        UserRepositoryInterface $userRepository
+    public function it_throws_an_exception_when_user_nor_found(
+        UserRepositoryInterface $userRepository,
     ): void {
         $command = new SendResetPasswordEmail('en_US', 'john.d@gmail.com');
 

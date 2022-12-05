@@ -17,17 +17,17 @@ use Sylius\Component\Core\Model\AddressInterface;
 
 final class ShippingAddressOrderSpec extends ObjectBehavior
 {
-    function let(AddressInterface $shippingAddress): void
+    public function let(AddressInterface $shippingAddress): void
     {
         $this->beConstructedWith('bruce@wayne.co', 'orderTokenValue', $shippingAddress);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ShippingAddressOrder::class);
     }
 
-    function it_implements_order_token_value_interface(): void
+    public function it_implements_order_token_value_interface(): void
     {
         $this->shouldImplement(OrderTokenValueAwareInterface::class);
     }

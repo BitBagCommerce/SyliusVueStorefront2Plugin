@@ -68,6 +68,7 @@ final class GraphqlApiPlatformContext implements Context
 
     /**
      * @param mixed $value
+     *
      * @When I set :key field to :value
      */
     public function iSetKeyFieldToValue(string $key, $value): void
@@ -144,6 +145,7 @@ final class GraphqlApiPlatformContext implements Context
 
     /**
      * @param mixed $value
+     *
      * @Then This response should contain :key equal to :value
      * @Then This response should contain :key equal to :value as :type
      *
@@ -162,6 +164,19 @@ final class GraphqlApiPlatformContext implements Context
         }
 
         Assert::same($responseValueAtKey, $value);
+    }
+
+    /**
+     * @Then This response should not contain :key
+     *
+     * @throws Exception
+     */
+    public function thatResponseShouldNotContainKeyWithValue(
+        string $key,
+    ): void {
+        if ($this->client->hasValueAtKey($key)) {
+            throw new \Exception(sprintf("The response shouldn't contain the %s key", $key));
+        }
     }
 
     /**

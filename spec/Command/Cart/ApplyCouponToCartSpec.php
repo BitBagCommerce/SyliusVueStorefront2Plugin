@@ -15,17 +15,17 @@ use PhpSpec\ObjectBehavior;
 
 final class ApplyCouponToCartSpec extends ObjectBehavior
 {
-    function let(): void
+    public function let(): void
     {
         $this->beConstructedWith('couponCode', 'orderTokenValue');
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ApplyCouponToCart::class);
     }
 
-    function it_gets_order_token_value(): void
+    public function it_gets_order_token_value(): void
     {
         $this->getOrderTokenValue()->shouldReturn('orderTokenValue');
     }

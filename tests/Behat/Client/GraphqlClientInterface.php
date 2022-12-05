@@ -49,4 +49,6 @@ interface GraphqlClientInterface
 
     /** @return mixed */
     public function getValueAtKey(string $key);
+
+    public function hasValueAtKey(string $key): bool;
 }

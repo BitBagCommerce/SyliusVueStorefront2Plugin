@@ -19,19 +19,19 @@ use Webmozart\Assert\InvalidArgumentException;
 
 final class SubresourceIdAwareCommandDataTransformerSpec extends ObjectBehavior
 {
-    function let(RequestStack $requestStack): void
+    public function let(RequestStack $requestStack): void
     {
         $this->beConstructedWith($requestStack);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(SubresourceIdAwareCommandDataTransformer::class);
     }
 
-    function it_transforms(
+    public function it_transforms(
         SubresourceIdAwareInterface $object,
-        RequestStack $requestStack
+        RequestStack $requestStack,
     ): void {
         $attributeKey = 'key';
         $subresourceId = 'id';
@@ -50,9 +50,9 @@ final class SubresourceIdAwareCommandDataTransformerSpec extends ObjectBehavior
         $this->transform($object, '')->shouldReturn($object);
     }
 
-    function it_throws_an_exception(
+    public function it_throws_an_exception(
         RequestStack $requestStack,
-        Request $request
+        Request $request,
     ): void {
         $requestStack->getCurrentRequest()->willReturn($request);
 
@@ -62,7 +62,7 @@ final class SubresourceIdAwareCommandDataTransformerSpec extends ObjectBehavior
         ;
     }
 
-    function it_checks_if_it_supports_transformation(SubresourceIdAwareInterface $object): void
+    public function it_checks_if_it_supports_transformation(SubresourceIdAwareInterface $object): void
     {
         $this->supportsTransformation($object)->shouldReturn(true);
     }

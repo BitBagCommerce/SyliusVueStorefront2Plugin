@@ -17,17 +17,17 @@ use Sylius\Component\Core\Model\AddressInterface;
 
 final class BillingAddressOrderSpec extends ObjectBehavior
 {
-    function let(AddressInterface $billingAddress): void
+    public function let(AddressInterface $billingAddress): void
     {
         $this->beConstructedWith('johndoe@mail.com', 'orderTokenValue', $billingAddress);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(BillingAddressOrder::class);
     }
 
-    function it_implements_order_token_value_interface(): void
+    public function it_implements_order_token_value_interface(): void
     {
         $this->shouldImplement(OrderTokenValueAwareInterface::class);
     }

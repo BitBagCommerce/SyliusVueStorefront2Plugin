@@ -23,27 +23,27 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class ApplyCouponToCartHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         OrderRepositoryInterface $orderRepository,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         OrderProcessorInterface $orderProcessor,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith($orderRepository, $promotionCouponRepository, $orderProcessor, $eventDispatcher);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(ApplyCouponToCartHandler::class);
     }
 
-    function it_is_invokable(
+    public function it_is_invokable(
         OrderRepositoryInterface $orderRepository,
         OrderProcessorInterface $orderProcessor,
         OrderInterface $cart,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         PromotionCouponInterface $promotionCoupon,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $code = 'code';
         $command = new ApplyCouponToCart($code, 'token');
@@ -60,8 +60,8 @@ final class ApplyCouponToCartHandlerSpec extends ObjectBehavior
         $this->__invoke($command);
     }
 
-    function it_throws_an_exception_when_could_not_found_cart(
-        OrderRepositoryInterface $orderRepository
+    public function it_throws_an_exception_when_could_not_found_cart(
+        OrderRepositoryInterface $orderRepository,
     ): void {
         $command = new ApplyCouponToCart('code', 'token');
 

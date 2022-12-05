@@ -26,13 +26,13 @@ use Webmozart\Assert\InvalidArgumentException;
 
 final class BillingAddressOrderHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         OrderRepositoryInterface $orderRepository,
         ObjectManager $manager,
         CustomerProviderInterface $customerProvider,
         OrderAddressStateResolverInterface $addressStateResolver,
         EventDispatcherInterface $eventDispatcher,
-        UserContextInterface $userContext
+        UserContextInterface $userContext,
     ): void {
         $this->beConstructedWith(
             $orderRepository,
@@ -44,12 +44,12 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(BillingAddressOrderHandler::class);
     }
 
-    function it_is_invokable(
+    public function it_is_invokable(
         OrderRepositoryInterface $orderRepository,
         ObjectManager $manager,
         CustomerProviderInterface $customerProvider,
@@ -58,7 +58,7 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         CustomerInterface $customer,
         \Sylius\Component\Core\Model\CustomerInterface $newCustomer,
         EventDispatcherInterface $eventDispatcher,
-        UserContextInterface $userContext
+        UserContextInterface $userContext,
     ): void {
         $email = 'jd@mail.com';
         $addressOrder = new BillingAddressOrder($email, 'token');
@@ -82,8 +82,8 @@ final class BillingAddressOrderHandlerSpec extends ObjectBehavior
         $this->__invoke($addressOrder);
     }
 
-    function it_throws_an_exception_when_cannot_find_cart(
-        OrderRepositoryInterface $orderRepository
+    public function it_throws_an_exception_when_cannot_find_cart(
+        OrderRepositoryInterface $orderRepository,
     ): void {
         $addressOrder = new BillingAddressOrder('jd@mail.com', 'token');
         $tokenValue = $addressOrder->orderTokenValue;

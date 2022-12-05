@@ -15,12 +15,12 @@ use PhpSpec\ObjectBehavior;
 
 final class RemoveItemFromCartSpec extends ObjectBehavior
 {
-    function let(): void
+    public function let(): void
     {
         $this->beConstructedWith('orderTokenValue', 120);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(RemoveItemFromCart::class);
     }

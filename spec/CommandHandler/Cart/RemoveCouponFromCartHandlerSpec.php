@@ -24,21 +24,21 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         OrderRepositoryInterface $orderRepository,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         OrderProcessorInterface $orderProcessor,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith($orderRepository, $promotionCouponRepository, $orderProcessor, $eventDispatcher);
     }
 
-    function it_is_initializable(): void
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(RemoveCouponFromCartHandler::class);
     }
 
-    function it_is_invokable(
+    public function it_is_invokable(
         OrderRepositoryInterface $orderRepository,
         OrderProcessorInterface $orderProcessor,
         OrderInterface $cart,
@@ -46,7 +46,7 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         PromotionCouponInterface $cartCoupon,
         PromotionCouponRepositoryInterface $promotionCouponRepository,
         PromotionInterface $promotion,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $tokenValue = 'token';
         $couponCode = 'PROMO';
@@ -70,8 +70,8 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         $this->__invoke($command);
     }
 
-    function it_throws_an_exception_when_cart_is_not_found(
-        OrderRepositoryInterface $orderRepository
+    public function it_throws_an_exception_when_cart_is_not_found(
+        OrderRepositoryInterface $orderRepository,
     ): void {
         $tokenValue = 'token';
         $couponCode = 'PROMO';
@@ -84,11 +84,11 @@ final class RemoveCouponFromCartHandlerSpec extends ObjectBehavior
         ;
     }
 
-    function it_throws_an_exception_when_promotion_is_not_found(
+    public function it_throws_an_exception_when_promotion_is_not_found(
         OrderRepositoryInterface $orderRepository,
         OrderInterface $cart,
         PromotionCouponInterface $promotionCoupon,
-        PromotionCouponRepositoryInterface $promotionCouponRepository
+        PromotionCouponRepositoryInterface $promotionCouponRepository,
     ): void {
         $tokenValue = 'token';
         $couponCode = 'PROMO';
