@@ -13,3 +13,10 @@ liip_imagine:
         sylius_shop_product_large_thumbnail:
             filters:
                 thumbnail: { size: [550, 412], mode: outbound }
+
+sylius_fixtures:
+    suites:
+        default:
+            fixtures:
+                channel_locales:
+                    priority: 0

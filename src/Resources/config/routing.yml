@@ -1,3 +1,10 @@
+api_graphql_entrypoint:
+    path: /api/v2/graphql/{_locale}
+    defaults:
+        _controller: api_platform.graphql.action.entrypoint
+        _locale: '%locale%'
+        _graphql: true
+    
 sylius_shop_password_reset:
     path: /reset-password
     methods: [GET, POST]
