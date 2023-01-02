@@ -36,11 +36,11 @@ We are hiring developers from all over the world. Join us and start your new, ex
                     <attribute name="orderTokenValue">
                         <attribute name="type">String</attribute>
                     </attribute>
-                    <attribute name="quantity">
-                        <attribute name="type">Int</attribute>
-                    </attribute>
                     <attribute name="productVariant">
                         <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="quantity">
+                        <attribute name="type">Int</attribute>
                     </attribute>
                 </attribute>
             </operation>
