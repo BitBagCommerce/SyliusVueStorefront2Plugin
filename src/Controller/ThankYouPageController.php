@@ -39,7 +39,7 @@ final class ThankYouPageController
                 );
             }
 
-            return new RedirectResponse(sprintf('%s/checkout/thank-you?order=%s', $this->vsf2Host, (string)$orderNumber));
+            return new RedirectResponse(sprintf('%s/checkout/thank-you?order=%s', $this->vsf2Host, (string) $orderNumber));
         }
 
         return new RedirectResponse(

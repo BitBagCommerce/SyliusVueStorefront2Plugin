@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusVueStorefront2Plugin\Fixture;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Sylius\Bundle\CoreBundle\Fixture\Factory\ExampleFactoryInterface;
 use Sylius\Bundle\FixturesBundle\Fixture\AbstractFixture;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
@@ -33,7 +32,7 @@ final class ChannelLocalesFixture extends AbstractFixture
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
         RepositoryInterface $localeRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ) {
         $this->channelRepository = $channelRepository;
         $this->localeRepository = $localeRepository;
@@ -68,6 +67,5 @@ final class ChannelLocalesFixture extends AbstractFixture
 
     protected function configureOptionsNode(ArrayNodeDefinition $optionsNode): void
     {
-
     }
 }

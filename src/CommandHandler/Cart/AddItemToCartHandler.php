@@ -74,7 +74,7 @@ final class AddItemToCartHandler implements MessageHandlerInterface
 
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(
             $productVariant,
-            $cartItem->getQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem),
+            $addItemToCart->quantity + $this->getExistingCartItemQuantityFromCart($cart, $cartItem),
         );
 
         Assert::true($isStockSufficient, 'There are no that many items on stock.');
