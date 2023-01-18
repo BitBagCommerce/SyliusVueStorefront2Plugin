@@ -1,3 +1,6 @@
+bitbag_sylius_wishlist_plugin:
+    resource: "@BitBagSyliusWishlistPlugin/Resources/config/routing.yml"
+
 api_graphql_entrypoint:
     path: /api/v2/graphql/{_locale}
     defaults:

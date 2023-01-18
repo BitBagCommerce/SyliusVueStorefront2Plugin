@@ -39,5 +39,12 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
             <tag name="controller.service_arguments" />
         </service>
+
+        <service
+            id="bit_bag.sylius_vue_storefront2plugin.controller.list_wishlists_action"
+            class="BitBag\SyliusVueStorefront2Plugin\Controller\ListWishlistsAction"
+        >
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.resolver.wishlists_resolver"/>
+        </service>
     </services>
 </container>
