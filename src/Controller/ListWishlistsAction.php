@@ -21,8 +21,8 @@ final class ListWishlistsAction
         $this->wishlistsResolver = $wishlistsResolver;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): array
     {
-        return new JsonResponse($this->wishlistsResolver->resolve());
+        return $this->wishlistsResolver->resolve();
     }
 }
