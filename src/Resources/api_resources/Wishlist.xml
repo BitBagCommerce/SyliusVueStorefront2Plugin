@@ -7,26 +7,21 @@
     <graphql>
         <operation name="collection_query">
             <attribute name="pagination_type">page</attribute>
+            <attribute name="security">is_granted("ROLE_USER")</attribute>
         </operation>
 
-<!--        <operation name="shop_get_wishlists">-->
-<!--            <attribute name="method">GET</attribute>-->
-<!--            <attribute name="controller">bit_bag.sylius_vue_storefront2plugin.controller.list_wishlists_action</attribute>-->
-<!--        </operation>-->
+        <operation name="create">
+            <attribute name="method">POST</attribute>
+            <attribute name="messenger">input</attribute>
+            <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist</attribute>
+            <attribute name="security">is_granted("ROLE_USER")</attribute>
+            <attribute name="denormalization_context">
+                <attribute name="groups">shop:wishlist:create</attribute>
+            </attribute>
+        </operation>
 
+        <operation name="delete" />
     </graphql>
-
-    <attribute name="normalization_context">
-        <attribute name="groups">
-            <attribute>shop:wishlist:read</attribute>
-        </attribute>
-    </attribute>
-
-    <attribute name="denormalizationContext">
-        <attribute name="groups">
-            <attribute>shop:wishlist:write</attribute>
-        </attribute>
-    </attribute>
 
     <attribute name="validation_groups">sylius</attribute>
 
@@ -34,14 +29,16 @@
         <collectionOperation name="shop_get_wishlists">
             <attribute name="method">GET</attribute>
             <attribute name="path">/shop/wishlists</attribute>
-            <attribute name="controller">bit_bag.sylius_vue_storefront2plugin.controller.list_wishlists_action</attribute>
+            <attribute name="normalization_context">
+                <attribute name="groups">shop:wishlist:read</attribute>
+            </attribute>
         </collectionOperation>
 
         <collectionOperation name="shop_create_wishlist">
             <attribute name="method">POST</attribute>
             <attribute name="path">/shop/wishlists</attribute>
             <attribute name="messenger">input</attribute>
-            <attribute name="input">BitBag\SyliusWishlistPlugin\Command\Wishlist\CreateNewWishlist</attribute>
+            <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist</attribute>
             <attribute name="denormalization_context">
                 <attribute name="groups">shop:wishlist:create</attribute>
             </attribute>
@@ -52,14 +49,21 @@
     </collectionOperations>
 
     <itemOperations>
-        <itemOperation name="shop_get_wishlist">
+        <itemOperation name="shop_get">
             <attribute name="method">GET</attribute>
+            <attribute name="path">/shop/wishlist/{id}</attribute>
+            <attribute name="normalization_context">
+                <attribute name="groups">shop:wishlist:read</attribute>
+            </attribute>
+        </itemOperation>
+
+        <itemOperation name="shop_delete">
+            <attribute name="method">DELETE</attribute>
             <attribute name="path">/shop/wishlist/{id}</attribute>
         </itemOperation>
 
     </itemOperations>
 
     <property name="id" identifier="true" writable="false"/>
-    <property name="token" identifier="false" writable="false"/>
 </resource>
 </resources>

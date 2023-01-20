@@ -141,5 +141,17 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="messenger.message_handler" bus="sylius_default.bus" />
         </service>
 
+        <service
+            id="bit_bag.sylius_vue_storefront2plugin.command_handler.wishlist.create_new_wishlist_handler"
+            class="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Wishlist\CreateNewWishlistHandler"
+        >
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist" />
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist" />
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.checker.wishlist_name_checker" />
+            <tag name="messenger.message_handler" bus="sylius.command_bus" />
+            <tag name="messenger.message_handler" bus="sylius_default.bus" />
+        </service>
+
     </services>
 </container>
