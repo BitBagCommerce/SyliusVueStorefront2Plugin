@@ -3,12 +3,15 @@
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping https://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
 >
-    <class name="BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist">
-        <attribute name="name">
-            <group>shop:wishlist:create</group>
+    <class name="BitBag\SyliusWishlistPlugin\Entity\WishlistProduct">
+        <attribute name="product">
+            <group>shop:wishlist:read</group>
         </attribute>
-        <attribute name="channelCode">
-            <group>shop:wishlist:create</group>
+        <attribute name="variant">
+            <group>shop:wishlist:read</group>
+        </attribute>
+        <attribute name="quantity">
+            <group>shop:wishlist:read</group>
         </attribute>
     </class>
 </serializer>

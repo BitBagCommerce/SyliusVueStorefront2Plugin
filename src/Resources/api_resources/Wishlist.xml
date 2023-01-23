@@ -15,12 +15,76 @@
             <attribute name="messenger">input</attribute>
             <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist</attribute>
             <attribute name="security">is_granted("ROLE_USER")</attribute>
-            <attribute name="denormalization_context">
-                <attribute name="groups">shop:wishlist:create</attribute>
+            <attribute name="args">
+                <attribute name="name">
+                    <attribute name="type">String!</attribute>
+                </attribute>
+                <attribute name="channelCode">
+                    <attribute name="type">String!</attribute>
+                </attribute>
             </attribute>
         </operation>
 
-        <operation name="delete" />
+        <operation name="shop_edit">
+            <attribute name="method">PATCH</attribute>
+            <attribute name="messenger">input</attribute>
+            <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\EditWishlist</attribute>
+            <attribute name="security">is_granted("ROLE_USER")</attribute>
+            <attribute name="args">
+                <attribute name="id">
+                    <attribute name="type">String!</attribute>
+                </attribute>
+                <attribute name="name">
+                    <attribute name="type">String!</attribute>
+                </attribute>
+            </attribute>
+        </operation>
+
+        <operation name="shop_clear">
+            <attribute name="method">DELETE</attribute>
+            <attribute name="messenger">input</attribute>
+            <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\ClearWishlist</attribute>
+            <attribute name="security">is_granted("ROLE_USER")</attribute>
+            <attribute name="args">
+                <attribute name="id">
+                    <attribute name="type">String!</attribute>
+                </attribute>
+            </attribute>
+        </operation>
+
+        <operation name="delete">
+            <attribute name="security">is_granted("ROLE_USER")</attribute>
+        </operation>
+
+        <operation name="shop_add_item">
+            <attribute name="method">PATCH</attribute>
+            <attribute name="messenger">input</attribute>
+            <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\AddItemToWishlist</attribute>
+            <attribute name="security">is_granted("ROLE_USER")</attribute>
+            <attribute name="args">
+                <attribute name="id">
+                    <attribute name="type">String!</attribute>
+                </attribute>
+                <attribute name="productVariant">
+                    <attribute name="type">String!</attribute>
+                </attribute>
+            </attribute>
+        </operation>
+
+        <operation name="shop_remove_item">
+            <attribute name="method">DELETE</attribute>
+            <attribute name="messenger">input</attribute>
+            <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\RemoveItemFromWishlist</attribute>
+            <attribute name="security">is_granted("ROLE_USER")</attribute>
+            <attribute name="args">
+                <attribute name="id">
+                    <attribute name="type">String!</attribute>
+                </attribute>
+                <attribute name="productVariant">
+                    <attribute name="type">String!</attribute>
+                </attribute>
+            </attribute>
+        </operation>
     </graphql>
 
     <attribute name="validation_groups">sylius</attribute>
@@ -65,5 +129,6 @@
     </itemOperations>
 
     <property name="id" identifier="true" writable="false"/>
+    <property name="token" identifier="false" required="false" writable="false"/>
 </resource>
 </resources>
