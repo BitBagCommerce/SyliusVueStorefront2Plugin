@@ -230,5 +230,15 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
             <tag name="api_platform.filter" />
         </service>
+
+        <service id="bitbag.api.wishlist_channel_code_filter"
+                 parent="api_platform.doctrine.orm.search_filter"
+                 autowire="false" autoconfigure="false" public="false">
+            <argument type="collection">
+                <argument key="channelCode">exact</argument>
+            </argument>
+            <tag name="api_platform.filter" />
+        </service>
+
     </services>
 </container>

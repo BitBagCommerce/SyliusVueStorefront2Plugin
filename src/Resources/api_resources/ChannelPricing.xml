@@ -11,9 +11,16 @@ We are hiring developers from all over the world. Join us and start your new, ex
            xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
 >
     <resource class="%sylius.model.channel_pricing.class%" shortName="ChannelPricing">
+        <attribute name="filters">
+            <attribute>bitbag.api.wishlist_channel_code_filter</attribute>
+        </attribute>
+
         <graphql>
             <operation name="collection_query">
                 <attribute name="pagination_type">page</attribute>
+                <attribute name="filters">
+                    <attribute>bitbag.api.wishlist_channel_code_filter</attribute>
+                </attribute>
             </operation>
         </graphql>
 

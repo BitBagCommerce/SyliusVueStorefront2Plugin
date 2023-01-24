@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<container xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://symfony.com/schema/dic/services"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service class="BitBag\SyliusVueStorefront2Plugin\Validator\UniqueNameShopUserWishlistValidator"
+                 id="bit_bag.sylius_vue_storefront2plugin.validator.unique_name_shop_user_wishlist_validator"
+        >
+            <argument type="service" id="security.helper" />
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist" />
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.checker.wishlist_name_checker" />
+
+            <tag name="validator.constraint_validator"/>
+        </service>
+    </services>
+</container>

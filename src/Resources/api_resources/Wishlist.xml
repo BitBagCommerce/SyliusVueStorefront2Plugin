@@ -4,131 +4,145 @@
            xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
 >
 <resource class="%bitbag_sylius_wishlist_plugin.model.wishlist.class%" shortName="Wishlist">
-    <graphql>
-        <operation name="collection_query">
-            <attribute name="pagination_type">page</attribute>
-            <attribute name="security">is_granted("ROLE_USER")</attribute>
-        </operation>
-
-        <operation name="create">
-            <attribute name="method">POST</attribute>
-            <attribute name="messenger">input</attribute>
-            <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist</attribute>
-            <attribute name="security">is_granted("ROLE_USER")</attribute>
-            <attribute name="args">
-                <attribute name="name">
-                    <attribute name="type">String!</attribute>
+        <graphql>
+            <operation name="collection_query">
+                <attribute name="pagination_type">page</attribute>
+                <attribute name="security">is_granted("ROLE_USER")</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:wishlist:read</attribute>
                 </attribute>
-                <attribute name="channelCode">
-                    <attribute name="type">String!</attribute>
+            </operation>
+
+            <operation name="create">
+                <attribute name="method">POST</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist</attribute>
+                <attribute name="security">is_granted("ROLE_USER")</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:wishlist:read</attribute>
                 </attribute>
-            </attribute>
-        </operation>
-
-        <operation name="shop_edit">
-            <attribute name="method">PATCH</attribute>
-            <attribute name="messenger">input</attribute>
-            <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\EditWishlist</attribute>
-            <attribute name="security">is_granted("ROLE_USER")</attribute>
-            <attribute name="args">
-                <attribute name="id">
-                    <attribute name="type">String!</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:create</attribute>
                 </attribute>
-                <attribute name="name">
-                    <attribute name="type">String!</attribute>
+                <attribute name="validation_groups">
+                    <attribute>sylius</attribute>
+                    <attribute>WishlistCreateNew</attribute>
                 </attribute>
-            </attribute>
-        </operation>
+            </operation>
 
-        <operation name="shop_clear">
-            <attribute name="method">DELETE</attribute>
-            <attribute name="messenger">input</attribute>
-            <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\ClearWishlist</attribute>
-            <attribute name="security">is_granted("ROLE_USER")</attribute>
-            <attribute name="args">
-                <attribute name="id">
-                    <attribute name="type">String!</attribute>
+            <operation name="update">
+                <attribute name="security">is_granted("ROLE_USER") and object.getShopUser() == user</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:wishlist:read</attribute>
                 </attribute>
-            </attribute>
-        </operation>
-
-        <operation name="delete">
-            <attribute name="security">is_granted("ROLE_USER")</attribute>
-        </operation>
-
-        <operation name="shop_add_item">
-            <attribute name="method">PATCH</attribute>
-            <attribute name="messenger">input</attribute>
-            <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\AddItemToWishlist</attribute>
-            <attribute name="security">is_granted("ROLE_USER")</attribute>
-            <attribute name="args">
-                <attribute name="id">
-                    <attribute name="type">String!</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:update</attribute>
                 </attribute>
-                <attribute name="productVariant">
-                    <attribute name="type">String!</attribute>
+                <attribute name="validation_groups">
+                    <attribute>sylius</attribute>
+                    <attribute>WishlistUpdate</attribute>
                 </attribute>
-            </attribute>
-        </operation>
+            </operation>
 
-        <operation name="shop_remove_item">
-            <attribute name="method">DELETE</attribute>
-            <attribute name="messenger">input</attribute>
-            <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\RemoveItemFromWishlist</attribute>
-            <attribute name="security">is_granted("ROLE_USER")</attribute>
-            <attribute name="args">
-                <attribute name="id">
-                    <attribute name="type">String!</attribute>
+            <operation name="clear">
+                <attribute name="method">DELETE</attribute>
+                <attribute name="mutation">bit_bag.sylius_vue_storefront2plugin.resolver.mutation.wishlist.clear_wishlist_resolver</attribute>
+                <attribute name="security">is_granted("ROLE_USER") and object.getShopUser() == user</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:wishlist:read</attribute>
                 </attribute>
-                <attribute name="productVariant">
-                    <attribute name="type">String!</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:clear</attribute>
                 </attribute>
-            </attribute>
-        </operation>
-    </graphql>
+            </operation>
 
-    <attribute name="validation_groups">sylius</attribute>
+            <operation name="delete">
+                <attribute name="security">is_granted("ROLE_USER") and object.getShopUser() == user</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:wishlist:read</attribute>
+                </attribute>
+            </operation>
 
-    <collectionOperations>
-        <collectionOperation name="shop_get_wishlists">
-            <attribute name="method">GET</attribute>
-            <attribute name="path">/shop/wishlists</attribute>
-            <attribute name="normalization_context">
-                <attribute name="groups">shop:wishlist:read</attribute>
-            </attribute>
-        </collectionOperation>
+            <operation name="add_item">
+                <attribute name="method">PATCH</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\AddItemToWishlist</attribute>
+                <attribute name="security">is_granted("ROLE_USER") and object.getShopUser() == user</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:wishlist:read</attribute>
+                </attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:add_item</attribute>
+                </attribute>
+                <attribute name="args">
+                    <attribute name="id">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="productVariant">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
 
-        <collectionOperation name="shop_create_wishlist">
-            <attribute name="method">POST</attribute>
-            <attribute name="path">/shop/wishlists</attribute>
-            <attribute name="messenger">input</attribute>
-            <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist</attribute>
-            <attribute name="denormalization_context">
-                <attribute name="groups">shop:wishlist:create</attribute>
-            </attribute>
-            <attribute name="openapi_context">
-                <attribute name="summary">Creates wishlist resource</attribute>
-            </attribute>
-        </collectionOperation>
-    </collectionOperations>
+            <operation name="remove_item">
+                <attribute name="method">DELETE</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\RemoveItemFromWishlist</attribute>
+                <attribute name="security">is_granted("ROLE_USER") and object.getShopUser() == user</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:wishlist:read</attribute>
+                </attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:remove_item</attribute>
+                </attribute>
+                <attribute name="args">
+                    <attribute name="id">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="productVariant">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+        </graphql>
 
-    <itemOperations>
-        <itemOperation name="shop_get">
-            <attribute name="method">GET</attribute>
-            <attribute name="path">/shop/wishlist/{id}</attribute>
-            <attribute name="normalization_context">
-                <attribute name="groups">shop:wishlist:read</attribute>
-            </attribute>
-        </itemOperation>
+        <attribute name="validation_groups">sylius</attribute>
 
-        <itemOperation name="shop_delete">
-            <attribute name="method">DELETE</attribute>
-            <attribute name="path">/shop/wishlist/{id}</attribute>
-        </itemOperation>
+        <collectionOperations>
+            <collectionOperation name="shop_get_wishlists">
+                <attribute name="method">GET</attribute>
+                <attribute name="path">/shop/wishlists</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:wishlist:read</attribute>
+                </attribute>
+            </collectionOperation>
 
-    </itemOperations>
+            <collectionOperation name="shop_create_wishlist">
+                <attribute name="method">POST</attribute>
+                <attribute name="path">/shop/wishlists</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:create</attribute>
+                </attribute>
+                <attribute name="openapi_context">
+                    <attribute name="summary">Creates wishlist resource</attribute>
+                </attribute>
+            </collectionOperation>
+        </collectionOperations>
 
-    <property name="id" identifier="true" writable="false"/>
-    <property name="token" identifier="false" required="false" writable="false"/>
-</resource>
+        <itemOperations>
+            <itemOperation name="shop_get">
+                <attribute name="method">GET</attribute>
+                <attribute name="path">/shop/wishlist/{id}</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:wishlist:read</attribute>
+                </attribute>
+                <attribute name="security">is_granted("ROLE_USER") and object.getShopUser() == user</attribute>
+            </itemOperation>
+        </itemOperations>
+
+        <property name="id" identifier="true" writable="false"/>
+        <property name="token" required="false" writable="false"/>
+        </resource>
 </resources>

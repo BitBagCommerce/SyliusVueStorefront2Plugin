@@ -6,6 +6,8 @@
     <class name="BitBag\SyliusWishlistPlugin\Entity\Wishlist">
         <attribute name="id">
             <group>shop:wishlist:read</group>
+            <group>shop:wishlist:update</group>
+            <group>shop:wishlist:clear</group>
         </attribute>
         <attribute name="token">
             <group>shop:wishlist:read</group>
@@ -15,6 +17,7 @@
         </attribute>
         <attribute name="name">
             <group>shop:wishlist:read</group>
+            <group>shop:wishlist:update</group>
         </attribute>
         <attribute name="wishlistProducts">
             <group>shop:wishlist:read</group>

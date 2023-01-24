@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping http://symfony.com/schema/dic/services/constraint-mapping-1.0.xsd">
+    <class name="BitBag\SyliusWishlistPlugin\Entity\Wishlist">
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">
+                <value>name</value>
+                <value>shopUser</value>
+            </option>
+            <option name="message">validator.message.wishlist.name.unique</option>
+            <option name="groups">
+                <value>WishlistUpdate</value>
+            </option>
+        </constraint>
+        <property name="name">
+            <constraint name="NotBlank">
+                <option name="message">validator.message.not_blank</option>
+                <option name="groups">
+                    <value>WishlistUpdate</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+</constraint-mapping>

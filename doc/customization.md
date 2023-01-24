@@ -23,7 +23,7 @@ $ bin/console debug:container | grep bitbag.sylius_vue_storefront2
 $ bin/console debug:container --parameters | grep bitbag
 ```
 
-##Hints
+## Hints
 
 1. While adding some resource to GraphQL - be sure you are using proper model, the safest way would be to use  %sylius.model.<model>.class% notation. 
    
