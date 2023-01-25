@@ -17,7 +17,7 @@ use Sylius\Component\Core\Model\ChannelPricingInterface;
 
 final class ChannelPricingChannelCodeFilter extends AbstractContextAwareFilter
 {
-    const PROPERTY_NAME = 'channelCode';
+    public const PROPERTY_NAME = 'channelCode';
 
     /** @phpstan-ignore-next-line The abstract class' method doesn't have return type defined */
     protected function filterProperty(
@@ -26,7 +26,7 @@ final class ChannelPricingChannelCodeFilter extends AbstractContextAwareFilter
         QueryBuilder $queryBuilder,
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        string $operationName = null
+        string $operationName = null,
     ) {
         if (self::PROPERTY_NAME !== $property) {
             return;
@@ -58,7 +58,7 @@ final class ChannelPricingChannelCodeFilter extends AbstractContextAwareFilter
                     'name' => 'Channel pricing filter',
                     'description' => 'Get a collection of channel pricing for channelCode',
                 ],
-            ]
+            ],
         ];
     }
 }

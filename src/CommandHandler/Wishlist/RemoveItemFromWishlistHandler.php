@@ -25,6 +25,7 @@ final class RemoveItemFromWishlistHandler implements MessageHandlerInterface
     public const EVENT_NAME = 'bitbag.sylius_vue_storefront2.remove_item_from_wishlist.complete';
 
     private ObjectManager $wishlistManager;
+
     private IriConverterInterface $iriConverter;
 
     private EventDispatcherInterface $eventDispatcher;
@@ -48,7 +49,6 @@ final class RemoveItemFromWishlistHandler implements MessageHandlerInterface
         /** @var ProductVariantInterface|null $productVariant */
         $productVariant = $this->iriConverter->getItemFromIri($command->getProductVariant());
         Assert::notNull($productVariant);
-
 
         if (!$wishlist->hasProductVariant($productVariant)) {
             return $wishlist;

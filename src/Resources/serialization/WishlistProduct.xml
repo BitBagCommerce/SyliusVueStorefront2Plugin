@@ -10,8 +10,5 @@
         <attribute name="variant">
             <group>shop:wishlist:read</group>
         </attribute>
-        <attribute name="quantity">
-            <group>shop:wishlist:read</group>
-        </attribute>
     </class>
 </serializer>

@@ -22,13 +22,15 @@ use Symfony\Component\Validator\Exception\UnexpectedValueException;
 final class UniqueNameShopUserWishlistValidator extends ConstraintValidator
 {
     private Security $security;
+
     private WishlistRepositoryInterface $wishlistRepository;
+
     private WishlistNameCheckerInterface $wishlistNameChecker;
 
     public function __construct(
         Security $security,
         WishlistRepositoryInterface $wishlistRepository,
-        WishlistNameCheckerInterface $wishlistNameChecker
+        WishlistNameCheckerInterface $wishlistNameChecker,
     ) {
         $this->security = $security;
         $this->wishlistRepository = $wishlistRepository;
@@ -48,7 +50,8 @@ final class UniqueNameShopUserWishlistValidator extends ConstraintValidator
 
         if ($this->isNameExist($value)) {
             $this->context->buildViolation($constraint->message)
-                ->addViolation();
+                ->addViolation()
+            ;
         }
     }
 

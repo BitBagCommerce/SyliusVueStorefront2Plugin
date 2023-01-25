@@ -41,7 +41,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <tag name="api_platform.graphql.mutation_resolver" />
         </service>
 
-        <service id="bit_bag.sylius_vue_storefront2plugin.resolver.mutation.wishlist.clear_wishlist_resolver"
+        <service id="bitbag.sylius_vue_storefront2plugin.resolver.mutation.wishlist.clear_wishlist_resolver"
                  class="BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation\Wishlist\ClearWishlistResolver">
             <argument type="service" id="event_dispatcher"/>
             <tag name="api_platform.graphql.mutation_resolver" />

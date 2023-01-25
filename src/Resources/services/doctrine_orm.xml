@@ -24,7 +24,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <service id="BitBag\SyliusVueStorefront2Plugin\Doctrine\Orm\Filter\AttributeFilter"
                  alias="bitbag.sylius_vue_storefront2.doctrine.orm.attribute_filter" />
 
-        <service id="bit_bag.sylius_vue_storefront2plugin.doctrine.orm.extension.wishlists_current_user_extension"
+        <service id="bitbag.sylius_vue_storefront2plugin.doctrine.orm.extension.wishlists_current_user_extension"
                  class="BitBag\SyliusVueStorefront2Plugin\Doctrine\Orm\Extension\WishlistsCurrentUserExtension"
         >
             <argument type="service" id="security.helper" />

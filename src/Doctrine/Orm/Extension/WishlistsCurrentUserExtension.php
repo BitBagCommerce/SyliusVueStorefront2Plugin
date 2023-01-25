@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\Doctrine\Orm\Extension;
 
-
 use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use ApiPlatform\Metadata\Operation;
@@ -21,10 +20,13 @@ use Symfony\Component\Security\Core\Security;
 
 final class WishlistsCurrentUserExtension implements QueryCollectionExtensionInterface
 {
-    const GRAPHQL_OPERATION_KEY = 'graphql_operation_name';
-    const COLLECTION_OPERATION_KEY = 'collection_operation_name';
-    const WISHLIST_GRAPHQL_OPERATION_NAME = 'collection_query';
-    const WISHLIST_COLLECTION_OPERATION_NAME = 'shop_get_wishlists';
+    public const GRAPHQL_OPERATION_KEY = 'graphql_operation_name';
+
+    public const COLLECTION_OPERATION_KEY = 'collection_operation_name';
+
+    public const WISHLIST_GRAPHQL_OPERATION_NAME = 'collection_query';
+
+    public const WISHLIST_COLLECTION_OPERATION_NAME = 'shop_get_wishlists';
 
     private Security $security;
 
@@ -38,20 +40,19 @@ final class WishlistsCurrentUserExtension implements QueryCollectionExtensionInt
         QueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
         Operation $operation = null,
-        array $context = []
+        array $context = [],
     ): void {
-
         if (false === is_a($resourceClass, Wishlist::class, true)) {
             return;
         }
 
-        if (array_key_exists(self::COLLECTION_OPERATION_KEY, $context)
-            && self::WISHLIST_COLLECTION_OPERATION_NAME !== $context[self::COLLECTION_OPERATION_KEY]) {
+        if (array_key_exists(self::COLLECTION_OPERATION_KEY, $context) &&
+            self::WISHLIST_COLLECTION_OPERATION_NAME !== $context[self::COLLECTION_OPERATION_KEY]) {
             return;
         }
 
-        if (array_key_exists(self::GRAPHQL_OPERATION_KEY, $context)
-            && self::WISHLIST_GRAPHQL_OPERATION_NAME !== $context[self::GRAPHQL_OPERATION_KEY]) {
+        if (array_key_exists(self::GRAPHQL_OPERATION_KEY, $context) &&
+            self::WISHLIST_GRAPHQL_OPERATION_NAME !== $context[self::GRAPHQL_OPERATION_KEY]) {
             return;
         }
 

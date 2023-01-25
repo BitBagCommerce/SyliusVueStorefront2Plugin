@@ -10,12 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\CommandHandler\Wishlist;
 
-
 use BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist;
-use BitBag\SyliusWishlistPlugin\Checker\WishlistNameCheckerInterface;
-use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Exception\WishlistNameIsTakenException;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
@@ -24,7 +20,6 @@ use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Security;
 use Webmozart\Assert\Assert;
 

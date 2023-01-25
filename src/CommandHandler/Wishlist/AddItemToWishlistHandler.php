@@ -26,7 +26,9 @@ final class AddItemToWishlistHandler implements MessageHandlerInterface
     public const EVENT_NAME = 'bitbag.sylius_vue_storefront2.add_item_to_wishlist.complete';
 
     private WishlistRepositoryInterface $wishlistRepository;
+
     private WishlistProductFactoryInterface $wishlistProductFactory;
+
     private IriConverterInterface $iriConverter;
 
     private EventDispatcherInterface $eventDispatcher;

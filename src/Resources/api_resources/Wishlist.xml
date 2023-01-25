@@ -46,7 +46,7 @@
 
             <operation name="clear">
                 <attribute name="method">DELETE</attribute>
-                <attribute name="mutation">bit_bag.sylius_vue_storefront2plugin.resolver.mutation.wishlist.clear_wishlist_resolver</attribute>
+                <attribute name="mutation">bitbag.sylius_vue_storefront2plugin.resolver.mutation.wishlist.clear_wishlist_resolver</attribute>
                 <attribute name="security">is_granted("ROLE_USER") and object.getShopUser() == user</attribute>
                 <attribute name="normalization_context">
                     <attribute name="groups">shop:wishlist:read</attribute>
