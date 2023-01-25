@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusVueStorefront2Plugin\Validator;
 
 use BitBag\SyliusWishlistPlugin\Checker\WishlistNameCheckerInterface;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Security\Core\Security;
@@ -36,7 +35,8 @@ final class UniqueNameShopUserWishlistValidator extends ConstraintValidator
         $this->wishlistNameChecker = $wishlistNameChecker;
     }
 
-    public function validate($value, Constraint $constraint): void
+    /** @phpstan-ignore-next-line The abstract class' method doesn't have return type defined */
+    public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof  UniqueNameShopUserWishlist) {
             throw new UnexpectedTypeException($constraint, UniqueNameShopUserWishlist::class);
