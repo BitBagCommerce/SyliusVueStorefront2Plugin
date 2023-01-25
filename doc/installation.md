@@ -14,6 +14,7 @@
          ...
         
             BitBag\SyliusVueStorefront2Plugin\BitBagSyliusVueStorefront2Plugin::class => ['all' => true],
+            BitBag\SyliusWishlistPlugin\BitBagSyliusWishlistPlugin::class => ['all' => true],
         ];
     ```
    
@@ -123,4 +124,15 @@ Please change the `name` attribute to fit your entity name. If you've already th
 ```yml
 bitbag_sylius_vue_storefront2_plugin:
     resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/routing.yml"
+```
+
+12. Add plugin validation files path to your `config/packages/validator.yaml` file:
+
+```yaml
+    framework:    
+        serializer:
+            mapping:
+                paths:
+                    ...
+                    - '%kernel.project_dir%/vendor/bitbag/vue-storefront2-plugin/src/Resources/validation'
 ```
