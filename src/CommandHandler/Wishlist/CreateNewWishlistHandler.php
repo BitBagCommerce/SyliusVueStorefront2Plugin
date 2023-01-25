@@ -19,13 +19,14 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 use Webmozart\Assert\Assert;
 
 final class CreateNewWishlistHandler implements MessageHandlerInterface
 {
     public const EVENT_NAME = 'bitbag.sylius_vue_storefront2.create_new_wishlist.complete';
 
-    private TokenStorageInterface $tokenStorage;
+    private Security $security;
 
     private WishlistRepositoryInterface $wishlistRepository;
 
@@ -36,13 +37,13 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
     private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
-        TokenStorageInterface $tokenStorage,
+        Security $security,
         WishlistRepositoryInterface $wishlistRepository,
         WishlistFactoryInterface $wishlistFactory,
         ChannelRepositoryInterface $channelRepository,
         EventDispatcherInterface $eventDispatcher,
     ) {
-        $this->tokenStorage = $tokenStorage;
+        $this->security = $security;
         $this->wishlistRepository = $wishlistRepository;
         $this->wishlistFactory = $wishlistFactory;
         $this->channelRepository = $channelRepository;
@@ -51,7 +52,8 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
 
     public function __invoke(CreateNewWishlist $command): WishlistInterface
     {
-        $user = $this->tokenStorage->getToken()->getUser();
+        /** @var ShopUserInterface|null $user */
+        $user = $this->security->getUser();
         Assert::isInstanceOf($user, ShopUserInterface::class);
 
         $channel = $this->channelRepository->findOneByCode($command->getChannelCode());
@@ -59,6 +61,10 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
 
         $wishlist = $this->wishlistFactory->createForUserAndChannel($user, $channel);
         $wishlist->setName($command->getName());
+
+        if (null !== $oldWishlist = $this->wishlistRepository->findOneByShopUser($user)) {
+            $wishlist->setToken($oldWishlist->getToken());
+        }
 
         $this->wishlistRepository->add($wishlist);
 

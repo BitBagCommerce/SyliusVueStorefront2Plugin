@@ -44,7 +44,7 @@ final class RemoveItemFromWishlistHandler implements MessageHandlerInterface
         Assert::notNull($productVariant);
 
 
-        if ($wishlist->hasProductVariant($productVariant)) {
+        if (!$wishlist->hasProductVariant($productVariant)) {
             return $wishlist;
         }
 

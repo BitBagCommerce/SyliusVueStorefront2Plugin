@@ -6,6 +6,7 @@ namespace BitBag\SyliusVueStorefront2Plugin\Validator;
 
 use BitBag\SyliusWishlistPlugin\Checker\WishlistNameCheckerInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -28,7 +29,7 @@ final class UniqueNameShopUserWishlistValidator extends ConstraintValidator
         $this->wishlistNameChecker = $wishlistNameChecker;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof  UniqueNameShopUserWishlist) {
             throw new UnexpectedTypeException($constraint, UniqueNameShopUserWishlist::class);
@@ -46,6 +47,7 @@ final class UniqueNameShopUserWishlistValidator extends ConstraintValidator
 
     public function isNameExist(string $value): bool
     {
+        /** @var ShopUserInterface $user */
         $user = $this->security->getUser();
         $wishlists = $this->wishlistRepository->findAllByShopUser($user->getId());
 

@@ -4,10 +4,11 @@
            xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
 >
 <resource class="%bitbag_sylius_wishlist_plugin.model.wishlist.class%" shortName="Wishlist">
+        <attribute name="security">is_granted("ROLE_USER")</attribute>
+
         <graphql>
             <operation name="collection_query">
                 <attribute name="pagination_type">page</attribute>
-                <attribute name="security">is_granted("ROLE_USER")</attribute>
                 <attribute name="normalization_context">
                     <attribute name="groups">shop:wishlist:read</attribute>
                 </attribute>
@@ -17,7 +18,6 @@
                 <attribute name="method">POST</attribute>
                 <attribute name="messenger">input</attribute>
                 <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist</attribute>
-                <attribute name="security">is_granted("ROLE_USER")</attribute>
                 <attribute name="normalization_context">
                     <attribute name="groups">shop:wishlist:read</attribute>
                 </attribute>
@@ -144,5 +144,5 @@
 
         <property name="id" identifier="true" writable="false"/>
         <property name="token" required="false" writable="false"/>
-        </resource>
+    </resource>
 </resources>
