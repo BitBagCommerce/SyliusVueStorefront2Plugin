@@ -1,3 +1,6 @@
+imports:
+    - { resource: "@BitBagSyliusWishlistPlugin/Resources/config/config.yml" }
+
 liip_imagine:
     filter_sets:
         sylius_shop_product_original: ~

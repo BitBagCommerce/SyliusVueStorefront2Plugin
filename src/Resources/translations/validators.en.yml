@@ -1,0 +1,7 @@
+validator:
+    message:
+        not_blank: This field cannot be empty
+        
+        wishlist:
+            name:
+                unique: The name has to be unique
