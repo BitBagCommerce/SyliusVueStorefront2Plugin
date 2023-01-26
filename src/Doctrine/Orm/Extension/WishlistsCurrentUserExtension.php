@@ -10,15 +10,14 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\Doctrine\Orm\Extension;
 
-use ApiPlatform\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
-use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use ApiPlatform\Metadata\Operation;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\ContextAwareQueryCollectionExtensionInterface;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface as LegacyQueryNameGeneratorInterface;
 use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
 use Doctrine\ORM\QueryBuilder;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Security\Core\Security;
 
-final class WishlistsCurrentUserExtension implements QueryCollectionExtensionInterface
+final class WishlistsCurrentUserExtension implements ContextAwareQueryCollectionExtensionInterface
 {
     public const GRAPHQL_OPERATION_KEY = 'graphql_operation_name';
 
@@ -35,13 +34,14 @@ final class WishlistsCurrentUserExtension implements QueryCollectionExtensionInt
         $this->security = $security;
     }
 
+    /** @phpstan-ignore-next-line The interface's method doesn't have return type defined */
     public function applyToCollection(
         QueryBuilder $queryBuilder,
-        QueryNameGeneratorInterface $queryNameGenerator,
+        LegacyQueryNameGeneratorInterface $queryNameGenerator,
         string $resourceClass,
-        Operation $operation = null,
+        string $operationName = null,
         array $context = [],
-    ): void {
+    ) {
         if (false === is_a($resourceClass, Wishlist::class, true)) {
             return;
         }
