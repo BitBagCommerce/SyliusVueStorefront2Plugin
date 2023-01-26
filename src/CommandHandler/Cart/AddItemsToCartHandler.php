@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
-use BitBag\SyliusVueStorefront2Plugin\Command\Cart\AddItemToCart;
+use BitBag\SyliusVueStorefront2Plugin\Command\Cart\AddItemsToCart;
 use BitBag\SyliusVueStorefront2Plugin\CommandHandler\Trait\AddProductVariantToCartTrait;
 use Sylius\Component\Core\Factory\CartItemFactoryInterface;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -20,11 +20,9 @@ use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
-use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 use Webmozart\Assert\Assert;
 
-/** @experimental */
-final class AddItemToCartHandler implements MessageHandlerInterface
+final class AddItemsToCartHandler
 {
     use AddProductVariantToCartTrait;
 
@@ -48,19 +46,22 @@ final class AddItemToCartHandler implements MessageHandlerInterface
         $this->iriConverter = $iriConverter;
     }
 
-    public function __invoke(AddItemToCart $addItemToCart): OrderInterface
+    public function __invoke(AddItemsToCart $command): OrderInterface
     {
-        /** @var ProductVariantInterface|null $productVariant */
-        $productVariant = $this->iriConverter->getItemFromIri($addItemToCart->productVariant);
-
-        Assert::notNull($productVariant);
-        Assert::notNull($addItemToCart->orderTokenValue);
-
         /** @var OrderInterface|null $cart */
-        $cart = $this->orderRepository->findCartByTokenValue($addItemToCart->orderTokenValue);
+        $cart = $this->orderRepository->findCartByTokenValue($command->getOrderTokenValue());
         Assert::notNull($cart);
 
-        $this->addProductVariantToCart($productVariant, $addItemToCart->quantity, $cart);
+        foreach ($command->getCartItems() as $item) {
+            /** @var ProductVariantInterface|null $productVariant */
+            $productVariant = $this->iriConverter->getItemFromIri($item['productVariant']);
+            $quantity = $item['quantity'];
+
+            Assert::notNull($productVariant);
+            Assert::integer($quantity);
+
+            $this->addProductVariantToCart($productVariant, $quantity, $cart);
+        }
 
         return $cart;
     }
