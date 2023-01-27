@@ -82,6 +82,32 @@ final class CartContext implements Context
     }
 
     /**
+     * @When I prepare add products to cart operation
+     */
+    public function iPrepareAddProductsToCartOperation(): void
+    {
+        $expectedData = '
+        order {
+            items {
+                edges{
+                    node{
+                        variantName
+                        id
+                        _id
+                        productName
+                        quantity
+                    }
+                }
+            }
+            total
+            shippingTotal
+        }';
+
+        $operation = $this->client->prepareOperation('shop_add_itemsOrder', $expectedData);
+        $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
+    }
+
+    /**
      * @When I prepare remove product from cart operation
      */
     public function iPrepareRemoveProductFromCartOperation(): void

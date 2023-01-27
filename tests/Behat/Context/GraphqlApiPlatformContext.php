@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context;
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Tester\Exception\PendingException;
 use Exception;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -67,6 +68,14 @@ final class GraphqlApiPlatformContext implements Context
     }
 
     /**
+     * @Then I should receive access denied
+     */
+    public function iShouldReceiveAnAccessDenied()
+    {
+        Assert::same($this->client->getValueAtKey('extensions.message'), 'Access Denied.');
+    }
+
+    /**
      * @param mixed $value
      *
      * @When I set :key field to :value
@@ -103,10 +112,11 @@ final class GraphqlApiPlatformContext implements Context
 
     /**
      * @Then I set :sharedStorageKey object :propertyName property to :value
+     * @Then I set :sharedStorageKey object :propertyName property to :value as :type
      *
      * @param mixed $value
      */
-    public function iSetObjectPropertyToValue(string $sharedStorageKey, string $propertyName, $value): void
+    public function iSetObjectPropertyToValue(string $sharedStorageKey, string $propertyName, $value, string $type = null): void
     {
         try {
             $storageValue = (array) $this->sharedStorage->get($sharedStorageKey);
@@ -114,7 +124,22 @@ final class GraphqlApiPlatformContext implements Context
             $storageValue = [];
         }
         /** @psalm-suppress MixedAssignment */
-        $storageValue[$propertyName] = $value;
+        $storageValue[$propertyName] = $this->castToType($value, $type);;
+        $this->sharedStorage->set($sharedStorageKey, $storageValue);
+    }
+
+    /**
+     * @Then I set :sharedStorageKey object :propertyName property to previously saved value :name
+     */
+    public function iSetObjectPropertyToPreviouslySavedValue(string $sharedStorageKey, string $propertyName, string $name): void
+    {
+        try {
+            $storageValue = (array) $this->sharedStorage->get($sharedStorageKey);
+        } catch (\InvalidArgumentException $e) {
+            $storageValue = [];
+        }
+        /** @psalm-suppress MixedAssignment */
+        $storageValue[$propertyName] = $this->sharedStorage->get($name);
         $this->sharedStorage->set($sharedStorageKey, $storageValue);
     }
 

@@ -2,7 +2,9 @@ imports:
     - suites/cart/place_order_as_guest.yaml
     - suites/cart/place_order_as_guest_customer.yaml
     - suites/cart/place_order_as_customer.yaml
+    - suites/cart/add_products_to_cart.yaml
     - suites/account/creating_account.yaml
     - suites/account/editing_account.yaml
     - suites/account/changing_password.yaml
     - suites/account/managing_addresses.yaml
+    - suites/wishlist/wishlist_as_guest.yaml
