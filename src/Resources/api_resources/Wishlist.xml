@@ -9,18 +9,12 @@
         <graphql>
             <operation name="collection_query">
                 <attribute name="pagination_type">page</attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">shop:wishlist:read</attribute>
-                </attribute>
             </operation>
 
             <operation name="create">
                 <attribute name="method">POST</attribute>
                 <attribute name="messenger">input</attribute>
                 <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist</attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">shop:wishlist:read</attribute>
-                </attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:wishlist:create</attribute>
                 </attribute>
@@ -32,9 +26,6 @@
 
             <operation name="update">
                 <attribute name="security">is_granted("ROLE_USER") and object.getShopUser() == user</attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">shop:wishlist:read</attribute>
-                </attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:wishlist:update</attribute>
                 </attribute>
@@ -48,9 +39,6 @@
                 <attribute name="method">DELETE</attribute>
                 <attribute name="mutation">bitbag.sylius_vue_storefront2plugin.resolver.mutation.wishlist.clear_wishlist_resolver</attribute>
                 <attribute name="security">is_granted("ROLE_USER") and object.getShopUser() == user</attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">shop:wishlist:read</attribute>
-                </attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:wishlist:clear</attribute>
                 </attribute>
@@ -58,9 +46,6 @@
 
             <operation name="delete">
                 <attribute name="security">is_granted("ROLE_USER") and object.getShopUser() == user</attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">shop:wishlist:read</attribute>
-                </attribute>
             </operation>
 
             <operation name="add_item">
@@ -68,9 +53,6 @@
                 <attribute name="messenger">input</attribute>
                 <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\AddItemToWishlist</attribute>
                 <attribute name="security">is_granted("ROLE_USER") and object.getShopUser() == user</attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">shop:wishlist:read</attribute>
-                </attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:wishlist:add_item</attribute>
                 </attribute>
@@ -89,9 +71,6 @@
                 <attribute name="messenger">input</attribute>
                 <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\RemoveItemFromWishlist</attribute>
                 <attribute name="security">is_granted("ROLE_USER") and object.getShopUser() == user</attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">shop:wishlist:read</attribute>
-                </attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:wishlist:remove_item</attribute>
                 </attribute>
