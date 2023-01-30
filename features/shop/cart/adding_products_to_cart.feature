@@ -1,13 +1,11 @@
 @add_products_to_cart
-Feature: Add multiple products to cart
+Feature: Adding multiple products to cart
     In order buy a products
     As a Customer
-    I need to be able to add multiple prodcuts to cart
+    I need to be able to add multiple products to cart
 
     Background:
         Given the store operates on a single channel in "United States"
-        And there is a customer "Adam Ondra" identified by an email "aondra@climb.com" and a password "ardno1"
-        And I create a JWT Token for customer identified by an email "aondra@climb.com"
         And the store has a product "Harness climbing" priced at "$30.00"
         And the store has a product "Rope" priced at "$40.00"
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context;
 
+use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Exception;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,10 +20,16 @@ final class GraphqlApiPlatformContext implements Context
 
     private SharedStorageInterface $sharedStorage;
 
-    public function __construct(GraphqlClientInterface $client, SharedStorageInterface $sharedStorage)
-    {
+    private IriConverterInterface $iriConverter;
+
+    public function __construct(
+        GraphqlClientInterface $client,
+        SharedStorageInterface $sharedStorage,
+        IriConverterInterface $iriConverter,
+    ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
+        $this->iriConverter = $iriConverter;
     }
 
     /**
@@ -70,7 +76,7 @@ final class GraphqlApiPlatformContext implements Context
     /**
      * @Then I should receive access denied
      */
-    public function iShouldReceiveAnAccessDenied()
+    public function iShouldReceiveAnAccessDenied(): void
     {
         Assert::same($this->client->getValueAtKey('extensions.message'), 'Access Denied.');
     }
@@ -111,6 +117,19 @@ final class GraphqlApiPlatformContext implements Context
     }
 
     /**
+     * @When I set :key field to iri object :name
+     */
+    public function iSetKeyFieldToIriObject(string $key, string $name): void
+    {
+        $operation = $this->client->getLastOperationRequest();
+        Assert::isInstanceOf($operation, OperationRequestInterface::class);
+        $object = $this->sharedStorage->get($name);
+        Assert::notNull($object);
+        $iri = $this->iriConverter->getIriFromItem($object);
+        $operation->addVariable($key, $iri);
+    }
+
+    /**
      * @Then I set :sharedStorageKey object :propertyName property to :value
      * @Then I set :sharedStorageKey object :propertyName property to :value as :type
      *
@@ -124,7 +143,7 @@ final class GraphqlApiPlatformContext implements Context
             $storageValue = [];
         }
         /** @psalm-suppress MixedAssignment */
-        $storageValue[$propertyName] = $this->castToType($value, $type);;
+        $storageValue[$propertyName] = $this->castToType($value, $type);
         $this->sharedStorage->set($sharedStorageKey, $storageValue);
     }
 

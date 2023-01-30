@@ -8,3 +8,4 @@ imports:
     - suites/account/changing_password.yaml
     - suites/account/managing_addresses.yaml
     - suites/wishlist/wishlist_as_guest.yaml
+    - suites/wishlist/wishlist_as_customer.yaml

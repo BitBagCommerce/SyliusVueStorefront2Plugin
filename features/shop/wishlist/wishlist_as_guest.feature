@@ -15,7 +15,7 @@ Feature: Managing wishlists
         And I should receive access denied
 
     @graphql
-    Scenario: Create wishlist
+    Scenario: Creating a wishlist
         When I prepare create wishlist operation
         And I set name field to "Wishlist"
         And I set channelCode field to "WEB-US"
@@ -24,37 +24,42 @@ Feature: Managing wishlists
         And I should receive access denied
 
     @graphql
-    Scenario: Update wishlist
+    Scenario: Updating a wishlist
+        And anonymous user has a wishlist named "Wishlist"
         When I prepare update wishlist operation
-        And I set id field to "wishlistIri"
+        And I set id field to iri object "Wishlist"
         And I set name field to "Wishlist"
         And I send that GraphQL request
         Then I should receive a JSON response
         And I should receive access denied
 
     @graphql
-    Scenario: Create wishlist
-        When I prepare delete wishlist operation
-        And I set name field to "Wishlist"
-        And I set channelCode field to "WEB-US"
+    Scenario: Removing a wishlist
+        And anonymous user has a wishlist named "Wishlist"
+        When I prepare remove wishlist operation
+        And I set id field to iri object "Wishlist"
         And I send that GraphQL request
         Then I should receive a JSON response
         And I should receive access denied
 
     @graphql
-    Scenario: Create wishlist
+    Scenario: Adding a product to a wishlist
+        And anonymous user has a wishlist named "Wishlist"
+        And the store has a product "Climbing shoes" priced at "$10.00"
         When I prepare add product to wishlist operation
-        And I set name field to "Wishlist"
-        And I set channelCode field to "WEB-US"
+        And I set id field to iri object "Wishlist"
+        And I set productVariant field to iri object "product"
         And I send that GraphQL request
         Then I should receive a JSON response
         And I should receive access denied
 
     @graphql
-    Scenario: Create wishlist
+    Scenario: Removing a product from a wishlist
+        And anonymous user has a wishlist named "Wishlist"
+        And the store has a product "Climbing shoes" priced at "$10.00"
         When I prepare remove product from wishlist operation
-        And I set name field to "Wishlist"
-        And I set channelCode field to "WEB-US"
+        And I set id field to iri object "Wishlist"
+        And I set productVariant field to iri object "product"
         And I send that GraphQL request
         Then I should receive a JSON response
         And I should receive access denied

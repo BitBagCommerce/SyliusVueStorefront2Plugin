@@ -26,9 +26,11 @@ final class ClearWishlistResolver implements MutationResolverInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
+    /**
+     * @param WishlistInterface $item
+     */
     public function __invoke($item, array $context): WishlistInterface
     {
-        /** @var WishlistInterface $item */
         $item->clear();
 
         /** @var array $input */
