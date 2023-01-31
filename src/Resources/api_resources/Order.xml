@@ -57,9 +57,6 @@ We are hiring developers from all over the world. Join us and start your new, ex
                         <attribute name="type">Iterable!</attribute>
                     </attribute>
                 </attribute>
-                <attribute name="normalization_context">
-                    <attribute name="groups">shop:cart:read</attribute>
-                </attribute>
                 <attribute name="denormalization_context">
                     <attribute name="groups">shop:cart:add_items</attribute>
                 </attribute>
