@@ -8,21 +8,25 @@
 
 declare(strict_types=1);
 
+namespace spec\BitBag\SyliusVueStorefront2Plugin\Command\Cart;
 
-namespace spec\BitBag\SyliusVueStorefront2Plugin\Command\Wishlist;
-
-use BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist;
+use BitBag\SyliusVueStorefront2Plugin\Command\Cart\AddItemsToCart;
 use PhpSpec\ObjectBehavior;
 
-class CreateNewWishlistSpec extends ObjectBehavior
+class AddItemsToCartSpec extends ObjectBehavior
 {
     public function let(): void
     {
-        $this->beConstructedWith('Wishlist', 'channelCode');
+        $cartItem = [
+            'productVariant' => 'productVariantIri',
+            'quantity' => 1,
+        ];
+
+        $this->beConstructedWith('orderTokenValue', [$cartItem]);
     }
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(CreateNewWishlist::class);
+        $this->shouldHaveType(AddItemsToCart::class);
     }
 }

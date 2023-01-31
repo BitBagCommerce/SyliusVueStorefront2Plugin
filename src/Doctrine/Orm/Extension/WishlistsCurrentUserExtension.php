@@ -63,7 +63,9 @@ final class WishlistsCurrentUserExtension implements ContextAwareQueryCollection
         }
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->andWhere(sprintf('%s.shopUser = :current_user', $rootAlias));
-        $queryBuilder->setParameter('current_user', $user->getId());
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->eq(sprintf('%s.shopUser', $rootAlias), ':currentUser'),
+        );
+        $queryBuilder->setParameter(':currentUser', $user->getId());
     }
 }

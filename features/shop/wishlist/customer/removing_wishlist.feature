@@ -38,9 +38,8 @@ Feature: Removing a wishlist
 
     @graphql
     Scenario: Removing another user's wishlist
-        When I prepare update wishlist operation
+        When I prepare remove wishlist operation
         And I set id field to iri object "For Alex"
-        And I set name field to "For me"
         And I send that GraphQL request as authorised user
         Then I should receive a JSON response
         And I should receive access denied

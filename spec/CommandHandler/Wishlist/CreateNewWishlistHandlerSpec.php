@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
+
+declare(strict_types=1);
+
 namespace spec\BitBag\SyliusVueStorefront2Plugin\CommandHandler\Wishlist;
 
 use BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist;
@@ -23,7 +31,7 @@ class CreateNewWishlistHandlerSpec extends ObjectBehavior
         WishlistRepositoryInterface $wishlistRepository,
         WishlistFactoryInterface $wishlistFactory,
         ChannelRepositoryInterface $channelRepository,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith(
             $security,
@@ -102,7 +110,8 @@ class CreateNewWishlistHandlerSpec extends ObjectBehavior
         $security->getUser()->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$createNewWishlist]);
+            ->during('__invoke', [$createNewWishlist])
+        ;
     }
 
     public function it_throws_an_exception_when_cannot_find_channel(
@@ -116,6 +125,7 @@ class CreateNewWishlistHandlerSpec extends ObjectBehavior
         $channelRepository->findOneByCode($createNewWishlist->getChannelCode())->willReturn(null);
 
         $this->shouldThrow(InvalidArgumentException::class)
-            ->during('__invoke', [$createNewWishlist]);
+            ->during('__invoke', [$createNewWishlist])
+        ;
     }
 }
