@@ -13,7 +13,7 @@ namespace spec\BitBag\SyliusVueStorefront2Plugin\Command\Wishlist;
 use BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\AddItemToWishlist;
 use PhpSpec\ObjectBehavior;
 
-class AddItemToWishlistSpec extends ObjectBehavior
+final class AddItemToWishlistSpec extends ObjectBehavior
 {
     public function let(): void
     {

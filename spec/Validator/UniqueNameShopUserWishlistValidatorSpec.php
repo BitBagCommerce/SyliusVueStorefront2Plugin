@@ -22,7 +22,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class UniqueNameShopUserWishlistValidatorSpec extends ObjectBehavior
+final class UniqueNameShopUserWishlistValidatorSpec extends ObjectBehavior
 {
     public function let(
         Security $security,

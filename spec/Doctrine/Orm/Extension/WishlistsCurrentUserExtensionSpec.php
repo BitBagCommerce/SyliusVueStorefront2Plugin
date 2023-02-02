@@ -23,7 +23,7 @@ use Prophecy\Argument;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\Security\Core\Security;
 
-class WishlistsCurrentUserExtensionSpec extends ObjectBehavior
+final class WishlistsCurrentUserExtensionSpec extends ObjectBehavior
 {
     public function let(Security $security): void
     {

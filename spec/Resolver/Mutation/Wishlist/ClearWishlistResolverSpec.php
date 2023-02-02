@@ -17,7 +17,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ClearWishlistResolverSpec extends ObjectBehavior
+final class ClearWishlistResolverSpec extends ObjectBehavior
 {
     public function let(EventDispatcherInterface $eventDispatcher): void
     {

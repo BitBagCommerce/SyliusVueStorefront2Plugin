@@ -23,7 +23,7 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\InvalidArgumentException;
 
-class RemoveItemFromWishlistHandlerSpec extends ObjectBehavior
+final class RemoveItemFromWishlistHandlerSpec extends ObjectBehavior
 {
     public function let(
         ObjectManager $wishlistManager,

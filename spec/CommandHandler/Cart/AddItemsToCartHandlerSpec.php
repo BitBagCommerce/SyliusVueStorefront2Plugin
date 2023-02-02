@@ -25,7 +25,7 @@ use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Webmozart\Assert\InvalidArgumentException;
 
-class AddItemsToCartHandlerSpec extends ObjectBehavior
+final class AddItemsToCartHandlerSpec extends ObjectBehavior
 {
     public function let(
         OrderRepositoryInterface $orderRepository,

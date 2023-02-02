@@ -22,7 +22,7 @@ use Prophecy\Argument;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 
-class ChannelPricingChannelCodeFilterSpec extends ObjectBehavior
+final class ChannelPricingChannelCodeFilterSpec extends ObjectBehavior
 {
     public function let(ManagerRegistry $managerRegistry): void
     {

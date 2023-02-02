@@ -24,7 +24,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Security;
 use Webmozart\Assert\InvalidArgumentException;
 
-class CreateNewWishlistHandlerSpec extends ObjectBehavior
+final class CreateNewWishlistHandlerSpec extends ObjectBehavior
 {
     public function let(
         Security $security,

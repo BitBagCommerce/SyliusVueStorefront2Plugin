@@ -13,7 +13,7 @@ namespace spec\BitBag\SyliusVueStorefront2Plugin\Command\Cart;
 use BitBag\SyliusVueStorefront2Plugin\Command\Cart\AddItemsToCart;
 use PhpSpec\ObjectBehavior;
 
-class AddItemsToCartSpec extends ObjectBehavior
+final class AddItemsToCartSpec extends ObjectBehavior
 {
     public function let(): void
     {

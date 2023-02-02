@@ -13,7 +13,7 @@ namespace spec\BitBag\SyliusVueStorefront2Plugin\Command\Wishlist;
 use BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\RemoveItemFromWishlist;
 use PhpSpec\ObjectBehavior;
 
-class RemoveItemFromWishlistSpec extends ObjectBehavior
+final class RemoveItemFromWishlistSpec extends ObjectBehavior
 {
     public function let(): void
     {

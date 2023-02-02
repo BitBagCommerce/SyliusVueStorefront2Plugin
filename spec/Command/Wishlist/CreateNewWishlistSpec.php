@@ -8,13 +8,12 @@
 
 declare(strict_types=1);
 
-
 namespace spec\BitBag\SyliusVueStorefront2Plugin\Command\Wishlist;
 
 use BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist;
 use PhpSpec\ObjectBehavior;
 
-class CreateNewWishlistSpec extends ObjectBehavior
+final class CreateNewWishlistSpec extends ObjectBehavior
 {
     public function let(): void
     {

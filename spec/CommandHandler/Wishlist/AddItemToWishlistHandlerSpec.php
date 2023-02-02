@@ -23,7 +23,7 @@ use Sylius\Component\Core\Model\ProductVariantInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\InvalidArgumentException;
 
-class AddItemToWishlistHandlerSpec extends ObjectBehavior
+final class AddItemToWishlistHandlerSpec extends ObjectBehavior
 {
     public function let(
         WishlistRepositoryInterface $wishlistRepository,
