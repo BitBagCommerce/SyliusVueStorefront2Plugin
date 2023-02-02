@@ -123,6 +123,24 @@ final class WishlistContext implements Context
     }
 
     /**
+     * @When I prepare clear wishlist operation
+     */
+    public function iPrepareClearWishlistOperation(): void
+    {
+        $expectedData = '
+        wishlist {
+            id,
+            name,
+            wishlistProducts {
+                totalCount,
+            },
+        }';
+
+        $operation = $this->client->prepareOperation('clearWishlist', $expectedData);
+        $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
+    }
+
+    /**
      * @When I prepare remove wishlist operation
      */
     public function iPrepareRemoveWishlistOperation(): void

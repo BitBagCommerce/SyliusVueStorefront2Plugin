@@ -34,6 +34,15 @@ Feature: Managing wishlists
         And I should receive access denied
 
     @graphql
+    Scenario: Clearing a wishlist
+        And anonymous user has a wishlist named "Wishlist"
+        When I prepare clear wishlist operation
+        And I set id field to iri object "Wishlist"
+        And I send that GraphQL request
+        Then I should receive a JSON response
+        And I should receive access denied
+
+    @graphql
     Scenario: Removing a wishlist
         And anonymous user has a wishlist named "Wishlist"
         When I prepare remove wishlist operation
