@@ -9,7 +9,7 @@ Feature: Creating a wishlist
         And there is a customer "Alex Honnold" identified by an email "ahonnold@climb.com" and a password "dlonnoh1"
         And user "ahonnold@climb.com" has a wishlist named "For me"
         And there is a customer "Adam Ondra" identified by an email "aondra@climb.com" and a password "ardno1"
-        And I create a JWT Token for customer identified by an email "aondra@climb.com"
+        And I authorize as "aondra@climb.com"
 
     @graphql
     Scenario: Creating a wishlist
@@ -18,10 +18,8 @@ Feature: Creating a wishlist
         And I set channelCode field to "WEB-US"
         When I send that GraphQL request as authorised user
         Then I should receive a JSON response
-        And This response body should contain:
-            | key                                   | value     | type      |
-            | wishlist.name                         | For me    | string    |
-            | wishlist.wishlistProducts.totalCount  | 0         | int       |
+        And This wishlist should have name "For me"
+        And This wishlist should have 0 products
         And user "aondra@climb.com" should have 1 wishlists
 
     @graphql
@@ -32,10 +30,8 @@ Feature: Creating a wishlist
         And I set channelCode field to "WEB-US"
         When I send that GraphQL request as authorised user
         Then I should receive a JSON response
-        And This response body should contain:
-            | key                                   | value     | type      |
-            | wishlist.name                         | For wife  | string    |
-            | wishlist.wishlistProducts.totalCount  | 0         | int       |
+        And This wishlist should have name "For wife"
+        And This wishlist should have 0 products
         And user "aondra@climb.com" should have 2 wishlists
 
     @graphql
@@ -46,5 +42,5 @@ Feature: Creating a wishlist
         And I set channelCode field to "WEB-US"
         When I send that GraphQL request as authorised user
         Then I should receive a JSON response
-        And This response should contain "extensions.message" equal to "name: The name has to be unique"
+        Then This response should contain message why the name cannot be changed
 

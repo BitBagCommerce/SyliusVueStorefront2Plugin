@@ -197,7 +197,7 @@ final class GraphqlApiPlatformContext implements Context
     }
 
     /**
-     * @Then This response body should contain:
+     * @Then This response body should contains:
      */
     public function thisResponseBodyShouldContain(TableNode $table): void
     {

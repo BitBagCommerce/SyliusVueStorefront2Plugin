@@ -10,7 +10,7 @@ Feature: Updating a wishlist
         And user "ahonnold@climb.com" has a wishlist named "For Alex"
         And there is a customer "Adam Ondra" identified by an email "aondra@climb.com" and a password "ardno1"
         And user "aondra@climb.com" has a wishlist named "For me"
-        And I create a JWT Token for customer identified by an email "aondra@climb.com"
+        And I authorize as "aondra@climb.com"
 
     @graphql
     Scenario: Updating a wishlist
@@ -19,7 +19,7 @@ Feature: Updating a wishlist
         And I set name field to "For wife"
         When I send that GraphQL request as authorised user
         Then I should receive a JSON response
-        And This response should contain "wishlist.name" equal to "For wife"
+        And This wishlist should have name "For wife"
 
     @graphql
     Scenario: Updating a wishlist to a name that already exists
@@ -29,7 +29,7 @@ Feature: Updating a wishlist
         And I set name field to "For wife"
         When I send that GraphQL request as authorised user
         Then I should receive a JSON response
-        And This response should contain "extensions.message" equal to "name: The name has to be unique"
+        And This response should contain message why the name cannot be changed
 
     @graphql
     Scenario: Updating another user's wishlist

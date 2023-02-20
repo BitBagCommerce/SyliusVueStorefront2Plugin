@@ -37,8 +37,8 @@ final class WishlistsCurrentUserExtensionTest extends JsonApiTestCase
         ;
         $queryNameGenerator = $this->createMock(LegacyQueryNameGeneratorInterface::class);
 
-        $productVariantCurrentVendorExtension = new WishlistsCurrentUserExtension($security);
-        $productVariantCurrentVendorExtension->applyToCollection(
+        $wishlistsCurrentUserExtension = new WishlistsCurrentUserExtension($security);
+        $wishlistsCurrentUserExtension->applyToCollection(
             $queryBuilder,
             $queryNameGenerator,
             WishlistProductInterface::class,
@@ -60,8 +60,8 @@ final class WishlistsCurrentUserExtensionTest extends JsonApiTestCase
         ;
         $queryNameGenerator = $this->createMock(LegacyQueryNameGeneratorInterface::class);
 
-        $productVariantCurrentVendorExtension = new WishlistsCurrentUserExtension($security);
-        $productVariantCurrentVendorExtension->applyToCollection(
+        $wishlistsCurrentUserExtension = new WishlistsCurrentUserExtension($security);
+        $wishlistsCurrentUserExtension->applyToCollection(
             $queryBuilder,
             $queryNameGenerator,
             WishlistInterface::class,
@@ -85,8 +85,8 @@ final class WishlistsCurrentUserExtensionTest extends JsonApiTestCase
         ;
         $queryNameGenerator = $this->createMock(LegacyQueryNameGeneratorInterface::class);
 
-        $productVariantCurrentVendorExtension = new WishlistsCurrentUserExtension($security);
-        $productVariantCurrentVendorExtension->applyToCollection(
+        $wishlistsCurrentUserExtension = new WishlistsCurrentUserExtension($security);
+        $wishlistsCurrentUserExtension->applyToCollection(
             $queryBuilder,
             $queryNameGenerator,
             Wishlist::class,
@@ -110,8 +110,8 @@ final class WishlistsCurrentUserExtensionTest extends JsonApiTestCase
         ;
         $queryNameGenerator = $this->createMock(LegacyQueryNameGeneratorInterface::class);
 
-        $productVariantCurrentVendorExtension = new WishlistsCurrentUserExtension($security);
-        $productVariantCurrentVendorExtension->applyToCollection(
+        $wishlistsCurrentUserExtension = new WishlistsCurrentUserExtension($security);
+        $wishlistsCurrentUserExtension->applyToCollection(
             $queryBuilder,
             $queryNameGenerator,
             Wishlist::class,
@@ -138,8 +138,8 @@ final class WishlistsCurrentUserExtensionTest extends JsonApiTestCase
         $queryBuilder = $wishlistRepository->createQueryBuilder('o');
         $queryNameGenerator = $this->createMock(LegacyQueryNameGeneratorInterface::class);
 
-        $productVariantCurrentVendorExtension = new WishlistsCurrentUserExtension($security);
-        $productVariantCurrentVendorExtension->applyToCollection(
+        $wishlistsCurrentUserExtension = new WishlistsCurrentUserExtension($security);
+        $wishlistsCurrentUserExtension->applyToCollection(
             $queryBuilder,
             $queryNameGenerator,
             Wishlist::class,

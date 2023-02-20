@@ -9,7 +9,7 @@ Feature: Adding multiple products to cart
         And the store has a product "Rope" priced at "$40.00"
 
     @graphql
-    Scenario: Placing order as quest
+    Scenario: Placing order as guest
         Given There is operation to add products to cart
         And this operation has orderTokenValue
         And this operation has cartItems:
@@ -20,18 +20,14 @@ Feature: Adding multiple products to cart
         When I send that GraphQL request
 
         Then I should receive a JSON response
-        And This response body should contain:
-            | key                                   | value             | type      |
-            | order.items.edges.0.node.productName  | Harness climbing  | string    |
-            | order.items.edges.0.node.quantity     | 2                 | int       |
-            | order.items.edges.1.node.productName  | Rope              | string    |
-            | order.items.edges.1.node.quantity     | 3                 | int       |
-            | order.total                           | 18000             | int       |
+        And This cart should contain product "Harness climbing" in an amount 2
+        And This cart should contain product "Rope" in an amount 3
+        And total price for items should equal to 18000
 
     @graphql
     Scenario: Placing order as customer
         Given there is a customer "Adam Ondra" identified by an email "aondra@climb.com" and a password "ardno1"
-        And I create a JWT Token for customer identified by an email "aondra@climb.com"
+        And I authorize as "aondra@climb.com"
         And There is operation to add products to cart
         And this operation has orderTokenValue for customer identified by an email "aondra@climb.com"
         And this operation has cartItems:
@@ -39,13 +35,9 @@ Feature: Adding multiple products to cart
             | Harness_climbing  | 1         |
             | Rope              | 4         |
 
-        When I send that GraphQL request
+        When I send that GraphQL request as authorised user
 
         Then I should receive a JSON response
-        And This response body should contain:
-            | key                                   | value             | type      |
-            | order.items.edges.0.node.productName  | Harness climbing  | string    |
-            | order.items.edges.0.node.quantity     | 1                 | int       |
-            | order.items.edges.1.node.productName  | Rope              | string    |
-            | order.items.edges.1.node.quantity     | 4                 | int       |
-            | order.total                           | 19000             | int       |
+        And This cart should contain product "Harness climbing" in an amount 1
+        And This cart should contain product "Rope" in an amount 4
+        And total price for items should equal to 19000

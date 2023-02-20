@@ -24,6 +24,7 @@ use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClient;
 use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClientInterface;
 use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Model\OperationRequestInterface;
 use Webmozart\Assert\Assert;
+use Webmozart\Assert\InvalidArgumentException;
 
 final class CartContext implements Context
 {
@@ -355,5 +356,28 @@ final class CartContext implements Context
         }
 
         $operation->addVariable('cartItems', $cartItems);
+    }
+
+    /**
+     * @Then This cart should contain product :name in an amount :quantity
+     */
+    public function thisCartShouldContainProductInAnAmount(string $name, int $quantity): void
+    {
+        $isContain = false;
+
+        $items = $this->client->getValueAtKey('order.items.edges');
+        foreach ($items as $item) {
+            try {
+                Assert::same($item['node']['productName'], $name);
+                Assert::same($item['node']['quantity'], $quantity);
+
+                $isContain = true;
+
+                break;
+            } catch (InvalidArgumentException $exception) {
+            }
+        }
+
+        Assert::true($isContain);
     }
 }

@@ -12,7 +12,7 @@ Feature: Adding a product to a wishlist
         And user "ahonnold@climb.com" has a wishlist named "For Alex"
         And there is a customer "Adam Ondra" identified by an email "aondra@climb.com" and a password "ardno1"
         And user "aondra@climb.com" has a wishlist named "For me"
-        And I create a JWT Token for customer identified by an email "aondra@climb.com"
+        And I authorize as "aondra@climb.com"
 
     @graphql
     Scenario: Adding first product to a wishlist
@@ -21,41 +21,34 @@ Feature: Adding a product to a wishlist
         And this operation has "productVariant" variable with iri product variant "HARNESS_CLIMBING"
         When I send that GraphQL request as authorised user
         Then I should receive a JSON response
-        And This response body should contain:
-            | key                                                   | value             | type      |
-            | wishlist.name                                         | For me            | string    |
-            | wishlist.wishlistProducts.totalCount                  | 1                 | int       |
-            | wishlist.wishlistProducts.edges.0.node.variant.name   | Harness climbing  | string    |
+        And This wishlist should have name "For me"
+        And This wishlist should have 1 products
+        And This wishlist should contain product variant "Harness climbing"
 
     @graphql
     Scenario: Adding second product to a wishlist
-        Given user have a product "HARNESS_CLIMBING" in my wishlist "For me"
+        Given user has a product "HARNESS_CLIMBING" in my wishlist "For me"
         And There is operation to add product to wishlist
         And this operation has "id" variable with iri value of object "For me"
         And this operation has "productVariant" variable with iri product variant "Rope"
         When I send that GraphQL request as authorised user
         Then I should receive a JSON response
-        And This response body should contain:
-            | key                                                   | value             | type      |
-            | wishlist.name                                         | For me            | string    |
-            | wishlist.wishlistProducts.totalCount                  | 2                 | int       |
-            | wishlist.wishlistProducts.edges.0.node.variant.name   | Harness climbing  | string    |
-            | wishlist.wishlistProducts.edges.1.node.variant.name   | Rope              | string    |
+        And This wishlist should have name "For me"
+        And This wishlist should have 2 products
+        And This wishlist should contain product variant "Harness climbing"
+        And This wishlist should contain product variant "Rope"
 
     @graphql
     Scenario: Adding existing product to a wishlist
-        Given user have a product "HARNESS_CLIMBING" in my wishlist "For me"
+        Given user has a product "HARNESS_CLIMBING" in my wishlist "For me"
         And There is operation to add product to wishlist
         And this operation has "id" variable with iri value of object "For me"
         And this operation has "productVariant" variable with iri product variant "HARNESS_CLIMBING"
         When I send that GraphQL request as authorised user
         Then I should receive a JSON response
-        And This response body should contain:
-            | key                                                   | value             | type      |
-            | wishlist.name                                         | For me            | string    |
-            | wishlist.wishlistProducts.totalCount                  | 1                 | int       |
-            | wishlist.wishlistProducts.edges.0.node.variant.name   | Harness climbing  | string    |
-
+        And This wishlist should have name "For me"
+        And This wishlist should have 1 products
+        And This wishlist should contain product variant "Harness climbing"
 
     @graphql
     Scenario: Adding a product to another user's wishlist

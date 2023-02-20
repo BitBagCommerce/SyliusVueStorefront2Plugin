@@ -25,6 +25,7 @@ use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClient;
 use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClientInterface;
 use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Model\OperationRequestInterface;
 use Webmozart\Assert\Assert;
+use Webmozart\Assert\InvalidArgumentException;
 
 final class WishlistContext implements Context
 {
@@ -253,7 +254,7 @@ final class WishlistContext implements Context
     }
 
     /**
-     * @Given user have a product :code in my wishlist :name
+     * @Given user has a product :code in my wishlist :name
      */
     public function userHaveAProductInMyWishlist(string $code, string $name): void
     {
@@ -295,5 +296,83 @@ final class WishlistContext implements Context
         Assert::notNull($productVariant);
         $iri = $this->iriConverter->getIriFromItem($productVariant);
         $operation->addVariable($key, $iri);
+    }
+
+    /**
+     * @Then This wishlist should have name :name
+     */
+    public function thisWishlistShouldHaveName(string $name): void
+    {
+        Assert::same($this->client->getValueAtKey('wishlist.name'), $name);
+    }
+
+    /**
+     * @Then This wishlist should have :count products
+     */
+    public function thisWishlistShouldHaveProducts(int $count): void
+    {
+        Assert::same($this->client->getValueAtKey('wishlist.wishlistProducts.totalCount'), $count);
+    }
+
+    /**
+     * @Then This wishlist should contain product variant :name
+     */
+    public function thisWishlistShouldContainProductVariant(string $name): void
+    {
+        $isContain = false;
+
+        $items = $this->client->getValueAtKey('wishlist.wishlistProducts.edges');
+        foreach ($items as $item) {
+            try {
+                Assert::same($item['node']['variant']['name'], $name);
+
+                $isContain = true;
+
+                break;
+            } catch (InvalidArgumentException $exception) {
+            }
+        }
+
+        Assert::true($isContain);
+    }
+
+    /**
+     * @Then This response should contain message why the name cannot be changed
+     */
+    public function thisResponseShouldContainMessageWhyTheNameCannotBeChanged(): void
+    {
+        $message = $this->client->getValueAtKey('extensions.message');
+        Assert::same($message, 'name: The name has to be unique');
+    }
+
+    /**
+     * @Then I should receive :count wishlists
+     */
+    public function iShouldHaveWishlists(int $count)
+    {
+        Assert::same($this->client->getValueAtKey('paginationInfo.totalCount'), $count);
+    }
+
+    /**
+     * @Then I should receive wishlist :name with :count products
+     */
+    public function iShouldHaveWishlistWithProducts(string $name, int $count)
+    {
+        $isContain = false;
+
+        $wihslists = $this->client->getValueAtKey('collection');
+        foreach ($wihslists as $wishlist) {
+            try {
+                Assert::same($wishlist['name'], $name);
+                Assert::same($wishlist['wishlistProducts']['totalCount'], $count);
+
+                $isContain = true;
+
+                break;
+            } catch (InvalidArgumentException $exception) {
+            }
+        }
+
+        Assert::true($isContain);
     }
 }

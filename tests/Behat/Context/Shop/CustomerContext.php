@@ -86,6 +86,7 @@ final class CustomerContext implements Context
     }
 
     /**
+     * @Given I authorize as :email
      * @When I create a JWT Token for customer identified by an email :email
      */
     public function iCreateJWTTokenForCustomer(string $email): void
