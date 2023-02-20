@@ -16,31 +16,26 @@ Feature: Clearing a wishlist
 
     @graphql
     Scenario: Cleaning a wishlist
-        And user have a product "ROPE" in my wishlist "For me"
+        Given user have a product "ROPE" in my wishlist "For me"
         And user have a product "HARNESS_CLIMBING" in my wishlist "For me"
-
-        When I prepare query to fetch all wishlists
-        And I send that GraphQL request as authorised user
-        Then I should receive a JSON response
-        And I should receive 1 wishlists
-        And This response should contain "collection.0.wishlistProducts.totalCount" equal to 2 as "int"
-
-        When I prepare clear wishlist operation
-        And I set id field to iri object "For me"
-        And I send that GraphQL request as authorised user
+        And There is operation to clear wishlist
+        And this operation has "id" variable with iri value of object "For me"
+        When I send that GraphQL request as authorised user
         Then I should receive a JSON response
         And This response should contain "wishlist.wishlistProducts.totalCount" equal to 0 as "int"
 
-        When I prepare query to fetch all wishlists
-        And I send that GraphQL request as authorised user
+    @graphql
+    Scenario: Cleaning a wishlist
+        Given There is operation to clear wishlist
+        And this operation has "id" variable with iri value of object "For me"
+        When I send that GraphQL request as authorised user
         Then I should receive a JSON response
-        And I should receive 1 wishlists
-        And This response should contain "collection.0.wishlistProducts.totalCount" equal to 0 as "int"
+        And This response should contain "wishlist.wishlistProducts.totalCount" equal to 0 as "int"
 
     @graphql
     Scenario: Cleaning another user's wishlist
-        When I prepare clear wishlist operation
-        And I set id field to iri object "For Alex"
-        And I send that GraphQL request as authorised user
+        Given There is operation to clear wishlist
+        And this operation has "id" variable with iri value of object "For Alex"
+        When I send that GraphQL request as authorised user
         Then I should receive a JSON response
         And I should receive access denied

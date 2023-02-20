@@ -9,67 +9,67 @@ Feature: Managing wishlists
 
     @graphql
     Scenario: Get wishlists
-        When I prepare query to fetch all wishlists
-        And I send that GraphQL request
+        Given There is query to fetch all wishlists
+        When I send that GraphQL request
         Then I should receive a JSON response
         And I should receive access denied
 
     @graphql
     Scenario: Creating a wishlist
-        When I prepare create wishlist operation
+        Given There is operation to create wishlist
         And I set name field to "Wishlist"
         And I set channelCode field to "WEB-US"
-        And I send that GraphQL request
+        When I send that GraphQL request
         Then I should receive a JSON response
         And I should receive access denied
 
     @graphql
     Scenario: Updating a wishlist
-        And anonymous user has a wishlist named "Wishlist"
-        When I prepare update wishlist operation
-        And I set id field to iri object "Wishlist"
+        Given anonymous user has a wishlist named "Wishlist"
+        And There is operation to update wishlist
+        And this operation has "id" variable with iri value of object "Wishlist"
         And I set name field to "Wishlist"
-        And I send that GraphQL request
+        When I send that GraphQL request
         Then I should receive a JSON response
         And I should receive access denied
 
     @graphql
     Scenario: Clearing a wishlist
-        And anonymous user has a wishlist named "Wishlist"
-        When I prepare clear wishlist operation
-        And I set id field to iri object "Wishlist"
-        And I send that GraphQL request
+        Given anonymous user has a wishlist named "Wishlist"
+        And There is operation to clear wishlist
+        And this operation has "id" variable with iri value of object "Wishlist"
+        When I send that GraphQL request
         Then I should receive a JSON response
         And I should receive access denied
 
     @graphql
     Scenario: Removing a wishlist
-        And anonymous user has a wishlist named "Wishlist"
-        When I prepare remove wishlist operation
-        And I set id field to iri object "Wishlist"
-        And I send that GraphQL request
+        Given anonymous user has a wishlist named "Wishlist"
+        And There is operation to remove wishlist
+        And this operation has "id" variable with iri value of object "Wishlist"
+        When I send that GraphQL request
         Then I should receive a JSON response
         And I should receive access denied
 
     @graphql
     Scenario: Adding a product to a wishlist
-        And anonymous user has a wishlist named "Wishlist"
+        Given anonymous user has a wishlist named "Wishlist"
         And the store has a product "Climbing shoes" priced at "$10.00"
-        When I prepare add product to wishlist operation
-        And I set id field to iri object "Wishlist"
-        And I set productVariant field to iri object "product"
-        And I send that GraphQL request
+        And There is operation to add product to wishlist
+        And this operation has "id" variable with iri value of object "Wishlist"
+        And this operation has "productVariant" variable with iri value of object "product"
+        When I send that GraphQL request
         Then I should receive a JSON response
         And I should receive access denied
 
     @graphql
     Scenario: Removing a product from a wishlist
-        And anonymous user has a wishlist named "Wishlist"
+        Given anonymous user has a wishlist named "Wishlist"
         And the store has a product "Climbing shoes" priced at "$10.00"
-        When I prepare remove product from wishlist operation
-        And I set id field to iri object "Wishlist"
-        And I set productVariant field to iri object "product"
-        And I send that GraphQL request
+        And There is operation to remove product from wishlist
+        And this operation has "id" variable with iri value of object "Wishlist"
+        And this operation has "productVariant" variable with iri value of object "product"
+        When I send that GraphQL request
         Then I should receive a JSON response
         And I should receive access denied
 

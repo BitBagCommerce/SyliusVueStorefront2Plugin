@@ -14,32 +14,25 @@ Feature: Removing a wishlist
 
     @graphql
     Scenario: Removing wishlists
-        And user "aondra@climb.com" has a wishlist named "For wife"
-        When I prepare remove wishlist operation
-        And I set id field to iri object "For wife"
-        And I send that GraphQL request as authorised user
+        Given There is operation to remove wishlist
+        And this operation has "id" variable with iri value of object "For me"
+        When I send that GraphQL request as authorised user
         Then I should receive a JSON response
+        And user "aondra@climb.com" should have 0 wishlists
 
-        When I prepare query to fetch all wishlists
-        And I send that GraphQL request as authorised user
+    @graphql
+    Scenario: Removing wishlists
+        Given user "aondra@climb.com" has a wishlist named "For wife"
+        And There is operation to remove wishlist
+        And this operation has "id" variable with iri value of object "For me"
+        When I send that GraphQL request as authorised user
         Then I should receive a JSON response
-        And I should receive 1 wishlists
-        And This response should contain "collection.0.name" equal to "For me"
-
-        When I prepare remove wishlist operation
-        And I set id field to iri object "For me"
-        And I send that GraphQL request as authorised user
-        Then I should receive a JSON response
-
-        When I prepare query to fetch all wishlists
-        And I send that GraphQL request as authorised user
-        Then I should receive a JSON response
-        And I should receive 0 wishlists
+        And user "aondra@climb.com" should have 1 wishlists
 
     @graphql
     Scenario: Removing another user's wishlist
-        When I prepare remove wishlist operation
-        And I set id field to iri object "For Alex"
+        Given There is operation to remove wishlist
+        And this operation has "id" variable with iri value of object "For Alex"
         And I send that GraphQL request as authorised user
         Then I should receive a JSON response
         And I should receive access denied

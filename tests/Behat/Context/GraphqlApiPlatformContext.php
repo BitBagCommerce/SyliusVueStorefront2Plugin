@@ -6,6 +6,7 @@ namespace Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Exception;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -117,7 +118,7 @@ final class GraphqlApiPlatformContext implements Context
     }
 
     /**
-     * @When I set :key field to iri object :name
+     * @Given this operation has :key variable with iri value of object :name
      */
     public function iSetKeyFieldToIriObject(string $key, string $name): void
     {
@@ -144,21 +145,6 @@ final class GraphqlApiPlatformContext implements Context
         }
         /** @psalm-suppress MixedAssignment */
         $storageValue[$propertyName] = $this->castToType($value, $type);
-        $this->sharedStorage->set($sharedStorageKey, $storageValue);
-    }
-
-    /**
-     * @Then I set :sharedStorageKey object :propertyName property to previously saved value :name
-     */
-    public function iSetObjectPropertyToPreviouslySavedValue(string $sharedStorageKey, string $propertyName, string $name): void
-    {
-        try {
-            $storageValue = (array) $this->sharedStorage->get($sharedStorageKey);
-        } catch (\InvalidArgumentException $e) {
-            $storageValue = [];
-        }
-        /** @psalm-suppress MixedAssignment */
-        $storageValue[$propertyName] = $this->sharedStorage->get($name);
         $this->sharedStorage->set($sharedStorageKey, $storageValue);
     }
 
@@ -208,6 +194,16 @@ final class GraphqlApiPlatformContext implements Context
         }
 
         Assert::same($responseValueAtKey, $value);
+    }
+
+    /**
+     * @Then This response body should contain:
+     */
+    public function thisResponseBodyShouldContain(TableNode $table): void
+    {
+        foreach ($table as $row) {
+            $this->thatResponseShouldContainKeyWithValue($row['key'], $row['value'], $row['type']);
+        }
     }
 
     /**

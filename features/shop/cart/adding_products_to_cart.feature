@@ -1,7 +1,6 @@
 @add_products_to_cart
 Feature: Adding multiple products to cart
     In order buy a products
-    As a Customer
     I need to be able to add multiple products to cart
 
     Background:
@@ -10,29 +9,43 @@ Feature: Adding multiple products to cart
         And the store has a product "Rope" priced at "$40.00"
 
     @graphql
-    Scenario: Placing order
-        When I prepare query to fetch all products
-        And I send that GraphQL request as authorised user
+    Scenario: Placing order as quest
+        Given There is operation to add products to cart
+        And this operation has orderTokenValue
+        And this operation has cartItems:
+            | productVariant    | quantity  |
+            | Harness_climbing  | 2         |
+            | Rope              | 3         |
+
+        When I send that GraphQL request
+
         Then I should receive a JSON response
-        And I save key 'collection.0.variants.collection.0.id' of this response as "firstProductVariantIri"
-        And I save key 'collection.1.variants.collection.0.id' of this response as "secondProductVariantIri"
+        And This response body should contain:
+            | key                                   | value             | type      |
+            | order.items.edges.0.node.productName  | Harness climbing  | string    |
+            | order.items.edges.0.node.quantity     | 2                 | int       |
+            | order.items.edges.1.node.productName  | Rope              | string    |
+            | order.items.edges.1.node.quantity     | 3                 | int       |
+            | order.total                           | 18000             | int       |
 
-        When I prepare create cart operation
-        Then I send that GraphQL request as authorised user
-        And I save key 'order.tokenValue' of this response as "orderToken"
+    @graphql
+    Scenario: Placing order as customer
+        Given there is a customer "Adam Ondra" identified by an email "aondra@climb.com" and a password "ardno1"
+        And I create a JWT Token for customer identified by an email "aondra@climb.com"
+        And There is operation to add products to cart
+        And this operation has orderTokenValue for customer identified by an email "aondra@climb.com"
+        And this operation has cartItems:
+            | productVariant    | quantity  |
+            | Harness_climbing  | 1         |
+            | Rope              | 4         |
 
-        When I prepare add products to cart operation
-        And I set 'orderTokenValue' field to value "orderToken"
-        And I set 'cartItemFirst' object "quantity" property to 2 as 'int'
-        And I set 'cartItemFirst' object "productVariant" property to previously saved value "firstProductVariantIri"
-        And I set 'cartItemSecond' object "quantity" property to 3 as 'int'
-        And I set 'cartItemSecond' object "productVariant" property to previously saved value "secondProductVariantIri"
-        And I set 'cartItems' object "0" property to previously saved value "cartItemFirst"
-        And I set 'cartItems' object "1" property to previously saved value "cartItemSecond"
-        And I set cartItems field to value "cartItems"
-        Then I send that GraphQL request as authorised user
-        And This response should contain "order.items.edges.0.node.productName" equal to "Harness climbing"
-        And This response should contain "order.items.edges.0.node.quantity" equal to 2 as 'int'
-        And This response should contain "order.items.edges.1.node.productName" equal to "Rope"
-        And This response should contain "order.items.edges.1.node.quantity" equal to 3 as 'int'
-        And total price for items should equal to "18000"
+        When I send that GraphQL request
+
+        Then I should receive a JSON response
+        And This response body should contain:
+            | key                                   | value             | type      |
+            | order.items.edges.0.node.productName  | Harness climbing  | string    |
+            | order.items.edges.0.node.quantity     | 1                 | int       |
+            | order.items.edges.1.node.productName  | Rope              | string    |
+            | order.items.edges.1.node.quantity     | 4                 | int       |
+            | order.total                           | 19000             | int       |

@@ -13,29 +13,38 @@ Feature: Creating a wishlist
 
     @graphql
     Scenario: Creating a wishlist
-        When I prepare query to fetch all wishlists
-        And I send that GraphQL request as authorised user
-        Then I should receive a JSON response
-        And I should receive 0 wishlists
-        When I prepare create wishlist operation
+        Given There is operation to create wishlist
         And I set name field to "For me"
         And I set channelCode field to "WEB-US"
-        And I send that GraphQL request as authorised user
+        When I send that GraphQL request as authorised user
         Then I should receive a JSON response
-        And This response should contain "wishlist.name" equal to "For me"
-        When I prepare query to fetch all wishlists
-        And I send that GraphQL request as authorised user
+        And This response body should contain:
+            | key                                   | value     | type      |
+            | wishlist.name                         | For me    | string    |
+            | wishlist.wishlistProducts.totalCount  | 0         | int       |
+        And user "aondra@climb.com" should have 1 wishlists
+
+    @graphql
+    Scenario: Creating a wishlist
+        Given user "aondra@climb.com" has a wishlist named "For me"
+        And There is operation to create wishlist
+        And I set name field to "For wife"
+        And I set channelCode field to "WEB-US"
+        When I send that GraphQL request as authorised user
         Then I should receive a JSON response
-        And I should receive 1 wishlists
+        And This response body should contain:
+            | key                                   | value     | type      |
+            | wishlist.name                         | For wife  | string    |
+            | wishlist.wishlistProducts.totalCount  | 0         | int       |
+        And user "aondra@climb.com" should have 2 wishlists
 
     @graphql
     Scenario: Creating a wishlist with a name that already exists
-        And user "aondra@climb.com" has a wishlist named "For me"
-        And user "aondra@climb.com" has a wishlist named "For wife"
-        When I prepare create wishlist operation
-        And I set name field to "For wife"
+        Given user "aondra@climb.com" has a wishlist named "For me"
+        And There is operation to create wishlist
+        And I set name field to "For me"
         And I set channelCode field to "WEB-US"
-        And I send that GraphQL request as authorised user
+        When I send that GraphQL request as authorised user
         Then I should receive a JSON response
         And This response should contain "extensions.message" equal to "name: The name has to be unique"
 

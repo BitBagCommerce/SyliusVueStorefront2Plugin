@@ -14,35 +14,29 @@ Feature: Updating a wishlist
 
     @graphql
     Scenario: Updating a wishlist
-        When I prepare update wishlist operation
-        And I set id field to iri object "For me"
+        Given There is operation to update wishlist
+        And this operation has "id" variable with iri value of object "For me"
         And I set name field to "For wife"
-        And I send that GraphQL request as authorised user
+        When I send that GraphQL request as authorised user
         Then I should receive a JSON response
         And This response should contain "wishlist.name" equal to "For wife"
 
-        When I prepare query to fetch all wishlists
-        And I send that GraphQL request as authorised user
-        Then I should receive a JSON response
-        And I should receive 1 wishlists
-        And This response should contain "collection.0.name" equal to "For wife"
-
     @graphql
     Scenario: Updating a wishlist to a name that already exists
-        And user "aondra@climb.com" has a wishlist named "For wife"
-        When I prepare update wishlist operation
-        And I set id field to iri object "For wife"
-        And I set name field to "For me"
-        And I send that GraphQL request as authorised user
+        Given user "aondra@climb.com" has a wishlist named "For wife"
+        And There is operation to update wishlist
+        And this operation has "id" variable with iri value of object "For me"
+        And I set name field to "For wife"
+        When I send that GraphQL request as authorised user
         Then I should receive a JSON response
         And This response should contain "extensions.message" equal to "name: The name has to be unique"
 
     @graphql
     Scenario: Updating another user's wishlist
-        When I prepare update wishlist operation
-        And I set id field to iri object "For Alex"
+        Given There is operation to update wishlist
+        And this operation has "id" variable with iri value of object "For Alex"
         And I set name field to "For me"
-        And I send that GraphQL request as authorised user
+        When I send that GraphQL request as authorised user
         Then I should receive a JSON response
         And I should receive access denied
 

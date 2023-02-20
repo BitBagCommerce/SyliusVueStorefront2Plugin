@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context\Shop;
 
+use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
@@ -18,6 +19,7 @@ use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
+use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClient;
 use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClientInterface;
@@ -30,6 +32,8 @@ final class WishlistContext implements Context
 
     private SharedStorageInterface $sharedStorage;
 
+    private IriConverterInterface $iriConverter;
+
     private WishlistFactoryInterface $wishlistFactory;
 
     private WishlistProductFactoryInterface $wishlistProductFactory;
@@ -40,28 +44,34 @@ final class WishlistContext implements Context
 
     private ProductRepositoryInterface $productRepository;
 
+    private ProductVariantRepositoryInterface $productVariantRepository;
+
     public function __construct(
         GraphqlClientInterface $client,
         SharedStorageInterface $sharedStorage,
+        IriConverterInterface $iriConverter,
         WishlistFactoryInterface $wishlistFactory,
         WishlistProductFactoryInterface $wishlistProductFactory,
         WishlistRepositoryInterface $wishlistRepository,
         UserRepositoryInterface $userRepository,
         ProductRepositoryInterface $productRepository,
+        ProductVariantRepositoryInterface $productVariantRepository,
     ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
+        $this->iriConverter = $iriConverter;
         $this->wishlistFactory = $wishlistFactory;
         $this->wishlistProductFactory = $wishlistProductFactory;
         $this->wishlistRepository = $wishlistRepository;
         $this->userRepository = $userRepository;
         $this->productRepository = $productRepository;
+        $this->productVariantRepository = $productVariantRepository;
     }
 
     /**
-     * @When I prepare query to fetch all wishlists
+     * @Given There is query to fetch all wishlists
      */
-    public function iPrepareQueryToFetchAllWishlists(): void
+    public function thereIsQueryToFetchAllWishlists(): void
     {
         $expectedData = '
         paginationInfo {
@@ -90,9 +100,9 @@ final class WishlistContext implements Context
     }
 
     /**
-     * @When I prepare create wishlist operation
+     * @Given There is operation to create wishlist
      */
-    public function iPrepareCreateWishlistOperation(): void
+    public function thereIsOperationToCreateWishlist(): void
     {
         $expectedData = '
         wishlist {
@@ -108,9 +118,9 @@ final class WishlistContext implements Context
     }
 
     /**
-     * @When I prepare update wishlist operation
+     * @Given There is operation to update wishlist
      */
-    public function iPrepareUpdateWishlistOperation(): void
+    public function thereIsOperationToUpdateWishlist(): void
     {
         $expectedData = '
         wishlist {
@@ -123,9 +133,9 @@ final class WishlistContext implements Context
     }
 
     /**
-     * @When I prepare clear wishlist operation
+     * @Given There is operation to clear wishlist
      */
-    public function iPrepareClearWishlistOperation(): void
+    public function thereIsOperationToClearWishlist(): void
     {
         $expectedData = '
         wishlist {
@@ -141,9 +151,9 @@ final class WishlistContext implements Context
     }
 
     /**
-     * @When I prepare remove wishlist operation
+     * @Given There is operation to remove wishlist
      */
-    public function iPrepareRemoveWishlistOperation(): void
+    public function thereIsOperationToRemoveWishlist(): void
     {
         $expectedData = '
         wishlist {
@@ -155,9 +165,9 @@ final class WishlistContext implements Context
     }
 
     /**
-     * @When I prepare add product to wishlist operation
+     * @Given There is operation to add product to wishlist
      */
-    public function iPrepareAddProductToWishlistOperation(): void
+    public function thereIsOperationToAddProductToWishlist(): void
     {
         $expectedData = '
         wishlist {
@@ -181,9 +191,9 @@ final class WishlistContext implements Context
     }
 
     /**
-     * @When I prepare remove product from wishlist operation
+     * @Given There is operation to remove product from wishlist
      */
-    public function iPrepareRemoveProductFromWishlistOperation(): void
+    public function thereIsOperationToRemoveProductFromWishlist(): void
     {
         $expectedData = '
         wishlist {
@@ -236,15 +246,6 @@ final class WishlistContext implements Context
         $this->saveWishlist($wishlist, $name);
     }
 
-    /**
-     * @Then I should receive :count wishlists
-     */
-    public function iShouldReceiveWishlists(int $count): void
-    {
-        $total = (int) $this->client->getValueAtKey('paginationInfo.totalCount');
-        Assert::same($total, $count);
-    }
-
     public function saveWishlist(WishlistInterface $wishlist, string $name): void
     {
         $this->wishlistRepository->add($wishlist);
@@ -267,5 +268,32 @@ final class WishlistContext implements Context
         $wishlist->addWishlistProduct($wishlistProduct);
 
         $this->wishlistRepository->add($wishlist);
+    }
+
+    /**
+     * @Then user :email should have :count wishlists
+     */
+    public function userHasWishlists(string $email, int $count): void
+    {
+        /** @var ShopUserInterface|null $user */
+        $user = $this->userRepository->findOneBy(['username' => $email]);
+        Assert::notNull($user);
+
+        $wishlists = $this->wishlistRepository->findAllByShopUser($user->getId());
+        Assert::count($wishlists, $count);
+    }
+
+    /**
+     * @Given this operation has :key variable with iri product variant :code
+     */
+    public function thisOperationHasVariableWithIriProductVariant(string $key, string $code): void
+    {
+        $operation = $this->client->getLastOperationRequest();
+        Assert::isInstanceOf($operation, OperationRequestInterface::class);
+
+        $productVariant = $this->productVariantRepository->findOneBy(['code' => $code]);
+        Assert::notNull($productVariant);
+        $iri = $this->iriConverter->getIriFromItem($productVariant);
+        $operation->addVariable($key, $iri);
     }
 }

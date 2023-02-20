@@ -17,44 +17,38 @@ Feature: Adding a product to a wishlist
         And I create a JWT Token for customer identified by an email "aondra@climb.com"
 
     @graphql
-    Scenario: Removing products from a wishlist
-        And user have a product "HARNESS_CLIMBING" in my wishlist "For me"
-
-        When I prepare query to fetch all wishlists
-        And I send that GraphQL request as authorised user
+    Scenario: Removing products from a wishlist when there is one product
+        Given There is operation to remove product from wishlist
+        And this operation has "id" variable with iri value of object "For me"
+        And this operation has "productVariant" variable with iri product variant "ROPE"
+        When I send that GraphQL request as authorised user
         Then I should receive a JSON response
-        And I should receive 1 wishlists
-        And This response should contain "collection.0.wishlistProducts.totalCount" equal to 2 as "int"
-        And This response should contain "collection.0.wishlistProducts.edges.0.node.variant.name" equal to "Rope"
-        And This response should contain "collection.0.wishlistProducts.edges.1.node.variant.name" equal to "Harness climbing"
-        And I save key 'collection.0.wishlistProducts.edges.0.node.variant.id' of this response as "firstProductVariantIri"
-        And I save key 'collection.0.wishlistProducts.edges.1.node.variant.id' of this response as "secondProductVariantIri"
+        And This response body should contain:
+            | key                                   | value     | type      |
+            | wishlist.name                         | For me    | string    |
+            | wishlist.wishlistProducts.totalCount  | 0         | int       |
 
-        When I prepare remove product from wishlist operation
-        And I set id field to iri object "For me"
-        And I set productVariant field to value "firstProductVariantIri"
-        And I send that GraphQL request as authorised user
-        Then I should receive a JSON response
-        And This response should contain "wishlist.wishlistProducts.totalCount" equal to 1 as "int"
-        And This response should contain "wishlist.wishlistProducts.edges.0.node.variant.name" equal to "Harness climbing"
 
-        When I prepare remove product from wishlist operation
-        And I set id field to iri object "For me"
-        And I set productVariant field to value "secondProductVariantIri"
-        And I send that GraphQL request as authorised user
+    @graphql
+    Scenario: Removing products from a wishlist when there is two products
+        Given user have a product "HARNESS_CLIMBING" in my wishlist "For me"
+        And There is operation to remove product from wishlist
+        And this operation has "id" variable with iri value of object "For me"
+        And this operation has "productVariant" variable with iri product variant "HARNESS_CLIMBING"
+        When I send that GraphQL request as authorised user
         Then I should receive a JSON response
-        And This response should contain "wishlist.wishlistProducts.totalCount" equal to 0 as "int"
+        And This response body should contain:
+            | key                                                   | value     | type      |
+            | wishlist.name                                         | For me    | string    |
+            | wishlist.wishlistProducts.totalCount                  | 1         | int       |
+            | wishlist.wishlistProducts.edges.0.node.variant.name   | Rope      | string    |
+
 
     @graphql
     Scenario: Removing a product from another user's wishlist
-        When I prepare query to fetch all products
-        And I send that GraphQL request as authorised user
-        Then I should receive a JSON response
-        And I save key 'collection.0.variants.collection.0.id' of this response as "productVariantIri"
-
-        When I prepare remove product from wishlist operation
-        And I set id field to iri object "For Alex"
-        And I set productVariant field to value "productVariantIri"
-        And I send that GraphQL request as authorised user
+        Given There is operation to remove product from wishlist
+        And this operation has "id" variable with iri value of object "For Alex"
+        And this operation has "productVariant" variable with iri product variant "ROPE"
+        When I send that GraphQL request as authorised user
         Then I should receive a JSON response
         And I should receive access denied
