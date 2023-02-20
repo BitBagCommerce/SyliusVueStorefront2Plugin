@@ -76,6 +76,8 @@ final class AddItemToWishlistHandlerSpec extends ObjectBehavior
         ProductVariantInterface $productVariant,
         WishlistProductFactoryInterface $wishlistProductFactory,
         WishlistProductInterface $wishlistProduct,
+        WishlistRepositoryInterface $wishlistRepository,
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $addItemToWishlist = new AddItemToWishlist('wishlistIri', 'productVariantIri');
 
@@ -88,6 +90,9 @@ final class AddItemToWishlistHandlerSpec extends ObjectBehavior
         $wishlist->addWishlistProduct($wishlistProduct)->shouldNotBeCalled();
 
         $this->__invoke($addItemToWishlist)->shouldReturn($wishlist);
+
+        $wishlistRepository->add($wishlist)->shouldNotHaveBeenCalled();
+        $eventDispatcher->dispatch(Argument::any(), AddItemToWishlistHandler::EVENT_NAME)->shouldNotHaveBeenCalled();
     }
 
     public function it_throws_an_exception_when_cannot_find_wishlist(

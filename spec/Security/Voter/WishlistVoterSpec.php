@@ -35,12 +35,9 @@ final class WishlistVoterSpec extends ObjectBehavior
 
     public function it_supports_expected_attributes(): void
     {
-        $this->supportsAttribute('BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_VIEW')->shouldReturn(true);
-        $this->supportsAttribute('BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_UPDATE')->shouldReturn(true);
-        $this->supportsAttribute('BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_CLEAR')->shouldReturn(true);
-        $this->supportsAttribute('BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_DELETE')->shouldReturn(true);
-        $this->supportsAttribute('BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_ADD_ITEM')->shouldReturn(true);
-        $this->supportsAttribute('BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_REMOVE_ITEM')->shouldReturn(true);
+        foreach ($this->getSupportsAttributes() as $attribute) {
+            $this->supportsAttribute($attribute)->shouldReturn(true);
+        }
     }
 
     public function it_does_not_support_unexpected_attributes(): void
@@ -79,12 +76,9 @@ final class WishlistVoterSpec extends ObjectBehavior
         WishlistInterface $wishlist,
     ): void {
         $token->getUser()->willReturn(null);
-        $this->vote($token, $wishlist, [WishlistVoter::VIEW])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::UPDATE])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::CLEAR])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::DELETE])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::ADD_ITEM])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::REMOVE_ITEM])->shouldReturn(VoterInterface::ACCESS_DENIED);
+        foreach ($this->getSupportsAttributes() as $attribute) {
+            $this->vote($token, $wishlist, [$attribute])->shouldReturn(VoterInterface::ACCESS_DENIED);
+        }
     }
 
     public function it_denied_if_user_has_not_role(
@@ -96,12 +90,9 @@ final class WishlistVoterSpec extends ObjectBehavior
         $token->getUser()->willReturn($user);
         $security->isGranted('ROLE_USER')->willReturn(false);
 
-        $this->vote($token, $wishlist, [WishlistVoter::VIEW])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::UPDATE])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::CLEAR])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::DELETE])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::ADD_ITEM])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::REMOVE_ITEM])->shouldReturn(VoterInterface::ACCESS_DENIED);
+        foreach ($this->getSupportsAttributes() as $attribute) {
+            $this->vote($token, $wishlist, [$attribute])->shouldReturn(VoterInterface::ACCESS_DENIED);
+        }
     }
 
     public function it_denied_if_user_does_not_owner_wishlist(
@@ -118,12 +109,9 @@ final class WishlistVoterSpec extends ObjectBehavior
         $wishlistShopUser->getId()->willReturn(2);
         $wishlist->getShopUser()->willReturn($wishlistShopUser);
 
-        $this->vote($token, $wishlist, [WishlistVoter::VIEW])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::UPDATE])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::CLEAR])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::DELETE])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::ADD_ITEM])->shouldReturn(VoterInterface::ACCESS_DENIED);
-        $this->vote($token, $wishlist, [WishlistVoter::REMOVE_ITEM])->shouldReturn(VoterInterface::ACCESS_DENIED);
+        foreach ($this->getSupportsAttributes() as $attribute) {
+            $this->vote($token, $wishlist, [$attribute])->shouldReturn(VoterInterface::ACCESS_DENIED);
+        }
     }
 
     public function it_granted_if_user_is_owner_wishlist(
@@ -140,11 +128,20 @@ final class WishlistVoterSpec extends ObjectBehavior
         $wishlistShopUser->getId()->willReturn(2);
         $wishlist->getShopUser()->willReturn($wishlistShopUser);
 
-        $this->vote($token, $wishlist, [WishlistVoter::VIEW])->shouldReturn(VoterInterface::ACCESS_GRANTED);
-        $this->vote($token, $wishlist, [WishlistVoter::UPDATE])->shouldReturn(VoterInterface::ACCESS_GRANTED);
-        $this->vote($token, $wishlist, [WishlistVoter::CLEAR])->shouldReturn(VoterInterface::ACCESS_GRANTED);
-        $this->vote($token, $wishlist, [WishlistVoter::DELETE])->shouldReturn(VoterInterface::ACCESS_GRANTED);
-        $this->vote($token, $wishlist, [WishlistVoter::ADD_ITEM])->shouldReturn(VoterInterface::ACCESS_GRANTED);
-        $this->vote($token, $wishlist, [WishlistVoter::REMOVE_ITEM])->shouldReturn(VoterInterface::ACCESS_GRANTED);
+        foreach ($this->getSupportsAttributes() as $attribute) {
+            $this->vote($token, $wishlist, [$attribute])->shouldReturn(VoterInterface::ACCESS_GRANTED);
+        }
+    }
+
+    private function getSupportsAttributes(): array
+    {
+        return [
+            'BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_VIEW',
+            'BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_UPDATE',
+            'BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_CLEAR',
+            'BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_DELETE',
+            'BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_ADD_ITEM',
+            'BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_REMOVE_ITEM',
+        ];
     }
 }

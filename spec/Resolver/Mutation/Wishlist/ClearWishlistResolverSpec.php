@@ -13,9 +13,11 @@ namespace spec\BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation\Wishlist;
 use ApiPlatform\GraphQl\Resolver\MutationResolverInterface;
 use BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation\Wishlist\ClearWishlistResolver;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Webmozart\Assert\InvalidArgumentException;
 
 final class ClearWishlistResolverSpec extends ObjectBehavior
 {
@@ -45,5 +47,13 @@ final class ClearWishlistResolverSpec extends ObjectBehavior
         $eventDispatcher->dispatch(Argument::any(), ClearWishlistResolver::EVENT_NAME)->shouldBeCalled();
 
         $this->__invoke($wishlist, $context)->shouldReturn($wishlist);
+    }
+
+    public function it_throws_an_exception_when_it_is_not_wishlist(
+        WishlistProductInterface $wishlistProduct,
+    ): void {
+        $this->shouldThrow(InvalidArgumentException::class)
+            ->during('__invoke', [$wishlistProduct, []])
+        ;
     }
 }

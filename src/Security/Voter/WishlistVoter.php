@@ -83,6 +83,7 @@ final class WishlistVoter extends Voter
     protected function isOwnerWishlist(ShopUserInterface $shopUser, WishlistInterface $wishlist): bool
     {
         $wishlistShopUser = $wishlist->getShopUser();
+
         return null !== $wishlistShopUser && $shopUser->getId() === $wishlistShopUser->getId();
     }
 }

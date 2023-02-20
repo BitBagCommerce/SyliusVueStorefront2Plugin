@@ -12,6 +12,7 @@ namespace spec\BitBag\SyliusVueStorefront2Plugin\CommandHandler\Wishlist;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
 use BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\RemoveItemFromWishlist;
+use BitBag\SyliusVueStorefront2Plugin\CommandHandler\Wishlist\AddItemToWishlistHandler;
 use BitBag\SyliusVueStorefront2Plugin\CommandHandler\Wishlist\RemoveItemFromWishlistHandler;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
@@ -74,6 +75,8 @@ final class RemoveItemFromWishlistHandlerSpec extends ObjectBehavior
         ProductVariantInterface $productVariant,
         WishlistProductFactoryInterface $wishlistProductFactory,
         WishlistProductInterface $wishlistProduct,
+        ObjectManager $wishlistManager,
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $removeItemFromWishlist = new RemoveItemFromWishlist('wishlistIri', 'productVariantIri');
 
@@ -86,6 +89,9 @@ final class RemoveItemFromWishlistHandlerSpec extends ObjectBehavior
         $wishlist->removeProductVariant($productVariant)->shouldNotBeCalled();
 
         $this->__invoke($removeItemFromWishlist)->shouldReturn($wishlist);
+
+        $wishlistManager->flush()->shouldNotHaveBeenCalled();
+        $eventDispatcher->dispatch(Argument::any(), RemoveItemFromWishlistHandler::EVENT_NAME)->shouldNotHaveBeenCalled();
     }
 
     public function it_throws_an_exception_when_cannot_find_wishlist(

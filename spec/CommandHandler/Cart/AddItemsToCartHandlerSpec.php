@@ -15,6 +15,7 @@ use BitBag\SyliusVueStorefront2Plugin\Command\Cart\AddItemsToCart;
 use BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart\AddItemsToCartHandler;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Component\Core\Factory\CartItemFactoryInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\OrderItemInterface;
@@ -82,6 +83,20 @@ final class AddItemsToCartHandlerSpec extends ObjectBehavior
         $orderModifier->addToOrder($order, $orderItem)->shouldBeCalled();
 
         $this->__invoke($addItemsToCart)->shouldReturn($order);
+    }
+
+    public function it_is_invokable_for_empty_cart_items(
+        OrderRepositoryInterface $orderRepository,
+        OrderInterface $order,
+        OrderModifierInterface $orderModifier,
+    ): void {
+        $addItemsToCart = new AddItemsToCart('orderTokenValue', []);
+
+        $orderRepository->findCartByTokenValue($addItemsToCart->getOrderTokenValue())->willReturn($order);
+
+        $this->__invoke($addItemsToCart)->shouldReturn($order);
+
+        $orderModifier->addToOrder($order, Argument::any())->shouldNotHaveBeenCalled();
     }
 
     public function it_throws_an_exception_when_cannot_find_order(
