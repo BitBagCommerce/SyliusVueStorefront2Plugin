@@ -197,16 +197,6 @@ final class GraphqlApiPlatformContext implements Context
     }
 
     /**
-     * @Then This response body should contains:
-     */
-    public function thisResponseBodyShouldContain(TableNode $table): void
-    {
-        foreach ($table as $row) {
-            $this->thatResponseShouldContainKeyWithValue($row['key'], $row['value'], $row['type']);
-        }
-    }
-
-    /**
      * @Then This response should not contain :key
      *
      * @throws Exception
