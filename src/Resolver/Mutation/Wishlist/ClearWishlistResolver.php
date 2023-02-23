@@ -14,6 +14,7 @@ use ApiPlatform\GraphQl\Resolver\MutationResolverInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Webmozart\Assert\Assert;
 
 final class ClearWishlistResolver implements MutationResolverInterface
 {
@@ -28,7 +29,7 @@ final class ClearWishlistResolver implements MutationResolverInterface
 
     public function __invoke($item, array $context): WishlistInterface
     {
-        /** @var WishlistInterface $item */
+        Assert::isInstanceOf($item, WishlistInterface::class);
         $item->clear();
 
         /** @var array $input */

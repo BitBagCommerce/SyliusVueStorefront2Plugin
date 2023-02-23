@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context;
 
+use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Exception;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,10 +21,16 @@ final class GraphqlApiPlatformContext implements Context
 
     private SharedStorageInterface $sharedStorage;
 
-    public function __construct(GraphqlClientInterface $client, SharedStorageInterface $sharedStorage)
-    {
+    private IriConverterInterface $iriConverter;
+
+    public function __construct(
+        GraphqlClientInterface $client,
+        SharedStorageInterface $sharedStorage,
+        IriConverterInterface $iriConverter,
+    ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
+        $this->iriConverter = $iriConverter;
     }
 
     /**
@@ -67,6 +75,14 @@ final class GraphqlApiPlatformContext implements Context
     }
 
     /**
+     * @Then I should receive access denied
+     */
+    public function iShouldReceiveAnAccessDenied(): void
+    {
+        Assert::same($this->client->getValueAtKey('extensions.message'), 'Access Denied.');
+    }
+
+    /**
      * @param mixed $value
      *
      * @When I set :key field to :value
@@ -102,11 +118,25 @@ final class GraphqlApiPlatformContext implements Context
     }
 
     /**
+     * @Given this operation has :key variable with iri value of object :name
+     */
+    public function iSetKeyFieldToIriObject(string $key, string $name): void
+    {
+        $operation = $this->client->getLastOperationRequest();
+        Assert::isInstanceOf($operation, OperationRequestInterface::class);
+        $object = $this->sharedStorage->get($name);
+        Assert::notNull($object);
+        $iri = $this->iriConverter->getIriFromItem($object);
+        $operation->addVariable($key, $iri);
+    }
+
+    /**
      * @Then I set :sharedStorageKey object :propertyName property to :value
+     * @Then I set :sharedStorageKey object :propertyName property to :value as :type
      *
      * @param mixed $value
      */
-    public function iSetObjectPropertyToValue(string $sharedStorageKey, string $propertyName, $value): void
+    public function iSetObjectPropertyToValue(string $sharedStorageKey, string $propertyName, $value, string $type = null): void
     {
         try {
             $storageValue = (array) $this->sharedStorage->get($sharedStorageKey);
@@ -114,7 +144,7 @@ final class GraphqlApiPlatformContext implements Context
             $storageValue = [];
         }
         /** @psalm-suppress MixedAssignment */
-        $storageValue[$propertyName] = $value;
+        $storageValue[$propertyName] = $this->castToType($value, $type);
         $this->sharedStorage->set($sharedStorageKey, $storageValue);
     }
 

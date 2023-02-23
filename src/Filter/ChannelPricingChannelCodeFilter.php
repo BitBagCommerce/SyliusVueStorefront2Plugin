@@ -43,7 +43,9 @@ final class ChannelPricingChannelCodeFilter extends AbstractContextAwareFilter
         $parameterName = $queryNameGenerator->generateParameterName($property);
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->andWhere(sprintf('%s.%s LIKE :%s', $rootAlias, $property, $parameterName));
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->like(sprintf('%s.%s', $rootAlias, $property), sprintf(':%s', $parameterName)),
+        );
         $queryBuilder->setParameter($parameterName, $value);
     }
 

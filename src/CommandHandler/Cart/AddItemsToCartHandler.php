@@ -52,7 +52,11 @@ final class AddItemsToCartHandler
         $cart = $this->orderRepository->findCartByTokenValue($command->getOrderTokenValue());
         Assert::notNull($cart);
 
+        /** @var array $item */
         foreach ($command->getCartItems() as $item) {
+            Assert::keyExists($item, 'productVariant');
+            Assert::keyExists($item, 'quantity');
+
             /** @var ProductVariantInterface|null $productVariant */
             $productVariant = $this->iriConverter->getItemFromIri($item['productVariant']);
             $quantity = $item['quantity'];

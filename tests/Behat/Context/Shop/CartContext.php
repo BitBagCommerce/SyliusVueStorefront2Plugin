@@ -12,12 +12,19 @@ namespace Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context\Shop;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Model\AddressInterface;
+use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Core\Repository\CustomerRepositoryInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
+use Sylius\Component\Core\Repository\ProductVariantRepositoryInterface;
+use Sylius\Component\Resource\Factory\FactoryInterface;
 use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClient;
 use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClientInterface;
+use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Model\OperationRequestInterface;
 use Webmozart\Assert\Assert;
+use Webmozart\Assert\InvalidArgumentException;
 
 final class CartContext implements Context
 {
@@ -25,19 +32,31 @@ final class CartContext implements Context
 
     private SharedStorageInterface $sharedStorage;
 
+    private FactoryInterface $orderFactory;
+
     private OrderRepositoryInterface $orderRepository;
+
+    private CustomerRepositoryInterface $customerRepository;
+
+    private ProductVariantRepositoryInterface $productVariantRepository;
 
     private IriConverterInterface $iriConverter;
 
     public function __construct(
         GraphqlClientInterface $client,
         SharedStorageInterface $sharedStorage,
+        FactoryInterface $orderFactory,
         OrderRepositoryInterface $orderRepository,
+        ProductVariantRepositoryInterface $productVariantRepository,
+        CustomerRepositoryInterface $customerRepository,
         IriConverterInterface $iriConverter,
     ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
+        $this->orderFactory = $orderFactory;
         $this->orderRepository = $orderRepository;
+        $this->productVariantRepository = $productVariantRepository;
+        $this->customerRepository = $customerRepository;
         $this->iriConverter = $iriConverter;
     }
 
@@ -262,5 +281,103 @@ final class CartContext implements Context
         $shippingTotal = (int) $this->client->getValueAtKey('order.shippingTotal');
 
         Assert::same($price, ($orderTotal - $shippingTotal));
+    }
+
+    /**
+     * @Given There is operation to add products to cart
+     */
+    public function thereIsOperationAddProductsToCart(): void
+    {
+        $expectedData = '
+        order {
+            items {
+                edges{
+                    node{
+                        variantName
+                        id
+                        _id
+                        productName
+                        quantity
+                    }
+                }
+            }
+            total
+            shippingTotal
+        }';
+
+        $operation = $this->client->prepareOperation('shop_add_itemsOrder', $expectedData);
+        $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
+    }
+
+    /**
+     * @Given this operation has orderTokenValue
+     * @Given this operation has orderTokenValue for customer identified by an email :email
+     */
+    public function thisOperationHasOrderTokenValue(string $email = null): void
+    {
+        $operation = $this->client->getLastOperationRequest();
+        Assert::isInstanceOf($operation, OperationRequestInterface::class);
+
+        /** @var OrderInterface $order */
+        $order = $this->orderFactory->createNew();
+
+        $order->setTokenValue('token123');
+        $order->setChannel($this->sharedStorage->get('channel'));
+        $order->setLocaleCode($this->sharedStorage->get('locale')->getCode());
+        $order->setCurrencyCode($order->getChannel()->getBaseCurrency()->getCode());
+
+        if (null !== $email) {
+            $customer = $this->customerRepository->findOneBy(['email' => $email]);
+            Assert::notNull($customer);
+            $order->setCustomer($customer);
+        }
+
+        $this->orderRepository->add($order);
+        $operation->addVariable('orderTokenValue', $order->getTokenValue());
+    }
+
+    /**
+     * @Given this operation has cartItems:
+     */
+    public function thisOperationHasCartItems(TableNode $table): void
+    {
+        $operation = $this->client->getLastOperationRequest();
+        Assert::isInstanceOf($operation, OperationRequestInterface::class);
+
+        $cartItems = [];
+        foreach ($table as $row) {
+            $productVariant = $this->productVariantRepository->findOneBy(['code' => $row['productVariant']]);
+            Assert::notNull($productVariant);
+
+            $cartItems[] = [
+                'productVariant' => $this->iriConverter->getIriFromItem($productVariant),
+                'quantity' => (int) $row['quantity'],
+            ];
+        }
+
+        $operation->addVariable('cartItems', $cartItems);
+    }
+
+    /**
+     * @Then This cart should contain product :name in an amount :quantity
+     */
+    public function thisCartShouldContainProductInAnAmount(string $name, int $quantity): void
+    {
+        $isContain = false;
+
+        $items = $this->client->getValueAtKey('order.items.edges');
+        foreach ($items as $item) {
+            try {
+                Assert::same($item['node']['productName'], $name);
+                Assert::same($item['node']['quantity'], $quantity);
+
+                $isContain = true;
+
+                break;
+            } catch (InvalidArgumentException $exception) {
+            }
+        }
+
+        Assert::true($isContain);
     }
 }

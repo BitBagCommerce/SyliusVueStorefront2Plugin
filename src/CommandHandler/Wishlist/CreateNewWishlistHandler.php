@@ -15,7 +15,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
-use Sylius\Component\Core\Model\Channel;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -58,7 +58,7 @@ final class CreateNewWishlistHandler implements MessageHandlerInterface
         Assert::isInstanceOf($user, ShopUserInterface::class);
 
         $channel = $this->channelRepository->findOneByCode($command->getChannelCode());
-        Assert::isInstanceOf($channel, Channel::class);
+        Assert::isInstanceOf($channel, ChannelInterface::class);
 
         $wishlist = $this->wishlistFactory->createForUserAndChannel($user, $channel);
         $wishlist->setName($command->getName());
