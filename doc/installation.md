@@ -60,7 +60,7 @@
         refresh_token_lifespan: 2592000 #that its default value
         test_endpoint: 'http://127.0.0.1:8080/api/v2/graphql' #that its default value
     ```
-7. Add doctrine mapping:
+7. Add doctrine mapping to your 'config/packages/doctrine.yaml' file:
 
     ```yml
     doctrine:
