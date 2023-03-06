@@ -18,7 +18,7 @@
     ```
    
 3. Enable API
-    In `config/services.yaml`
+    In `config/packages/_sylius.yaml`
     ```yaml
         sylius_api:
             enabled: true
