@@ -16,7 +16,7 @@
             BitBag\SyliusVueStorefront2Plugin\BitBagSyliusVueStorefront2Plugin::class => ['all' => true],
         ];
     ```
-   ![Step2](/doc/Images/Step2.png)
+   ![Step2](/doc/images/Step2.png)
 3. Enable API
     In `config/packages/_sylius.yaml`
     ```yaml
