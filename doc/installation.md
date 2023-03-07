@@ -129,7 +129,7 @@ If you are using adnotations:
  */
  ```
 
-11. Import routing in routes.yaml
+11. Import routing in `config/routes.yaml`
 
 ```yml
 bitbag_sylius_vue_storefront2_plugin:
