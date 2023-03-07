@@ -123,9 +123,9 @@ If you are using xml mapping:
 If you are using adnotations:
 
 ```
-**
+/**
  * @ORM\Entity
- * @ORM\Table(name="sylius_product_attribute_value")
+ * @ORM\Table(name="sylius_product_attribute_value",indexes={@Index(name="locale_code", columns={"locale_code"})})
  */
 
 11. Import routing in routes.yaml
