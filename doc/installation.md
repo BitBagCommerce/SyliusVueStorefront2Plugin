@@ -120,7 +120,7 @@ If you are using xml mapping:
 
 **Please change the `name` attribute to fit your entity name. If you've already the `ProductAttributeValue` mapping in your project, just add there the `<index>` part of mapping above.**
 
-If you are using adnotations:
+If you are using annotations:
 
 ```
 /**
@@ -136,3 +136,10 @@ bitbag_sylius_vue_storefront2_plugin:
     resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/routing.yml"
    
 ```
+12. After all steps, run this commends in your project directory:
+
+```
+yarn install
+yarn build
+```
+
