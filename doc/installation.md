@@ -84,7 +84,7 @@
                 repository: BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\TaxonRepository
     ```
     
-9. If you're extending Sylius' `ProductAttributeValue` entity, please use our trait inside: `BitBag\SyliusVueStorefront2Plugin\Model\ProductAttributeValueTrait`. Otherwise, please create an entity, which uses the trait and setup the Sylius resource in _sylius.yaml:
+9. If you're already extending Sylius' `ProductAttributeValue` entity, please use our trait - `BitBag\SyliusVueStorefront2Plugin\Model\ProductAttributeValueTrait`, inside your own `ProductAttributeValue` entity. If you're not extending `ProductAttributeValue`, please create an entity, which uses the trait and setup the Sylius resource in _sylius.yaml:
 
 ```yml
     sylius_attribute:
@@ -99,6 +99,8 @@
 
 10. Please add the Doctrine mapping configuration into your project:
 
+If you are using xml mapping:
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -108,7 +110,7 @@
     xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                             http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
 >
-    <entity name="Tests\BitBag\SyliusVueStorefront2Plugin\Entity\ProductAttributeValue" table="sylius_product_attribute_value">
+    <entity name="App\Entity\ProductAttributeValue" table="sylius_product_attribute_value">
         <indexes>
             <index name="locale_code" columns="locale_code" />
         </indexes>
@@ -116,11 +118,20 @@
 </doctrine-mapping>
 ```
 
-Please change the `name` attribute to fit your entity name. If you've already the `ProductAttributeValue` mapping in your project, just add there the `<index>` part of mapping above.
+**Please change the `name` attribute to fit your entity name. If you've already the `ProductAttributeValue` mapping in your project, just add there the `<index>` part of mapping above.**
+
+If you are using adnotations:
+
+```
+**
+ * @ORM\Entity
+ * @ORM\Table(name="sylius_product_attribute_value")
+ */
 
 11. Import routing in routes.yaml
 
 ```yml
 bitbag_sylius_vue_storefront2_plugin:
     resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/routing.yml"
+   
 ```
