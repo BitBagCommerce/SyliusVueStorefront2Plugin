@@ -134,9 +134,15 @@ If you are using annotations:
 ```yml
 bitbag_sylius_vue_storefront2_plugin:
     resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/routing.yml"
-   
 ```
-12. After all steps, run this commends in your project directory:
+    
+12. Add redirection to your `.env` file:
+
+```
+VSF2_HOST= #your VueStoreFront url address
+```
+   
+13. After all steps, run this commends in your project directory:
 
 ```
 yarn install
