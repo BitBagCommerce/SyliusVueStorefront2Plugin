@@ -160,7 +160,7 @@ VSF2_HOST= #your VueStoreFront url address
 ```bash
 yarn install
 yarn build
-bin/console doctrine:schema:update --force
+bin/console doctrine:schema:update
 bin/console sylius:fixtures:load -n
 ```
 
