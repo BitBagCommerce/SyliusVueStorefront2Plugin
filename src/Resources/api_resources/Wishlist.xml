@@ -18,6 +18,10 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 <attribute name="pagination_type">page</attribute>
             </operation>
 
+            <operation name="item_query" >
+                <attribute name="security">is_granted("BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_VIEW", object)</attribute>
+            </operation>
+
             <operation name="create">
                 <attribute name="method">POST</attribute>
                 <attribute name="messenger">input</attribute>
