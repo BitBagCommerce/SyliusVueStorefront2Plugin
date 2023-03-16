@@ -25,7 +25,7 @@ security:
 
     encoders:
         Sylius\Component\User\Model\UserInterface: argon2i
-            
+
     firewalls:
         admin:
             switch_user: true
