@@ -4,6 +4,7 @@ imports:
     - { resource: "@SyliusShopBundle/Resources/config/app/config.yml" }
     - { resource: "@SyliusApiBundle/Resources/config/app/config.yaml" }
     - { resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/config.yml" }
+    - { resource: "fixtures/shop_configuration.yaml"}
 
 parameters:
     sylius_core.public_dir: '%kernel.project_dir%/public'
