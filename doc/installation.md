@@ -145,9 +145,26 @@ bitbag_sylius_vue_storefront2_plugin:
     resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/routing.yml"
 ```
 
+12. Add the new firewall to your `config/packages/security.yaml` file:
+
+```yml
+security:
+    firewalls:
+        // ...
+        
+        graphql_shop_user:
+            pattern: "%sylius.security.new_api_route%/graphql"
+            provider: sylius_api_shop_user_provider
+            stateless: true
+            anonymous: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+```
+
 ![Step11](/doc/images/Step11.png)
     
-12. Add redirection to your `.env` file:
+13. Add redirection to your `.env` file:
 
 ```env
 VSF2_HOST= #your VueStoreFront url address
@@ -155,7 +172,7 @@ VSF2_HOST= #your VueStoreFront url address
 
 ![Step12](/doc/images/Step12.png)
      
-13. After all steps, run this commends in your project directory:
+14. After all steps, run this commends in your project directory:
 
 ```bash
 yarn install
