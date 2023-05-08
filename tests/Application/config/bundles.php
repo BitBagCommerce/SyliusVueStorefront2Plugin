@@ -60,4 +60,7 @@ return [
     BitBag\SyliusVueStorefront2Plugin\BitBagSyliusVueStorefront2Plugin::class => ['all' => true],
     Gesdinet\JWTRefreshTokenBundle\GesdinetJWTRefreshTokenBundle::class => ['all' => true],
     Sylius\Calendar\SyliusCalendarBundle::class => ['all' => true],
+    BitBag\SyliusWishlistPlugin\BitBagSyliusWishlistPlugin::class => ['all' => true],
+    Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle::class => ['test' => true],
+    Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle::class => ['test' => true],
 ];

@@ -15,6 +15,7 @@
 
         <server name="KERNEL_CLASS_PATH" value="/tests/Application/AppKernel.php" />
         <server name="IS_DOCTRINE_ORM_SUPPORTED" value="true" />
+        <server name="KERNEL_CLASS" value="Tests\BitBag\SyliusVueStorefront2Plugin\Application\Kernel"/>
 
         <env name="APP_ENV" value="test" />
         <env name="SHELL_VERBOSITY" value="-1" />

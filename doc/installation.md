@@ -14,6 +14,7 @@
          ...
         
             BitBag\SyliusVueStorefront2Plugin\BitBagSyliusVueStorefront2Plugin::class => ['all' => true],
+            BitBag\SyliusWishlistPlugin\BitBagSyliusWishlistPlugin::class => ['all' => true],
         ];
     ```
 ![Step](/doc/images/Step2.png)
@@ -145,7 +146,18 @@ bitbag_sylius_vue_storefront2_plugin:
     resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/routing.yml"
 ```
 
-12. Add the new firewall to your `config/packages/security.yaml` file:
+12. Add plugin validation files path to your `config/packages/validator.yaml` file:
+
+```yaml
+    framework:    
+        serializer:
+            mapping:
+                paths:
+                    ...
+                    - '%kernel.project_dir%/vendor/bitbag/vue-storefront2-plugin/src/Resources/validation'
+```
+
+13. Add the new firewall to your `config/packages/security.yaml` file:
 
 ```yml
 security:
@@ -164,7 +176,7 @@ security:
 
 ![Step11](/doc/images/Step11.png)
     
-13. Add redirection to your `.env` file:
+4Add redirection to your `.env` file:
 
 ```env
 VSF2_HOST= #your VueStoreFront url address
@@ -180,4 +192,3 @@ yarn build
 bin/console doctrine:schema:update
 bin/console sylius:fixtures:load -n
 ```
-
