@@ -27,6 +27,7 @@ Feature: Creating base customer account
         And This response should contain 'shopUserToken.user.username' equal to "adam.monroe@mail.com"
         And This response should contain 'shopUserToken.token'
         And This response should contain 'shopUserToken.refreshToken'
+        And The user "adam.monroe@mail.com" has default wishlist "My Wishlist"
 
     @graphql
     Scenario: Creating account and doesnt log in when channel denies unverified users login
