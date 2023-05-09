@@ -25,6 +25,8 @@
                  class="Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context\Shop\LoginContext">
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.behat.client.graphql_client" />
             <argument type="service" id="sylius.behat.shared_storage" />
+            <argument type="service" id="sylius.repository.shop_user" />
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.repository.wishlist" />
         </service>
 
         <service id="bitbag.sylius_vue_storefront2_plugin.context.registration"
