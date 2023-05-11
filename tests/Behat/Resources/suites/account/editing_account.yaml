@@ -12,4 +12,4 @@ default:
                 - sylius.behat.context.transform.shared_storage
                 - sylius.behat.context.transform.lexical
             filters:
-                tags: "@editing_account && @graphql"
+                tags: "@editing_account&&@graphql"

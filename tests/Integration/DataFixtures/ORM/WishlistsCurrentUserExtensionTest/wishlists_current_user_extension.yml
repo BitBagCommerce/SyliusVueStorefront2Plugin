@@ -1,0 +1,39 @@
+Sylius\Component\Addressing\Model\Country:
+    poland:
+        code: 'PL'
+Sylius\Component\Core\Model\Customer:
+    customer_bruce:
+        firstName: "Bruce"
+        lastName: "Wayne"
+        email: "bruce.wayne@example.com"
+        emailCanonical: "bruce.wayne@example.com"
+    customer_peter:
+        firstName: "Peter"
+        lastName: "Weyland"
+        email: "peter.weyland@example.com"
+        emailCanonical: "peter.weyland@example.com"
+Sylius\Component\Core\Model\ShopUser:
+    user_bruce:
+        plainPassword: "123password"
+        roles: ["ROLE_USER", "ROLE_VENDOR"]
+        enabled: "true"
+        customer: '@customer_bruce'
+        username: "bruce.wayne@example.com"
+        usernameCanonical: "bruce.wayne@example.com"
+    user_peter:
+        plainPassword: "123password"
+        roles: ["ROLE_USER", "ROLE_VENDOR"]
+        enabled: "true"
+        customer: '@customer_peter'
+        username: "peter.weyland@example.com"
+        usernameCanonical: "peter.weyland@example.com"
+BitBag\SyliusWishlistPlugin\Entity\Wishlist:
+    wishlist_bruce_1:
+        name: 'Wishlist 1'
+        shopUser: '@user_bruce'
+    wishlist_bruce_2:
+        name: 'Wishlist 2'
+        shopUser: '@user_bruce'
+    wishlist_peter_1:
+        name: 'Wishlist 1'
+        shopUser: '@user_peter'

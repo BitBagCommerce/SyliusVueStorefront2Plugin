@@ -45,6 +45,23 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 </attribute>
             </operation>
 
+            <operation name="shop_add_items">
+                <attribute name="method">PATCH</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Cart\AddItemsToCart</attribute>
+                <attribute name="args">
+                    <attribute name="orderTokenValue">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="cartItems">
+                        <attribute name="type">Iterable!</attribute>
+                    </attribute>
+                </attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:cart:add_items</attribute>
+                </attribute>
+            </operation>
+
             <operation name="shop_remove_item">
                 <attribute name="method">DELETE</attribute>
                 <attribute name="messenger">input</attribute>

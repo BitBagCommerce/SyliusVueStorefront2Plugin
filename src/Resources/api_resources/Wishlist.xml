@@ -1,0 +1,138 @@
+<?xml version="1.0" ?>
+
+<!--
+This file was created by developers working at BitBag
+Do you need more information about us and what we do? Visit our https://bitbag.io website!
+We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+-->
+
+<resources xmlns="https://api-platform.com/schema/metadata"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
+>
+<resource class="%bitbag_sylius_wishlist_plugin.model.wishlist.class%" shortName="Wishlist">
+        <attribute name="security">is_granted("ROLE_USER")</attribute>
+
+        <graphql>
+            <operation name="collection_query">
+                <attribute name="pagination_type">page</attribute>
+            </operation>
+
+            <operation name="item_query" >
+                <attribute name="security">is_granted("BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_VIEW", object)</attribute>
+            </operation>
+
+            <operation name="create">
+                <attribute name="method">POST</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:create</attribute>
+                </attribute>
+                <attribute name="validation_groups">
+                    <attribute>sylius</attribute>
+                    <attribute>WishlistCreateNew</attribute>
+                </attribute>
+            </operation>
+
+            <operation name="update">
+                <attribute name="security">is_granted("BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_UPDATE", object)</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:update</attribute>
+                </attribute>
+                <attribute name="validation_groups">
+                    <attribute>sylius</attribute>
+                    <attribute>WishlistUpdate</attribute>
+                </attribute>
+            </operation>
+
+            <operation name="clear">
+                <attribute name="method">DELETE</attribute>
+                <attribute name="mutation">bitbag.sylius_vue_storefront2plugin.resolver.mutation.wishlist.clear_wishlist_resolver</attribute>
+                <attribute name="security">is_granted("BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_CLEAR", object)</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:clear</attribute>
+                </attribute>
+            </operation>
+
+            <operation name="delete">
+                <attribute name="security">is_granted("BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_DELETE", object)</attribute>
+            </operation>
+
+            <operation name="add_item">
+                <attribute name="method">PATCH</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\AddItemToWishlist</attribute>
+                <attribute name="security">is_granted("BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_ADD_ITEM", object)</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:add_item</attribute>
+                </attribute>
+                <attribute name="args">
+                    <attribute name="id">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="productVariant">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+
+            <operation name="remove_item">
+                <attribute name="method">DELETE</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\RemoveItemFromWishlist</attribute>
+                <attribute name="security">is_granted("BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_REMOVE_ITEM", object)</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:remove_item</attribute>
+                </attribute>
+                <attribute name="args">
+                    <attribute name="id">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                    <attribute name="productVariant">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+        </graphql>
+
+        <attribute name="validation_groups">sylius</attribute>
+
+        <collectionOperations>
+            <collectionOperation name="shop_get_wishlists">
+                <attribute name="method">GET</attribute>
+                <attribute name="path">/shop/wishlists</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:wishlist:read</attribute>
+                </attribute>
+            </collectionOperation>
+
+            <collectionOperation name="shop_create_wishlist">
+                <attribute name="method">POST</attribute>
+                <attribute name="path">/shop/wishlists</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">BitBag\SyliusVueStorefront2Plugin\Command\Wishlist\CreateNewWishlist</attribute>
+                <attribute name="denormalization_context">
+                    <attribute name="groups">shop:wishlist:create</attribute>
+                </attribute>
+                <attribute name="openapi_context">
+                    <attribute name="summary">Creates wishlist resource</attribute>
+                </attribute>
+            </collectionOperation>
+        </collectionOperations>
+
+        <itemOperations>
+            <itemOperation name="shop_get">
+                <attribute name="method">GET</attribute>
+                <attribute name="path">/shop/wishlist/{id}</attribute>
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:wishlist:read</attribute>
+                </attribute>
+                <attribute name="security">is_granted("BITBAG_SYLIUS_VUE_STOREFRONT2_PLUGIN_WISHLIST_VIEW", object)</attribute>
+            </itemOperation>
+        </itemOperations>
+
+        <property name="id" identifier="true" writable="false"/>
+        <property name="token" required="false" writable="false"/>
+    </resource>
+</resources>

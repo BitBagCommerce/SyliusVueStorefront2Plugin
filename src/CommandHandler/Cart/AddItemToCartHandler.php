@@ -12,13 +12,12 @@ namespace BitBag\SyliusVueStorefront2Plugin\CommandHandler\Cart;
 
 use ApiPlatform\Core\Api\IriConverterInterface;
 use BitBag\SyliusVueStorefront2Plugin\Command\Cart\AddItemToCart;
+use BitBag\SyliusVueStorefront2Plugin\CommandHandler\Trait\AddProductVariantToCartTrait;
 use Sylius\Component\Core\Factory\CartItemFactoryInterface;
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Core\Model\OrderItemInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Inventory\Checker\AvailabilityCheckerInterface;
-use Sylius\Component\Order\Model\OrderInterface as ModelOrderInterface;
 use Sylius\Component\Order\Modifier\OrderItemQuantityModifierInterface;
 use Sylius\Component\Order\Modifier\OrderModifierInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
@@ -27,15 +26,9 @@ use Webmozart\Assert\Assert;
 /** @experimental */
 final class AddItemToCartHandler implements MessageHandlerInterface
 {
+    use AddProductVariantToCartTrait;
+
     private OrderRepositoryInterface $orderRepository;
-
-    private OrderModifierInterface $orderModifier;
-
-    private CartItemFactoryInterface $cartItemFactory;
-
-    private OrderItemQuantityModifierInterface $orderItemQuantityModifier;
-
-    private AvailabilityCheckerInterface $availabilityChecker;
 
     private IriConverterInterface $iriConverter;
 
@@ -65,34 +58,10 @@ final class AddItemToCartHandler implements MessageHandlerInterface
 
         /** @var OrderInterface|null $cart */
         $cart = $this->orderRepository->findCartByTokenValue($addItemToCart->orderTokenValue);
-
         Assert::notNull($cart);
 
-        /** @var OrderItemInterface $cartItem */
-        $cartItem = $this->cartItemFactory->createNew();
-        $cartItem->setVariant($productVariant);
-
-        $isStockSufficient = $this->availabilityChecker->isStockSufficient(
-            $productVariant,
-            $addItemToCart->quantity + $this->getExistingCartItemQuantityFromCart($cart, $cartItem),
-        );
-
-        Assert::true($isStockSufficient, 'There are no that many items on stock.');
-
-        $this->orderItemQuantityModifier->modify($cartItem, $addItemToCart->quantity);
-        $this->orderModifier->addToOrder($cart, $cartItem);
+        $this->addProductVariantToCart($productVariant, $addItemToCart->quantity, $cart);
 
         return $cart;
-    }
-
-    private function getExistingCartItemQuantityFromCart(ModelOrderInterface $cart, OrderItemInterface $cartItem): int
-    {
-        foreach ($cart->getItems() as $existingCartItem) {
-            if ($existingCartItem->equals($cartItem)) {
-                return $existingCartItem->getQuantity();
-            }
-        }
-
-        return 0;
     }
 }
