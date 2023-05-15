@@ -31,8 +31,6 @@ final class ShippingAddressOrderHandler implements MessageHandlerInterface
 
     private ObjectManager $manager;
 
-    private CustomerProviderInterface $customerProvider;
-
     private OrderAddressStateResolverInterface $addressStateResolver;
 
     private EventDispatcherInterface $eventDispatcher;
@@ -40,13 +38,11 @@ final class ShippingAddressOrderHandler implements MessageHandlerInterface
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         ObjectManager $manager,
-        CustomerProviderInterface $customerProvider,
         OrderAddressStateResolverInterface $addressStateResolver,
         EventDispatcherInterface $eventDispatcher,
     ) {
         $this->orderRepository = $orderRepository;
         $this->manager = $manager;
-        $this->customerProvider = $customerProvider;
         $this->addressStateResolver = $addressStateResolver;
         $this->eventDispatcher = $eventDispatcher;
     }

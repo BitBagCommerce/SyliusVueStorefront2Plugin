@@ -9,7 +9,7 @@ sylius_shop_password_reset:
     path: /reset-password
     methods: [GET, POST]
     defaults:
-        _controller: sylius.controller.shop_user:resetPasswordAction
+        _controller: sylius.controller.shop_user::resetPasswordAction
         _sylius:
             template: "@SyliusShop/Account/resetPassword.html.twig"
             redirect: sylius_shop_login
@@ -18,19 +18,19 @@ sylius_shop_user_verification:
     path: /verify/{token}
     methods: [GET]
     defaults:
-        _controller: sylius.controller.shop_user:verifyAction
+        _controller: sylius.controller.shop_user::verifyAction
         _sylius:
             redirect: bitbag_sylius_vue_storefront2_shop_user_post_verify
             
 bitbag_sylius_vue_storefront2_shop_user_post_verify:
     path: /post-verify-action
     methods: [GET]
-    controller: bitbag.sylius_vue_storefront2_plugin.controller.shop_user_post_verify:postVerifyAction
+    controller: bitbag.sylius_vue_storefront2_plugin.controller.shop_user_post_verify::postVerifyAction
             
 bitbag_sylius_vue_storefront2_thank_you_page:
     path: /thank-you-redirect/{orderNumber}
     methods: [GET]
-    controller: bitbag.sylius_vue_storefront2_plugin.controller.thank_you_page:redirectAction
+    controller: bitbag.sylius_vue_storefront2_plugin.controller.thank_you_page::redirectAction
 
 bitbag_sylius_vue_storefront2_shop_product_show:
     path: /p/{id}/{slug}
