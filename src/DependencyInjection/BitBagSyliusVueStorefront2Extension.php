@@ -36,7 +36,7 @@ final class BitBagSyliusVueStorefront2Extension extends Extension
     }
 
     /** @return string */
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'bitbag_sylius_vue_storefront2';
     }
