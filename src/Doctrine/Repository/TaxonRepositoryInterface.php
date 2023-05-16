@@ -11,10 +11,9 @@ declare(strict_types=1);
 namespace BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository;
 
 use Doctrine\ORM\QueryBuilder;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\Component\Taxonomy\Model\TaxonInterface;
 
-interface TaxonRepositoryInterface extends RepositoryInterface
+interface TaxonRepositoryInterface
 {
     public function createChildrenByChannelMenuTaxonQueryBuilder(
         ?TaxonInterface $menuTaxon = null,
