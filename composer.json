@@ -15,7 +15,7 @@
         "ext-json": "*",
         "ext-openssl": "*",
         "bitbag/wishlist-plugin": "^3.0",
-        "gesdinet/jwt-refresh-token-bundle": "dev-master",
+        "gesdinet/jwt-refresh-token-bundle": "^0.12.0",
         "sylius/sylius": "~1.11.0 || ~1.12.0",
         "webonyx/graphql-php": "^14.9"
     },
