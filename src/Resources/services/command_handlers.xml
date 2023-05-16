@@ -66,6 +66,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <service id="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Checkout\ShippingAddressOrderHandler" >
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.manager.order" />
+            <argument type="service" id="Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.resolver.order_address_state_resolver" />
             <argument type="service" id="event_dispatcher" />
             <tag name="messenger.message_handler" bus="sylius.command_bus" />
@@ -75,6 +76,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <service id="BitBag\SyliusVueStorefront2Plugin\CommandHandler\Checkout\BillingAddressOrderHandler" >
             <argument type="service" id="sylius.repository.order" />
             <argument type="service" id="sylius.manager.order" />
+            <argument type="service" id="Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.resolver.order_address_state_resolver" />
             <argument type="service" id="Sylius\Bundle\ApiBundle\Context\UserContextInterface" />
             <argument type="service" id="event_dispatcher" />

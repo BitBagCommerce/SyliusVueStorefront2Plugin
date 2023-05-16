@@ -34,6 +34,7 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
 
     private ObjectManager $manager;
 
+    private CustomerProviderInterface $customerProvider;
     private OrderAddressStateResolverInterface $addressStateResolver;
 
     private UserContextInterface $userContext;
@@ -43,12 +44,14 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         ObjectManager $manager,
+        CustomerProviderInterface $customerProvider,
         OrderAddressStateResolverInterface $addressStateResolver,
         UserContextInterface $userContext,
         EventDispatcherInterface $eventDispatcher,
     ) {
         $this->orderRepository = $orderRepository;
         $this->manager = $manager;
+        $this->customerProvider = $customerProvider;
         $this->addressStateResolver = $addressStateResolver;
         $this->userContext = $userContext;
         $this->eventDispatcher = $eventDispatcher;
