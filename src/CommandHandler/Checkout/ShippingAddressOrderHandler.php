@@ -13,7 +13,7 @@ namespace BitBag\SyliusVueStorefront2Plugin\CommandHandler\Checkout;
 use BitBag\SyliusVueStorefront2Plugin\Command\Checkout\ShippingAddressOrder;
 use BitBag\SyliusVueStorefront2Plugin\Resolver\OrderAddressStateResolverInterface;
 use Doctrine\Persistence\ObjectManager;
-use Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface;
+use BitBag\SyliusVueStorefront2Plugin\Provider\CustomerProviderInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
