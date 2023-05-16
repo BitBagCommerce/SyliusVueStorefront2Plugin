@@ -94,8 +94,16 @@ security:
         invalidate_session: false
 
     dev:
-      pattern: ^/(_(profiler|wdt)|css|images|js)/
-      security: false
+        pattern: ^/(_(profiler|wdt)|css|images|js)/
+        security: false
+    
+    graphql_shop_user:
+        pattern: "%sylius.security.new_api_route%/graphql"
+        provider: sylius_api_shop_user_provider
+        stateless: true
+        guard:
+            authenticators:
+                - lexik_jwt_authentication.jwt_token_authenticator
 
     image_resolver:
       pattern: ^/media/cache/resolve
