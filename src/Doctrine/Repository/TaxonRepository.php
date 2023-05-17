@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository;
 
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\ResourceRepositoryTrait;
@@ -22,7 +23,8 @@ final class TaxonRepository extends NestedTreeRepository implements TaxonReposit
 
     public function __construct(private BaseTaxonRepositoryInterface $decoratedRepository)
     {
-        parent::__construct($this->decoratedRepository->_em, $decoratedRepository->_class);
+        assert($decoratedRepository instanceof EntityRepository);
+        parent::__construct($decoratedRepository->getEntityManager(), $decoratedRepository->getClassMetadata());
     }
 
     public function createChildrenByChannelMenuTaxonQueryBuilder(
@@ -73,6 +75,6 @@ final class TaxonRepository extends NestedTreeRepository implements TaxonReposit
 
     public function createListQueryBuilder(): QueryBuilder
     {
-        return $this->decoratedRepository->createQueryBuilder('o');
+        return $this->decoratedRepository->createListQueryBuilder();
     }
 }

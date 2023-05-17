@@ -33,7 +33,7 @@ final class TaxonNormalizer implements NormalizerInterface
             'slug' => $translation->getSlug(),
             'description' => $translation->getDescription(),
             'parent' => is_object($object->getParent())
-                ? ['id' => $object->getParent()?->getId()]
+                ? ['id' => $object->getParent()->getId()]
                 : null,
             'enabled' => $object->isEnabled(),
             'level' => $object->getLevel(),
