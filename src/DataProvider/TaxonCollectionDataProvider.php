@@ -66,7 +66,7 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
         $channelMenuTaxon = $channelContext->getMenuTaxon();
 
         $user = $this->userContext->getUser();
-        if ($this->isUserAllowedToGetAllTaxa($user)) {
+        if ($this->hasAccessToAllTaxa($user)) {
             return $this->taxonRepository->findAll();
         }
 
@@ -95,7 +95,7 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
         );
     }
 
-    private function isUserAllowedToGetAllTaxa(?UserInterface $user): bool
+    private function hasAccessToAllTaxa(?UserInterface $user): bool
     {
         /** @psalm-suppress DeprecatedClass */
         return $user !== null && in_array('ROLE_API_ACCESS', $user->getRoles(), true);
