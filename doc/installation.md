@@ -150,7 +150,7 @@ bitbag_sylius_vue_storefront2_plugin:
 
 ```yaml
     framework:    
-        serializer:
+        validation:
             mapping:
                 paths:
                     ...
