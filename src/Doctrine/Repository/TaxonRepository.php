@@ -16,7 +16,7 @@ use Sylius\Bundle\ResourceBundle\Doctrine\ORM\ResourceRepositoryTrait;
 use Sylius\Component\Taxonomy\Model\TaxonInterface;
 use Sylius\Component\Taxonomy\Repository\TaxonRepositoryInterface as BaseTaxonRepositoryInterface;
 
-final class TaxonRepository extends NestedTreeRepository implements TaxonRepositoryInterface, BaseTaxonRepositoryInterface
+final class TaxonRepository extends NestedTreeRepository implements TaxonRepositoryInterface
 {
     use ResourceRepositoryTrait;
 
