@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\Serializer;
 
+use Sylius\Bundle\ApiBundle\Serializer\ContextKeys;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
@@ -20,13 +21,17 @@ final class TaxonNormalizer implements NormalizerInterface
     {
         Assert::isInstanceOf($object, TaxonInterface::class);
 
+        Assert::keyExists($context, ContextKeys::LOCALE_CODE);
+        $locale = $context[ContextKeys::LOCALE_CODE];
+        $translation = $object->getTranslation($locale);
+
         return [
             'id' => $object->getId(),
-            'name' => $object->getName(),
+            'name' => $translation->getName(),
             'code' => $object->getCode(),
             'position' => $object->getPosition(),
-            'slug' => $object->getSlug(),
-            'description' => $object->getDescription(),
+            'slug' => $translation->getSlug(),
+            'description' => $translation->getDescription(),
             'parent' => $object->getParent()
                 ? ['id' => $object->getParent()->getId()]
                 : null,
