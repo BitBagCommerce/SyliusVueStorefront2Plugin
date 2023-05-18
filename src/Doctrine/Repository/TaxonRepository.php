@@ -34,6 +34,8 @@ final class TaxonRepository extends NestedTreeRepository implements TaxonReposit
         $qb = $this->childrenQueryBuilder($menuTaxon, false, 'position', 'asc');
         $alias = $qb->getRootAliases()[0] ?? 'node';
 
+        $this->addTranslations($qb, $alias, $locale);
+
         return $qb->andWhere($alias . '.enabled = :enabled')
             ->setParameter('enabled', true);
     }
@@ -76,5 +78,22 @@ final class TaxonRepository extends NestedTreeRepository implements TaxonReposit
     public function createListQueryBuilder(): QueryBuilder
     {
         return $this->decoratedRepository->createListQueryBuilder();
+    }
+
+    private function addTranslations(QueryBuilder $queryBuilder, string $alias, ?string $locale): QueryBuilder
+    {
+        $queryBuilder
+            ->addSelect('translation')
+            ->leftJoin($alias . '.translations', 'translation')
+        ;
+
+        if (null !== $locale) {
+            $queryBuilder
+                ->andWhere('translation.locale = :locale')
+                ->setParameter('locale', $locale)
+            ;
+        }
+
+        return $queryBuilder;
     }
 }
