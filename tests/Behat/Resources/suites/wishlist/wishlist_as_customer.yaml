@@ -1,0 +1,17 @@
+default:
+    suites:
+        graphql_wishlist_as_customer:
+            contexts:
+                - sylius.behat.context.hook.doctrine_orm
+                - sylius.behat.context.setup.channel
+                - sylius.behat.context.setup.product
+                - sylius.behat.context.setup.customer
+                - sylius.behat.context.transform.lexical
+                - sylius.behat.context.transform.shared_storage
+
+                - bitbag.sylius_vue_storefront2_plugin.context.product
+                - bitbag.sylius_vue_storefront2_plugin.context.customer
+                - bitbag.sylius_vue_storefront2_plugin.context.graphql
+                - bitbag.sylius_vue_storefront2_plugin.context.wishlist
+            filters:
+                tags: "@wishlist_as_customer&&@graphql"
