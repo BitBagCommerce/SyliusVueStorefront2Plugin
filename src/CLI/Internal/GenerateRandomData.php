@@ -18,7 +18,11 @@ use Faker\Factory;
 use Faker\Generator;
 use Ramsey\Uuid\Uuid;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
+use Sylius\Component\Core\Model\Channel;
+use Sylius\Component\Core\Model\ChannelPricing;
 use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\ProductVariant;
+use Sylius\Component\Core\Model\Taxon;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Taxonomy\Model\TaxonTranslation;
@@ -138,6 +142,7 @@ final class GenerateRandomData extends Command
     private function askForChannelCode(): void
     {
         $channels = [];
+        /** @var Channel $channel */
         foreach ($this->channelRepository->findAll() as $channel) {
             $channels[$channel->getCode()] = $channel;
         }
@@ -149,7 +154,10 @@ final class GenerateRandomData extends Command
 
     private function setDefaultParentTaxon(): void
     {
-        $this->defaultParentTaxon = $this->taxonRepository->findOneBy(['parent' => null]);
+        /** @var Taxon $mainTaxon */
+        $mainTaxon = $this->taxonRepository->findOneBy(['parent' => null]);
+
+        $this->defaultParentTaxon = $mainTaxon;
     }
 
     /**
@@ -200,20 +208,22 @@ final class GenerateRandomData extends Command
         /** @var ProductInterface $product */
         $product = $this->productFactory->createNew();
 
-        $uuid = Uuid::uuid4();
+        $uuid = Uuid::uuid4()->toString();
 
-        $product->setName($this->faker->words(3, true));
-        $product->setSlug($this->faker->slug.'-'.$uuid);
+        $product->setName((string)$this->faker->words(3, true));
+        $product->setSlug($this->faker->slug . '-' . $uuid);
         $product->setCode(sprintf('Code-%s', $uuid));
-        $product->setDescription($this->faker->paragraphs(3, true));
+        $product->setDescription((string)$this->faker->paragraphs(3, true));
         $product->setShortDescription($this->faker->sentence);
         $product->setEnabled(true);
         $product->setCreatedAt($this->faker->dateTimeBetween('-1 year'));
 
+        /** @var ProductVariant $variant */
         $variant = $this->productVariantFactory->createNew();
         $variant->setCode(sprintf('Code-%s', $uuid));
         $variant->setName(sprintf('Product %s', $uuid));
 
+        /** @var ChannelPricing $channelPricing */
         $channelPricing = $this->channelPricingFactory->createNew();
         $channelPricing->setPrice($this->faker->randomNumber());
         $channelPricing->setChannelCode($this->channelCode);
@@ -230,7 +240,7 @@ final class GenerateRandomData extends Command
      */
     private function attachProductsToChannel(int $firstProductId, mixed $productsQty): void
     {
-        $channelId = $this->channelRepository->findOneByCode($this->channelCode)->getId();
+        $channelId = $this->channelRepository->findOneByCode($this->channelCode)?->getId();
         $sql = function (array $values) {
              return 'INSERT INTO sylius_product_channels(product_id, channel_id) VALUES ' . implode(', ', $values);
         };
