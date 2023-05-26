@@ -67,7 +67,7 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
 
         $user = $this->userContext->getUser();
         if ($this->hasAccessToAllTaxa($user)) {
-            return $this->taxonRepository->findAll();
+            $channelMenuTaxon = null;   # main taxon will be assumed
         }
 
         $queryBuilder = $this->taxonRepository->createChildrenByChannelMenuTaxonQueryBuilder($channelMenuTaxon);
