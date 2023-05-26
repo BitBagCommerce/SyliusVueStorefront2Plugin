@@ -322,7 +322,7 @@ final class GenerateRandomData extends Command
         $taxon = $this->taxonFactory->createNew();
         $taxon->setCode('code-' . $uuid);
         $taxon->setParent($parent);
-        $taxon->setposition(0);
+        $taxon->setPosition(0);
 
         $translation = new TaxonTranslation();
         $translation->setName($uuid);
