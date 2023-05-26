@@ -31,7 +31,7 @@ final class TaxonRepository extends NestedTreeRepository implements TaxonReposit
         ?TaxonInterface $menuTaxon = null,
         ?string $locale = null,
     ): QueryBuilder {
-        $qb = $this->childrenQueryBuilder($menuTaxon, false, null, null, true);
+        $qb = $this->childrenQueryBuilder($menuTaxon, false, null, 'asc', true);
 
         $alias = $qb->getRootAliases()[0] ?? 'node';
 
