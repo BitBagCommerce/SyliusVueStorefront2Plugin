@@ -19,9 +19,9 @@ use Faker\Generator;
 use Ramsey\Uuid\Uuid;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\Channel;
-use Sylius\Component\Core\Model\ChannelPricing;
+use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductInterface;
-use Sylius\Component\Core\Model\ProductVariant;
+use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Core\Model\Taxon;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
@@ -31,8 +31,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Webmozart\Assert\Assert;
-
-use function Symfony\Component\Translation\t;
 
 final class GenerateRandomData extends Command
 {
@@ -210,20 +208,20 @@ final class GenerateRandomData extends Command
 
         $uuid = Uuid::uuid4()->toString();
 
-        $product->setName((string)$this->faker->words(3, true));
+        $product->setName($uuid);
         $product->setSlug($this->faker->slug . '-' . $uuid);
         $product->setCode(sprintf('Code-%s', $uuid));
-        $product->setDescription((string)$this->faker->paragraphs(3, true));
+        $product->setDescription($uuid);
         $product->setShortDescription($this->faker->sentence);
         $product->setEnabled(true);
         $product->setCreatedAt($this->faker->dateTimeBetween('-1 year'));
 
-        /** @var ProductVariant $variant */
+        /** @var ProductVariantInterface $variant */
         $variant = $this->productVariantFactory->createNew();
         $variant->setCode(sprintf('Code-%s', $uuid));
         $variant->setName(sprintf('Product %s', $uuid));
 
-        /** @var ChannelPricing $channelPricing */
+        /** @var ChannelPricingInterface $channelPricing */
         $channelPricing = $this->channelPricingFactory->createNew();
         $channelPricing->setPrice($this->faker->randomNumber());
         $channelPricing->setChannelCode($this->channelCode);
@@ -241,7 +239,7 @@ final class GenerateRandomData extends Command
     private function attachProductsToChannel(int $firstProductId, mixed $productsQty): void
     {
         $channelId = $this->channelRepository->findOneByCode($this->channelCode)?->getId();
-        $sql = function (array $values) {
+        $sql = function (array $values): string {
              return 'INSERT INTO sylius_product_channels(product_id, channel_id) VALUES ' . implode(', ', $values);
         };
 
@@ -261,7 +259,7 @@ final class GenerateRandomData extends Command
             }
         }
 
-        if (!empty($values)) {
+        if (count($values) !== 0) {
             $this->entityManager->getConnection()->executeStatement($sql($values));
         }
 
@@ -280,7 +278,6 @@ final class GenerateRandomData extends Command
 
         $depth = 0;
         $taxon = null;
-
         $blockHavingChild = true;   # first taxon has to be a child of default taxon
         for ($i = 1; $i <= $quantity; $i++) {
             if (!$blockHavingChild && $this->faker->boolean && $depth < $maxDepth) {
@@ -290,6 +287,7 @@ final class GenerateRandomData extends Command
                 $parent = $this->defaultParentTaxon;
                 $depth = 0;
             }
+            Assert::notNull($parent, 'Parent taxon cannot be null');
             $taxon = $this->createTaxon($parent);
             $this->entityManager->persist($taxon);
 
@@ -316,15 +314,18 @@ final class GenerateRandomData extends Command
     /**
      * @throws \Exception
      */
-    private function createTaxon(TaxonInterface $parent): TaxonInterface
+    private function createTaxon(?TaxonInterface $parent = null): TaxonInterface
     {
+        $uuid = Uuid::uuid4()->toString();
+
+        /** @var TaxonInterface $taxon */
         $taxon = $this->taxonFactory->createNew();
-        $taxon->setCode('code-' . Uuid::uuid4()->toString());
+        $taxon->setCode('code-' . $uuid);
         $taxon->setParent($parent);
         $taxon->setposition(0);
 
         $translation = new TaxonTranslation();
-        $translation->setName(ucfirst($this->faker->words(2, true)));
+        $translation->setName($uuid);
         $translation->setSlug($this->faker->slug);
         $translation->setLocale('en_US');
 
@@ -351,7 +352,7 @@ final class GenerateRandomData extends Command
             $maxProductsPerTaxon
         );
 
-        $sql = function (array $values) {
+        $sql = function (array $values): string {
             return 'INSERT INTO sylius_product_taxon(product_id, taxon_id, position) VALUES ' . implode(', ', $values);
         };
 
@@ -369,7 +370,7 @@ final class GenerateRandomData extends Command
             }
         }
 
-        if (!empty($values)) {
+        if (count($values) !== 0) {
             $this->entityManager->getConnection()->executeStatement($sql($values));
         }
     }
