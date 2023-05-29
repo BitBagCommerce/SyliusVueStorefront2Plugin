@@ -16,7 +16,7 @@ use Sylius\Component\Taxonomy\Repository\TaxonRepositoryInterface as BaseTaxonRe
 
 interface TaxonRepositoryInterface extends BaseTaxonRepositoryInterface
 {
-    public function createChildrenByChannelMenuTaxonQueryBuilder(
+    public function createChildrenByParentQueryBuilder(
         ?TaxonInterface $menuTaxon = null,
         ?string $locale = null,
     ): QueryBuilder;

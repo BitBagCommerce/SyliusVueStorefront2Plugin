@@ -27,7 +27,7 @@ final class TaxonRepository extends NestedTreeRepository implements TaxonReposit
         parent::__construct($decoratedRepository->getEntityManager(), $decoratedRepository->getClassMetadata());
     }
 
-    public function createChildrenByChannelMenuTaxonQueryBuilder(
+    public function createChildrenByParentQueryBuilder(
         ?TaxonInterface $menuTaxon = null,
         ?string $locale = null,
     ): QueryBuilder {

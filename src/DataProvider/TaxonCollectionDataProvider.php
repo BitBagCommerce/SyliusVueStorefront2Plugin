@@ -70,7 +70,7 @@ final class TaxonCollectionDataProvider implements CollectionDataProviderInterfa
             $channelMenuTaxon = null;   # main taxon will be assumed
         }
 
-        $queryBuilder = $this->taxonRepository->createChildrenByChannelMenuTaxonQueryBuilder($channelMenuTaxon);
+        $queryBuilder = $this->taxonRepository->createChildrenByParentQueryBuilder($channelMenuTaxon);
 
         /** @var QueryCollectionExtensionInterface $extension */
         foreach ($this->collectionExtensions as $extension) {
