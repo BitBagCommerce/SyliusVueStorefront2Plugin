@@ -79,7 +79,7 @@ final class TaxonCollectionDataProviderSpec extends ObjectBehavior
         $userContext->getUser()->willReturn($user);
         $roles = ['ROLE_API_ACCESS'];
         $user->getRoles()->willReturn($roles);
-        $taxonRepository->findAll()->shouldBeCalled();
+        $taxonRepository->createChildrenByChannelMenuTaxonQueryBuilder()->shouldBeCalled();
 
         $this->getCollection('class', 'operation', $context);
     }
