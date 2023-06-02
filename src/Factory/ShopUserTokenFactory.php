@@ -60,7 +60,7 @@ class ShopUserTokenFactory implements ShopUserTokenFactoryInterface
 
     public function getRefreshToken(
         ShopUserInterface $user,
-        bool $rememberMe = null
+        ?bool $rememberMe = null
     ): RefreshTokenInterface {
 
         $refreshTokenExpirationDate = new \DateTime($rememberMe ? $this->refreshTokenExtendedTTL : $this->refreshTokenTTL);
