@@ -60,6 +60,7 @@ final class LoginContext implements Context
         $operation->setVariables([
             'username' => $email,
             'password' => $password,
+            'rememberMe' => true,
         ]);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
