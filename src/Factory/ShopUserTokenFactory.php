@@ -63,7 +63,7 @@ class ShopUserTokenFactory implements ShopUserTokenFactoryInterface
         ?bool $rememberMe = null
     ): RefreshTokenInterface {
 
-        $refreshTokenExpirationDate = new \DateTime($rememberMe ? $this->refreshTokenExtendedTTL : $this->refreshTokenTTL);
+        $refreshTokenExpirationDate = new \DateTime(null !== $rememberMe ? $this->refreshTokenExtendedTTL : $this->refreshTokenTTL);
         $refreshToken = $this->refreshJwtManager->create();
         $refreshToken->setRefreshToken();
         $refreshToken->setUsername((string) $user->getUsernameCanonical());
