@@ -23,7 +23,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
                         <attribute name="type">String!</attribute>
                     </attribute>
                     <attribute name="rememberMe">
-                        <attribute name="type">Boolean</attribute>
+                        <attribute name="type">Boolean!</attribute>
                     </attribute>
                     <attribute name="orderTokenValue">
                         <attribute name="type">String</attribute>
