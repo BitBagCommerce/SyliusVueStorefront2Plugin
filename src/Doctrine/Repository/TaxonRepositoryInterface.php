@@ -11,12 +11,12 @@ declare(strict_types=1);
 namespace BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository;
 
 use Doctrine\ORM\QueryBuilder;
-use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Sylius\Component\Taxonomy\Model\TaxonInterface;
+use Sylius\Component\Taxonomy\Repository\TaxonRepositoryInterface as BaseTaxonRepositoryInterface;
 
-interface TaxonRepositoryInterface extends RepositoryInterface
+interface TaxonRepositoryInterface extends BaseTaxonRepositoryInterface
 {
-    public function createChildrenByChannelMenuTaxonQueryBuilder(
+    public function createChildrenByParentQueryBuilder(
         ?TaxonInterface $menuTaxon = null,
         ?string $locale = null,
     ): QueryBuilder;

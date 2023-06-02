@@ -29,5 +29,17 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <group>admin:taxon:read</group>
             <group>shop:taxon:read</group>
         </attribute>
+        <attribute name="parent">
+            <group>shop:taxon:read</group>
+        </attribute>
+        <attribute name="enabled">
+            <group>shop:taxon:read</group>
+        </attribute>
+        <attribute name="position">
+            <group>shop:taxon:read</group>
+        </attribute>
+        <attribute name="level">
+            <group>shop:taxon:read</group>
+        </attribute>
     </class>
 </serializer>
