@@ -18,5 +18,5 @@ interface ShopUserTokenFactoryInterface
 {
     public function create(ShopUserInterface $user, RefreshTokenInterface $refreshToken): ShopUserTokenInterface;
 
-    public function getRefreshToken(ShopUserInterface $user): RefreshTokenInterface;
+    public function getRefreshToken(ShopUserInterface $user, bool $rememberMe = null): RefreshTokenInterface;
 }

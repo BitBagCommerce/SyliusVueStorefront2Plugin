@@ -27,7 +27,7 @@ final class ShopUserTokenFactorySpec extends ObjectBehavior
         JWTTokenManagerInterface $jwtManager,
         RefreshTokenManagerInterface $refreshJwtManager,
     ): void {
-        $this->beConstructedWith($entityManager, $jwtManager, $refreshJwtManager);
+        $this->beConstructedWith($entityManager, $jwtManager, $refreshJwtManager, '+5 second', '+3 month');
     }
 
     public function it_is_initializable(): void
