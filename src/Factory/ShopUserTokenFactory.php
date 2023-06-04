@@ -26,14 +26,22 @@ class ShopUserTokenFactory implements ShopUserTokenFactoryInterface
 
     private EntityManagerInterface $entityManager;
 
+    private string $refreshTokenTTL;
+
+    private string $refreshTokenExtendedTTL;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         JWTTokenManagerInterface $jwtManager,
         RefreshTokenManagerInterface $refreshJwtManager,
+        string $refreshTokenTTL,
+        string $refreshTokenExtendedTTL,
     ) {
         $this->entityManager = $entityManager;
         $this->jwtManager = $jwtManager;
         $this->refreshJwtManager = $refreshJwtManager;
+        $this->refreshTokenTTL = $refreshTokenTTL;
+        $this->refreshTokenExtendedTTL = $refreshTokenExtendedTTL;
     }
 
     public function create(
@@ -50,9 +58,12 @@ class ShopUserTokenFactory implements ShopUserTokenFactoryInterface
         return $shopUserToken;
     }
 
-    public function getRefreshToken(ShopUserInterface $user): RefreshTokenInterface
-    {
-        $refreshTokenExpirationDate = new \DateTime('+1 month');
+    public function getRefreshToken(
+        ShopUserInterface $user,
+        ?bool $rememberMe = null
+    ): RefreshTokenInterface {
+
+        $refreshTokenExpirationDate = new \DateTime(true === $rememberMe ? $this->refreshTokenExtendedTTL : $this->refreshTokenTTL);
         $refreshToken = $this->refreshJwtManager->create();
         $refreshToken->setRefreshToken();
         $refreshToken->setUsername((string) $user->getUsernameCanonical());
