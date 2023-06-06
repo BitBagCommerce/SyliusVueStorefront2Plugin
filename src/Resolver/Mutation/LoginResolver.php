@@ -79,6 +79,7 @@ final class LoginResolver implements MutationResolverInterface
 
         $username = (string) $input['username'];
         $password = (string) $input['password'];
+        $rememberMe = (bool) $input['rememberMe'];
 
         /** @var ShopUserInterface|null $user */
         $user = $this->userRepository->findOneBy(['username' => $username]);
@@ -99,7 +100,7 @@ final class LoginResolver implements MutationResolverInterface
             throw new \Exception('User verification required.');
         }
         if ($encoder->isPasswordValid($userPassword, $password, $userSalt)) {
-            $refreshToken = $this->tokenFactory->getRefreshToken($user);
+            $refreshToken = $this->tokenFactory->getRefreshToken($user, $rememberMe);
             $shopUserToken = $this->tokenFactory->create($user, $refreshToken);
             $this->applyOrder($input, $user);
 

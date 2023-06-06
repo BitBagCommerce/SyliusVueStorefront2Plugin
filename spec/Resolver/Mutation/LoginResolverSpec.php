@@ -11,10 +11,10 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation;
 
 use BitBag\SyliusVueStorefront2Plugin\Factory\ShopUserTokenFactoryInterface;
+use BitBag\SyliusVueStorefront2Plugin\Model\RefreshTokenInterface;
 use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserTokenInterface;
 use BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation\LoginResolver;
 use Doctrine\ORM\EntityManagerInterface;
-use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
@@ -70,6 +70,7 @@ class LoginResolverSpec extends ObjectBehavior
                 'input' => [
                     'username' => 'username',
                     'password' => 'somepass',
+                    'rememberMe' => true,
                 ],
             ],
         ];
@@ -77,6 +78,7 @@ class LoginResolverSpec extends ObjectBehavior
         $input = $context['args']['input'];
         $username = (string) $input['username'];
         $password = (string) $input['password'];
+        $rememberMe = (bool) $input['rememberMe'];
 
         $userRepository->findOneBy(['username' => $username])->willReturn($user);
         $encoderFactory->getEncoder($user)->willReturn($encoder);
@@ -93,7 +95,7 @@ class LoginResolverSpec extends ObjectBehavior
 
         $encoder->isPasswordValid($userPassword, $password, $userSalt)->shouldBeCalled()->willReturn(true);
 
-        $tokenFactory->getRefreshToken($user)->willReturn($refreshToken);
+        $tokenFactory->getRefreshToken($user, $rememberMe)->willReturn($refreshToken);
         $tokenFactory->create($user, $refreshToken)->willReturn($shopUserToken);
 
         $eventDispatcher->dispatch(Argument::any(), LoginResolver::EVENT_NAME)->shouldBeCalled();
@@ -223,6 +225,7 @@ class LoginResolverSpec extends ObjectBehavior
                 'input' => [
                     'username' => 'username',
                     'password' => 'somepass',
+                    'rememberMe' => true,
                 ],
             ],
         ];
@@ -230,6 +233,7 @@ class LoginResolverSpec extends ObjectBehavior
         $input = $context['args']['input'];
         $username = (string) $input['username'];
         $password = (string) $input['password'];
+        $rememberMe = (bool) $input['rememberMe'];
 
         $userRepository->findOneBy(['username' => $username])->willReturn($user);
         $encoderFactory->getEncoder($user)->willReturn($encoder);
@@ -246,7 +250,7 @@ class LoginResolverSpec extends ObjectBehavior
 
         $encoder->isPasswordValid($userPassword, $password, $userSalt)->shouldBeCalled()->willReturn(true);
 
-        $tokenFactory->getRefreshToken($user)->willReturn($refreshToken);
+        $tokenFactory->getRefreshToken($user, $rememberMe)->willReturn($refreshToken);
         $tokenFactory->create($user, $refreshToken)->willReturn($shopUserToken);
 
         $eventDispatcher->dispatch(Argument::any(), LoginResolver::EVENT_NAME)->shouldBeCalled();

@@ -26,7 +26,6 @@ final class BitBagSyliusVueStorefront2Extension extends Extension
 
         $loader->load('services.xml');
 
-        $container->setParameter('bitbag_sylius_vue_storefront2.refresh_token_lifespan', $config['refresh_token_lifespan']);
         $container->setParameter('bitbag_sylius_vue_storefront2.test_endpoint', $config['test_endpoint']);
     }
 

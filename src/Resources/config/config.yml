@@ -23,3 +23,6 @@ sylius_fixtures:
             fixtures:
                 channel_locales:
                     priority: 0
+
+lexik_jwt_authentication:
+    token_ttl: '%env(APP_TOKEN_TTL)%'

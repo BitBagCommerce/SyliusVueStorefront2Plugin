@@ -30,5 +30,9 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="security.helper" />
             <tag name="api_platform.doctrine.orm.query_extension.collection"/>
         </service>
+        <service id="BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\TaxonRepository"
+                 decorates="sylius.repository.taxon">
+            <argument type="service" id=".inner" />
+        </service>
     </services>
 </container>

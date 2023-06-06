@@ -11,9 +11,9 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusVueStorefront2Plugin\Factory;
 
 use BitBag\SyliusVueStorefront2Plugin\Factory\ShopUserTokenFactory;
+use BitBag\SyliusVueStorefront2Plugin\Model\RefreshTokenInterface;
 use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserToken;
 use Doctrine\ORM\EntityManagerInterface;
-use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use PhpSpec\ObjectBehavior;
@@ -27,7 +27,7 @@ final class ShopUserTokenFactorySpec extends ObjectBehavior
         JWTTokenManagerInterface $jwtManager,
         RefreshTokenManagerInterface $refreshJwtManager,
     ): void {
-        $this->beConstructedWith($entityManager, $jwtManager, $refreshJwtManager);
+        $this->beConstructedWith($entityManager, $jwtManager, $refreshJwtManager, '+5 second', '+3 month');
     }
 
     public function it_is_initializable(): void
@@ -68,6 +68,7 @@ final class ShopUserTokenFactorySpec extends ObjectBehavior
         $username = 'canonical';
         $user->getUsernameCanonical()->willReturn($username);
         $refreshToken->setUsername($username)->shouldBeCalled();
+        $refreshToken->setRememberMe(true)->shouldBeCalled();
 
         $refreshToken->setRefreshToken()->shouldBeCalled();
 
@@ -76,6 +77,6 @@ final class ShopUserTokenFactorySpec extends ObjectBehavior
         $entityManager->persist($refreshToken)->shouldBeCalled();
         $entityManager->flush()->shouldBeCalled();
 
-        $this->getRefreshToken($user)->shouldReturn($refreshToken);
+        $this->getRefreshToken($user, true)->shouldReturn($refreshToken);
     }
 }

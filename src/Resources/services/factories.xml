@@ -18,6 +18,8 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="lexik_jwt_authentication.jwt_manager" />
             <argument type="service" id="gesdinet.jwtrefreshtoken.refresh_token_manager" />
+            <argument type="string">%env(APP_REFRESH_TOKEN_TTL)%</argument>
+            <argument type="string">%env(APP_REFRESH_TOKEN_EXTENDED_TTL)%</argument>
         </service>
 
     </services>

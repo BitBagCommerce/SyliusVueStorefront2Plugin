@@ -62,7 +62,6 @@
    
     ```yml
     bitbag_sylius_vue_storefront2:
-        refresh_token_lifespan: 2592000 #that its default value
         test_endpoint: 'http://127.0.0.1:8080/api/v2/graphql' #that its default value
     ```
 ![Step6](/doc/images/Step6.png)
@@ -176,15 +175,25 @@ security:
 
 ![Step11](/doc/images/Step11.png)
     
-4Add redirection to your `.env` file:
+14. Add redirection to your `.env` file:
 
 ```env
 VSF2_HOST= #your VueStoreFront url address
 ```
 
 ![Step12](/doc/images/Step12.png)
+
+
+15. Add JWT token and refresh token TTL's to your `.env` file:
+
+```env
+APP_TOKEN_TTL=3600
+APP_REFRESH_TOKEN_TTL="+1 week"
+APP_REFRESH_TOKEN_EXTENDED_TTL="+3 month"
+```
+
      
-14. After all steps, run this commends in your project directory:
+16. After all steps, run this commends in your project directory:
 
 ```bash
 yarn install
