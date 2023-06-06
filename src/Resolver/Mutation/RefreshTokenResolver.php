@@ -12,12 +12,12 @@ namespace BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation;
 
 use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
 use BitBag\SyliusVueStorefront2Plugin\Factory\ShopUserTokenFactoryInterface;
+use BitBag\SyliusVueStorefront2Plugin\Model\RefreshToken;
+use BitBag\SyliusVueStorefront2Plugin\Model\RefreshTokenInterface;
 use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserTokenInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectRepository;
-use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken;
-use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -40,21 +40,25 @@ final class RefreshTokenResolver implements MutationResolverInterface
     /** @var EntityRepository<RefreshToken> */
     private ObjectRepository $refreshTokenRepository;
 
-    private string $refreshTokenLifetime;
+    private string $refreshTokenTTL;
+
+    private string $refreshTokenExtendedTTL;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         ShopUserTokenFactoryInterface $tokenFactory,
         UserRepositoryInterface $userRepository,
         EventDispatcherInterface $eventDispatcher,
-        string $refreshTokenLifetime,
+        string $refreshTokenTTL,
+        string $refreshTokenExtendedTTL,
     ) {
         $this->entityManager = $entityManager;
         $this->shopUserTokenFactory = $tokenFactory;
         $this->userRepository = $userRepository;
         $this->refreshTokenRepository = $entityManager->getRepository(RefreshToken::class);
         $this->eventDispatcher = $eventDispatcher;
-        $this->refreshTokenLifetime = $refreshTokenLifetime;
+        $this->refreshTokenTTL = $refreshTokenTTL;
+        $this->refreshTokenExtendedTTL = $refreshTokenExtendedTTL;
     }
 
     /**
@@ -70,6 +74,7 @@ final class RefreshTokenResolver implements MutationResolverInterface
         Assert::keyExists($input, 'refreshToken');
         $refreshTokenString = (string) $input['refreshToken'];
 
+        /** @var RefreshTokenInterface $refreshToken */
         $refreshToken = $this->refreshTokenRepository->findOneBy(['refreshToken' => $refreshTokenString]);
 
         Assert::notNull($refreshToken);
@@ -78,7 +83,7 @@ final class RefreshTokenResolver implements MutationResolverInterface
         /** @var ShopUserInterface $user */
         $user = $this->userRepository->findOneBy(['username' => $refreshToken->getUsername()]);
 
-        $refreshTokenExpirationDate = new \DateTime(sprintf('+%s seconds', $this->refreshTokenLifetime));
+        $refreshTokenExpirationDate = new \DateTime(true === $refreshToken->isRememberMe() ? $this->refreshTokenExtendedTTL : $this->refreshTokenTTL);
         $refreshToken->setValid($refreshTokenExpirationDate);
         $this->entityManager->flush();
 

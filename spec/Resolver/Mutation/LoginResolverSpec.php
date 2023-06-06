@@ -11,10 +11,10 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation;
 
 use BitBag\SyliusVueStorefront2Plugin\Factory\ShopUserTokenFactoryInterface;
+use BitBag\SyliusVueStorefront2Plugin\Model\RefreshTokenInterface;
 use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserTokenInterface;
 use BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation\LoginResolver;
 use Doctrine\ORM\EntityManagerInterface;
-use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Component\Channel\Context\ChannelContextInterface;

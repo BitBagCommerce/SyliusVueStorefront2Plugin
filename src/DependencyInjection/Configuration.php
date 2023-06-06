@@ -30,7 +30,6 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
-                ->integerNode('refresh_token_lifespan')->defaultValue(2592000)->end()
                 ->scalarNode('test_endpoint')->defaultValue('http://127.0.0.1:8080/api/v2/graphql')->cannotBeEmpty()->end()
             ->end()
             ->end()
