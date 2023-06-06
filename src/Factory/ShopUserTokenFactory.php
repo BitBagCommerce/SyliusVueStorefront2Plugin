@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\Factory;
 
+use BitBag\SyliusVueStorefront2Plugin\Model\RefreshTokenInterface;
 use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserToken;
 use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserTokenInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
 use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
@@ -60,14 +60,15 @@ class ShopUserTokenFactory implements ShopUserTokenFactoryInterface
 
     public function getRefreshToken(
         ShopUserInterface $user,
-        ?bool $rememberMe = null
+        ?bool $rememberMe = null,
     ): RefreshTokenInterface {
-
         $refreshTokenExpirationDate = new \DateTime(true === $rememberMe ? $this->refreshTokenExtendedTTL : $this->refreshTokenTTL);
+        /** @var RefreshTokenInterface $refreshToken */
         $refreshToken = $this->refreshJwtManager->create();
         $refreshToken->setRefreshToken();
         $refreshToken->setUsername((string) $user->getUsernameCanonical());
         $refreshToken->setValid($refreshTokenExpirationDate);
+        $refreshToken->setRememberMe(true === $rememberMe);
 
         $this->entityManager->persist($refreshToken);
         $this->entityManager->flush();
