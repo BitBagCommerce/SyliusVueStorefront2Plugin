@@ -12,6 +12,7 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\CLI;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\TaxonFactoryInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\WishlistFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
@@ -29,6 +30,7 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
     private ChannelRepositoryInterface $channelRepository;
     private ProductFactoryInterface $productFactory;
     private TaxonFactoryInterface $taxonFactory;
+    private WishlistFactoryInterface $wishlistFactory;
 
     private SymfonyStyle $io;
     private ChannelInterface $channel;
@@ -38,6 +40,7 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
         ChannelRepositoryInterface $channelRepository,
         ProductFactoryInterface $productFactory,
         TaxonFactoryInterface $taxonFactory,
+        WishlistFactoryInterface $wishlistFactory,
     ) {
         parent::__construct();
 
@@ -45,6 +48,7 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
         $this->productFactory = $productFactory;
         $this->entityManager = $entityManager;
         $this->taxonFactory = $taxonFactory;
+        $this->wishlistFactory = $wishlistFactory;
     }
 
     protected function configure(): void
@@ -73,10 +77,12 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
         $productsPerWishlistQty = 0;
 
         if ($taxonsQty > 0) {
-            $productsPerTaxonQty = $this->askForInteger(
-                'Max products per taxon',
-                self::DEFAULT_PRODUCTS_PER_TAXON_QTY
-            );
+            if ($productsQty > 0) {
+                $productsPerTaxonQty = $this->askForInteger(
+                    'Max products per taxon',
+                    self::DEFAULT_PRODUCTS_PER_TAXON_QTY
+                );
+            }
             $maxTaxonLevel = $this->askForInteger(
                 'Taxon max depth',
                 self::DEFAULT_MAX_TAXON_LEVEL
@@ -87,7 +93,7 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
             );
         }
 
-        if ($wishlistsQty > 0) {
+        if ($wishlistsQty > 0 && $productsQty > 0) {
             $productsPerWishlistQty = $this->askForInteger(
                 'Max products per wishlist',
                 self::DEFAULT_PRODUCTS_PER_WISHLIST_QTY
@@ -107,7 +113,9 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
         $this->io->info(sprintf('%s Generating taxons', (new \DateTime())->format('Y-m-d H:i:s')));
         $this->generateTaxons($taxonsQty, $maxTaxonLevel, $maxChildrenPerTaxonLevel);
 
-        # TODO: generate wishlists
+        $this->io->info(sprintf('%s Generating wishlists', (new \DateTime())->format('Y-m-d H:i:s')));
+        $this->generateWishlists($wishlistsQty);
+
         # TODO: attach products to taxons
         # TODO: attach products to wishlists
         # TODO: attach wishlists to users
@@ -178,6 +186,26 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
             $taxon = $this->taxonFactory->create($maxTaxonLevel, $maxChildrenPerTaxonLevel);
 
             $this->entityManager->persist($taxon);
+            $this->io->progressAdvance();
+
+            if ($i % self::FLUSH_AFTER === 0) {
+                $this->entityManager->flush();
+            }
+        }
+
+        $this->entityManager->flush();
+
+        $this->io->progressFinish();
+    }
+
+    private function generateWishlists(int $wishlistsQty): void
+    {
+        $this->io->progressStart($wishlistsQty);
+
+        for ($i = 1; $i <= $wishlistsQty; $i++) {
+            $wishlist = $this->wishlistFactory->create($this->channel);
+
+            $this->entityManager->persist($wishlist);
             $this->io->progressAdvance();
 
             if ($i % self::FLUSH_AFTER === 0) {

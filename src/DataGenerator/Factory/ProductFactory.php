@@ -39,11 +39,10 @@ final class ProductFactory implements ProductFactoryInterface
 
     public function create(ChannelInterface $channel): ProductInterface
     {
-        /** @var ProductInterface $product */
-        $product = $this->productFactory->createNew();
-
         $uuid = $this->faker->uuid;
 
+        /** @var ProductInterface $product */
+        $product = $this->productFactory->createNew();
         $product->setName('Product ' . $uuid);
         $product->setSlug($uuid);
         $product->setCode('code-' . $uuid);
