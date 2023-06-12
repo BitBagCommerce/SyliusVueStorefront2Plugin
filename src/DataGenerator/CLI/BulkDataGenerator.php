@@ -41,7 +41,6 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
 
     private SymfonyStyle $io;
     private ChannelInterface $channel;
-    private BulkableInterface $factories;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -63,8 +62,6 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
         $this->taxonFactory = $taxonFactory;
         $this->wishlistFactory = $wishlistFactory;
         $this->taxonRepository = $taxonRepository;
-
-        $this->factories = new CompositeFactory();
     }
 
     protected function configure(): void
@@ -123,11 +120,13 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
                 $this->channel->getCode()
         ));
 
-        $this->registerProductFactory($input, $output, $productsQty);
-        $this->registerTaxonFactory($input, $output, $taxonsQty, $maxTaxonLevel, $maxChildrenPerTaxonLevel);
-        $this->registerWishlistFactory($input, $output, $wishlistsQty);
+        $factories = new CompositeFactory([
+            $this->registerProductFactory($input, $output, $productsQty),
+            $this->registerTaxonFactory($input, $output, $taxonsQty, $maxTaxonLevel, $maxChildrenPerTaxonLevel),
+            $this->registerWishlistFactory($input, $output, $wishlistsQty),
+        ]);
 
-        $this->factories->bulkCreate();
+        $factories->bulkCreate();
 
         $this->io->info(sprintf('%s Command finished', (new \DateTime())->format('Y-m-d H:i:s')));
 
@@ -171,7 +170,7 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
         InputInterface $input,
         OutputInterface $output,
         int $quantity
-    ): void {
+    ): BulkableInterface {
         $factory = new ProductFactory(
             $this->entityManager,
             $input,
@@ -184,7 +183,7 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
 
         $factory->setQuantity($quantity);
 
-        $this->factories->registerFactory($factory);
+        return $factory;
     }
 
     private function registerTaxonFactory(
@@ -193,7 +192,7 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
         int $quantity,
         int $maxTaxonLevel,
         int $maxChildrenPerTaxonLevel,
-    ): void {
+    ): BulkableInterface {
         $factory = new TaxonFactory(
             $this->entityManager,
             $input,
@@ -206,14 +205,14 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
         $factory->setMaxTaxonLevel($maxTaxonLevel);
         $factory->setMaxChildrenPerTaxonLevel($maxChildrenPerTaxonLevel);
 
-        $this->factories->registerFactory($factory);
+        return $factory;
     }
 
     private function registerWishlistFactory(
         InputInterface $input,
         OutputInterface $output,
         int $quantity
-    ): void {
+    ): BulkableInterface {
         $factory = new WishlistFactory(
             $this->entityManager,
             $input,
@@ -224,6 +223,6 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
 
         $factory->setQuantity($quantity);
 
-        $this->factories->registerFactory($factory);
+        return $factory;
     }
 }

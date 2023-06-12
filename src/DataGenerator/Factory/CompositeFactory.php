@@ -15,11 +15,14 @@ final class CompositeFactory implements BulkableInterface
     /**
      * @var BulkableInterface[]
      */
-    private array $factories = [];
+    private array $factories;
 
-    public function registerFactory(BulkableInterface $factory): void
+    /**
+     * @param BulkableInterface[] $factories
+     */
+    public function __construct(array $factories)
     {
-        $this->factories[] = $factory;
+        $this->factories = $factories;
     }
 
     public function bulkCreate(): void

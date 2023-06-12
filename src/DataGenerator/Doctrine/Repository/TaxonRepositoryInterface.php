@@ -24,6 +24,6 @@ interface TaxonRepositoryInterface
     public function findEligibleParents(
         int $maxTaxonLevel,
         int $maxChildrenPerTaxonLevel,
-        int $limit,
+        int $limit = self::DEFAULT_LIMIT,
     ): array;
 }
