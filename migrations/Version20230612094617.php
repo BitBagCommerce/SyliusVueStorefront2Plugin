@@ -16,7 +16,7 @@ final class Version20230612094617 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE bitbag_refresh_token (id INT AUTO_INCREMENT NOT NULL, refresh_token VARCHAR(128) NOT NULL, username VARCHAR(255) NOT NULL, valid DATETIME NOT NULL, remember_me TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_CD7BD0E9C74F2195 (refresh_token), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS bitbag_refresh_token (id INT AUTO_INCREMENT NOT NULL, refresh_token VARCHAR(128) NOT NULL, username VARCHAR(255) NOT NULL, valid DATETIME NOT NULL, remember_me TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_CD7BD0E9C74F2195 (refresh_token), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE `UTF8_unicode_ci` ENGINE = InnoDB');
     }
 
     public function down(Schema $schema): void
