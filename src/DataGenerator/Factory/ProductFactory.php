@@ -10,23 +10,15 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory;
 
-use BitBag\SyliusVueStorefront2Plugin\Factory\ShopUserTokenFactoryInterface;
-use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserToken;
-use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserTokenInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
 use Faker\Generator;
-use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
-use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenManagerInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Ramsey\Uuid\Uuid;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
-use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
-class ProductFactory implements ProductFactoryInterface
+final class ProductFactory implements ProductFactoryInterface
 {
     private FactoryInterface $productFactory;
     private FactoryInterface $productVariantFactory;
@@ -45,35 +37,40 @@ class ProductFactory implements ProductFactoryInterface
         $this->faker = Factory::create();
     }
 
-    public function create(string $channelCode): ProductInterface
+    public function create(ChannelInterface $channel): ProductInterface
     {
         /** @var ProductInterface $product */
         $product = $this->productFactory->createNew();
 
-        $uuid = Uuid::uuid4()->toString();
+        $uuid = $this->faker->uuid;
 
-        $product->setName(sprintf('Product %s', $uuid));
-        $product->setSlug($this->faker->slug() . '-' . $uuid);
-        $product->setCode(sprintf('Code-%s', $uuid));
-        $product->setDescription($uuid);
+        $product->setName('Product ' . $uuid);
+        $product->setSlug($uuid);
+        $product->setCode('code-' . $uuid);
+        $product->setDescription($this->faker->paragraphs(3, true));
         $product->setShortDescription($this->faker->sentence());
         $product->setEnabled(true);
         $product->setCreatedAt($this->faker->dateTimeBetween('-1 year'));
+        $product->addChannel($channel);
+        $product->addVariant($this->createVariant($channel, $uuid));
 
+        return $product;
+    }
+
+    private function createVariant(ChannelInterface $channel, string $uuid): ProductVariantInterface
+    {
         /** @var ProductVariantInterface $variant */
         $variant = $this->productVariantFactory->createNew();
-        $variant->setCode(sprintf('Code-%s', $uuid));
-        $variant->setName(sprintf('Product variant %s', $uuid));
+        $variant->setName('Product variant ' . $uuid);
+        $variant->setCode('code-' . $uuid);
 
         /** @var ChannelPricingInterface $channelPricing */
         $channelPricing = $this->channelPricingFactory->createNew();
         $channelPricing->setPrice($this->faker->randomNumber());
-        $channelPricing->setChannelCode($channelCode);
+        $channelPricing->setChannelCode($channel->getCode());
 
         $variant->addChannelPricing($channelPricing);
 
-        $product->addVariant($variant);
-
-        return $product;
+        return $variant;
     }
 }

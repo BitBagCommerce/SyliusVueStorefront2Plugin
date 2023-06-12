@@ -10,12 +10,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory;
 
-use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserTokenInterface;
-use Gesdinet\JWTRefreshTokenBundle\Model\RefreshTokenInterface;
+use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
-use Sylius\Component\Core\Model\ShopUserInterface;
 
 interface ProductFactoryInterface
 {
-    public function create(string $channelCode): ProductInterface;
+    public function create(ChannelInterface $channel): ProductInterface;
 }
