@@ -57,8 +57,8 @@ final class ProductFactory extends Factory
         $product->setName('Product ' . $uuid);
         $product->setSlug($uuid);
         $product->setCode('code-' . $uuid);
-        $product->setDescription((string)$this->faker->paragraphs(3, true));
-        $product->setShortDescription($this->faker->sentence());
+        $product->setDescription($this->faker->sentence(10));
+        $product->setShortDescription($this->faker->sentence(3));
         $product->setEnabled(true);
         $product->setCreatedAt($this->faker->dateTimeBetween('-1 year'));
         $product->addChannel($this->channel);
