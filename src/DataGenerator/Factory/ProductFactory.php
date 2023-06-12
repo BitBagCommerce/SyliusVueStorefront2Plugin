@@ -10,34 +10,45 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory;
 
-use Faker\Factory;
-use Faker\Generator;
+use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-final class ProductFactory implements ProductFactoryInterface
+final class ProductFactory extends Factory
 {
     private FactoryInterface $productFactory;
     private FactoryInterface $productVariantFactory;
     private FactoryInterface $channelPricingFactory;
-    private Generator $faker;
+    private ChannelInterface $channel;
 
     public function __construct(
+        EntityManagerInterface $entityManager,
+        InputInterface $input,
+        OutputInterface $output,
         FactoryInterface $productFactory,
         FactoryInterface $productVariantFactory,
         FactoryInterface $channelPricingFactory,
+        ChannelInterface $channel,
     ) {
+        parent::__construct($entityManager, $input, $output);
+
         $this->productFactory = $productFactory;
         $this->productVariantFactory = $productVariantFactory;
         $this->channelPricingFactory = $channelPricingFactory;
-
-        $this->faker = Factory::create();
+        $this->channel = $channel;
     }
 
-    public function create(ChannelInterface $channel): ProductInterface
+    public function entityName(): string
+    {
+        return 'Product';
+    }
+
+    public function create(): ProductInterface
     {
         $uuid = $this->faker->uuid;
 
@@ -50,13 +61,13 @@ final class ProductFactory implements ProductFactoryInterface
         $product->setShortDescription($this->faker->sentence());
         $product->setEnabled(true);
         $product->setCreatedAt($this->faker->dateTimeBetween('-1 year'));
-        $product->addChannel($channel);
-        $product->addVariant($this->createVariant($channel, $uuid));
+        $product->addChannel($this->channel);
+        $product->addVariant($this->createVariant($uuid));
 
         return $product;
     }
 
-    private function createVariant(ChannelInterface $channel, string $uuid): ProductVariantInterface
+    private function createVariant(string $uuid): ProductVariantInterface
     {
         /** @var ProductVariantInterface $variant */
         $variant = $this->productVariantFactory->createNew();
@@ -66,7 +77,7 @@ final class ProductFactory implements ProductFactoryInterface
         /** @var ChannelPricingInterface $channelPricing */
         $channelPricing = $this->channelPricingFactory->createNew();
         $channelPricing->setPrice($this->faker->randomNumber());
-        $channelPricing->setChannelCode($channel->getCode());
+        $channelPricing->setChannelCode($this->channel->getCode());
 
         $variant->addChannelPricing($channelPricing);
 

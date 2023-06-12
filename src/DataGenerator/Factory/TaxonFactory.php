@@ -11,35 +11,53 @@ declare(strict_types=1);
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\TaxonRepositoryInterface;
-use Faker\Factory;
-use Faker\Generator;
+use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Taxonomy\Model\TaxonTranslation;
 use Sylius\Component\Taxonomy\Model\TaxonTranslationInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
-final class TaxonFactory implements TaxonFactoryInterface
+final class TaxonFactory extends Factory implements TaxonFactoryInterface
 {
     private FactoryInterface $taxonFactory;
     private TaxonRepositoryInterface $taxonRepository;
-    private Generator $faker;
+    private ?int $maxTaxonLevel = null;
+    private ?int $maxChildrenPerTaxonLevel = null;
 
     public function __construct(
+        EntityManagerInterface $entityManager,
+        InputInterface $input,
+        OutputInterface $output,
         FactoryInterface $taxonFactory,
         TaxonRepositoryInterface $taxonRepository,
     ) {
+        parent::__construct($entityManager, $input, $output);
+
         $this->taxonFactory = $taxonFactory;
         $this->taxonRepository = $taxonRepository;
-
-        $this->faker = Factory::create();
     }
 
-    public function create(
-        int $maxTaxonLevel,
-        int $maxChildrenPerTaxonLevel,
-    ): TaxonInterface {
+    public function entityName(): string
+    {
+        return 'Taxon';
+    }
+
+    public function setMaxTaxonLevel(int $maxTaxonLevel): void
+    {
+        $this->maxTaxonLevel = $maxTaxonLevel;
+    }
+
+    public function setMaxChildrenPerTaxonLevel(int $maxChildrenPerTaxonLevel): void
+    {
+        $this->maxChildrenPerTaxonLevel = $maxChildrenPerTaxonLevel;
+    }
+
+    public function create(): TaxonInterface
+    {
         $uuid = $this->faker->uuid;
-        $parent = $this->getParentTaxon($maxTaxonLevel, $maxChildrenPerTaxonLevel);
+        $parent = $this->getParentTaxon($this->maxTaxonLevel, $this->maxChildrenPerTaxonLevel);
 
         /** @var TaxonInterface $taxon */
         $taxon = $this->taxonFactory->createNew();
@@ -62,9 +80,13 @@ final class TaxonFactory implements TaxonFactoryInterface
     }
 
     private function getParentTaxon(
-        int $maxTaxonLevel,
-        int $maxChildrenPerTaxonLevel,
+        ?int $maxTaxonLevel,
+        ?int $maxChildrenPerTaxonLevel,
     ): TaxonInterface {
+        if ($maxTaxonLevel === null || $maxChildrenPerTaxonLevel === null) {
+            return $this->taxonRepository->getMainTaxon();
+        }
+
         $eligibleParents = $this->taxonRepository->findEligibleParents(
             $maxTaxonLevel,
             $maxChildrenPerTaxonLevel

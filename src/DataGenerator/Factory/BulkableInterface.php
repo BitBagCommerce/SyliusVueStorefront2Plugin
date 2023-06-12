@@ -10,10 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory;
 
-use Sylius\Component\Core\Model\ChannelInterface;
-use Sylius\Component\Core\Model\ProductInterface;
-
-interface ProductFactoryInterface
+interface BulkableInterface
 {
-    public function create(ChannelInterface $channel): ProductInterface;
+    public function bulkCreate(): void;
 }

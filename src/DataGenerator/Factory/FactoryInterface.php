@@ -10,11 +10,15 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory;
 
-interface TaxonFactoryInterface
+use Sylius\Component\Resource\Model\ResourceInterface;
+
+interface FactoryInterface
 {
-    const DEFAULT_LOCALE = 'en_US';
+    const FLUSH_AFTER = 100;
 
-    public function setMaxTaxonLevel(int $maxTaxonLevel): void;
+    public function setQuantity(int $quantity): void;
 
-    public function setMaxChildrenPerTaxonLevel(int $maxChildrenPerTaxonLevel): void;
+    public function create(): ResourceInterface;
+
+    public function entityName(): string;
 }

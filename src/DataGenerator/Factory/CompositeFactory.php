@@ -10,11 +10,22 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory;
 
-interface TaxonFactoryInterface
+final class CompositeFactory implements BulkableInterface
 {
-    const DEFAULT_LOCALE = 'en_US';
+    /**
+     * @var BulkableInterface[]
+     */
+    private array $factories = [];
 
-    public function setMaxTaxonLevel(int $maxTaxonLevel): void;
+    public function registerFactory(BulkableInterface $factory): void
+    {
+        $this->factories[] = $factory;
+    }
 
-    public function setMaxChildrenPerTaxonLevel(int $maxChildrenPerTaxonLevel): void;
+    public function bulkCreate(): void
+    {
+        foreach ($this->factories as $factory) {
+            $factory->bulkCreate();
+        }
+    }
 }
