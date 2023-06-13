@@ -19,24 +19,15 @@ use Sylius\Component\Taxonomy\Model\TaxonTranslationInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class TaxonFactory extends Factory implements TaxonFactoryInterface
+final class TaxonFactory
 {
     private FactoryInterface $taxonFactory;
-    private TaxonRepositoryInterface $taxonRepository;
-    private ?int $maxTaxonLevel = null;
-    private ?int $maxChildrenPerTaxonLevel = null;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        InputInterface $input,
-        OutputInterface $output,
         FactoryInterface $taxonFactory,
-        TaxonRepositoryInterface $taxonRepository,
     ) {
-        parent::__construct($entityManager, $input, $output);
 
         $this->taxonFactory = $taxonFactory;
-        $this->taxonRepository = $taxonRepository;
     }
 
     public function entityName(): string
@@ -44,21 +35,8 @@ final class TaxonFactory extends Factory implements TaxonFactoryInterface
         return 'Taxon';
     }
 
-    public function setMaxTaxonLevel(int $maxTaxonLevel): void
+    public function create($uuid, TaxonInterface $parent): TaxonInterface
     {
-        $this->maxTaxonLevel = $maxTaxonLevel;
-    }
-
-    public function setMaxChildrenPerTaxonLevel(int $maxChildrenPerTaxonLevel): void
-    {
-        $this->maxChildrenPerTaxonLevel = $maxChildrenPerTaxonLevel;
-    }
-
-    public function create(): TaxonInterface
-    {
-        $uuid = $this->faker->uuid;
-        $parent = $this->getParentTaxon($this->maxTaxonLevel, $this->maxChildrenPerTaxonLevel);
-
         /** @var TaxonInterface $taxon */
         $taxon = $this->taxonFactory->createNew();
         $taxon->setCode('code-' . $uuid);
@@ -69,33 +47,13 @@ final class TaxonFactory extends Factory implements TaxonFactoryInterface
         return $taxon;
     }
 
-    private function createTranslation(string $uuid): TaxonTranslationInterface
+    private function createTranslation(string $uuid, string $locale): TaxonTranslationInterface
     {
         $translation = new TaxonTranslation();
         $translation->setName($uuid);
         $translation->setSlug($uuid);
-        $translation->setLocale(self::DEFAULT_LOCALE);
+        $translation->setLocale($locale);
 
         return $translation;
-    }
-
-    private function getParentTaxon(
-        ?int $maxTaxonLevel,
-        ?int $maxChildrenPerTaxonLevel,
-    ): TaxonInterface {
-        if ($maxTaxonLevel === null || $maxChildrenPerTaxonLevel === null) {
-            return $this->taxonRepository->getMainTaxon();
-        }
-
-        $eligibleParents = $this->taxonRepository->findEligibleParents(
-            $maxTaxonLevel,
-            $maxChildrenPerTaxonLevel
-        );
-
-        if (count($eligibleParents) === 0) {
-            return $this->taxonRepository->getMainTaxon();
-        }
-
-        return $eligibleParents[array_rand($eligibleParents)];
     }
 }

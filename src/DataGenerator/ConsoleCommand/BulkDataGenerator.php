@@ -8,18 +8,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\CLI;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ConsoleCommand;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\TaxonRepositoryInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\BulkableInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\CompositeFactory;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductFactory;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\TaxonFactory;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\WishlistFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -32,12 +25,6 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
 
     private EntityManagerInterface $entityManager;
     private ChannelRepositoryInterface $channelRepository;
-    private FactoryInterface $productFactory;
-    private FactoryInterface $productVariantFactory;
-    private FactoryInterface $channelPricingFactory;
-    private FactoryInterface $taxonFactory;
-    private FactoryInterface $wishlistFactory;
-    private TaxonRepositoryInterface $taxonRepository;
 
     private SymfonyStyle $io;
     private ChannelInterface $channel;
@@ -45,23 +32,11 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
     public function __construct(
         EntityManagerInterface $entityManager,
         ChannelRepositoryInterface $channelRepository,
-        FactoryInterface $productFactory,
-        FactoryInterface $productVariantFactory,
-        FactoryInterface $channelPricingFactory,
-        FactoryInterface $taxonFactory,
-        FactoryInterface $wishlistFactory,
-        TaxonRepositoryInterface $taxonRepository,
     ) {
         parent::__construct();
 
         $this->entityManager = $entityManager;
         $this->channelRepository = $channelRepository;
-        $this->productFactory = $productFactory;
-        $this->productVariantFactory = $productVariantFactory;
-        $this->channelPricingFactory = $channelPricingFactory;
-        $this->taxonFactory = $taxonFactory;
-        $this->wishlistFactory = $wishlistFactory;
-        $this->taxonRepository = $taxonRepository;
     }
 
     protected function configure(): void
@@ -113,20 +88,13 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
             );
         }
 
-        # Generate data
         $this->io->info(sprintf(
             '%s Generating data for channel %s...',
                 (new \DateTime())->format('Y-m-d H:i:s'),
                 $this->channel->getCode()
         ));
 
-        $factories = new CompositeFactory([
-            $this->registerProductFactory($input, $output, $productsQty),
-            $this->registerTaxonFactory($input, $output, $taxonsQty, $maxTaxonLevel, $maxChildrenPerTaxonLevel),
-            $this->registerWishlistFactory($input, $output, $wishlistsQty),
-        ]);
-
-        $factories->bulkCreate();
+        //
 
         $this->io->info(sprintf('%s Command finished', (new \DateTime())->format('Y-m-d H:i:s')));
 
@@ -164,65 +132,5 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
         $channelCode = $this->io->choice('Channel', array_keys($channels));
 
         return $channels[$channelCode];
-    }
-
-    private function registerProductFactory(
-        InputInterface $input,
-        OutputInterface $output,
-        int $quantity
-    ): BulkableInterface {
-        $factory = new ProductFactory(
-            $this->entityManager,
-            $input,
-            $output,
-            $this->productFactory,
-            $this->productVariantFactory,
-            $this->channelPricingFactory,
-            $this->channel
-        );
-
-        $factory->setQuantity($quantity);
-
-        return $factory;
-    }
-
-    private function registerTaxonFactory(
-        InputInterface $input,
-        OutputInterface $output,
-        int $quantity,
-        int $maxTaxonLevel,
-        int $maxChildrenPerTaxonLevel,
-    ): BulkableInterface {
-        $factory = new TaxonFactory(
-            $this->entityManager,
-            $input,
-            $output,
-            $this->taxonFactory,
-            $this->taxonRepository,
-        );
-
-        $factory->setQuantity($quantity);
-        $factory->setMaxTaxonLevel($maxTaxonLevel);
-        $factory->setMaxChildrenPerTaxonLevel($maxChildrenPerTaxonLevel);
-
-        return $factory;
-    }
-
-    private function registerWishlistFactory(
-        InputInterface $input,
-        OutputInterface $output,
-        int $quantity
-    ): BulkableInterface {
-        $factory = new WishlistFactory(
-            $this->entityManager,
-            $input,
-            $output,
-            $this->wishlistFactory,
-            $this->channel
-        );
-
-        $factory->setQuantity($quantity);
-
-        return $factory;
     }
 }

@@ -8,17 +8,16 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator;
 
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextModelInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
 
-interface FactoryInterface
+interface GeneratorInterface
 {
-    const FLUSH_AFTER = 100;
+    public function generate(): ResourceInterface;
 
-    public function setQuantity(int $quantity): void;
-
-    public function create(): ResourceInterface;
+    public function setContext(ContextModelInterface $contextModel): void;
 
     public function entityName(): string;
 }

@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\CLI;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ConsoleCommand;
 
 interface BulkDataGeneratorInterface
 {

@@ -8,20 +8,29 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator;
 
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\WishlistFactory;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
-final class WishlistFactory
+final class WishlistGenerator implements GeneratorInterface
 {
-    private FactoryInterface $wishlistFactory;
+    private WishlistFactory $factory;
+
+    private ChannelInterface $channel;
 
     public function __construct(
+        EntityManagerInterface $entityManager,
         FactoryInterface $wishlistFactory,
+        ChannelInterface $channel,
     ) {
+        parent::__construct($entityManager);
+
         $this->wishlistFactory = $wishlistFactory;
+        $this->channel = $channel;
     }
 
     public function entityName(): string
@@ -29,17 +38,11 @@ final class WishlistFactory
         return 'Wishlist';
     }
 
-    public function create(
-        string $uuid,
-        string $windowsPlatformToken,
-        ChannelInterface $channel
-    ): WishlistInterface {
-        /** @var WishlistInterface $wishlist */
-        $wishlist = $this->wishlistFactory->createNew();
-        $wishlist->setName('Wishlist ' . $uuid);
-        $wishlist->setChannel($channel);
-        $wishlist->setToken($windowsPlatformToken);
-
-        return $wishlist;
+    public function generate(): WishlistInterface
+    {
+        return $this->factory->create($this->faker->uuid,
+            $this->faker->windowsPlatformToken,
+            $this->channel
+        );
     }
 }
