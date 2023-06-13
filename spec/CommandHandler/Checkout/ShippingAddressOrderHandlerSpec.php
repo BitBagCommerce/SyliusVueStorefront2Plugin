@@ -16,7 +16,7 @@ use BitBag\SyliusVueStorefront2Plugin\Resolver\OrderAddressStateResolverInterfac
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface;
+use BitBag\SyliusVueStorefront2Plugin\Provider\CustomerProviderInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Customer\Model\CustomerInterface;

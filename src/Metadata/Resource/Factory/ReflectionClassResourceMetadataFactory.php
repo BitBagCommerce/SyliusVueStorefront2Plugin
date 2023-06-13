@@ -14,7 +14,6 @@ use ApiPlatform\Core\Exception\ResourceClassNotFoundException;
 use ApiPlatform\Core\Metadata\Resource\Factory\ResourceMetadataFactoryInterface;
 use ApiPlatform\Core\Metadata\Resource\ResourceMetadata;
 
-/** @experimental  */
 final class ReflectionClassResourceMetadataFactory implements ResourceMetadataFactoryInterface
 {
     private ?ResourceMetadataFactoryInterface $decorated;
@@ -25,11 +24,6 @@ final class ReflectionClassResourceMetadataFactory implements ResourceMetadataFa
         $this->decorated = $decorated;
     }
 
-    /**
-     * @inheritdoc
-     *
-     * @psalm-var class-string $resourceClass
-     */
     public function create(string $resourceClass): ResourceMetadata
     {
         $parentResourceMetadata = null;
@@ -51,6 +45,7 @@ final class ReflectionClassResourceMetadataFactory implements ResourceMetadataFa
 
         try {
             $reflectionClass = new \ReflectionClass($resourceClass);
+            /** @phpstan-ignore-next-line  */
         } catch (\ReflectionException $reflectionException) {
             return $this->handleNotFound($parentResourceMetadata, $resourceClass);
         }

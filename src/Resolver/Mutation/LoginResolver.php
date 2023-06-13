@@ -25,7 +25,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Webmozart\Assert\Assert;
 
-/** @psalm-suppress DeprecatedClass */
 final class LoginResolver implements MutationResolverInterface
 {
     public const EVENT_NAME = 'bitbag.sylius_vue_storefront2.mutation_resolver.login.complete';
@@ -44,7 +43,6 @@ final class LoginResolver implements MutationResolverInterface
 
     private ChannelContextInterface $channelContext;
 
-    /** @psalm-suppress DeprecatedClass */
     public function __construct(
         EntityManagerInterface $entityManager,
         UserRepositoryInterface $userRepository,
@@ -86,6 +84,7 @@ final class LoginResolver implements MutationResolverInterface
 
         Assert::notNull($user, 'Wrong credentials.');
 
+        /** @phpstan-ignore-next-line  */
         $encoder = $this->encoderFactory->getEncoder($user);
 
         $userPassword = $user->getPassword();

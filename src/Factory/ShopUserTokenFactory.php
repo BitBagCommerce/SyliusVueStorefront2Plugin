@@ -49,10 +49,16 @@ class ShopUserTokenFactory implements ShopUserTokenFactoryInterface
         RefreshTokenInterface $refreshToken,
     ): ShopUserTokenInterface {
         $shopUserToken = new ShopUserToken();
+
+        /** @phpstan-ignore-next-line  */
         $token = $this->jwtManager->create($user);
         $shopUserToken->setId((int) $user->getId());
         $shopUserToken->setToken($token);
-        $shopUserToken->setRefreshToken($refreshToken->getRefreshToken());
+
+        if (is_string($refreshToken->getRefreshToken())) {
+            $shopUserToken->setRefreshToken($refreshToken->getRefreshToken());
+        }
+
         $shopUserToken->setUser($user);
 
         return $shopUserToken;

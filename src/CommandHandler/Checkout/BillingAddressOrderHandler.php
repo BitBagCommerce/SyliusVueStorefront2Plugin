@@ -14,7 +14,7 @@ use BitBag\SyliusVueStorefront2Plugin\Command\Checkout\BillingAddressOrder;
 use BitBag\SyliusVueStorefront2Plugin\Resolver\OrderAddressStateResolverInterface;
 use Doctrine\Persistence\ObjectManager;
 use Sylius\Bundle\ApiBundle\Context\UserContextInterface;
-use Sylius\Bundle\ApiBundle\Provider\CustomerProviderInterface;
+use BitBag\SyliusVueStorefront2Plugin\Provider\CustomerProviderInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -35,7 +35,6 @@ final class BillingAddressOrderHandler implements MessageHandlerInterface
     private ObjectManager $manager;
 
     private CustomerProviderInterface $customerProvider;
-
     private OrderAddressStateResolverInterface $addressStateResolver;
 
     private UserContextInterface $userContext;
