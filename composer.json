@@ -16,7 +16,9 @@
         "ext-openssl": "*",
         "bitbag/wishlist-plugin": "^3.0",
         "gesdinet/jwt-refresh-token-bundle": "^0.12.0",
+        "php-http/message-factory": "^1.1",
         "sylius/sylius": "~1.11.0",
+        "symfony/mailer": "^6.0",
         "webonyx/graphql-php": "^14.9"
     },
     "require-dev": {

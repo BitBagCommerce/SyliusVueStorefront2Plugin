@@ -20,3 +20,6 @@ sylius_attribute:
 
 sylius_api:
     enabled: true
+    
+sylius_mailer:
+    sender_adapter: sylius.email_sender.adapter.symfony_mailer
