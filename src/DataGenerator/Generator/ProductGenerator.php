@@ -50,13 +50,13 @@ final class ProductGenerator implements GeneratorInterface
         );
 
         $variant = $this->productVariantFactory->create(
-            $this->faker->words(3, true),
+            $this->faker->sentence(3),
             $this->faker->uuid,
             $channelPricing,
         );
 
         return $this->productFactory->create(
-            $this->faker->words(3, true),
+            $this->faker->sentence(3),
             $this->faker->uuid,
             $this->faker->sentence(15),
             $this->faker->sentence(),

@@ -41,7 +41,7 @@ final class TaxonGenerator implements GeneratorInterface
         assert($context instanceof TaxonContextInterface);
 
         $translation = TaxonTranslationFactory::create(
-            (string)$this->faker->words(3, true),
+            $this->faker->sentence(3),
             $this->faker->locale,
         );
 

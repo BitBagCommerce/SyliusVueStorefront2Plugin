@@ -35,8 +35,8 @@ final class WishlistGenerator implements GeneratorInterface
         assert($context instanceof WishlistContextInterface);
 
         return $this->wishlistFactory->create(
-            $this->faker->words(3, true),
-            md5($this->faker->words(10, true)),
+            $this->faker->sentence(3),
+            md5($this->faker->sentence(10)),
             $context->getChannel(),
         );
     }
