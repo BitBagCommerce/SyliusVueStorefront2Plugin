@@ -21,6 +21,4 @@ interface BulkDataGeneratorInterface
     const DEFAULT_PRODUCTS_QTY = 100000;
     const DEFAULT_PRODUCTS_PER_TAXON_QTY = 1000;
     const DEFAULT_PRODUCTS_PER_WISHLIST_QTY = 1000;
-
-    const FLUSH_AFTER = 100;
 }
