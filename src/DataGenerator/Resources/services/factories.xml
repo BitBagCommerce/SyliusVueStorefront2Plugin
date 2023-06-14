@@ -12,12 +12,38 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <defaults autowire="false" autoconfigure="false" public="false" />
 
         <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.channel_pricing_factory"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ChannelPricingFactory"
+        >
+            <argument type="service" id="sylius.factory.channel_pricing" />
+        </service>
+
+        <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.product_factory"
             class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductFactory"
         >
             <argument type="service" id="sylius.factory.product" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.product_variant_factory"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductVariantFactory"
+        >
             <argument type="service" id="sylius.factory.product_variant" />
-            <argument type="service" id="sylius.factory.channel_pricing" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.taxon_factory"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\TaxonFactory"
+        >
+            <argument type="service" id="sylius.custom_factory.taxon" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.wishlist_factory"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\WishlistFactory"
+        >
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist" />
         </service>
 
     </services>

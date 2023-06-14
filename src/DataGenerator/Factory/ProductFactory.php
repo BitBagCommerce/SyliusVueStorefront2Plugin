@@ -10,73 +10,42 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory;
 
+use Gedmo\Sluggable\Util\Urlizer;
 use Sylius\Component\Core\Model\ChannelInterface;
-use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
-final class ProductFactory
+final class ProductFactory implements ProductFactoryInterface
 {
     private FactoryInterface $productFactory;
-    private FactoryInterface $productVariantFactory;
-    private FactoryInterface $channelPricingFactory;
 
-    public function __construct(
-        FactoryInterface $productFactory,
-        FactoryInterface $productVariantFactory,
-        FactoryInterface $channelPricingFactory
-    ) {
-        $this->productFactory = $productFactory;
-        $this->productVariantFactory = $productVariantFactory;
-        $this->channelPricingFactory = $channelPricingFactory;
-    }
-
-    public function entityName(): string
+    public function __construct(FactoryInterface $productFactory)
     {
-        return 'Product';
+        $this->productFactory = $productFactory;
     }
 
     public function create(
-        string $uuid,
+        string $name,
+        string $code,
         string $description,
-        string $shortDescrption,
-        int $price,
+        string $shortDescription,
+        ProductVariantInterface $variant,
         ChannelInterface $channel,
-        \DateTimeInterface $createdAt
+        \DateTimeInterface $createdAt,
     ): ProductInterface {
         /** @var ProductInterface $product */
         $product = $this->productFactory->createNew();
-        $product->setName('Product ' . $uuid);
-        $product->setSlug($uuid);
-        $product->setCode('code-' . $uuid);
+        $product->setName($name);
+        $product->setSlug(Urlizer::transliterate($name));
+        $product->setCode($code);
         $product->setDescription($description);
-        $product->setShortDescription($shortDescrption);
+        $product->setShortDescription($shortDescription);
         $product->setEnabled(true);
         $product->setCreatedAt($createdAt);
         $product->addChannel($channel);
-        $product->addVariant($this->createVariant($uuid, $price, $channel));
+        $product->addVariant($variant);
 
         return $product;
-    }
-
-    private function createVariant(
-        string $uuid,
-        int $price,
-        ChannelInterface $channel
-    ): ProductVariantInterface {
-        /** @var ProductVariantInterface $variant */
-        $variant = $this->productVariantFactory->createNew();
-        $variant->setName('Product variant ' . $uuid);
-        $variant->setCode('code-' . $uuid);
-
-        /** @var ChannelPricingInterface $channelPricing */
-        $channelPricing = $this->channelPricingFactory->createNew();
-        $channelPricing->setPrice($price);
-        $channelPricing->setChannelCode($channel->getCode());
-
-        $variant->addChannelPricing($channelPricing);
-
-        return $variant;
     }
 }
