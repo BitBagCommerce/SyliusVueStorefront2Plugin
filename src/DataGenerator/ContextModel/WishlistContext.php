@@ -26,7 +26,7 @@ class WishlistContext implements WishlistContextInterface
         return $this->channel;
     }
 
-    public static function entityName(): string
+    public function entityName(): string
     {
         return 'Wishlist';
     }

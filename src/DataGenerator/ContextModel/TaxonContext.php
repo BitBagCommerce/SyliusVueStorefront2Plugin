@@ -34,7 +34,7 @@ class TaxonContext implements TaxonContextInterface
         return $this->maxChildrenPerTaxonLevel;
     }
 
-    public static function entityName(): string
+    public function entityName(): string
     {
         return 'Taxon';
     }

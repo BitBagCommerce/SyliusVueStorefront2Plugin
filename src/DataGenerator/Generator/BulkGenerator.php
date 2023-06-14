@@ -41,7 +41,7 @@ final class BulkGenerator implements BulkGeneratorInterface
         $this->io->info(sprintf(
             '%s Generating %ss',
             (new \DateTime())->format('Y-m-d H:i:s'),
-            $this->bulkContext->getContext()::entityName(),
+            $this->bulkContext->getContext()->entityName(),
         ));
 
         $quantity = $this->bulkContext->getQuantity();

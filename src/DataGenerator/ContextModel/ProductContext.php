@@ -26,7 +26,7 @@ class ProductContext implements ProductContextInterface
         return $this->channel;
     }
 
-    public static function entityName(): string
+    public function entityName(): string
     {
         return 'Product';
     }
