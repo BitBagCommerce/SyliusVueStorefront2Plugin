@@ -10,47 +10,58 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductFactory;
-use Doctrine\ORM\EntityManagerInterface;
-use Faker\Factory as FakerFactory;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ProductContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ChannelPricingFactoryInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductFactoryInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductVariantFactoryInterface;
+use Faker\Factory;
 use Faker\Generator;
-use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 
 final class ProductGenerator implements GeneratorInterface
 {
-    private ProductFactory $productFactory;
-    private ChannelInterface $channel;
+    private ProductFactoryInterface $productFactory;
 
-    private EntityManagerInterface $entityManager;
+    private ProductVariantFactoryInterface $productVariantFactory;
 
-    protected Generator $faker;
+    private ChannelPricingFactoryInterface $channelPricingFactory;
+
+    private Generator $faker;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        ProductFactory $productFactory,
-        ChannelInterface $channel,
+        ProductFactoryInterface $productFactory,
+        ProductVariantFactoryInterface $productVariantFactory,
+        ChannelPricingFactoryInterface $channelPricingFactory,
     ) {
-        $this->entityManager = $entityManager;
-        $this->faker = FakerFactory::create();
-
         $this->productFactory = $productFactory;
-        $this->channel = $channel;
+        $this->productVariantFactory = $productVariantFactory;
+        $this->channelPricingFactory = $channelPricingFactory;
+        $this->faker = Factory::create();
     }
 
-    public function entityName(): string
+    public function generate(ContextInterface $context): ProductInterface
     {
-        return 'Product';
-    }
+        assert($context instanceof ProductContextInterface);
 
-    public function generate(): ProductInterface
-    {
-        return $this->productFactory->create(
-            $this->faker->uuid,
-            $this->faker->sentence(10),
-            $this->faker->sentence(3),
+        $channelPricing = $this->channelPricingFactory->create(
             $this->faker->randomNumber(),
-            $this->channel,
+            $context->getChannel(),
+        );
+
+        $variant = $this->productVariantFactory->create(
+            $this->faker->words(3, true),
+            $this->faker->uuid,
+            $channelPricing,
+        );
+
+        return $this->productFactory->create(
+            $this->faker->words(3, true),
+            $this->faker->uuid,
+            $this->faker->sentence(15),
+            $this->faker->sentence(),
+            $variant,
+            $context->getChannel(),
             $this->faker->dateTimeBetween('-1 year')
         );
     }

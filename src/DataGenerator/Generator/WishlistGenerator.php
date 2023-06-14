@@ -10,39 +10,34 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\WishlistFactory;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\WishlistContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\WishlistFactoryInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Faker\Factory;
+use Faker\Generator;
 use Sylius\Component\Core\Model\ChannelInterface;
-use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class WishlistGenerator implements GeneratorInterface
 {
-    private WishlistFactory $factory;
+    private WishlistFactoryInterface $wishlistFactory;
 
-    private ChannelInterface $channel;
+    protected Generator $faker;
 
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        FactoryInterface $wishlistFactory,
-        ChannelInterface $channel,
-    ) {
-        parent::__construct($entityManager);
-
+    public function __construct(WishlistFactoryInterface $wishlistFactory)
+    {
         $this->wishlistFactory = $wishlistFactory;
-        $this->channel = $channel;
+        $this->faker = Factory::create();
     }
 
-    public function entityName(): string
+    public function generate(ContextInterface $context): WishlistInterface
     {
-        return 'Wishlist';
-    }
+        assert($context instanceof WishlistContextInterface);
 
-    public function generate(): WishlistInterface
-    {
-        return $this->factory->create($this->faker->uuid,
-            $this->faker->windowsPlatformToken,
-            $this->channel
+        return $this->wishlistFactory->create(
+            $this->faker->words(3, true),
+            md5($this->faker->words(10, true)),
+            $context->getChannel(),
         );
     }
 }
