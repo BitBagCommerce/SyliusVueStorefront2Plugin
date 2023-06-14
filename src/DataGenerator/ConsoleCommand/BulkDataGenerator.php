@@ -42,6 +42,22 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
 
     private GeneratorInterface $wishlistGenerator;
 
+    private ChannelInterface $channel;
+
+    private int $productsQty = 0;
+
+    private int $taxonsQty = 0;
+
+    private int $wishlistsQty = 0;
+
+    private int $productsPerTaxonQty = 0;
+
+    private int $maxTaxonLevel = 0;
+
+    private int $maxChildrenPerTaxonLevel = 0;
+
+    private int $productsPerWishlistQty = 0;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         ChannelRepositoryInterface $channelRepository,
@@ -73,65 +89,33 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
             return 0;
         }
 
-        # Gather custom parameters
-        $channel = $this->askForChannelCode();
-        $productsQty = $this->askForInteger('Products', self::DEFAULT_PRODUCTS_QTY);
-        $taxonsQty = $this->askForInteger('Taxons', self::DEFAULT_TAXONS_QTY);
-        $wishlistsQty = $this->askForInteger('Wishlists', self::DEFAULT_WISHLISTS_QTY);
-        $maxTaxonLevel = 0;
-        $maxChildrenPerTaxonLevel = 0;
-        $productsPerTaxonQty = 0;
-        $productsPerWishlistQty = 0;
-
-        if ($taxonsQty > 0) {
-            if ($productsQty > 0) {
-                $productsPerTaxonQty = $this->askForInteger(
-                    'Max products per taxon',
-                    self::DEFAULT_PRODUCTS_PER_TAXON_QTY
-                );
-            }
-            $maxTaxonLevel = $this->askForInteger(
-                'Taxon max depth',
-                self::DEFAULT_MAX_TAXON_LEVEL
-            );
-            $maxChildrenPerTaxonLevel = $this->askForInteger(
-                'Taxon children per level',
-                self:: DEFAULT_MAX_CHILDREN_PER_TAXON_LEVEL
-            );
-        }
-
-        if ($wishlistsQty > 0 && $productsQty > 0) {
-            $productsPerWishlistQty = $this->askForInteger(
-                'Max products per wishlist',
-                self::DEFAULT_PRODUCTS_PER_WISHLIST_QTY
-            );
-        }
+        $this->gatherInputParams();
 
         $this->io->info(sprintf(
             '%s Generating data for channel %s...',
                 (new \DateTime())->format('Y-m-d H:i:s'),
-                $channel->getCode()
+                $this->channel->getCode()
         ));
 
         $productBulkGenerator = new BulkGenerator(
             $this->entityManager,
             $this->io,
             $this->productGenerator,
-            new BulkContext($productsQty, new ProductContext($channel)),
+            new BulkContext($this->productsQty, new ProductContext($this->channel)),
         );
 
         $taxonBulkGenerator = new BulkGenerator(
             $this->entityManager,
             $this->io,
             $this->taxonGenerator,
-            new BulkContext($taxonsQty, new TaxonContext($maxTaxonLevel, $maxChildrenPerTaxonLevel)),
+            new BulkContext($this->taxonsQty, new TaxonContext($this->maxTaxonLevel, $this->maxChildrenPerTaxonLevel)),
         );
 
         $wishlistBulkGenerator = new BulkGenerator(
             $this->entityManager,
             $this->io,
             $this->wishlistGenerator,
-            new BulkContext($wishlistsQty, new WishlistContext($channel)),
+            new BulkContext($this->wishlistsQty, new WishlistContext($this->channel)),
         );
 
         $compositeBulkGenerator = new CompositeBulkGenerator([
@@ -155,6 +139,39 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
         );
     }
 
+    private function gatherInputParams(): void
+    {
+        $this->channel = $this->askForChannel();
+        $this->productsQty = $this->askForInteger('Products', self::DEFAULT_PRODUCTS_QTY);
+        $this->taxonsQty = $this->askForInteger('Taxons', self::DEFAULT_TAXONS_QTY);
+        $this->wishlistsQty = $this->askForInteger('Wishlists', self::DEFAULT_WISHLISTS_QTY);
+
+        if ($this->taxonsQty > 0) {
+            $this->maxTaxonLevel = $this->askForInteger(
+                'Taxon max depth',
+                self::DEFAULT_MAX_TAXON_LEVEL
+            );
+            $this->maxChildrenPerTaxonLevel = $this->askForInteger(
+                'Taxon children per level',
+                self:: DEFAULT_MAX_CHILDREN_PER_TAXON_LEVEL
+            );
+
+            if ($this->productsQty > 0) {
+                $this->productsPerTaxonQty = $this->askForInteger(
+                    'Max products per taxon',
+                    self::DEFAULT_PRODUCTS_PER_TAXON_QTY
+                );
+            }
+        }
+
+        if ($this->wishlistsQty > 0 && $this->productsQty > 0) {
+            $this->productsPerWishlistQty = $this->askForInteger(
+                'Max products per wishlist',
+                self::DEFAULT_PRODUCTS_PER_WISHLIST_QTY
+            );
+        }
+    }
+
     private function askForInteger(string $subject, int $default): int
     {
         $quantity = $this->io->ask("$subject:", "$default") ?? $default;
@@ -163,7 +180,7 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
         return max((int)$quantity, 0);
     }
 
-    private function askForChannelCode(): ChannelInterface
+    private function askForChannel(): ChannelInterface
     {
         $channels = [];
         /** @var ChannelInterface $channel */
