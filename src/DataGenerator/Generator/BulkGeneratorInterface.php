@@ -10,9 +10,13 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator;
 
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\BulkContextInterface;
+
 interface BulkGeneratorInterface
 {
     const FLUSH_AFTER = 100;
+
+    public function setContext(BulkContextInterface $context): void;
 
     public function generate(): void;
 }

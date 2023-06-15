@@ -14,10 +14,8 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\BulkContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ProductContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\TaxonContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\WishlistContext;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\CompositeBulkGenerator;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\GeneratorInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\Console\Command\Command;
@@ -30,17 +28,15 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
 {
     protected static $defaultName = 'vsf2:generate-bulk-data';
 
-    private EntityManagerInterface $entityManager;
-
     private SymfonyStyle $io;
 
     private ChannelRepositoryInterface $channelRepository;
 
-    private GeneratorInterface $productGenerator;
+    private BulkGeneratorInterface $productBulkGenerator;
 
-    private GeneratorInterface $taxonGenerator;
+    private BulkGeneratorInterface $taxonBulkGenerator;
 
-    private GeneratorInterface $wishlistGenerator;
+    private BulkGeneratorInterface $wishlistBulkGenerator;
 
     private ChannelInterface $channel;
 
@@ -59,24 +55,17 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
     private int $productsPerWishlistQty = 0;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
         ChannelRepositoryInterface $channelRepository,
-        GeneratorInterface $productGenerator,
-        GeneratorInterface $taxonGenerator,
-        GeneratorInterface $wishlistGenerator
+        BulkGeneratorInterface $productBulkGenerator,
+        BulkGeneratorInterface $taxonBulkGenerator,
+        BulkGeneratorInterface $wishlistBulkGenerator
     ) {
         parent::__construct();
 
-        $this->entityManager = $entityManager;
         $this->channelRepository = $channelRepository;
-        $this->productGenerator = $productGenerator;
-        $this->taxonGenerator = $taxonGenerator;
-        $this->wishlistGenerator = $wishlistGenerator;
-    }
-
-    protected function configure(): void
-    {
-        $this->setDescription('Generates random data by the given parameters.');
+        $this->productBulkGenerator = $productBulkGenerator;
+        $this->taxonBulkGenerator = $taxonBulkGenerator;
+        $this->wishlistBulkGenerator = $wishlistBulkGenerator;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -97,31 +86,14 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
                 $this->channel->getCode()
         ));
 
-        $productBulkGenerator = new BulkGenerator(
-            $this->entityManager,
-            $this->io,
-            $this->productGenerator,
-            new BulkContext($this->productsQty, new ProductContext($this->channel)),
-        );
-
-        $taxonBulkGenerator = new BulkGenerator(
-            $this->entityManager,
-            $this->io,
-            $this->taxonGenerator,
-            new BulkContext($this->taxonsQty, new TaxonContext($this->maxTaxonLevel, $this->maxChildrenPerTaxonLevel)),
-        );
-
-        $wishlistBulkGenerator = new BulkGenerator(
-            $this->entityManager,
-            $this->io,
-            $this->wishlistGenerator,
-            new BulkContext($this->wishlistsQty, new WishlistContext($this->channel)),
-        );
+        $this->setProductBulkGeneratorContext();
+        $this->setTaxonBulkGeneratorContext();
+        $this->setWishlistBulkGeneratorContext();
 
         $compositeBulkGenerator = new CompositeBulkGenerator([
-            $productBulkGenerator,
-            $taxonBulkGenerator,
-            $wishlistBulkGenerator,
+            $this->productBulkGenerator,
+            $this->taxonBulkGenerator,
+            $this->wishlistBulkGenerator,
         ]);
 
         $compositeBulkGenerator->generate();
@@ -129,6 +101,11 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
         $this->io->info(sprintf('%s Command finished', (new \DateTime())->format('Y-m-d H:i:s')));
 
         return 1;
+    }
+
+    protected function configure(): void
+    {
+        $this->setDescription('Generates random data by the given parameters.');
     }
 
     private function confirmRunningCommand(): bool
@@ -195,5 +172,38 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
         $channelCode = $this->io->choice('Channel', array_keys($channels));
 
         return $channels[$channelCode];
+    }
+
+    private function setProductBulkGeneratorContext(): void
+    {
+        $productContext = new BulkContext(
+            $this->productsQty,
+            $this->io,
+            new ProductContext($this->channel)
+        );
+
+        $this->productBulkGenerator->setContext($productContext);
+    }
+
+    private function setTaxonBulkGeneratorContext(): void
+    {
+        $taxonContext = new BulkContext(
+            $this->taxonsQty,
+            $this->io,
+            new TaxonContext($this->maxTaxonLevel, $this->maxChildrenPerTaxonLevel)
+        );
+
+        $this->taxonBulkGenerator->setContext($taxonContext);
+    }
+
+    private function setWishlistBulkGeneratorContext(): void
+    {
+        $wishlistContext = new BulkContext(
+            $this->wishlistsQty,
+            $this->io,
+            new WishlistContext($this->channel)
+        );
+
+        $this->wishlistBulkGenerator->setContext($wishlistContext);
     }
 }

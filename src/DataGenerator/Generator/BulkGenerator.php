@@ -18,27 +18,28 @@ final class BulkGenerator implements BulkGeneratorInterface
 {
     private EntityManagerInterface $entityManager;
 
-    private SymfonyStyle $io;
-
     private GeneratorInterface $generator;
 
     private BulkContextInterface $bulkContext;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        SymfonyStyle $io,
         GeneratorInterface $generator,
-        BulkContextInterface $bulkContext,
     ) {
         $this->entityManager = $entityManager;
         $this->generator = $generator;
-        $this->bulkContext = $bulkContext;
-        $this->io = $io;
+    }
+
+    public function setContext(BulkContextInterface $context): void
+    {
+        $this->bulkContext = $context;
     }
 
     public function generate(): void
     {
-        $this->io->info(sprintf(
+        $io = $this->bulkContext->getIO();
+
+        $io->info(sprintf(
             '%s Generating %ss',
             (new \DateTime())->format('Y-m-d H:i:s'),
             $this->bulkContext->getContext()->entityName(),
@@ -46,13 +47,13 @@ final class BulkGenerator implements BulkGeneratorInterface
 
         $quantity = $this->bulkContext->getQuantity();
 
-        $this->io->progressStart($quantity);
+        $io->progressStart($quantity);
 
         for ($i = 1; $i <= $quantity; $i++) {
             $object = $this->generator->generate($this->bulkContext->getContext());
 
             $this->entityManager->persist($object);
-            $this->io->progressAdvance();
+            $io->progressAdvance();
 
             if ($i % self::FLUSH_AFTER === 0) {
                 $this->entityManager->flush();
@@ -61,6 +62,6 @@ final class BulkGenerator implements BulkGeneratorInterface
 
         $this->entityManager->flush();
 
-        $this->io->progressFinish();
+        $io->progressFinish();
     }
 }

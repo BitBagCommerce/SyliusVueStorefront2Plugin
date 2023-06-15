@@ -10,9 +10,13 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel;
 
+use Symfony\Component\Console\Style\SymfonyStyle;
+
 interface BulkContextInterface
 {
     public function getQuantity(): int;
+
+    public function getIO(): SymfonyStyle;
 
     public function getContext(): ContextInterface;
 }
