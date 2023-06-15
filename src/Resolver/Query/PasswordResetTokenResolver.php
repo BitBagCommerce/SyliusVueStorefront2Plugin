@@ -13,26 +13,28 @@ declare(strict_types=1);
 namespace BitBag\SyliusVueStorefront2Plugin\Resolver\Query;
 
 use ApiPlatform\GraphQl\Resolver\QueryItemResolverInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 
 class PasswordResetTokenResolver implements QueryItemResolverInterface
 {
-   private UserRepositoryInterface $userRepository;
+    private UserRepositoryInterface $userRepository;
+
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
     }
 
 
-    public function __invoke($item, array $context)
+    public function __invoke($item, array $context): ?ShopUserInterface
     {
         $token = $context['args']['passwordResetToken'];
         $user = $this->userRepository->findOneBy(['passwordResetToken' => $token]);
 
-        if (null !== $user){
+        if (null !== $user) {
             return $user;
         }
 
-        throw new \Exception('Invalid token');
+        return null;
     }
 }
