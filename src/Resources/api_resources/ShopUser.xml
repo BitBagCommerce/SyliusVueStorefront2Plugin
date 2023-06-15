@@ -13,6 +13,18 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
     <resource class="%sylius.model.shop_user.class%" shortName="User">
         <graphql>
+            <operation name="password_reset_token">
+                <attribute name="normalization_context">
+                    <attribute name="groups">shop:password_reset_token:read</attribute>
+                </attribute>
+                <attribute name="item_query">bitbag.sylius_vue_storefront2plugin.resolver.query.password_reset_token_resolver</attribute>
+                <attribute name="args">
+                    <attribute name="passwordResetToken">
+                        <attribute name="type">String!</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+
             <operation name="shop_register">
                 <attribute name="messenger">input</attribute>
                 <attribute name="input">\Sylius\Bundle\ApiBundle\Command\Account\RegisterShopUser</attribute>

@@ -15,5 +15,8 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <group>shop:customer:read</group>
             <group>shop:user_login:read</group>
         </attribute>
+        <attribute name="username">
+            <group>shop:password_reset_token:read</group>
+        </attribute>
     </class>
 </serializer>
