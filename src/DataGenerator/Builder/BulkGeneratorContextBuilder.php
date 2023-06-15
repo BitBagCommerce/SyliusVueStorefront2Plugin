@@ -15,6 +15,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCo
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\ProductContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\TaxonContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\WishlistContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\UnknownBulkDataGeneratorException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\BulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\ProductBulkGenerator;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\TaxonBulkGenerator;
@@ -45,6 +46,7 @@ class BulkGeneratorContextBuilder implements BulkGeneratorContextBuilderInterfac
                 $commandContext->getIO(),
                 $commandContext->getChannel(),
             ),
+            default => throw new UnknownBulkDataGeneratorException(),
         };
     }
 
