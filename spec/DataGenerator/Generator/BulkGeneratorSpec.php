@@ -14,20 +14,18 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ProductContextI
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\GeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Mockery\Matcher\Any;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ProductInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 class BulkGeneratorSpec extends ObjectBehavior
 {
     public function let(
         EntityManagerInterface $entityManager,
-        SymfonyStyle $io,
         GeneratorInterface $generator,
         BulkContextInterface $bulkContext,
     ): void {
-        $this->beConstructedWith($entityManager, $io, $generator, $bulkContext);
+        $this->beConstructedWith($entityManager, $generator);
+        $this->setContext($bulkContext->getWrappedObject());
     }
 
     public function it_is_initializable(): void
@@ -49,16 +47,17 @@ class BulkGeneratorSpec extends ObjectBehavior
         $quantity = 100;
         $flushAfter = 10;
 
+        $bulkContext->getIO()->shouldBeCalled();
+
         $dateTime->format($dateTimeFormat)->willReturn($dateTimeString);
         $context->entityName()->willReturn($entityName);
         $bulkContext->getContext()->willReturn($context->getWrappedObject());
 
         $bulkContext->getQuantity()->willReturn($quantity);
 
-
         for ($i = 1; $i <= $quantity; $i++) {
             $bulkContext->getContext()->willReturn($context->getWrappedObject());
-            $generator->generate($context->getWrappedObject())->willReturn($product);
+            $generator->generate($context->getWrappedObject())->willReturn($product->getWrappedObject());
 
             $entityManager->persist($product->getWrappedObject())->shouldBeCalled();
 

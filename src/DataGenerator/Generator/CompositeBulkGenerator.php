@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator;
 
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\BulkContextInterface;
+
 final class CompositeBulkGenerator implements BulkGeneratorInterface
 {
     /** @var BulkGeneratorInterface[] */
@@ -25,5 +27,9 @@ final class CompositeBulkGenerator implements BulkGeneratorInterface
         foreach ($this->generators as $generator) {
             $generator->generate();
         }
+    }
+
+    public function setContext(BulkContextInterface $context): void
+    {
     }
 }

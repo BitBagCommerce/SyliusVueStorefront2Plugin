@@ -20,7 +20,7 @@ final class BulkGenerator implements BulkGeneratorInterface
 
     private GeneratorInterface $generator;
 
-    private BulkContextInterface $bulkContext;
+    private ?BulkContextInterface $bulkContext = null;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -37,6 +37,10 @@ final class BulkGenerator implements BulkGeneratorInterface
 
     public function generate(): void
     {
+        if (!$this->bulkContext instanceof BulkContextInterface) {
+            return;
+        }
+
         $io = $this->bulkContext->getIO();
 
         $io->info(sprintf(
