@@ -11,15 +11,15 @@ namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGen
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\BulkContext\BulkContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\ProductContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\WishlistContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\ProductBulkGenerator;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\WishlistBulkGenerator;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\EntityGenerator\GeneratorInterface;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
-use Sylius\Component\Core\Model\ProductInterface;
 
-class ProductBulkGeneratorSpec extends ObjectBehavior
+class WishlistBulkGeneratorSpec extends ObjectBehavior
 {
     public function let(
         EntityManagerInterface $entityManager,
@@ -30,17 +30,17 @@ class ProductBulkGeneratorSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(ProductBulkGenerator::class);
+        $this->shouldHaveType(WishlistBulkGenerator::class);
     }
 
     public function it_generates(
         BulkContextInterface $context,
-        ProductContextInterface $entityContext,
+        WishlistContextInterface $entityContext,
         GeneratorInterface $generator,
-        ProductInterface $product,
+        WishlistInterface $wishlist,
         EntityManagerInterface $entityManager,
     ): void {
-        $entityName = 'Product';
+        $entityName = 'Wishlist';
         $quantity = 100;
         $flushAfter = 10;
 
@@ -50,9 +50,9 @@ class ProductBulkGeneratorSpec extends ObjectBehavior
         $context->getQuantity()->willReturn($quantity);
 
         for ($i = 1; $i <= $quantity; $i++) {
-            $generator->generate($entityContext->getWrappedObject())->willReturn($product->getWrappedObject());
+            $generator->generate($entityContext->getWrappedObject())->willReturn($wishlist->getWrappedObject());
 
-            $entityManager->persist($product->getWrappedObject())->shouldBeCalled();
+            $entityManager->persist($wishlist->getWrappedObject())->shouldBeCalled();
 
             if ($i % $flushAfter === 0) {
                 $entityManager->flush()->shouldBeCalled();

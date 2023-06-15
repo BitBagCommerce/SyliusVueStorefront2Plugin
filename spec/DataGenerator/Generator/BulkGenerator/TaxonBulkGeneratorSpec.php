@@ -11,15 +11,15 @@ namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGen
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\BulkContext\BulkContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\ProductContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\TaxonContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\ProductBulkGenerator;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\TaxonBulkGenerator;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\EntityGenerator\GeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
-use Sylius\Component\Core\Model\ProductInterface;
+use Sylius\Component\Core\Model\TaxonInterface;
 
-class ProductBulkGeneratorSpec extends ObjectBehavior
+class TaxonBulkGeneratorSpec extends ObjectBehavior
 {
     public function let(
         EntityManagerInterface $entityManager,
@@ -30,17 +30,17 @@ class ProductBulkGeneratorSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(ProductBulkGenerator::class);
+        $this->shouldHaveType(TaxonBulkGenerator::class);
     }
 
     public function it_generates(
         BulkContextInterface $context,
-        ProductContextInterface $entityContext,
+        TaxonContextInterface $entityContext,
         GeneratorInterface $generator,
-        ProductInterface $product,
+        TaxonInterface $taxon,
         EntityManagerInterface $entityManager,
     ): void {
-        $entityName = 'Product';
+        $entityName = 'Taxon';
         $quantity = 100;
         $flushAfter = 10;
 
@@ -50,9 +50,9 @@ class ProductBulkGeneratorSpec extends ObjectBehavior
         $context->getQuantity()->willReturn($quantity);
 
         for ($i = 1; $i <= $quantity; $i++) {
-            $generator->generate($entityContext->getWrappedObject())->willReturn($product->getWrappedObject());
+            $generator->generate($entityContext->getWrappedObject())->willReturn($taxon->getWrappedObject());
 
-            $entityManager->persist($product->getWrappedObject())->shouldBeCalled();
+            $entityManager->persist($taxon->getWrappedObject())->shouldBeCalled();
 
             if ($i % $flushAfter === 0) {
                 $entityManager->flush()->shouldBeCalled();

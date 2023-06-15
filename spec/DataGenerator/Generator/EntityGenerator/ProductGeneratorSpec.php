@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\EntityGenerator;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\ProductContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\TaxonContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ChannelPricingFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductVariantFactoryInterface;
@@ -76,5 +78,11 @@ class ProductGeneratorSpec extends ObjectBehavior
             ->willReturn($product);
 
         $this->generate($context);
+    }
+
+    public function it_throws_exception_on_invalid_context(TaxonContextInterface $context): void
+    {
+        $this->shouldThrow(InvalidContextException::class)
+            ->during('generate', [$context]);
     }
 }
