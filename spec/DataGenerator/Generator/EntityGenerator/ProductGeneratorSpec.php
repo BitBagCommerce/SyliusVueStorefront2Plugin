@@ -7,13 +7,13 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\EntityGenerator;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ProductContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\ProductContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ChannelPricingFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductVariantFactoryInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\ProductGenerator;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\EntityGenerator\ProductGenerator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Component\Core\Model\ChannelInterface;
