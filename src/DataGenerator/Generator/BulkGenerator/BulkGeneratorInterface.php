@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -8,8 +7,13 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator;
 
-interface ContextInterface
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
+
+interface BulkGeneratorInterface
 {
+    const FLUSH_AFTER = 100;
+
+    public function generate(ContextInterface $context): void;
 }

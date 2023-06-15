@@ -10,12 +10,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ConsoleCommand;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\BulkContext;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ProductContext;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\TaxonContext;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\WishlistContext;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGeneratorInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\CompositeBulkGenerator;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\BulkGeneratorInterface;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\Console\Command\Command;
@@ -32,40 +29,16 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
 
     private ChannelRepositoryInterface $channelRepository;
 
-    private BulkGeneratorInterface $productBulkGenerator;
-
-    private BulkGeneratorInterface $taxonBulkGenerator;
-
-    private BulkGeneratorInterface $wishlistBulkGenerator;
-
-    private ChannelInterface $channel;
-
-    private int $productsQty = 0;
-
-    private int $taxonsQty = 0;
-
-    private int $wishlistsQty = 0;
-
-    private int $productsPerTaxonQty = 0;
-
-    private int $maxTaxonLevel = 0;
-
-    private int $maxChildrenPerTaxonLevel = 0;
-
-    private int $productsPerWishlistQty = 0;
+    private BulkGeneratorInterface $compositeBulkGenerator;
 
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
-        BulkGeneratorInterface $productBulkGenerator,
-        BulkGeneratorInterface $taxonBulkGenerator,
-        BulkGeneratorInterface $wishlistBulkGenerator
+        BulkGeneratorInterface $compositeBulkGenerator,
     ) {
         parent::__construct();
 
         $this->channelRepository = $channelRepository;
-        $this->productBulkGenerator = $productBulkGenerator;
-        $this->taxonBulkGenerator = $taxonBulkGenerator;
-        $this->wishlistBulkGenerator = $wishlistBulkGenerator;
+        $this->compositeBulkGenerator = $compositeBulkGenerator;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -78,25 +51,15 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
             return 0;
         }
 
-        $this->gatherInputParams();
+        $context = $this->gatherInputParams();
 
         $this->io->info(sprintf(
             '%s Generating data for channel %s...',
                 (new \DateTime())->format('Y-m-d H:i:s'),
-                $this->channel->getCode()
+                $context->getChannel()->getCode()
         ));
 
-        $this->setProductBulkGeneratorContext();
-        $this->setTaxonBulkGeneratorContext();
-        $this->setWishlistBulkGeneratorContext();
-
-        $compositeBulkGenerator = new CompositeBulkGenerator([
-            $this->productBulkGenerator,
-            $this->taxonBulkGenerator,
-            $this->wishlistBulkGenerator,
-        ]);
-
-        $compositeBulkGenerator->generate();
+        $this->compositeBulkGenerator->generate($context);
 
         $this->io->info(sprintf('%s Command finished', (new \DateTime())->format('Y-m-d H:i:s')));
 
@@ -114,39 +77,6 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
             'This command must not be executed on production environment. Are you sure you want to proceed?',
             false
         );
-    }
-
-    private function gatherInputParams(): void
-    {
-        $this->channel = $this->askForChannel();
-        $this->productsQty = $this->askForInteger('Products', self::DEFAULT_PRODUCTS_QTY);
-        $this->taxonsQty = $this->askForInteger('Taxons', self::DEFAULT_TAXONS_QTY);
-        $this->wishlistsQty = $this->askForInteger('Wishlists', self::DEFAULT_WISHLISTS_QTY);
-
-        if ($this->taxonsQty > 0) {
-            $this->maxTaxonLevel = $this->askForInteger(
-                'Taxon max depth',
-                self::DEFAULT_MAX_TAXON_LEVEL
-            );
-            $this->maxChildrenPerTaxonLevel = $this->askForInteger(
-                'Taxon children per level',
-                self:: DEFAULT_MAX_CHILDREN_PER_TAXON_LEVEL
-            );
-
-            if ($this->productsQty > 0) {
-                $this->productsPerTaxonQty = $this->askForInteger(
-                    'Max products per taxon',
-                    self::DEFAULT_PRODUCTS_PER_TAXON_QTY
-                );
-            }
-        }
-
-        if ($this->wishlistsQty > 0 && $this->productsQty > 0) {
-            $this->productsPerWishlistQty = $this->askForInteger(
-                'Max products per wishlist',
-                self::DEFAULT_PRODUCTS_PER_WISHLIST_QTY
-            );
-        }
     }
 
     private function askForInteger(string $subject, int $default): int
@@ -174,36 +104,52 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
         return $channels[$channelCode];
     }
 
-    private function setProductBulkGeneratorContext(): void
+    private function gatherInputParams(): DataGeneratorCommandContextInterface
     {
-        $productContext = new BulkContext(
-            $this->productsQty,
+        $channel = $this->askForChannel();
+        $productsQty = $this->askForInteger('Products', self::DEFAULT_PRODUCTS_QTY);
+        $taxonsQty = $this->askForInteger('Taxons', self::DEFAULT_TAXONS_QTY);
+        $wishlistsQty = $this->askForInteger('Wishlists', self::DEFAULT_WISHLISTS_QTY);
+        $productsPerTaxonQty = 0;
+        $maxTaxonLevel = 0;
+        $maxChildrenPerTaxonLevel = 0;
+        $productsPerWishlistQty = 0;
+
+        if ($taxonsQty > 0) {
+            $maxTaxonLevel = $this->askForInteger(
+                'Taxon max depth',
+                self::DEFAULT_MAX_TAXON_LEVEL
+            );
+            $maxChildrenPerTaxonLevel = $this->askForInteger(
+                'Taxon children per level',
+                self:: DEFAULT_MAX_CHILDREN_PER_TAXON_LEVEL
+            );
+
+            if ($productsQty > 0) {
+                $productsPerTaxonQty = $this->askForInteger(
+                    'Max products per taxon',
+                    self::DEFAULT_PRODUCTS_PER_TAXON_QTY
+                );
+            }
+        }
+
+        if ($wishlistsQty > 0 && $productsQty > 0) {
+            $productsPerWishlistQty = $this->askForInteger(
+                'Max products per wishlist',
+                self::DEFAULT_PRODUCTS_PER_WISHLIST_QTY
+            );
+        }
+
+        return new DataGeneratorCommandContext(
             $this->io,
-            new ProductContext($this->channel)
+            $channel,
+            $productsQty,
+            $taxonsQty,
+            $wishlistsQty,
+            $productsPerTaxonQty,
+            $maxTaxonLevel,
+            $maxChildrenPerTaxonLevel,
+            $productsPerWishlistQty,
         );
-
-        $this->productBulkGenerator->setContext($productContext);
-    }
-
-    private function setTaxonBulkGeneratorContext(): void
-    {
-        $taxonContext = new BulkContext(
-            $this->taxonsQty,
-            $this->io,
-            new TaxonContext($this->maxTaxonLevel, $this->maxChildrenPerTaxonLevel)
-        );
-
-        $this->taxonBulkGenerator->setContext($taxonContext);
-    }
-
-    private function setWishlistBulkGeneratorContext(): void
-    {
-        $wishlistContext = new BulkContext(
-            $this->wishlistsQty,
-            $this->io,
-            new WishlistContext($this->channel)
-        );
-
-        $this->wishlistBulkGenerator->setContext($wishlistContext);
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -8,11 +7,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext;
 
-use Sylius\Component\Core\Model\ChannelInterface;
-
-interface ProductContextInterface extends ContextInterface
+interface TaxonContextInterface extends EntityContextInterface
 {
-    public function getChannel(): ChannelInterface;
+    public function getMaxTaxonLevel(): int;
+
+    public function getMaxChildrenPerTaxonLevel(): int;
 }

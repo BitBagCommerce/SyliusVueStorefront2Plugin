@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -8,11 +7,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext;
 
 use Sylius\Component\Core\Model\ChannelInterface;
 
-class WishlistContext implements WishlistContextInterface
+class ProductContext implements ProductContextInterface
 {
     private ChannelInterface $channel;
 
@@ -28,6 +27,6 @@ class WishlistContext implements WishlistContextInterface
 
     public function entityName(): string
     {
-        return 'Wishlist';
+        return 'Product';
     }
 }

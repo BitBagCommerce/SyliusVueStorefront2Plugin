@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -8,10 +7,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\EntityGenerator;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ProductContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\EntityContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\ProductContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ChannelPricingFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductVariantFactoryInterface;
@@ -40,9 +40,11 @@ final class ProductGenerator implements GeneratorInterface
         $this->faker = Factory::create();
     }
 
-    public function generate(ContextInterface $context): ProductInterface
+    public function generate(EntityContextInterface $context): ProductInterface
     {
-        assert($context instanceof ProductContextInterface);
+        if (!$context instanceof ProductContextInterface) {
+            throw new InvalidContextException();
+        }
 
         $channelPricing = $this->channelPricingFactory->create(
             $this->faker->randomNumber(),

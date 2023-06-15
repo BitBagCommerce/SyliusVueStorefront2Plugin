@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -8,15 +7,8 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator;
 
-use Symfony\Component\Console\Style\SymfonyStyle;
-
-interface BulkContextInterface
+final class ProductBulkGenerator extends AbstractBulkGenerator
 {
-    public function getQuantity(): int;
-
-    public function getIO(): SymfonyStyle;
-
-    public function getContext(): ContextInterface;
 }

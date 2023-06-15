@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -8,19 +7,19 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\BulkContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\BulkContext\BulkContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\EntityGenerator\GeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class BulkGenerator implements BulkGeneratorInterface
+abstract class AbstractBulkGenerator implements BulkGeneratorInterface
 {
     private EntityManagerInterface $entityManager;
 
     private GeneratorInterface $generator;
-
-    private ?BulkContextInterface $bulkContext = null;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -30,31 +29,26 @@ final class BulkGenerator implements BulkGeneratorInterface
         $this->generator = $generator;
     }
 
-    public function setContext(BulkContextInterface $context): void
+    public function generate(ContextInterface $context): void
     {
-        $this->bulkContext = $context;
-    }
-
-    public function generate(): void
-    {
-        if (!$this->bulkContext instanceof BulkContextInterface) {
-            return;
+        if (!$context instanceof BulkContextInterface) {
+            throw new InvalidContextException();
         }
 
-        $io = $this->bulkContext->getIO();
+        $io = $context->getIO();
 
         $io->info(sprintf(
             '%s Generating %ss',
             (new \DateTime())->format('Y-m-d H:i:s'),
-            $this->bulkContext->getContext()->entityName(),
+            $context->getEntityContext()->entityName(),
         ));
 
-        $quantity = $this->bulkContext->getQuantity();
+        $quantity = $context->getQuantity();
 
         $io->progressStart($quantity);
 
         for ($i = 1; $i <= $quantity; $i++) {
-            $object = $this->generator->generate($this->bulkContext->getContext());
+            $object = $this->generator->generate($context->getEntityContext());
 
             $this->entityManager->persist($object);
             $io->progressAdvance();

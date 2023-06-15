@@ -8,8 +8,9 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext;
 
-interface ContextInterface
+interface EntityContextInterface
 {
+    public function entityName(): string;
 }

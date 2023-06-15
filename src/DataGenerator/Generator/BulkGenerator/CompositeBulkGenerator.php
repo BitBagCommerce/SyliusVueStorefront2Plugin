@@ -1,0 +1,39 @@
+<?php
+/*
+ * This file was created by developers working at BitBag
+ * Do you need more information about us and what we do? Visit our https://bitbag.io website!
+ * We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+*/
+
+declare(strict_types=1);
+
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator;
+
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Builder\BulkGeneratorContextBuilder;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
+
+final class CompositeBulkGenerator implements BulkGeneratorInterface
+{
+    /** @var iterable|BulkGeneratorInterface[] */
+    private iterable $generators;
+
+    /** @param iterable|BulkGeneratorInterface[] $generators */
+    public function __construct(iterable $generators) {
+        $this->generators = $generators;
+    }
+
+    public function generate(ContextInterface $context): void
+    {
+        if (!$context instanceof DataGeneratorCommandContextInterface) {
+            throw new InvalidContextException();
+        }
+
+        foreach ($this->generators as $generator) {
+            $bulkContext = BulkGeneratorContextBuilder::buildFromCommandContext($context, $generator);
+
+            $generator->generate($bulkContext);
+        }
+    }
+}

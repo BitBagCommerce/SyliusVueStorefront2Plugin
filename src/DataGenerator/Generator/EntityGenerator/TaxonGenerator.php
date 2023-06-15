@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -8,11 +7,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\EntityGenerator;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\TaxonContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\EntityContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\TaxonContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\TaxonRepositoryInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\TaxonFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\TaxonTranslationFactory;
 use Faker\Factory;
@@ -36,9 +36,11 @@ final class TaxonGenerator implements GeneratorInterface
         $this->faker = Factory::create();
     }
 
-    public function generate(ContextInterface $context): TaxonInterface
+    public function generate(EntityContextInterface $context): TaxonInterface
     {
-        assert($context instanceof TaxonContextInterface);
+        if (!$context instanceof TaxonContextInterface) {
+            throw new InvalidContextException();
+        }
 
         $translation = TaxonTranslationFactory::create(
             $this->faker->sentence(3),

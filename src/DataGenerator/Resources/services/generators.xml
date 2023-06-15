@@ -19,7 +19,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\ProductGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\EntityGenerator\ProductGenerator"
         >
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.product_factory" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.product_variant_factory" />
@@ -28,7 +28,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.taxon_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\TaxonGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\EntityGenerator\TaxonGenerator"
         >
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.taxon_factory" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.repository.taxon_repository" />
@@ -36,33 +36,43 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\WishlistGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\EntityGenerator\WishlistGenerator"
         >
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.wishlist_factory" />
         </service>
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_bulk_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\ProductBulkGenerator"
         >
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_generator" />
+            <tag name="data_generator.bulk_generator" />
         </service>
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.taxon_bulk_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\TaxonBulkGenerator"
         >
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.taxon_generator" />
+            <tag name="data_generator.bulk_generator" />
         </service>
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_bulk_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\WishlistBulkGenerator"
         >
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_generator" />
+            <tag name="data_generator.bulk_generator" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.composite_bulk_generator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\CompositeBulkGenerator"
+        >
+            <argument type="tagged_iterator" tag="data_generator.bulk_generator"/>
         </service>
 
     </services>
