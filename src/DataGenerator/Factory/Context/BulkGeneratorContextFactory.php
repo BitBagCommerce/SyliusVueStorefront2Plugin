@@ -17,9 +17,9 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\T
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\WishlistContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\UnknownBulkDataGeneratorException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\BulkGeneratorInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\ProductBulkGenerator;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\TaxonBulkGenerator;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\WishlistBulkGenerator;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\ProductBulkGeneratorInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\TaxonBulkGeneratorInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\WishlistBulkGeneratorInterface;
 
 class BulkGeneratorContextFactory implements BulkGeneratorContextFactoryInterface
 {
@@ -27,19 +27,27 @@ class BulkGeneratorContextFactory implements BulkGeneratorContextFactoryInterfac
         DataGeneratorCommandContextInterface $commandContext,
         BulkGeneratorInterface $bulkGenerator,
     ): BulkContextInterface {
-        return match ($bulkGenerator::class) {
-            ProductBulkGenerator::class => $this->productBulkGeneratorContext($commandContext),
-            TaxonBulkGenerator::class => $this->taxonBulkGeneratorContext($commandContext),
-            WishlistBulkGenerator::class => $this->wishlistBulkGeneratorContext($commandContext),
-            default => throw new UnknownBulkDataGeneratorException(),
-        };
+        foreach (class_implements($bulkGenerator) as $interface) {
+            $context = match ($interface) {
+                ProductBulkGeneratorInterface::class => $this->productBulkGeneratorContext($commandContext),
+                TaxonBulkGeneratorInterface::class => $this->taxonBulkGeneratorContext($commandContext),
+                WishlistBulkGeneratorInterface::class => $this->wishlistBulkGeneratorContext($commandContext),
+                default => null,
+            };
+
+            if ($context instanceof BulkContextInterface) {
+                return $context;
+            }
+        }
+
+        throw new UnknownBulkDataGeneratorException();
     }
 
     private function productBulkGeneratorContext(
         DataGeneratorCommandContextInterface $commandContext,
     ): BulkContextInterface {
         return new BulkContext(
-            $commandContext->getWishlistsQty(),
+            $commandContext->getProductsQty(),
             $commandContext->getIO(),
             new ProductContext($commandContext->getChannel()),
         );
