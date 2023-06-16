@@ -12,6 +12,7 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity;
 
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class WishlistFactory implements WishlistFactoryInterface
@@ -26,13 +27,15 @@ final class WishlistFactory implements WishlistFactoryInterface
     public function create(
         string $name,
         string $token,
-        ChannelInterface $channel
+        ChannelInterface $channel,
+        ShopUserInterface $shopUser,
     ): WishlistInterface {
         /** @var WishlistInterface $wishlist */
         $wishlist = $this->wishlistFactory->createNew();
         $wishlist->setName($name);
         $wishlist->setToken($token);
         $wishlist->setChannel($channel);
+        $wishlist->setShopUser($shopUser);
 
         return $wishlist;
     }

@@ -13,6 +13,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\WishlistFacto
 use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class WishlistFactorySpec extends ObjectBehavior
@@ -30,6 +31,7 @@ final class WishlistFactorySpec extends ObjectBehavior
     public function it_creates(
         FactoryInterface $wishlistFactory,
         ChannelInterface $channel,
+        ShopUserInterface $shopUser,
     ): void {
         $name = 'My test wishlist';
         $token = md5('my test token to for my test wishlist');
@@ -40,7 +42,8 @@ final class WishlistFactorySpec extends ObjectBehavior
         $wishlist->setName($name);
         $wishlist->setToken($token);
         $wishlist->setChannel($channel->getWrappedObject());
+        $wishlist->setShopUser($shopUser->getWrappedObject());
 
-        $this->create($name, $token, $channel);
+        $this->create($name, $token, $channel, $shopUser);
     }
 }

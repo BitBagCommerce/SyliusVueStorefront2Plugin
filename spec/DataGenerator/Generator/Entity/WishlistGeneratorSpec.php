@@ -11,6 +11,7 @@ namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\EntityContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\WishlistContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\UserRepositoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\WishlistFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\WishlistGenerator;
@@ -18,12 +19,15 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Core\Model\ShopUserInterface;
 
 class WishlistGeneratorSpec extends ObjectBehavior
 {
-    public function let(WishlistFactoryInterface $wishlistFactory): void
-    {
-        $this->beConstructedWith($wishlistFactory);
+    public function let(
+        WishlistFactoryInterface $wishlistFactory,
+        UserRepositoryInterface $userRepository,
+    ): void {
+        $this->beConstructedWith($wishlistFactory, $userRepository);
     }
 
     public function it_is_initializable(): void
@@ -33,17 +37,21 @@ class WishlistGeneratorSpec extends ObjectBehavior
 
     public function it_generates(
         WishlistFactoryInterface $wishlistFactory,
+        UserRepositoryInterface $userRepository,
         WishlistContextInterface $context,
         ChannelInterface $channel,
+        ShopUserInterface $shopUser,
         WishlistInterface $wishlist,
     ): void {
         $context->getChannel()->willReturn($channel->getWrappedObject());
+        $userRepository->getRandomShopUser()->willReturn($shopUser->getWrappedObject());
 
         $wishlistFactory
             ->create(
                 Argument::type('string'),
                 Argument::type('string'),
                 $channel->getWrappedObject(),
+                $shopUser->getWrappedObject(),
             )
             ->willReturn($wishlist);
 

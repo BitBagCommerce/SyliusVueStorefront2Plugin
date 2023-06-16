@@ -8,18 +8,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
-interface WishlistFactoryInterface
+interface UserRepositoryInterface
 {
-    public function create(
-        string $name,
-        string $token,
-        ChannelInterface $channel,
-        ShopUserInterface $shopUser,
-    ): WishlistInterface;
+    public function getRandomShopUser(): ShopUserInterface;
 }

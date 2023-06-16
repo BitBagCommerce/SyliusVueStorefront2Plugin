@@ -21,5 +21,16 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 </service>
             </argument>
         </service>
+
+        <service id="bitbag.sylius_vue_storefront2_plugin.data_generator.repository.user_repository"
+                 class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\UserRepository">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service">
+                <service class="Doctrine\ORM\Mapping\ClassMetadata">
+                    <argument>%sylius.model.shop_user.class%</argument>
+                    <factory service="sylius.manager.shop_user" method="getClassMetadata"/>
+                </service>
+            </argument>
+        </service>
     </services>
 </container>
