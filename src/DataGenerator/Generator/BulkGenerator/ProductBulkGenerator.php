@@ -9,6 +9,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator;
 
-final class ProductBulkGenerator extends AbstractBulkGenerator
+final class ProductBulkGenerator extends AbstractBulkGenerator implements ProductBulkGeneratorInterface
 {
 }
