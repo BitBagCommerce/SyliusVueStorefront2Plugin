@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Builder;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\BulkContext\BulkContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\BulkContext\BulkContextInterface;
@@ -20,62 +20,51 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\Bulk
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\ProductBulkGenerator;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\TaxonBulkGenerator;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\WishlistBulkGenerator;
-use Sylius\Component\Core\Model\ChannelInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
-class BulkGeneratorContextBuilder implements BulkGeneratorContextBuilderInterface
+class BulkGeneratorContextFactory implements BulkGeneratorContextFactoryInterface
 {
-    public static function buildFromCommandContext(
+    public function fromCommandContext(
         DataGeneratorCommandContextInterface $commandContext,
         BulkGeneratorInterface $bulkGenerator,
     ): BulkContextInterface {
         return match ($bulkGenerator::class) {
-            ProductBulkGenerator::class => self::productBulkGeneratorContext(
-                $commandContext->getProductsQty(),
-                $commandContext->getIO(),
-                $commandContext->getChannel(),
-            ),
-            TaxonBulkGenerator::class => self::taxonBulkGeneratorContext(
-                $commandContext->getTaxonsQty(),
-                $commandContext->getIO(),
-                $commandContext->getMaxTaxonLevel(),
-                $commandContext->getMaxChildrenPerTaxonLevel(),
-            ),
-            WishlistBulkGenerator::class => self::wishlistBulkGeneratorContext(
-                $commandContext->getWishlistsQty(),
-                $commandContext->getIO(),
-                $commandContext->getChannel(),
-            ),
+            ProductBulkGenerator::class => $this->productBulkGeneratorContext($commandContext),
+            TaxonBulkGenerator::class => $this->taxonBulkGeneratorContext($commandContext),
+            WishlistBulkGenerator::class => $this->wishlistBulkGeneratorContext($commandContext),
             default => throw new UnknownBulkDataGeneratorException(),
         };
     }
 
-    private static function productBulkGeneratorContext(
-        int $quantity,
-        SymfonyStyle $io,
-        ChannelInterface $channel,
-    ): BulkContextInterface {
-        return new BulkContext($quantity, $io, new ProductContext($channel));
-    }
-
-    private static function taxonBulkGeneratorContext(
-        int $quantity,
-        SymfonyStyle $io,
-        int $maxTaxonLevel,
-        int $maxChildrenPerTaxonLevel,
+    private function productBulkGeneratorContext(
+        DataGeneratorCommandContextInterface $commandContext,
     ): BulkContextInterface {
         return new BulkContext(
-            $quantity,
-            $io,
-            new TaxonContext($maxTaxonLevel, $maxChildrenPerTaxonLevel)
+            $commandContext->getWishlistsQty(),
+            $commandContext->getIO(),
+            new ProductContext($commandContext->getChannel()),
         );
     }
 
-    private static function wishlistBulkGeneratorContext(
-        int $quantity,
-        SymfonyStyle $io,
-        ChannelInterface $channel,
+    private function taxonBulkGeneratorContext(
+        DataGeneratorCommandContextInterface $commandContext,
     ): BulkContextInterface {
-        return new BulkContext($quantity, $io, new WishlistContext($channel));
+        return new BulkContext(
+            $commandContext->getTaxonsQty(),
+            $commandContext->getIO(),
+            new TaxonContext(
+                $commandContext->getMaxTaxonLevel(),
+                $commandContext->getMaxChildrenPerTaxonLevel(),
+            )
+        );
+    }
+
+    private function wishlistBulkGeneratorContext(
+        DataGeneratorCommandContextInterface $commandContext,
+    ): BulkContextInterface {
+        return new BulkContext(
+            $commandContext->getWishlistsQty(),
+            $commandContext->getIO(),
+            new WishlistContext($commandContext->getChannel()),
+        );
     }
 }

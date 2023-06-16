@@ -9,19 +9,25 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Builder\BulkGeneratorContextBuilder;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context\BulkGeneratorContextFactoryInterface;
 
 final class CompositeBulkGenerator implements BulkGeneratorInterface
 {
     /** @var iterable|BulkGeneratorInterface[] */
     private iterable $generators;
 
+    private BulkGeneratorContextFactoryInterface $bulkGeneratorContextFactory;
+
     /** @param iterable|BulkGeneratorInterface[] $generators */
-    public function __construct(iterable $generators) {
+    public function __construct(
+        iterable $generators,
+        BulkGeneratorContextFactoryInterface $bulkGeneratorContextFactory,
+    ) {
         $this->generators = $generators;
+        $this->bulkGeneratorContextFactory = $bulkGeneratorContextFactory;
     }
 
     public function generate(ContextInterface $context): void
@@ -31,7 +37,7 @@ final class CompositeBulkGenerator implements BulkGeneratorInterface
         }
 
         foreach ($this->generators as $generator) {
-            $bulkContext = BulkGeneratorContextBuilder::buildFromCommandContext($context, $generator);
+            $bulkContext = $this->bulkGeneratorContextFactory->fromCommandContext($context, $generator);
 
             $generator->generate($bulkContext);
         }

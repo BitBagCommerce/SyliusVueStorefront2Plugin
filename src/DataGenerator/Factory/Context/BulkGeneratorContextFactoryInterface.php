@@ -7,15 +7,15 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Builder;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\BulkContext\BulkContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\BulkGeneratorInterface;
 
-interface BulkGeneratorContextBuilderInterface
+interface BulkGeneratorContextFactoryInterface
 {
-    public static function buildFromCommandContext(
+    public function fromCommandContext(
         DataGeneratorCommandContextInterface $commandContext,
         BulkGeneratorInterface $bulkGenerator,
     ): BulkContextInterface;

@@ -46,5 +46,10 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist" />
         </service>
 
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.bulk_generator_context_factory"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context\BulkGeneratorContextFactory"
+        />
+
     </services>
 </container>
