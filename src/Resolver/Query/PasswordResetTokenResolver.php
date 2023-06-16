@@ -9,7 +9,6 @@
 
 declare(strict_types=1);
 
-
 namespace BitBag\SyliusVueStorefront2Plugin\Resolver\Query;
 
 use ApiPlatform\GraphQl\Resolver\QueryItemResolverInterface;
@@ -25,10 +24,10 @@ class PasswordResetTokenResolver implements QueryItemResolverInterface
         $this->userRepository = $userRepository;
     }
 
-
     public function __invoke($item, array $context): ?ShopUserInterface
     {
         $token = $context['args']['passwordResetToken'];
+        /** @var ?ShopUserInterface $user */
         $user = $this->userRepository->findOneBy(['passwordResetToken' => $token]);
 
         if (null !== $user) {
