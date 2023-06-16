@@ -62,6 +62,7 @@ class PasswordResetTokenResolverSpec extends ObjectBehavior
 
         $userRepository->findOneBy(['passwordResetToken' => $token])->willReturn(null);
 
-        $this->__invoke(null, $context)->shouldReturn(null);
+        $this->shouldThrow(\RuntimeException::class)
+            ->during('__invoke', [null, $context]);
     }
 }

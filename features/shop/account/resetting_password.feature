@@ -34,4 +34,4 @@ Feature: Resetting one customer password
         And I prepare check reset password token operation for invalid token
         And I send that GraphQL request
         Then I should receive a JSON response
-        And This response should contain pattern '/^\{"data":\{"password_reset_tokenUser":null\}\}$/'
+        And This response should contain pattern '/"data":\{"password_reset_tokenUser":null\}/'

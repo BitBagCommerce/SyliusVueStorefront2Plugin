@@ -24,7 +24,7 @@ class PasswordResetTokenResolver implements QueryItemResolverInterface
         $this->userRepository = $userRepository;
     }
 
-    public function __invoke($item, array $context): ?ShopUserInterface
+    public function __invoke($item, array $context): ShopUserInterface
     {
         $token = $context['args']['passwordResetToken'];
         /** @var ?ShopUserInterface $user */
@@ -34,6 +34,6 @@ class PasswordResetTokenResolver implements QueryItemResolverInterface
             return $user;
         }
 
-        return null;
+        throw  new \RuntimeException('Token not found');
     }
 }
