@@ -9,17 +9,17 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\BulkContext\BulkContext;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\BulkContext\BulkContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\ProductContext;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\TaxonContext;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\EntityContext\WishlistContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\ProductContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\TaxonContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\WishlistContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\UnknownBulkDataGeneratorException;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\BulkGeneratorInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\ProductBulkGeneratorInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\TaxonBulkGeneratorInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\WishlistBulkGeneratorInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\BulkGeneratorInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\ProductBulkGeneratorInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\TaxonBulkGeneratorInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\WishlistBulkGeneratorInterface;
 
 class BulkGeneratorContextFactory implements BulkGeneratorContextFactoryInterface
 {
@@ -27,7 +27,9 @@ class BulkGeneratorContextFactory implements BulkGeneratorContextFactoryInterfac
         DataGeneratorCommandContextInterface $commandContext,
         BulkGeneratorInterface $bulkGenerator,
     ): BulkContextInterface {
-        foreach (class_implements($bulkGenerator) as $interface) {
+        $interfaces = class_implements($bulkGenerator);
+        $interfaces = is_array($interfaces) ? $interfaces : [$interfaces];
+        foreach ($interfaces as $interface) {
             $context = match ($interface) {
                 ProductBulkGeneratorInterface::class => $this->productBulkGeneratorContext($commandContext),
                 TaxonBulkGeneratorInterface::class => $this->taxonBulkGeneratorContext($commandContext),
