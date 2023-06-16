@@ -13,7 +13,7 @@
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\EntityGenerator\ProductGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\ProductGenerator"
         >
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.product_factory" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.product_variant_factory" />
@@ -22,7 +22,7 @@
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.taxon_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\EntityGenerator\TaxonGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\TaxonGenerator"
         >
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.taxon_factory" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.repository.taxon_repository" />
@@ -30,7 +30,7 @@
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\EntityGenerator\WishlistGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\WishlistGenerator"
         >
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.wishlist_factory" />
         </service>
