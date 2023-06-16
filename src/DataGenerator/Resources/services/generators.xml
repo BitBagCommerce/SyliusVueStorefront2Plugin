@@ -37,7 +37,7 @@
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_bulk_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\ProductBulkGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\ProductBulkGenerator"
         >
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_generator" />
@@ -46,7 +46,7 @@
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.taxon_bulk_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\TaxonBulkGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\TaxonBulkGenerator"
         >
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.taxon_generator" />
@@ -55,7 +55,7 @@
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_bulk_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\WishlistBulkGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\WishlistBulkGenerator"
         >
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_generator" />
@@ -64,7 +64,7 @@
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.composite_bulk_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\BulkGenerator\CompositeBulkGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\CompositeBulkGenerator"
         >
             <argument type="tagged_iterator" tag="data_generator.bulk_generator"/>
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.bulk_generator_context_factory" />

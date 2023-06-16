@@ -13,35 +13,35 @@ We are hiring developers from all over the world. Join us and start your new, ex
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.channel_pricing_factory"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ChannelPricingFactory"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ChannelPricingFactory"
         >
             <argument type="service" id="sylius.factory.channel_pricing" />
         </service>
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.product_factory"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductFactory"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ProductFactory"
         >
             <argument type="service" id="sylius.factory.product" />
         </service>
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.product_variant_factory"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\ProductVariantFactory"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ProductVariantFactory"
         >
             <argument type="service" id="sylius.factory.product_variant" />
         </service>
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.taxon_factory"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\TaxonFactory"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\TaxonFactory"
         >
             <argument type="service" id="sylius.custom_factory.taxon" />
         </service>
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.wishlist_factory"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\WishlistFactory"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\WishlistFactory"
         >
             <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist" />
         </service>
