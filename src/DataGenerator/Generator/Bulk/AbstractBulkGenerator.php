@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -13,6 +14,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkContex
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\GeneratorInterface;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
 abstract class AbstractBulkGenerator implements BulkGeneratorInterface
@@ -39,7 +41,7 @@ abstract class AbstractBulkGenerator implements BulkGeneratorInterface
 
         $io->info(sprintf(
             '%s Generating %ss',
-            (new \DateTime())->format('Y-m-d H:i:s'),
+            (new DateTime())->format('Y-m-d H:i:s'),
             $context->getEntityContext()->entityName(),
         ));
 

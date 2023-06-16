@@ -13,12 +13,16 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ConsoleCommand;
 interface BulkDataGeneratorInterface
 {
     const DEFAULT_TAXONS_QTY = 5000;
+
     const DEFAULT_MAX_TAXON_LEVEL = 20;
+
     const DEFAULT_MAX_CHILDREN_PER_TAXON_LEVEL = 5;
 
     const DEFAULT_WISHLISTS_QTY = 10000;
 
     const DEFAULT_PRODUCTS_QTY = 100000;
+
     const DEFAULT_PRODUCTS_PER_TAXON_QTY = 1000;
+
     const DEFAULT_PRODUCTS_PER_WISHLIST_QTY = 1000;
 }

@@ -15,13 +15,21 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class DataGeneratorCommandContext implements DataGeneratorCommandContextInterface
 {
     private SymfonyStyle $io;
+
     private ChannelInterface $channel;
+
     private int $productsQty;
+
     private int $taxonsQty;
+
     private int $wishlistsQty;
+
     private int $productsPerTaxonQty;
+
     private int $maxTaxonLevel;
+
     private int $maxChildrenPerTaxonLevel;
+
     private int $productsPerWishlistQty;
 
     public function __construct(
