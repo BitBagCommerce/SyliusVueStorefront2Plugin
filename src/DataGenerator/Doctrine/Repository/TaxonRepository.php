@@ -39,6 +39,7 @@ final class TaxonRepository extends BaseTaxonRepository implements TaxonReposito
             ->having('COUNT(child) < :maxChildrenPerTaxonLevel')
             ->groupBy('taxon')
             ->orderBy('taxon.level', 'desc')
+            ->addOrderBy('taxon.left', 'asc')
             ->setMaxResults($limit)
             ->setParameter('maxTaxonLevel', $maxTaxonLevel)
             ->setParameter('maxChildrenPerTaxonLevel', $maxChildrenPerTaxonLevel)

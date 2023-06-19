@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository;
 
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\NoShopUserFoundException;
 use Sylius\Bundle\CoreBundle\Doctrine\ORM\UserRepository as BaseUserRepository;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
@@ -25,11 +26,17 @@ final class UserRepository extends BaseUserRepository implements UserRepositoryI
 
         $randomOffset = rand(0, $userCount - 1);
 
-        return $this->createQueryBuilder('u')
+        $result = $this->createQueryBuilder('u')
             ->innerJoin('u.customer', 'customer')
             ->setFirstResult($randomOffset)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
+
+        if ($result instanceof ShopUserInterface) {
+            return $result;
+        }
+
+        throw new NoShopUserFoundException();
     }
 }

@@ -1,0 +1,13 @@
+Sylius\Component\Core\Model\ShopUser:
+    user1:
+        customer: "@customer1"
+        email: "user1@email.com"
+    user2:
+        customer: "@customer2"
+        email: "user2@email.com"
+
+Sylius\Component\Core\Model\Customer:
+    customer1:
+        user: "@user1"
+    customer2:
+        user: "@user2"
