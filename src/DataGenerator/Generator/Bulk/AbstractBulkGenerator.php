@@ -69,6 +69,6 @@ abstract class AbstractBulkGenerator implements BulkGeneratorInterface
     {
         $parts = explode('\\', $className);
 
-        return (string)end($parts);
+        return end($parts);
     }
 }
