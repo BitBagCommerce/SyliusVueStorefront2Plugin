@@ -56,7 +56,7 @@ final class WishlistGeneratorSpec extends ObjectBehavior
             )
             ->willReturn($wishlist);
 
-        $this->generate($context);
+        $this->generate($context)->shouldReturn($wishlist);
     }
 
     public function it_throws_exception_on_invalid_context(EntityContextInterface $context): void

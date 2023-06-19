@@ -59,7 +59,7 @@ final class TaxonGeneratorSpec extends ObjectBehavior
             )
             ->willReturn($taxon->getWrappedObject());
 
-        $this->generate($context);
+        $this->generate($context)->shouldReturn($taxon);
     }
 
     public function it_generates_with_random_parent(
@@ -85,7 +85,7 @@ final class TaxonGeneratorSpec extends ObjectBehavior
             )
             ->willReturn($taxon->getWrappedObject());
 
-        $this->generate($context);
+        $this->generate($context)->shouldReturn($taxon);
     }
 
     public function it_throws_exception_on_invalid_context(EntityContextInterface $context): void

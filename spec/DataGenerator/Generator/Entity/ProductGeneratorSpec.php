@@ -79,7 +79,7 @@ final class ProductGeneratorSpec extends ObjectBehavior
             )
             ->willReturn($product);
 
-        $this->generate($context);
+        $this->generate($context)->shouldReturn($product);
     }
 
     public function it_throws_exception_on_invalid_context(EntityContextInterface $context): void
