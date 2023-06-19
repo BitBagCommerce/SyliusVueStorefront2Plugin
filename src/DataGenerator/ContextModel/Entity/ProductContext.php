@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity;
 
 use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Core\Model\Product;
 
 final class ProductContext implements ProductContextInterface
 {
@@ -26,8 +27,8 @@ final class ProductContext implements ProductContextInterface
         return $this->channel;
     }
 
-    public function entityName(): string
+    public function className(): string
     {
-        return 'Product';
+        return Product::class;
     }
 }

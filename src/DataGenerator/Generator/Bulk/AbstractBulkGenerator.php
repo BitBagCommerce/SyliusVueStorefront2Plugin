@@ -42,7 +42,7 @@ abstract class AbstractBulkGenerator implements BulkGeneratorInterface
         $io->info(sprintf(
             '%s Generating %ss',
             (new DateTime())->format('Y-m-d H:i:s'),
-            $context->getEntityContext()->entityName(),
+            self::retrieveEntityName($context->getEntityContext()->className()),
         ));
 
         $quantity = $context->getQuantity();
@@ -63,5 +63,12 @@ abstract class AbstractBulkGenerator implements BulkGeneratorInterface
         $this->entityManager->flush();
 
         $io->progressFinish();
+    }
+
+    private static function retrieveEntityName(string $className): string
+    {
+        $parts = explode('\\', $className);
+
+        return (string)end($parts);
     }
 }

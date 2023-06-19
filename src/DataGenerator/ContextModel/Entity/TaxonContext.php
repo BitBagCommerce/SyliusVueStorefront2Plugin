@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity;
 
+use Sylius\Component\Core\Model\Taxon;
+
 final class TaxonContext implements TaxonContextInterface
 {
     private int $maxTaxonLevel;
@@ -34,8 +36,8 @@ final class TaxonContext implements TaxonContextInterface
         return $this->maxChildrenPerTaxonLevel;
     }
 
-    public function entityName(): string
+    public function className(): string
     {
-        return 'Taxon';
+        return Taxon::class;
     }
 }

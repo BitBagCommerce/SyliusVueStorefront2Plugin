@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity;
 
+use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
 use Sylius\Component\Core\Model\ChannelInterface;
 
 final class WishlistContext implements WishlistContextInterface
@@ -26,8 +27,8 @@ final class WishlistContext implements WishlistContextInterface
         return $this->channel;
     }
 
-    public function entityName(): string
+    public function className(): string
     {
-        return 'Wishlist';
+        return Wishlist::class;
     }
 }

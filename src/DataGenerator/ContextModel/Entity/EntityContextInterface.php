@@ -12,5 +12,5 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity;
 
 interface EntityContextInterface
 {
-    public function entityName(): string;
+    public function className(): string;
 }

@@ -41,13 +41,13 @@ final class ProductBulkGeneratorSpec extends ObjectBehavior
         ProductInterface $product,
         EntityManagerInterface $entityManager,
     ): void {
-        $entityName = 'Product';
+        $className = Product::class;
         $quantity = 100;
         $flushAfter = 10;
 
         $context->getIO()->shouldBeCalled();
         $context->getEntityContext()->willReturn($entityContext->getWrappedObject());
-        $entityContext->entityName()->willReturn($entityName);
+        $entityContext->className()->willReturn($className);
         $context->getQuantity()->willReturn($quantity);
 
         for ($i = 1; $i <= $quantity; $i++) {
