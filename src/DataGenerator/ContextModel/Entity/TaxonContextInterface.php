@@ -12,6 +12,8 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity;
 
 interface TaxonContextInterface extends EntityContextInterface
 {
+    const DEFAULT_LOCALE = 'en_US';
+
     public function getMaxTaxonLevel(): int;
 
     public function getMaxChildrenPerTaxonLevel(): int;
