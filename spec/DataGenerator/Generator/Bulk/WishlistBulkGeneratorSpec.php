@@ -16,6 +16,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\Wishlist
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\WishlistBulkGenerator;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\GeneratorInterface;
+use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;

@@ -18,6 +18,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\ProductBulkGe
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\GeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
+use Sylius\Component\Core\Model\Product;
 use Sylius\Component\Core\Model\ProductInterface;
 
 final class ProductBulkGeneratorSpec extends ObjectBehavior
