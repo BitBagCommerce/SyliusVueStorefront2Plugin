@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ConsoleCommand;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context\DataGeneratorCommandContextFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\BulkGeneratorInterface;
 use DateTime;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
@@ -32,14 +32,18 @@ final class BulkDataGenerator extends Command implements BulkDataGeneratorInterf
 
     private BulkGeneratorInterface $compositeBulkGenerator;
 
+    private DataGeneratorCommandContextFactoryInterface $commandContextFactory;
+
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
         BulkGeneratorInterface $compositeBulkGenerator,
+        DataGeneratorCommandContextFactoryInterface $commandContextFactory,
     ) {
         parent::__construct();
 
         $this->channelRepository = $channelRepository;
         $this->compositeBulkGenerator = $compositeBulkGenerator;
+        $this->commandContextFactory = $commandContextFactory;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -141,7 +145,7 @@ final class BulkDataGenerator extends Command implements BulkDataGeneratorInterf
             );
         }
 
-        return new DataGeneratorCommandContext(
+        return $this->commandContextFactory->fromInput(
             $this->io,
             $channel,
             $productsQty,

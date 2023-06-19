@@ -17,6 +17,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
                  class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\ConsoleCommand\BulkDataGenerator">
             <argument type="service" id="sylius.repository.channel" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.composite_bulk_generator" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.data_generator_command_context_factory" />
             <tag name="console.command" />
         </service>
     </services>
