@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\UnknownBulkDataGeneratorException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context\BulkGeneratorContextFactory;
@@ -42,7 +42,7 @@ final class BulkGeneratorContextFactorySpec extends ObjectBehavior
         $commandContext->getChannel()->willReturn($channel->getWrappedObject());
 
         $this->fromCommandContext($commandContext->getWrappedObject(), $bulkGenerator->getWrappedObject())
-            ->shouldReturnAnInstanceOf(BulkContextInterface::class);
+            ->shouldReturnAnInstanceOf(BulkGeneratorContextInterface::class);
     }
 
     function it_returns_taxon_bulk_generator_context(
@@ -60,7 +60,7 @@ final class BulkGeneratorContextFactorySpec extends ObjectBehavior
         $commandContext->getMaxChildrenPerTaxonLevel()->willReturn($maxChildrenPerTaxonLevel);
 
         $this->fromCommandContext($commandContext->getWrappedObject(), $bulkGenerator->getWrappedObject())
-            ->shouldReturnAnInstanceOf(BulkContextInterface::class);
+            ->shouldReturnAnInstanceOf(BulkGeneratorContextInterface::class);
     }
 
     function it_returns_wishlist_bulk_generator_context(
@@ -76,7 +76,7 @@ final class BulkGeneratorContextFactorySpec extends ObjectBehavior
         $commandContext->getChannel()->willReturn($channel->getWrappedObject());
 
         $this->fromCommandContext($commandContext->getWrappedObject(), $bulkGenerator->getWrappedObject())
-            ->shouldReturnAnInstanceOf(BulkContextInterface::class);
+            ->shouldReturnAnInstanceOf(BulkGeneratorContextInterface::class);
     }
 
     function it_throws_exception_when_bulk_generator_is_unknown(

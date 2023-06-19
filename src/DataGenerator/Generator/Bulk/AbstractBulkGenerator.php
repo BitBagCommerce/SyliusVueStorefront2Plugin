@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\GeneratorInterface;
@@ -33,7 +33,7 @@ abstract class AbstractBulkGenerator implements BulkGeneratorInterface
 
     public function generate(ContextInterface $context): void
     {
-        if (!$context instanceof BulkContextInterface) {
+        if (!$context instanceof BulkGeneratorContextInterface) {
             throw new InvalidContextException();
         }
 

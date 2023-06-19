@@ -14,7 +14,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterfac
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\EntityContextInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-interface BulkContextInterface extends ContextInterface
+interface BulkGeneratorContextInterface extends ContextInterface
 {
     public function getQuantity(): int;
 

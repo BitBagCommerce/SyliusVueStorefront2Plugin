@@ -13,7 +13,7 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\EntityContextInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class BulkContext implements BulkContextInterface
+final class BulkGeneratorContext implements BulkGeneratorContextInterface
 {
     private int $quantity;
 

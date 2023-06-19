@@ -10,12 +10,12 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkGeneratorContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\EntityContextInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class BulkContextSpec extends ObjectBehavior
+final class BulkGeneratorContextSpec extends ObjectBehavior
 {
     public function let(
         SymfonyStyle $io,
@@ -26,6 +26,6 @@ final class BulkContextSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(BulkContext::class);
+        $this->shouldHaveType(BulkGeneratorContext::class);
     }
 }

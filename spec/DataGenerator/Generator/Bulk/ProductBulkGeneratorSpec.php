@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\ProductContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
@@ -36,7 +36,7 @@ final class ProductBulkGeneratorSpec extends ObjectBehavior
     }
 
     public function it_generates(
-        BulkContextInterface $context,
+        BulkGeneratorContextInterface $context,
         ProductContextInterface $entityContext,
         GeneratorInterface $generator,
         ProductInterface $product,

@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkContext;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkGeneratorContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\ProductContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\TaxonContext;
@@ -27,7 +27,7 @@ final class BulkGeneratorContextFactory implements BulkGeneratorContextFactoryIn
     public function fromCommandContext(
         DataGeneratorCommandContextInterface $commandContext,
         BulkGeneratorInterface $bulkGenerator,
-    ): BulkContextInterface {
+    ): BulkGeneratorContextInterface {
         $interfaces = class_implements($bulkGenerator);
         $interfaces = is_array($interfaces) ? $interfaces : [$interfaces];
         foreach ($interfaces as $interface) {
@@ -38,7 +38,7 @@ final class BulkGeneratorContextFactory implements BulkGeneratorContextFactoryIn
                 default => null,
             };
 
-            if ($context instanceof BulkContextInterface) {
+            if ($context instanceof BulkGeneratorContextInterface) {
                 return $context;
             }
         }
@@ -48,8 +48,8 @@ final class BulkGeneratorContextFactory implements BulkGeneratorContextFactoryIn
 
     private function productBulkGeneratorContext(
         DataGeneratorCommandContextInterface $commandContext,
-    ): BulkContextInterface {
-        return new BulkContext(
+    ): BulkGeneratorContextInterface {
+        return new BulkGeneratorContext(
             $commandContext->getProductsQty(),
             $commandContext->getIO(),
             new ProductContext($commandContext->getChannel()),
@@ -58,8 +58,8 @@ final class BulkGeneratorContextFactory implements BulkGeneratorContextFactoryIn
 
     private function taxonBulkGeneratorContext(
         DataGeneratorCommandContextInterface $commandContext,
-    ): BulkContextInterface {
-        return new BulkContext(
+    ): BulkGeneratorContextInterface {
+        return new BulkGeneratorContext(
             $commandContext->getTaxonsQty(),
             $commandContext->getIO(),
             new TaxonContext(
@@ -71,8 +71,8 @@ final class BulkGeneratorContextFactory implements BulkGeneratorContextFactoryIn
 
     private function wishlistBulkGeneratorContext(
         DataGeneratorCommandContextInterface $commandContext,
-    ): BulkContextInterface {
-        return new BulkContext(
+    ): BulkGeneratorContextInterface {
+        return new BulkGeneratorContext(
             $commandContext->getWishlistsQty(),
             $commandContext->getIO(),
             new WishlistContext($commandContext->getChannel()),
