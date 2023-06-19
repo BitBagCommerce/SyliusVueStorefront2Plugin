@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -19,7 +20,7 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 
-class WishlistBulkGeneratorSpec extends ObjectBehavior
+final class WishlistBulkGeneratorSpec extends ObjectBehavior
 {
     public function let(
         EntityManagerInterface $entityManager,

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -9,7 +10,6 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
@@ -18,7 +18,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\BulkGenerator
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\CompositeBulkGenerator;
 use PhpSpec\ObjectBehavior;
 
-class CompositeBulkGeneratorSpec extends ObjectBehavior
+final class CompositeBulkGeneratorSpec extends ObjectBehavior
 {
     public function let(
         BulkGeneratorInterface $generator1,
@@ -62,7 +62,7 @@ class CompositeBulkGeneratorSpec extends ObjectBehavior
         $this->generate($context);
     }
 
-    public function it_throws_exception_on_invalid_context(BulkContext $context): void
+    public function it_throws_exception_on_invalid_context(BulkContextInterface $context): void
     {
         $this->shouldThrow(InvalidContextException::class)
             ->during('generate', [$context]);

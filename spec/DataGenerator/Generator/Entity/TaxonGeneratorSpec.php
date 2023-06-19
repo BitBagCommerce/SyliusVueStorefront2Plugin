@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -20,7 +21,7 @@ use Prophecy\Argument;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Taxonomy\Model\TaxonTranslationInterface;
 
-class TaxonGeneratorSpec extends ObjectBehavior
+final class TaxonGeneratorSpec extends ObjectBehavior
 {
     public function let(
         TaxonFactoryInterface $taxonFactory,

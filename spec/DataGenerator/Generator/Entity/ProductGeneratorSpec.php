@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -16,6 +17,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ChannelPricin
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ProductFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ProductVariantFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\ProductGenerator;
+use DateTime;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Component\Core\Model\ChannelInterface;
@@ -23,7 +25,7 @@ use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 
-class ProductGeneratorSpec extends ObjectBehavior
+final class ProductGeneratorSpec extends ObjectBehavior
 {
     public function let(
         ProductFactoryInterface $productFactory,
@@ -73,7 +75,7 @@ class ProductGeneratorSpec extends ObjectBehavior
                 Argument::type('string'),
                 $productVariant->getWrappedObject(),
                 $channel->getWrappedObject(),
-                Argument::type(\DateTime::class),
+                Argument::type(DateTime::class),
             )
             ->willReturn($product);
 

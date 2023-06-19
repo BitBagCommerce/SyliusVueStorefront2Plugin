@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -12,7 +13,7 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class DataGeneratorCommandContext implements DataGeneratorCommandContextInterface
+final class DataGeneratorCommandContext implements DataGeneratorCommandContextInterface
 {
     private SymfonyStyle $io;
 

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -21,7 +22,7 @@ use Prophecy\Argument;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 
-class WishlistGeneratorSpec extends ObjectBehavior
+final class WishlistGeneratorSpec extends ObjectBehavior
 {
     public function let(
         WishlistFactoryInterface $wishlistFactory,

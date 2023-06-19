@@ -12,7 +12,7 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity;
 
 use Sylius\Component\Core\Model\ChannelInterface;
 
-class WishlistContext implements WishlistContextInterface
+final class WishlistContext implements WishlistContextInterface
 {
     private ChannelInterface $channel;
 

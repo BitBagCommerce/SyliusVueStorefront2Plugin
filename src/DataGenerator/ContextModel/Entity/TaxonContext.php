@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity;
 
-class TaxonContext implements TaxonContextInterface
+final class TaxonContext implements TaxonContextInterface
 {
     private int $maxTaxonLevel;
 

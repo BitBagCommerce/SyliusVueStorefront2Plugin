@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -21,7 +22,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\ProductBulkGe
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\TaxonBulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\WishlistBulkGeneratorInterface;
 
-class BulkGeneratorContextFactory implements BulkGeneratorContextFactoryInterface
+final class BulkGeneratorContextFactory implements BulkGeneratorContextFactoryInterface
 {
     public function fromCommandContext(
         DataGeneratorCommandContextInterface $commandContext,

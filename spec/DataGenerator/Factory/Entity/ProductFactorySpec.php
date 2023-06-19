@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -10,6 +11,7 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ProductFactory;
+use DateTime;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\Product;
@@ -39,7 +41,7 @@ final class ProductFactorySpec extends ObjectBehavior
         $description = 'Product created for this test';
         $shortDescription = 'Random product';
         $locale = 'en-US';
-        $createdAt = new \DateTime();
+        $createdAt = new DateTime();
 
         $product = new Product();
 

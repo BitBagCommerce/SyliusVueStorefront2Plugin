@@ -12,7 +12,7 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity;
 
 use Sylius\Component\Core\Model\ChannelInterface;
 
-class ProductContext implements ProductContextInterface
+final class ProductContext implements ProductContextInterface
 {
     private ChannelInterface $channel;
 

@@ -13,6 +13,7 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ConsoleCommand;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\BulkGeneratorInterface;
+use DateTime;
 use Sylius\Component\Channel\Repository\ChannelRepositoryInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\Console\Command\Command;
@@ -21,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Webmozart\Assert\Assert;
 
-class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
+final class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
 {
     protected static $defaultName = 'vsf2:generate-bulk-data';
 
@@ -55,13 +56,13 @@ class BulkDataGenerator extends Command implements BulkDataGeneratorInterface
 
         $this->io->info(sprintf(
             '%s Generating data for channel %s...',
-                (new \DateTime())->format('Y-m-d H:i:s'),
+                (new DateTime())->format('Y-m-d H:i:s'),
                 $context->getChannel()->getCode()
         ));
 
         $this->compositeBulkGenerator->generate($context);
 
-        $this->io->info(sprintf('%s Command finished', (new \DateTime())->format('Y-m-d H:i:s')));
+        $this->io->info(sprintf('%s Command finished', (new DateTime())->format('Y-m-d H:i:s')));
 
         return 1;
     }

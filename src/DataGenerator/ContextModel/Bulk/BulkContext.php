@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file was created by developers working at BitBag
  * Do you need more information about us and what we do? Visit our https://bitbag.io website!
@@ -12,7 +13,7 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\EntityContextInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class BulkContext implements BulkContextInterface
+final class BulkContext implements BulkContextInterface
 {
     private int $quantity;
 
