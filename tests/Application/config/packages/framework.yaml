@@ -9,3 +9,5 @@ framework:
         mapping:
             paths:
                 - '%kernel.project_dir%/../../src/Resources/serialization'
+    mailer:
+        dsn: '%env(MAILER_DSN)%'
