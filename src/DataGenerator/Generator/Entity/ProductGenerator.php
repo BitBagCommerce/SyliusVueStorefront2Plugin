@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\EntityContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\ProductContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\ProductGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ChannelPricingFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ProductFactoryInterface;
@@ -41,9 +41,9 @@ final class ProductGenerator implements GeneratorInterface
         $this->faker = Factory::create();
     }
 
-    public function generate(EntityContextInterface $context): ProductInterface
+    public function generate(GeneratorContextInterface $context): ProductInterface
     {
-        if (!$context instanceof ProductContextInterface) {
+        if (!$context instanceof ProductGeneratorContextInterface) {
             throw new InvalidContextException();
         }
 

@@ -10,9 +10,8 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\TaxonContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\TaxonBulkGenerator;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\GeneratorInterface;
@@ -36,23 +35,21 @@ final class TaxonBulkGeneratorSpec extends ObjectBehavior
     }
 
     public function it_generates_taxons(
-        BulkGeneratorContextInterface $context,
-        TaxonContextInterface $entityContext,
+        GeneratorContextInterface $context,
         GeneratorInterface $generator,
         TaxonInterface $taxon,
         EntityManagerInterface $entityManager,
     ): void {
-        $className = Taxon::class;
+        $entityName = Taxon::class;
         $quantity = 100;
         $flushAfter = 10;
 
         $context->getIO()->shouldBeCalled();
-        $context->getEntityContext()->willReturn($entityContext->getWrappedObject());
-        $entityContext->className()->willReturn($className);
+        $context->entityName()->willReturn($entityName);
         $context->getQuantity()->willReturn($quantity);
 
         for ($i = 1; $i <= $quantity; $i++) {
-            $generator->generate($entityContext->getWrappedObject())->willReturn($taxon->getWrappedObject());
+            $generator->generate($context)->willReturn($taxon->getWrappedObject());
 
             $entityManager->persist($taxon->getWrappedObject())->shouldBeCalled();
 

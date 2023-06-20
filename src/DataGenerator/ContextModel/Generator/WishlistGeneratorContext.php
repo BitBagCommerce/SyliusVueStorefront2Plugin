@@ -8,17 +8,22 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator;
 
 use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
 use Sylius\Component\Core\Model\ChannelInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class WishlistContext implements WishlistContextInterface
+final class WishlistGeneratorContext extends AbstractGeneratorContext implements WishlistGeneratorContextInterface
 {
     private ChannelInterface $channel;
 
-    public function __construct(ChannelInterface $channel)
-    {
+    public function __construct(
+        SymfonyStyle $io,
+        int $quantity,
+        ChannelInterface $channel
+    ) {
+        parent::__construct($io, $quantity);
         $this->channel = $channel;
     }
 
@@ -27,7 +32,7 @@ final class WishlistContext implements WishlistContextInterface
         return $this->channel;
     }
 
-    public function className(): string
+    public function entityName(): string
     {
         return Wishlist::class;
     }

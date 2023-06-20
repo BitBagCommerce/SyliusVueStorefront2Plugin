@@ -8,11 +8,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator;
 
 use Sylius\Component\Core\Model\ChannelInterface;
 
-interface WishlistContextInterface extends EntityContextInterface
+interface WishlistGeneratorContextInterface extends GeneratorContextInterface
 {
     public function getChannel(): ChannelInterface;
 }

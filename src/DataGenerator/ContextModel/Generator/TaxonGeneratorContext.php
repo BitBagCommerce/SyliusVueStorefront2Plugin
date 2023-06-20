@@ -8,20 +8,24 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator;
 
 use Sylius\Component\Core\Model\Taxon;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class TaxonContext implements TaxonContextInterface
+final class TaxonGeneratorContext extends AbstractGeneratorContext implements TaxonGeneratorContextInterface
 {
     private int $maxTaxonLevel;
 
     private int $maxChildrenPerTaxonLevel;
 
     public function __construct(
+        SymfonyStyle $io,
+        int $quantity,
         int $maxTaxonLevel,
         int $maxChildrenPerTaxonLevel,
     ) {
+        parent::__construct($io, $quantity);
         $this->maxTaxonLevel = $maxTaxonLevel;
         $this->maxChildrenPerTaxonLevel = $maxChildrenPerTaxonLevel;
     }
@@ -36,7 +40,7 @@ final class TaxonContext implements TaxonContextInterface
         return $this->maxChildrenPerTaxonLevel;
     }
 
-    public function className(): string
+    public function entityName(): string
     {
         return Taxon::class;
     }

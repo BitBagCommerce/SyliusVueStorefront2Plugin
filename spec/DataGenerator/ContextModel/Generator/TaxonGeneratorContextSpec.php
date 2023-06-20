@@ -8,20 +8,25 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\TaxonContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\TaxonGeneratorContext;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class TaxonContextSpec extends ObjectBehavior
+final class TaxonGeneratorContextSpec extends ObjectBehavior
 {
+    private const QUANTITY = 100;
+
     private const MAX_TAXON_LEVEL = 10;
 
     private const MAX_CHILDREN_PER_TAXON_LEVEL = 5;
 
-    public function let(): void
+    public function let(SymfonyStyle $io): void
     {
         $this->beConstructedWith(
+            $io,
+            self::QUANTITY,
             self::MAX_TAXON_LEVEL,
             self::MAX_CHILDREN_PER_TAXON_LEVEL,
         );
@@ -29,7 +34,17 @@ final class TaxonContextSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(TaxonContext::class);
+        $this->shouldHaveType(TaxonGeneratorContext::class);
+    }
+
+    public function it_returns_io(SymfonyStyle $io): void
+    {
+        $this->getIo()->shouldReturn($io);
+    }
+
+    public function it_returns_quantity(): void
+    {
+        $this->getQuantity()->shouldReturn(self::QUANTITY);
     }
 
     public function it_returns_max_taxon_level(): void

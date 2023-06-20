@@ -8,17 +8,22 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator;
 
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\Product;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class ProductContext implements ProductContextInterface
+final class ProductGeneratorContext extends AbstractGeneratorContext implements ProductGeneratorContextInterface
 {
     private ChannelInterface $channel;
 
-    public function __construct(ChannelInterface $channel)
-    {
+    public function __construct(
+        SymfonyStyle $io,
+        int $quantity,
+        ChannelInterface $channel
+    ) {
+        parent::__construct($io, $quantity);
         $this->channel = $channel;
     }
 
@@ -28,6 +33,11 @@ final class ProductContext implements ProductContextInterface
     }
 
     public function className(): string
+    {
+        return Product::class;
+    }
+
+    public function entityName(): string
     {
         return Product::class;
     }

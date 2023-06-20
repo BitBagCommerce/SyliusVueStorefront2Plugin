@@ -8,17 +8,16 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\EntityContextInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-interface BulkGeneratorContextInterface extends ContextInterface
+interface GeneratorContextInterface extends ContextInterface
 {
-    public function getQuantity(): int;
-
     public function getIO(): SymfonyStyle;
 
-    public function getEntityContext(): EntityContextInterface;
+    public function getQuantity(): int;
+
+    public function entityName(): string;
 }

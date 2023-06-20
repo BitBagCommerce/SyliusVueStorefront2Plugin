@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\UnknownBulkDataGeneratorException;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context\BulkGeneratorContextFactory;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context\GeneratorContextFactory;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\BulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\ProductBulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\TaxonBulkGeneratorInterface;
@@ -22,11 +22,11 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class BulkGeneratorContextFactorySpec extends ObjectBehavior
+final class GeneratorContextFactorySpec extends ObjectBehavior
 {
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(BulkGeneratorContextFactory::class);
+        $this->shouldHaveType(GeneratorContextFactory::class);
     }
 
     function it_returns_product_bulk_generator_context(
@@ -42,7 +42,7 @@ final class BulkGeneratorContextFactorySpec extends ObjectBehavior
         $commandContext->getChannel()->willReturn($channel->getWrappedObject());
 
         $this->fromCommandContext($commandContext->getWrappedObject(), $bulkGenerator->getWrappedObject())
-            ->shouldReturnAnInstanceOf(BulkGeneratorContextInterface::class);
+            ->shouldReturnAnInstanceOf(GeneratorContextInterface::class);
     }
 
     function it_returns_taxon_bulk_generator_context(
@@ -60,7 +60,7 @@ final class BulkGeneratorContextFactorySpec extends ObjectBehavior
         $commandContext->getMaxChildrenPerTaxonLevel()->willReturn($maxChildrenPerTaxonLevel);
 
         $this->fromCommandContext($commandContext->getWrappedObject(), $bulkGenerator->getWrappedObject())
-            ->shouldReturnAnInstanceOf(BulkGeneratorContextInterface::class);
+            ->shouldReturnAnInstanceOf(GeneratorContextInterface::class);
     }
 
     function it_returns_wishlist_bulk_generator_context(
@@ -76,7 +76,7 @@ final class BulkGeneratorContextFactorySpec extends ObjectBehavior
         $commandContext->getChannel()->willReturn($channel->getWrappedObject());
 
         $this->fromCommandContext($commandContext->getWrappedObject(), $bulkGenerator->getWrappedObject())
-            ->shouldReturnAnInstanceOf(BulkGeneratorContextInterface::class);
+            ->shouldReturnAnInstanceOf(GeneratorContextInterface::class);
     }
 
     function it_throws_exception_when_bulk_generator_is_unknown(

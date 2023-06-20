@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\EntityContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
 
 interface GeneratorInterface
 {
-    public function generate(EntityContextInterface $context): ResourceInterface;
+    public function generate(GeneratorContextInterface $context): ResourceInterface;
 }

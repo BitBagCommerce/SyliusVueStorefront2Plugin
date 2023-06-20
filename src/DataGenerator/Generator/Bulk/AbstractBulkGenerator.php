@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Bulk\BulkGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\GeneratorInterface;
 use DateTime;
@@ -33,7 +33,7 @@ abstract class AbstractBulkGenerator implements BulkGeneratorInterface
 
     public function generate(ContextInterface $context): void
     {
-        if (!$context instanceof BulkGeneratorContextInterface) {
+        if (!$context instanceof GeneratorContextInterface) {
             throw new InvalidContextException();
         }
 
@@ -42,7 +42,7 @@ abstract class AbstractBulkGenerator implements BulkGeneratorInterface
         $io->info(sprintf(
             '%s Generating %ss',
             (new DateTime())->format('Y-m-d H:i:s'),
-            self::retrieveEntityName($context->getEntityContext()->className()),
+            self::resolveEntityName($context->entityName()),
         ));
 
         $quantity = $context->getQuantity();
@@ -50,7 +50,7 @@ abstract class AbstractBulkGenerator implements BulkGeneratorInterface
         $io->progressStart($quantity);
 
         for ($i = 1; $i <= $quantity; $i++) {
-            $object = $this->generator->generate($context->getEntityContext());
+            $object = $this->generator->generate($context);
 
             $this->entityManager->persist($object);
             $io->progressAdvance();
@@ -65,9 +65,9 @@ abstract class AbstractBulkGenerator implements BulkGeneratorInterface
         $io->progressFinish();
     }
 
-    private static function retrieveEntityName(string $className): string
+    private static function resolveEntityName(string $entityName): string
     {
-        $parts = explode('\\', $className);
+        $parts = explode('\\', $entityName);
 
         return end($parts);
     }

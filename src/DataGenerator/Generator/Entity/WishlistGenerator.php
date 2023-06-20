@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\EntityContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\WishlistContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\WishlistGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\UserRepositoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\WishlistFactoryInterface;
@@ -36,9 +36,9 @@ final class WishlistGenerator implements GeneratorInterface
         $this->faker = Factory::create();
     }
 
-    public function generate(EntityContextInterface $context): WishlistInterface
+    public function generate(GeneratorContextInterface $context): WishlistInterface
     {
-        if (!$context instanceof WishlistContextInterface) {
+        if (!$context instanceof WishlistGeneratorContextInterface) {
             throw new InvalidContextException();
         }
 

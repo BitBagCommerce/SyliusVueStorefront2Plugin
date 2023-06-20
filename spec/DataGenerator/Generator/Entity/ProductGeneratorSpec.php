@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\EntityContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\ProductContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\ProductGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ChannelPricingFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ProductFactoryInterface;
@@ -47,7 +47,7 @@ final class ProductGeneratorSpec extends ObjectBehavior
         ChannelInterface $channel,
         ChannelPricingInterface $channelPricing,
         ProductVariantInterface $productVariant,
-        ProductContextInterface $context,
+        ProductGeneratorContextInterface $context,
         ProductInterface $product,
     ): void {
         $context->getChannel()->willReturn($channel);
@@ -82,7 +82,7 @@ final class ProductGeneratorSpec extends ObjectBehavior
         $this->generate($context)->shouldReturn($product);
     }
 
-    public function it_throws_exception_on_invalid_context(EntityContextInterface $context): void
+    public function it_throws_exception_on_invalid_context(GeneratorContextInterface $context): void
     {
         $this->shouldThrow(InvalidContextException::class)
             ->during('generate', [$context]);

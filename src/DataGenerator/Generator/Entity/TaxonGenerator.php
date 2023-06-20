@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\EntityContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\TaxonContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\TaxonGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\TaxonRepositoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\TaxonFactoryInterface;
@@ -37,9 +37,9 @@ final class TaxonGenerator implements GeneratorInterface
         $this->faker = Factory::create();
     }
 
-    public function generate(EntityContextInterface $context): TaxonInterface
+    public function generate(GeneratorContextInterface $context): TaxonInterface
     {
-        if (!$context instanceof TaxonContextInterface) {
+        if (!$context instanceof TaxonGeneratorContextInterface) {
             throw new InvalidContextException();
         }
 
@@ -55,7 +55,7 @@ final class TaxonGenerator implements GeneratorInterface
         );
     }
 
-    private function findParentTaxon(TaxonContextInterface $context): TaxonInterface {
+    private function findParentTaxon(TaxonGeneratorContextInterface $context): TaxonInterface {
         $maxTaxonLevel = $context->getMaxTaxonLevel();
         $maxChildrenPerTaxonLevel = $context->getMaxChildrenPerTaxonLevel();
 

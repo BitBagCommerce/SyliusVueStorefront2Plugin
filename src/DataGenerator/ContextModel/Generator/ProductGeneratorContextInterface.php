@@ -8,13 +8,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator;
 
-interface TaxonContextInterface extends EntityContextInterface
+use Sylius\Component\Core\Model\ChannelInterface;
+
+interface ProductGeneratorContextInterface extends GeneratorContextInterface
 {
-    const DEFAULT_LOCALE = 'en_US';
-
-    public function getMaxTaxonLevel(): int;
-
-    public function getMaxChildrenPerTaxonLevel(): int;
+    public function getChannel(): ChannelInterface;
 }
