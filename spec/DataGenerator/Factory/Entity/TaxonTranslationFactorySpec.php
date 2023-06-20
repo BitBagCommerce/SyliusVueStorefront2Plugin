@@ -11,8 +11,9 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\TaxonTranslationFactory;
+use Gedmo\Sluggable\Util\Urlizer;
 use PhpSpec\ObjectBehavior;
-use Sylius\Component\Taxonomy\Model\TaxonTranslation;
+use Sylius\Component\Taxonomy\Model\TaxonTranslationInterface;
 
 final class TaxonTranslationFactorySpec extends ObjectBehavior
 {
@@ -21,18 +22,16 @@ final class TaxonTranslationFactorySpec extends ObjectBehavior
         $this->shouldHaveType(TaxonTranslationFactory::class);
     }
 
-    public function it_creates(): void
+    public function it_creates_taxon_translation(): void
     {
-        $name = 'Test taxon translation';
-        $slug = 'test-taxon-translation';
-        $locale = 'en-US';
+        $name = 'Example Taxon';
+        $locale = 'en_US';
 
-        $translation = new TaxonTranslation();
+        $translation = $this->create($name, $locale);
 
-        $translation->setName($name);
-        $translation->setSlug($slug);
-        $translation->setLocale($locale);
-
-        $this->create($name, $locale);
+        $translation->shouldBeAnInstanceOf(TaxonTranslationInterface::class);
+        $translation->getName()->shouldBe($name);
+        $translation->getLocale()->shouldBe($locale);
+        $translation->getSlug()->shouldBe(Urlizer::transliterate($name));
     }
 }
