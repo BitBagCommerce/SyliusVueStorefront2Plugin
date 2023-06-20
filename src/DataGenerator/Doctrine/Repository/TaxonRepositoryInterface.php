@@ -19,7 +19,7 @@ interface TaxonRepositoryInterface
     public function getMainTaxon(): TaxonInterface;
 
     /**
-     * @return array<TaxonInterface>
+     * @return TaxonInterface[]
      */
     public function findEligibleParents(
         int $maxTaxonLevel,

@@ -25,7 +25,7 @@ final class TaxonRepository extends BaseTaxonRepository implements TaxonReposito
     }
 
     /**
-     * @return array<TaxonInterface>
+     * @return TaxonInterface[]
      */
     public function findEligibleParents(
         int $maxTaxonLevel,

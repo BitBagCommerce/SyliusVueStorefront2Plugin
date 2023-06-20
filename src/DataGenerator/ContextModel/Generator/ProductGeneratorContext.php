@@ -32,11 +32,6 @@ final class ProductGeneratorContext extends AbstractGeneratorContext implements 
         return $this->channel;
     }
 
-    public function className(): string
-    {
-        return Product::class;
-    }
-
     public function entityName(): string
     {
         return Product::class;
