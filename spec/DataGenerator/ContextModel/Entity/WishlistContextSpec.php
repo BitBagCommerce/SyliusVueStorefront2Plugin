@@ -25,4 +25,9 @@ final class WishlistContextSpec extends ObjectBehavior
     {
         $this->shouldHaveType(WishlistContext::class);
     }
+
+    public function it_returns_channel(ChannelInterface $channel): void
+    {
+        $this->getChannel()->shouldReturn($channel);
+    }
 }

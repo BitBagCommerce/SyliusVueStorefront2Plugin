@@ -33,7 +33,7 @@ final class CompositeBulkGeneratorSpec extends ObjectBehavior
         $this->shouldHaveType(CompositeBulkGenerator::class);
     }
 
-    public function it_generates(
+    public function it_generates_entities(
         BulkGeneratorContextFactoryInterface $bulkGeneratorContextFactory,
         DataGeneratorCommandContextInterface $context,
         BulkGeneratorInterface $generator1,

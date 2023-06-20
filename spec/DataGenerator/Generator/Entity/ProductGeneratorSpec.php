@@ -40,7 +40,7 @@ final class ProductGeneratorSpec extends ObjectBehavior
         $this->shouldHaveType(ProductGenerator::class);
     }
 
-    public function it_generates(
+    public function it_generates_product(
         ProductFactoryInterface $productFactory,
         ProductVariantFactoryInterface $productVariantFactory,
         ChannelPricingFactoryInterface $channelPricingFactory,

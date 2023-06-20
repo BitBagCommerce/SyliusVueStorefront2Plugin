@@ -17,15 +17,32 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class BulkGeneratorContextSpec extends ObjectBehavior
 {
+    private const QUANTITY = 100;
+
     public function let(
         SymfonyStyle $io,
         EntityContextInterface $context,
     ): void {
-        $this->beConstructedWith(100, $io, $context);
+        $this->beConstructedWith(self::QUANTITY, $io, $context);
     }
 
     public function it_is_initializable(): void
     {
         $this->shouldHaveType(BulkGeneratorContext::class);
+    }
+
+    public function it_returns_quantity(): void
+    {
+        $this->getQuantity()->shouldReturn(self::QUANTITY);
+    }
+
+    public function it_returns_io(SymfonyStyle $io): void
+    {
+        $this->getIo()->shouldReturn($io);
+    }
+
+    public function it_returns_context(EntityContextInterface $context): void
+    {
+        $this->getEntityContext()->shouldReturn($context);
     }
 }

@@ -15,13 +15,30 @@ use PhpSpec\ObjectBehavior;
 
 final class TaxonContextSpec extends ObjectBehavior
 {
+    private const MAX_TAXON_LEVEL = 10;
+
+    private const MAX_CHILDREN_PER_TAXON_LEVEL = 5;
+
     public function let(): void
     {
-        $this->beConstructedWith(10, 5);
+        $this->beConstructedWith(
+            self::MAX_TAXON_LEVEL,
+            self::MAX_CHILDREN_PER_TAXON_LEVEL,
+        );
     }
 
     public function it_is_initializable(): void
     {
         $this->shouldHaveType(TaxonContext::class);
+    }
+
+    public function it_returns_max_taxon_level(): void
+    {
+        $this->getMaxTaxonLevel()->shouldReturn(self::MAX_TAXON_LEVEL);
+    }
+
+    public function it_returns_max_children_per_taxon_level(): void
+    {
+        $this->getMaxChildrenPerTaxonLevel()->shouldReturn(self::MAX_CHILDREN_PER_TAXON_LEVEL);
     }
 }

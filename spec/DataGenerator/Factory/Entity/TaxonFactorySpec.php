@@ -13,7 +13,7 @@ namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\TaxonFactory;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Sylius\Component\Core\Model\Taxon;
+use Prophecy\Argument;
 use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 use Sylius\Component\Taxonomy\Model\TaxonTranslationInterface;
@@ -30,24 +30,22 @@ final class TaxonFactorySpec extends ObjectBehavior
         $this->shouldHaveType(TaxonFactory::class);
     }
 
-    public function it_creates(
+    public function it_creates_taxon(
         FactoryInterface $taxonFactory,
         TaxonInterface $parent,
         TaxonInterface $sibling,
         TaxonTranslationInterface $translation,
+        TaxonInterface $taxon,
     ): void {
-        $code = 'TXN';
-
-        $taxon = new Taxon();
-
         $taxonFactory->createNew()->willReturn($taxon);
-        $taxon->setCode($code);
-        $taxon->setParent($parent->getWrappedObject());
-        $parent->addChild($taxon)->shouldBeCalled();
         $parent->getChildren()->willReturn(new ArrayCollection([$sibling]));
-        $taxon->setPosition(1);
-        $taxon->addTranslation($translation->getWrappedObject());
 
-        $this->create($code, $parent, $translation);
+        $this
+            ->create(
+                Argument::type('string'),
+                $parent,
+                $translation
+            )
+            ->shouldReturn($taxon);
     }
 }

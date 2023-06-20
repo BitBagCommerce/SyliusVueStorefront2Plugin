@@ -35,7 +35,7 @@ final class TaxonBulkGeneratorSpec extends ObjectBehavior
         $this->shouldHaveType(TaxonBulkGenerator::class);
     }
 
-    public function it_generates(
+    public function it_generates_taxons(
         BulkGeneratorContextInterface $context,
         TaxonContextInterface $entityContext,
         GeneratorInterface $generator,

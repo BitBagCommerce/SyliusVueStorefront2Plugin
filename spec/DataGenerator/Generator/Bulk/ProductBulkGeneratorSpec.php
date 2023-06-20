@@ -35,7 +35,7 @@ final class ProductBulkGeneratorSpec extends ObjectBehavior
         $this->shouldHaveType(ProductBulkGenerator::class);
     }
 
-    public function it_generates(
+    public function it_generates_products(
         BulkGeneratorContextInterface $context,
         ProductContextInterface $entityContext,
         GeneratorInterface $generator,

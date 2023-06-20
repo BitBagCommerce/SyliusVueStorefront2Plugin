@@ -11,8 +11,9 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\WishlistFactory;
-use BitBag\SyliusWishlistPlugin\Entity\Wishlist;
+use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
@@ -29,22 +30,21 @@ final class WishlistFactorySpec extends ObjectBehavior
         $this->shouldHaveType(WishlistFactory::class);
     }
 
-    public function it_creates(
+    public function it_creates_wishlist(
         FactoryInterface $wishlistFactory,
         ChannelInterface $channel,
         ShopUserInterface $shopUser,
+        WishlistInterface $wishlist,
     ): void {
-        $name = 'My test wishlist';
-        $token = md5('my test token to for my test wishlist');
-
-        $wishlist = new Wishlist();
-
         $wishlistFactory->createNew()->willReturn($wishlist);
-        $wishlist->setName($name);
-        $wishlist->setToken($token);
-        $wishlist->setChannel($channel->getWrappedObject());
-        $wishlist->setShopUser($shopUser->getWrappedObject());
 
-        $this->create($name, $token, $channel, $shopUser);
+        $this
+            ->create(
+                Argument::type('string'),
+                Argument::type('string'),
+                $channel,
+                $shopUser
+            )
+            ->shouldReturn($wishlist);
     }
 }

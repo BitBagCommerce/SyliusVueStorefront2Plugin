@@ -35,7 +35,7 @@ final class TaxonGeneratorSpec extends ObjectBehavior
         $this->shouldHaveType(TaxonGenerator::class);
     }
 
-    public function it_generates_with_main_taxon_as_parent(
+    public function it_generates_taxon_with_main_taxon_as_parent(
         TaxonFactoryInterface $taxonFactory,
         TaxonRepositoryInterface $taxonRepository,
         TaxonContextInterface $context,
@@ -62,7 +62,7 @@ final class TaxonGeneratorSpec extends ObjectBehavior
         $this->generate($context)->shouldReturn($taxon);
     }
 
-    public function it_generates_with_random_parent(
+    public function it_generates_taxon_with_random_parent(
         TaxonFactoryInterface $taxonFactory,
         TaxonRepositoryInterface $taxonRepository,
         TaxonContextInterface $context,

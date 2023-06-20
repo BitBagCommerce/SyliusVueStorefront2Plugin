@@ -13,7 +13,7 @@ namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ChannelPricingFactory;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ChannelInterface;
-use Sylius\Component\Core\Model\ChannelPricing;
+use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class ChannelPricingFactorySpec extends ObjectBehavior
@@ -28,20 +28,14 @@ final class ChannelPricingFactorySpec extends ObjectBehavior
         $this->shouldHaveType(ChannelPricingFactory::class);
     }
 
-    public function it_creates(
+    public function it_creates_channel_pricing(
         FactoryInterface $channelPricingFactory,
         ChannelInterface $channel,
+        ChannelPricingInterface $channelPricing,
     ): void {
-        $price = 122333;
-        $channelCode = 'TST';
-
-        $channelPricing = new ChannelPricing();
-
         $channelPricingFactory->createNew()->willReturn($channelPricing);
-        $channelPricing->setPrice($price);
-        $channel->getCode()->willReturn($channelCode);
-        $channelPricing->setChannelCode($channelCode);
+        $channel->getCode()->willReturn('TST');
 
-        $this->create($price, $channel);
+        $this->create(1234, $channel)->shouldReturn($channelPricing);
     }
 }

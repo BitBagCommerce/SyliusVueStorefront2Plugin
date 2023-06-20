@@ -25,4 +25,9 @@ final class ProductContextSpec extends ObjectBehavior
     {
         $this->shouldHaveType(ProductContext::class);
     }
+
+    public function it_returns_channel(ChannelInterface $channel): void
+    {
+        $this->getChannel()->shouldReturn($channel);
+    }
 }

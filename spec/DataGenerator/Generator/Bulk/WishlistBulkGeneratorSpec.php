@@ -35,7 +35,7 @@ final class WishlistBulkGeneratorSpec extends ObjectBehavior
         $this->shouldHaveType(WishlistBulkGenerator::class);
     }
 
-    public function it_generates(
+    public function it_generates_wishlists(
         BulkGeneratorContextInterface $context,
         WishlistContextInterface $entityContext,
         GeneratorInterface $generator,

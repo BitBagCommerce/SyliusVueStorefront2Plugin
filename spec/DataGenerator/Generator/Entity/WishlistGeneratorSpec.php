@@ -36,7 +36,7 @@ final class WishlistGeneratorSpec extends ObjectBehavior
         $this->shouldHaveType(WishlistGenerator::class);
     }
 
-    public function it_generates(
+    public function it_generates_wishlist(
         WishlistFactoryInterface $wishlistFactory,
         UserRepositoryInterface $userRepository,
         WishlistContextInterface $context,

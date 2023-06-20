@@ -13,8 +13,9 @@ namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ProductFactory;
 use DateTime;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Component\Core\Model\ChannelInterface;
-use Sylius\Component\Core\Model\Product;
+use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
@@ -30,41 +31,24 @@ final class ProductFactorySpec extends ObjectBehavior
         $this->shouldHaveType(ProductFactory::class);
     }
 
-    public function it_creates(
+    public function it_creates_product(
         FactoryInterface $productFactory,
         ProductVariantInterface $variant,
         ChannelInterface $channel,
+        ProductInterface $product,
     ): void {
-        $name = 'Test product';
-        $slug = 'test-product';
-        $code = 'TP';
-        $description = 'Product created for this test';
-        $shortDescription = 'Random product';
-        $locale = 'en-US';
-        $createdAt = new DateTime();
-
-        $product = new Product();
-
         $productFactory->createNew()->willReturn($product);
-        $product->setCurrentLocale($locale);
-        $product->setName($name);
-        $product->setSlug($slug);
-        $product->setCode($code);
-        $product->setDescription($description);
-        $product->setShortDescription($shortDescription);
-        $product->setEnabled(true);
-        $product->setCreatedAt($createdAt);
-        $product->addChannel($channel->getWrappedObject());
-        $product->addVariant($variant->getWrappedObject());
 
-        $this->create(
-            $name,
-            $code,
-            $description,
-            $shortDescription,
-            $variant,
-            $channel,
-            $createdAt,
-        );
+        $this
+            ->create(
+                Argument::type('string'),
+                Argument::type('string'),
+                Argument::type('string'),
+                Argument::type('string'),
+                $variant,
+                $channel,
+                new DateTime(),
+            )
+            ->shouldReturn($product);
     }
 }
