@@ -13,11 +13,14 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\ProductGeneratorContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\ProductTaxonGeneratorContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\ProductWishlistGeneratorContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\TaxonGeneratorContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\WishlistGeneratorContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\UnknownBulkDataGeneratorException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\BulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\ProductBulkGeneratorInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\ProductWishlistBulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\TaxonBulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\WishlistBulkGeneratorInterface;
 
@@ -31,9 +34,11 @@ final class GeneratorContextFactory implements GeneratorContextFactoryInterface
         $interfaces = is_array($interfaces) ? $interfaces : [$interfaces];
         foreach ($interfaces as $interface) {
             $context = match ($interface) {
-                ProductBulkGeneratorInterface::class => $this->productBulkGeneratorContext($commandContext),
-                TaxonBulkGeneratorInterface::class => $this->taxonBulkGeneratorContext($commandContext),
-                WishlistBulkGeneratorInterface::class => $this->wishlistBulkGeneratorContext($commandContext),
+                ProductBulkGeneratorInterface::class => $this->productGeneratorContext($commandContext),
+                TaxonBulkGeneratorInterface::class => $this->taxonGeneratorContext($commandContext),
+                WishlistBulkGeneratorInterface::class => $this->wishlistGeneratorContext($commandContext),
+                ProductTaxonGeneratorContext::class => $this->productTaxonGeneratorContext($commandContext),
+                ProductWishlistBulkGeneratorInterface::class => $this->productWishlistGeneratorContext($commandContext),
                 default => null,
             };
 
@@ -45,9 +50,9 @@ final class GeneratorContextFactory implements GeneratorContextFactoryInterface
         throw new UnknownBulkDataGeneratorException();
     }
 
-    private function productBulkGeneratorContext(
+    private function productGeneratorContext(
         DataGeneratorCommandContextInterface $commandContext,
-    ): GeneratorContextInterface {
+    ): ProductGeneratorContext {
         return new ProductGeneratorContext(
             $commandContext->getIO(),
             $commandContext->getProductsQty(),
@@ -55,9 +60,9 @@ final class GeneratorContextFactory implements GeneratorContextFactoryInterface
         );
     }
 
-    private function taxonBulkGeneratorContext(
+    private function taxonGeneratorContext(
         DataGeneratorCommandContextInterface $commandContext,
-    ): GeneratorContextInterface {
+    ): TaxonGeneratorContext {
         return new TaxonGeneratorContext(
             $commandContext->getIO(),
             $commandContext->getTaxonsQty(),
@@ -66,12 +71,32 @@ final class GeneratorContextFactory implements GeneratorContextFactoryInterface
         );
     }
 
-    private function wishlistBulkGeneratorContext(
+    private function wishlistGeneratorContext(
         DataGeneratorCommandContextInterface $commandContext,
-    ): GeneratorContextInterface {
+    ): WishlistGeneratorContext {
         return new WishlistGeneratorContext(
             $commandContext->getIO(),
             $commandContext->getWishlistsQty(),
+            $commandContext->getChannel(),
+        );
+    }
+
+    private function productTaxonGeneratorContext(
+        DataGeneratorCommandContextInterface $commandContext,
+    ): ProductTaxonGeneratorContext {
+        return new ProductTaxonGeneratorContext(
+            $commandContext->getIO(),
+            $commandContext->getProductsPerTaxonQty(),
+            $commandContext->getChannel(),
+        );
+    }
+
+    private function productWishlistGeneratorContext(
+        DataGeneratorCommandContextInterface $commandContext,
+    ): ProductWishlistGeneratorContext {
+        return new ProductWishlistGeneratorContext(
+            $commandContext->getIO(),
+            $commandContext->getProductsPerWishlistQty(),
             $commandContext->getChannel(),
         );
     }
