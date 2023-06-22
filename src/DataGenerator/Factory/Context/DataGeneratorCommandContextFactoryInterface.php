@@ -26,5 +26,6 @@ interface DataGeneratorCommandContextFactoryInterface
         int $maxTaxonLevel,
         int $maxChildrenPerTaxonLevel,
         int $productsPerWishlistQty,
+        int $stress,
     ): DataGeneratorCommandContextInterface;
 }

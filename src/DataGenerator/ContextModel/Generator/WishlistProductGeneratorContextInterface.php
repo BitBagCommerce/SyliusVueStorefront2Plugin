@@ -12,7 +12,9 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator
 
 use Sylius\Component\Core\Model\ChannelInterface;
 
-interface ProductWishlistGeneratorContextInterface extends GeneratorContextInterface
+interface WishlistProductGeneratorContextInterface extends GeneratorContextInterface
 {
     public function getChannel(): ChannelInterface;
+
+    public function getStress(): int;
 }

@@ -33,6 +33,8 @@ final class DataGeneratorCommandContext implements DataGeneratorCommandContextIn
 
     private int $productsPerWishlistQty;
 
+    private int $stress;
+
     public function __construct(
         SymfonyStyle $io,
         ChannelInterface $channel,
@@ -42,7 +44,8 @@ final class DataGeneratorCommandContext implements DataGeneratorCommandContextIn
         int $productsPerTaxonQty,
         int $maxTaxonLevel,
         int $maxChildrenPerTaxonLevel,
-        int $productsPerWishlistQty
+        int $productsPerWishlistQty,
+        int $stress,
     ) {
         $this->io = $io;
         $this->channel = $channel;
@@ -53,6 +56,7 @@ final class DataGeneratorCommandContext implements DataGeneratorCommandContextIn
         $this->maxTaxonLevel = $maxTaxonLevel;
         $this->maxChildrenPerTaxonLevel = $maxChildrenPerTaxonLevel;
         $this->productsPerWishlistQty = $productsPerWishlistQty;
+        $this->stress = $stress;
     }
 
     public function getIO(): SymfonyStyle
@@ -98,5 +102,10 @@ final class DataGeneratorCommandContext implements DataGeneratorCommandContextIn
     public function getProductsPerWishlistQty(): int
     {
         return $this->productsPerWishlistQty;
+    }
+
+    public function getStress(): int
+    {
+        return $this->stress;
     }
 }

@@ -14,22 +14,31 @@ use BitBag\SyliusWishlistPlugin\Entity\WishlistProduct;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class ProductWishlistGeneratorContext extends AbstractGeneratorContext implements ProductWishlistGeneratorContextInterface
+final class WishlistProductGeneratorContext extends AbstractGeneratorContext implements WishlistProductGeneratorContextInterface
 {
     private ChannelInterface $channel;
+
+    private int $stress;
 
     public function __construct(
         SymfonyStyle $io,
         int $quantity,
-        ChannelInterface $channel
+        ChannelInterface $channel,
+        int $stress,
     ) {
         parent::__construct($io, $quantity);
         $this->channel = $channel;
+        $this->stress = $stress;
     }
 
     public function getChannel(): ChannelInterface
     {
         return $this->channel;
+    }
+
+    public function getStress(): int
+    {
+        return $this->stress;
     }
 
     public function entityName(): string

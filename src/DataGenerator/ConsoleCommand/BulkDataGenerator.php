@@ -145,6 +145,9 @@ final class BulkDataGenerator extends Command implements BulkDataGeneratorInterf
             );
         }
 
+        $stress = $this->askForInteger('Stress', self::DEFAULT_STRESS);
+        $stress = $stress <= 100 ? $stress : self::DEFAULT_STRESS;
+
         return $this->commandContextFactory->fromInput(
             $this->io,
             $channel,
@@ -155,6 +158,7 @@ final class BulkDataGenerator extends Command implements BulkDataGeneratorInterf
             $maxTaxonLevel,
             $maxChildrenPerTaxonLevel,
             $productsPerWishlistQty,
+            $stress,
         );
     }
 }
