@@ -23,4 +23,6 @@ interface WishlistRepositoryInterface
         int $limit = null,
         int $offset = null,
     ): array;
+
+    public function getEntityCount(ChannelInterface $channel): int;
 }

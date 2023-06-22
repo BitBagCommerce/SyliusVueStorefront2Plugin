@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository;
 
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
+use Sylius\Component\Core\Model\ProductInterface;
 
 interface ProductRepositoryInterface
 {
     /**
-     * @return WishlistInterface[]
+     * @return ProductInterface[]
      */
     public function findByChannel(
         ChannelInterface $channel,

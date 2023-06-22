@@ -32,4 +32,15 @@ final class WishlistRepository extends EntityRepository implements WishlistRepos
             ->getQuery()
             ->getResult();
     }
+
+    public function getEntityCount(ChannelInterface $channel): int
+    {
+        $queryBuilder = $this->createQueryBuilder('wishlist');
+        $queryBuilder
+            ->select('COUNT(wishlist)')
+            ->where('wishlist.channel = :channel')
+            ->setParameter('channel', $channel);
+
+        return (int)$queryBuilder->getQuery()->getSingleScalarResult();
+    }
 }
