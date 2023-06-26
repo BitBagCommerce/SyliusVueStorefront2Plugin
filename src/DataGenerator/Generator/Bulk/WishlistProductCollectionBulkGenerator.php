@@ -45,20 +45,19 @@ final class WishlistProductCollectionBulkGenerator implements WishlistProductCol
         ));
 
         $channel = $context->getChannel();
-        $limit = self::LIMIT;
         $offset = 0;
 
         $io->progressStart($this->wishlistRepository->getEntityCount($channel));
 
         while (
-            count($wishlists = $this->wishlistRepository->findByChannel($channel, $limit, $offset)) > 0
+            count($wishlists = $this->wishlistRepository->findByChannel($channel, self::LIMIT, $offset)) > 0
         ) {
             foreach ($wishlists as $wishlist) {
                 $this->wishlistProductCollectionGenerator->generate($wishlist, $context);
                 $io->progressAdvance();
             }
 
-            $offset += $limit;
+            $offset += self::LIMIT;
         }
 
         $io->progressFinish();

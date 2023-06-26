@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk;
 
-interface ProductTaxonBulkGeneratorInterface extends BulkGeneratorInterface
+interface ProductTaxonCollectionBulkGeneratorInterface extends BulkGeneratorInterface
 {
+    const LIMIT = 100;
 }

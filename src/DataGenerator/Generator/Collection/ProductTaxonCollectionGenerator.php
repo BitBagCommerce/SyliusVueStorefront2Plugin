@@ -11,37 +11,37 @@ declare(strict_types=1);
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Collection;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\WishlistProductGeneratorContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\ProductTaxonGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\ProductRepositoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ProductTaxonFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\IntegerGenerator;
-use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
-use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Sylius\Component\Core\Model\TaxonInterface;
 
-final class WishlistProductCollectionGenerator implements WishlistProductCollectionGeneratorInterface
+final class ProductTaxonCollectionGenerator implements ProductTaxonCollectionGeneratorInterface
 {
     private ProductRepositoryInterface $productRepository;
 
-    private WishlistProductFactoryInterface $wishlistProductFactory;
+    private ProductTaxonFactoryInterface $productTaxonFactory;
 
     private EntityManagerInterface $entityManager;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        WishlistProductFactoryInterface $wishlistProductFactory,
+        ProductTaxonFactoryInterface $productTaxonFactory,
         EntityManagerInterface $entityManager,
     ) {
         $this->productRepository = $productRepository;
-        $this->wishlistProductFactory = $wishlistProductFactory;
+        $this->productTaxonFactory = $productTaxonFactory;
         $this->entityManager = $entityManager;
     }
 
     public function generate(
-        WishlistInterface $wishlist,
+        TaxonInterface $taxon,
         ContextInterface $context,
     ): void {
-        if (!$context instanceof WishlistProductGeneratorContextInterface) {
+        if (!$context instanceof ProductTaxonGeneratorContextInterface) {
             throw new InvalidContextException();
         }
 
@@ -62,10 +62,14 @@ final class WishlistProductCollectionGenerator implements WishlistProductCollect
             count($products = $this->productRepository->findByChannel($channel, self::LIMIT, $offset)) > 0
         ) {
             foreach ($products as $product) {
-                $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
-                $wishlist->addWishlistProduct($wishlistProduct);
+                if ($product->hasTaxon($taxon)) {
+                    continue;
+                }
+                $productTaxon = $this->productTaxonFactory->create($taxon, $product, $i);
+                $product->addProductTaxon($productTaxon);
+                $product->setMainTaxon($taxon);
 
-                $this->entityManager->persist($wishlistProduct);
+                $this->entityManager->persist($product);
 
                 $i++;
                 if ($i % self::FLUSH_AFTER === 0) {

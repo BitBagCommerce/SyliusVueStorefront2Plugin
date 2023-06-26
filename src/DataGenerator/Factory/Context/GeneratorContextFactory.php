@@ -20,6 +20,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\Wishl
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\UnknownBulkDataGeneratorException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\BulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\ProductBulkGeneratorInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\ProductTaxonCollectionBulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\TaxonBulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\WishlistBulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\WishlistProductCollectionBulkGeneratorInterface;
@@ -37,7 +38,7 @@ final class GeneratorContextFactory implements GeneratorContextFactoryInterface
                 ProductBulkGeneratorInterface::class => $this->productGeneratorContext($commandContext),
                 TaxonBulkGeneratorInterface::class => $this->taxonGeneratorContext($commandContext),
                 WishlistBulkGeneratorInterface::class => $this->wishlistGeneratorContext($commandContext),
-                ProductTaxonGeneratorContext::class => $this->productTaxonGeneratorContext($commandContext),
+                ProductTaxonCollectionBulkGeneratorInterface::class => $this->productTaxonGeneratorContext($commandContext),
                 WishlistProductCollectionBulkGeneratorInterface::class => $this->productWishlistGeneratorContext($commandContext),
                 default => null,
             };
@@ -88,6 +89,7 @@ final class GeneratorContextFactory implements GeneratorContextFactoryInterface
             $commandContext->getIO(),
             $commandContext->getProductsPerTaxonQty(),
             $commandContext->getChannel(),
+            $commandContext->getStress(),
         );
     }
 

@@ -26,4 +26,14 @@ interface TaxonRepositoryInterface
         int $maxChildrenPerTaxonLevel,
         int $limit = self::DEFAULT_LIMIT,
     ): array;
+
+    /**
+     * @return TaxonInterface[]
+     */
+    public function findBatch(
+        int $limit = null,
+        int $offset = null,
+    ): array;
+
+    public function getEntityCount(): int;
 }

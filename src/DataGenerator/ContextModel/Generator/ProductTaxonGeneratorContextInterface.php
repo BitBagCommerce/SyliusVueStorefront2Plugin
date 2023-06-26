@@ -15,4 +15,6 @@ use Sylius\Component\Core\Model\ChannelInterface;
 interface ProductTaxonGeneratorContextInterface extends GeneratorContextInterface
 {
     public function getChannel(): ChannelInterface;
+
+    public function getStress(): int;
 }
