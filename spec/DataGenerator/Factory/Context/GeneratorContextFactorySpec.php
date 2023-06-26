@@ -11,10 +11,16 @@ declare(strict_types=1);
 namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\ProductGeneratorContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\ProductTaxonGeneratorContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\TaxonGeneratorContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\WishlistGeneratorContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\WishlistProductGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\UnknownBulkDataGeneratorException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context\GeneratorContextFactory;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\BulkGeneratorInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Collection\ProductTaxonCollectionBulkGeneratorInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Collection\WishlistProductCollectionBulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity\ProductBulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity\TaxonBulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity\WishlistBulkGeneratorInterface;
@@ -29,7 +35,7 @@ final class GeneratorContextFactorySpec extends ObjectBehavior
         $this->shouldHaveType(GeneratorContextFactory::class);
     }
 
-    function it_returns_product_bulk_generator_context(
+    function it_returns_product_generator_context(
         DataGeneratorCommandContextInterface $commandContext,
         ProductBulkGeneratorInterface $bulkGenerator,
         SymfonyStyle $io,
@@ -42,10 +48,10 @@ final class GeneratorContextFactorySpec extends ObjectBehavior
         $commandContext->getChannel()->willReturn($channel->getWrappedObject());
 
         $this->fromCommandContext($commandContext->getWrappedObject(), $bulkGenerator->getWrappedObject())
-            ->shouldReturnAnInstanceOf(GeneratorContextInterface::class);
+            ->shouldReturnAnInstanceOf(ProductGeneratorContextInterface::class);
     }
 
-    function it_returns_taxon_bulk_generator_context(
+    function it_returns_taxon_generator_context(
         DataGeneratorCommandContextInterface $commandContext,
         TaxonBulkGeneratorInterface $bulkGenerator,
         SymfonyStyle $io,
@@ -60,10 +66,10 @@ final class GeneratorContextFactorySpec extends ObjectBehavior
         $commandContext->getMaxChildrenPerTaxonLevel()->willReturn($maxChildrenPerTaxonLevel);
 
         $this->fromCommandContext($commandContext->getWrappedObject(), $bulkGenerator->getWrappedObject())
-            ->shouldReturnAnInstanceOf(GeneratorContextInterface::class);
+            ->shouldReturnAnInstanceOf(TaxonGeneratorContextInterface::class);
     }
 
-    function it_returns_wishlist_bulk_generator_context(
+    function it_returns_wishlist_generator_context(
         DataGeneratorCommandContextInterface $commandContext,
         WishlistBulkGeneratorInterface $bulkGenerator,
         SymfonyStyle $io,
@@ -76,10 +82,46 @@ final class GeneratorContextFactorySpec extends ObjectBehavior
         $commandContext->getChannel()->willReturn($channel->getWrappedObject());
 
         $this->fromCommandContext($commandContext->getWrappedObject(), $bulkGenerator->getWrappedObject())
-            ->shouldReturnAnInstanceOf(GeneratorContextInterface::class);
+            ->shouldReturnAnInstanceOf(WishlistGeneratorContextInterface::class);
     }
 
-    function it_throws_exception_when_bulk_generator_is_unknown(
+    function it_returns_product_taxon_generator_context(
+        DataGeneratorCommandContextInterface $commandContext,
+        ProductTaxonCollectionBulkGeneratorInterface $bulkGenerator,
+        SymfonyStyle $io,
+        ChannelInterface $channel,
+    ): void {
+        $quantity = 100;
+        $stress = 40;
+
+        $commandContext->getIO()->willReturn($io->getWrappedObject());
+        $commandContext->getProductsPerTaxonQty()->willReturn($quantity);
+        $commandContext->getChannel()->willReturn($channel->getWrappedObject());
+        $commandContext->getStress()->willReturn($stress);
+
+        $this->fromCommandContext($commandContext->getWrappedObject(), $bulkGenerator->getWrappedObject())
+            ->shouldReturnAnInstanceOf(ProductTaxonGeneratorContextInterface::class);
+    }
+
+    function it_returns_wishlist_product_generator_context(
+        DataGeneratorCommandContextInterface $commandContext,
+        WishlistProductCollectionBulkGeneratorInterface $bulkGenerator,
+        SymfonyStyle $io,
+        ChannelInterface $channel,
+    ): void {
+        $quantity = 100;
+        $stress = 40;
+
+        $commandContext->getIO()->willReturn($io->getWrappedObject());
+        $commandContext->getProductsPerWishlistQty()->willReturn($quantity);
+        $commandContext->getChannel()->willReturn($channel->getWrappedObject());
+        $commandContext->getStress()->willReturn($stress);
+
+        $this->fromCommandContext($commandContext->getWrappedObject(), $bulkGenerator->getWrappedObject())
+            ->shouldReturnAnInstanceOf(WishlistProductGeneratorContextInterface::class);
+    }
+
+    function it_throws_exception_when_generator_is_unknown(
         DataGeneratorCommandContextInterface $commandContext,
         BulkGeneratorInterface $bulkGenerator
     ): void {

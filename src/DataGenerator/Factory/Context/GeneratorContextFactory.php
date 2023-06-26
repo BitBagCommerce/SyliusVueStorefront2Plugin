@@ -39,7 +39,7 @@ final class GeneratorContextFactory implements GeneratorContextFactoryInterface
                 TaxonBulkGeneratorInterface::class => $this->taxonGeneratorContext($commandContext),
                 WishlistBulkGeneratorInterface::class => $this->wishlistGeneratorContext($commandContext),
                 ProductTaxonCollectionBulkGeneratorInterface::class => $this->productTaxonGeneratorContext($commandContext),
-                WishlistProductCollectionBulkGeneratorInterface::class => $this->productWishlistGeneratorContext($commandContext),
+                WishlistProductCollectionBulkGeneratorInterface::class => $this->wishlistProductGeneratorContext($commandContext),
                 default => null,
             };
 
@@ -93,7 +93,7 @@ final class GeneratorContextFactory implements GeneratorContextFactoryInterface
         );
     }
 
-    private function productWishlistGeneratorContext(
+    private function wishlistProductGeneratorContext(
         DataGeneratorCommandContextInterface $commandContext,
     ): WishlistProductGeneratorContext {
         return new WishlistProductGeneratorContext(
