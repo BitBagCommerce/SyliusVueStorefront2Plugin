@@ -38,14 +38,17 @@ abstract class AbstractBulkGenerator implements BulkGeneratorInterface
         }
 
         $io = $context->getIO();
+        $quantity = $context->getQuantity();
+
+        if ($quantity === 0) {
+            return;
+        }
 
         $io->info(sprintf(
             '%s Generating %ss',
             (new DateTime())->format('Y-m-d H:i:s'),
             self::retrieveEntityName($context->getEntityContext()->className()),
         ));
-
-        $quantity = $context->getQuantity();
 
         $io->progressStart($quantity);
 

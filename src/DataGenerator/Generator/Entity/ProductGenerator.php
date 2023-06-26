@@ -52,15 +52,16 @@ final class ProductGenerator implements GeneratorInterface
             $context->getChannel(),
         );
 
+        $uuid = $this->faker->uuid;
         $variant = $this->productVariantFactory->create(
             $this->faker->sentence(3),
-            $this->faker->uuid,
+            $uuid,
             $channelPricing,
         );
 
         return $this->productFactory->create(
-            $this->faker->sentence(3),
-            $this->faker->uuid,
+            sprintf('%s %s', $uuid, $this->faker->sentence(3)),
+            $uuid,
             $this->faker->sentence(15),
             $this->faker->sentence(),
             $variant,
