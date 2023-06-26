@@ -38,7 +38,7 @@
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_bulk_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\ProductBulkGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity\ProductBulkGenerator"
         >
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_generator" />
@@ -47,7 +47,7 @@
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.taxon_bulk_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\TaxonBulkGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity\TaxonBulkGenerator"
         >
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.taxon_generator" />
@@ -56,7 +56,7 @@
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_bulk_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\WishlistBulkGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity\WishlistBulkGenerator"
         >
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_generator" />
@@ -74,7 +74,7 @@
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_taxon_collection_bulk_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\ProductTaxonCollectionBulkGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Collection\ProductTaxonCollectionBulkGenerator"
         >
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.repository.taxon_repository" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_taxon_collection_generator" />
@@ -92,7 +92,7 @@
 
         <service
             id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_product_collection_bulk_generator"
-            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\WishlistProductCollectionBulkGenerator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Collection\WishlistProductCollectionBulkGenerator"
         >
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.repository.wishlist_repository" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_product_collection_generator" />

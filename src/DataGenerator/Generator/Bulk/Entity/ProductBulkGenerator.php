@@ -8,9 +8,8 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity;
 
-interface WishlistProductCollectionBulkGeneratorInterface extends BulkGeneratorInterface
+final class ProductBulkGenerator extends AbstractBulkGenerator implements ProductBulkGeneratorInterface
 {
-    const LIMIT = 100;
 }

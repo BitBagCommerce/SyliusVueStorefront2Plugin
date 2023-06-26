@@ -8,11 +8,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\BulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\GeneratorInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;

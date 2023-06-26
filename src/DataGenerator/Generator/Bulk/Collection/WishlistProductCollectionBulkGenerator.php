@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Collection;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\WishlistProductGeneratorContextInterface;

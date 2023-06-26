@@ -8,8 +8,10 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity;
 
-final class TaxonBulkGenerator extends AbstractBulkGenerator implements TaxonBulkGeneratorInterface
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\BulkGeneratorInterface;
+
+interface TaxonBulkGeneratorInterface extends BulkGeneratorInterface
 {
 }

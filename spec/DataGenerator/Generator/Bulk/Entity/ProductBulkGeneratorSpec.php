@@ -8,12 +8,12 @@
 
 declare(strict_types=1);
 
-namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk;
+namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\ProductBulkGenerator;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity\ProductBulkGenerator;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\GeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;

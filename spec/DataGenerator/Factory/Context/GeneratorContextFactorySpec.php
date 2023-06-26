@@ -15,9 +15,9 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\Gener
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\UnknownBulkDataGeneratorException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context\GeneratorContextFactory;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\BulkGeneratorInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\ProductBulkGeneratorInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\TaxonBulkGeneratorInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\WishlistBulkGeneratorInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity\ProductBulkGeneratorInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity\TaxonBulkGeneratorInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity\WishlistBulkGeneratorInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
