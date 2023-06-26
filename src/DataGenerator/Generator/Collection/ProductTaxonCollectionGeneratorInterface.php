@@ -19,6 +19,8 @@ interface ProductTaxonCollectionGeneratorInterface
 
     const FLUSH_AFTER = 100;
 
+    const TOP_VALUES_THRESHOLD = 80;
+
     public function generate(
         TaxonInterface $taxon,
         ContextInterface $context,

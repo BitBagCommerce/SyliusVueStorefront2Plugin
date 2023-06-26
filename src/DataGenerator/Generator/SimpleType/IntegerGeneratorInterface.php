@@ -12,11 +12,10 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType;
 
 interface IntegerGeneratorInterface
 {
-    const TOP_VALUES_THRESHOLD_FACTOR = 0.8;
-
     public static function generateBiased(
-        int $bias,
         int $min,
         int $max,
+        int $bias,
+        int $topValuesThreshold,
     ): int;
 }

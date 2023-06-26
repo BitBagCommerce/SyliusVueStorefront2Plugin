@@ -49,9 +49,10 @@ final class ProductTaxonCollectionGenerator implements ProductTaxonCollectionGen
         $productsCount = $this->productRepository->getEntityCount($channel);
 
         $randomInt = IntegerGenerator::generateBiased(
-            $context->getStress(),
             0,
             $context->getQuantity(),
+            $context->getStress(),
+            self::TOP_VALUES_THRESHOLD,
         );
 
         $maxOffset = max(0, $productsCount - $randomInt);

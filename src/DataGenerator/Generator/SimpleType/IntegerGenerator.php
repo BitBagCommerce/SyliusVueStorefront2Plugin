@@ -12,13 +12,19 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType;
 
 class IntegerGenerator implements IntegerGeneratorInterface
 {
+    /**
+     * It generates an integer from the given <min, max> range
+     * with the $bias (%) probability to draw a number from the upper limit
+     * determined by the $topValuesThreshold (%)
+     */
     public static function generateBiased(
-        int $bias,
         int $min,
         int $max,
+        int $bias,
+        int $topValuesThreshold,
     ): int {
         $range = $max - $min + 1;
-        $topValuesThreshold = $min + (int)($range * self::TOP_VALUES_THRESHOLD_FACTOR);
+        $topValuesThreshold = $min + (int)($range * $topValuesThreshold / 100);
 
         if (mt_rand() / mt_getrandmax() <= $bias / 100) {
             return mt_rand($topValuesThreshold, $max);
