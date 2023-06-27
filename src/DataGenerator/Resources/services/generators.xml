@@ -70,6 +70,7 @@
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.repository.product_repository" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.product_taxon_factory" />
             <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.integer" />
         </service>
 
         <service
@@ -88,6 +89,7 @@
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.repository.product_repository" />
             <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist_product" />
             <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.integer" />
         </service>
 
         <service
@@ -105,6 +107,18 @@
         >
             <argument type="tagged_iterator" tag="data_generator.bulk_generator"/>
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.generator_context_factory" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.rand"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer\Rand"
+        />
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.integer"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer\IntegerGenerator"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.rand"/>
         </service>
 
     </services>

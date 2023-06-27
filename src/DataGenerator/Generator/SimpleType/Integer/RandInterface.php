@@ -8,14 +8,14 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer;
 
-interface IntegerGeneratorInterface
+interface RandInterface
 {
-    public static function generateBiased(
-        int $min,
-        int $max,
-        int $bias,
-        int $topValuesThreshold,
+    public function rand(
+        int $min = null,
+        int $max = null,
     ): int;
+
+    public function randMax(): int;
 }

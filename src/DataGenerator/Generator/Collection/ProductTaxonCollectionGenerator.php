@@ -15,7 +15,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\Produ
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\ProductRepositoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ProductTaxonFactoryInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\IntegerGenerator;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer\IntegerGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 
@@ -27,14 +27,18 @@ final class ProductTaxonCollectionGenerator implements ProductTaxonCollectionGen
 
     private EntityManagerInterface $entityManager;
 
+    private IntegerGenerator $integerGenerator;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ProductTaxonFactoryInterface $productTaxonFactory,
         EntityManagerInterface $entityManager,
+        IntegerGenerator $integerGenerator,
     ) {
         $this->productRepository = $productRepository;
         $this->productTaxonFactory = $productTaxonFactory;
         $this->entityManager = $entityManager;
+        $this->integerGenerator = $integerGenerator;
     }
 
     public function generate(
@@ -48,7 +52,7 @@ final class ProductTaxonCollectionGenerator implements ProductTaxonCollectionGen
         $channel = $context->getChannel();
         $productsCount = $this->productRepository->getEntityCount($channel);
 
-        $randomInt = IntegerGenerator::generateBiased(
+        $randomInt = $this->integerGenerator->generateBiased(
             0,
             $context->getQuantity(),
             $context->getStress(),

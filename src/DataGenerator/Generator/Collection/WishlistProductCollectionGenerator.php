@@ -14,7 +14,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterfac
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\WishlistProductGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\ProductRepositoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\IntegerGenerator;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer\IntegerGenerator;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,14 +27,18 @@ final class WishlistProductCollectionGenerator implements WishlistProductCollect
 
     private EntityManagerInterface $entityManager;
 
+    private IntegerGenerator $integerGenerator;
+
     public function __construct(
         ProductRepositoryInterface $productRepository,
         WishlistProductFactoryInterface $wishlistProductFactory,
         EntityManagerInterface $entityManager,
+        IntegerGenerator $integerGenerator,
     ) {
         $this->productRepository = $productRepository;
         $this->wishlistProductFactory = $wishlistProductFactory;
         $this->entityManager = $entityManager;
+        $this->integerGenerator = $integerGenerator;
     }
 
     public function generate(
@@ -48,7 +52,7 @@ final class WishlistProductCollectionGenerator implements WishlistProductCollect
         $channel = $context->getChannel();
         $productsCount = $this->productRepository->getEntityCount($channel);
 
-        $randomInt = IntegerGenerator::generateBiased(
+        $randomInt = $this->integerGenerator->generateBiased(
             0,
             $context->getQuantity(),
             $context->getStress(),

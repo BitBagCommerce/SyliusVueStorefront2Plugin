@@ -8,16 +8,23 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType;
+namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer;
 
 class IntegerGenerator implements IntegerGeneratorInterface
 {
+    private RandInterface $rand;
+
+    public function __construct(RandInterface $rand)
+    {
+        $this->rand = $rand;
+    }
+
     /**
      * It generates an integer from the given <min, max> range
      * with the $bias (%) probability to draw a number from the upper limit
      * determined by the $topValuesThreshold (%)
      */
-    public static function generateBiased(
+    public function generateBiased(
         int $min,
         int $max,
         int $bias,
@@ -26,10 +33,10 @@ class IntegerGenerator implements IntegerGeneratorInterface
         $range = $max - $min + 1;
         $topValuesThreshold = $min + (int)($range * $topValuesThreshold / 100);
 
-        if (mt_rand() / mt_getrandmax() <= $bias / 100) {
-            return mt_rand($topValuesThreshold, $max);
+        if ($this->rand->rand() / $this->rand->randMax() <= $bias / 100) {
+            return $this->rand->rand($topValuesThreshold, $max);
         }
 
-        return mt_rand($min, $topValuesThreshold - 1);
+        return $this->rand->rand($min, $topValuesThreshold - 1);
     }
 }
