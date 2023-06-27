@@ -51,10 +51,13 @@ final class WishlistProductCollectionGenerator implements WishlistProductCollect
 
         $channel = $context->getChannel();
         $productsCount = $this->productRepository->getEntityCount($channel);
+        if ($productsCount === 0) {
+            return;
+        }
 
         $randomInt = $this->integerGenerator->generateBiased(
             0,
-            $context->getQuantity(),
+            min($productsCount, $context->getQuantity()),
             $context->getStress(),
             self::TOP_VALUES_THRESHOLD,
         );
@@ -67,6 +70,9 @@ final class WishlistProductCollectionGenerator implements WishlistProductCollect
             count($products = $this->productRepository->findByChannel($channel, self::LIMIT, $offset)) > 0
         ) {
             foreach ($products as $product) {
+                if ($wishlist->hasProduct($product)) {
+                    continue;
+                }
                 $wishlistProduct = $this->wishlistProductFactory->createForWishlistAndProduct($wishlist, $product);
                 $wishlist->addWishlistProduct($wishlistProduct);
 

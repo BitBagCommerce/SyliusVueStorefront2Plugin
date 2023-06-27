@@ -51,10 +51,13 @@ final class ProductTaxonCollectionGenerator implements ProductTaxonCollectionGen
 
         $channel = $context->getChannel();
         $productsCount = $this->productRepository->getEntityCount($channel);
+        if ($productsCount === 0) {
+            return;
+        }
 
         $randomInt = $this->integerGenerator->generateBiased(
             0,
-            $context->getQuantity(),
+            min($productsCount, $context->getQuantity()),
             $context->getStress(),
             self::TOP_VALUES_THRESHOLD,
         );
