@@ -15,8 +15,11 @@ use Sylius\Component\Core\Model\ChannelInterface;
 
 final class ProductRepository extends EntityRepository implements ProductRepositoryInterface
 {
-    public function findByChannel(ChannelInterface $channel, int $limit = null, int $offset = null,): array
-    {
+    public function findByChannel(
+        ChannelInterface $channel,
+        int $limit = null,
+        int $offset = null,
+    ): array {
          return $this->createQueryBuilder('product')
              ->where(':channel MEMBER OF product.channels')
              ->setParameter('channel', $channel)

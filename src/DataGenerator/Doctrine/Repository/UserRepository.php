@@ -24,7 +24,7 @@ final class UserRepository extends BaseUserRepository implements UserRepositoryI
             ->getQuery()
             ->getSingleScalarResult();
 
-        $randomOffset = rand(0, $userCount - 1);
+        $randomOffset = max(0, rand(0, $userCount - 1));
 
         $result = $this->createQueryBuilder('u')
             ->innerJoin('u.customer', 'customer')

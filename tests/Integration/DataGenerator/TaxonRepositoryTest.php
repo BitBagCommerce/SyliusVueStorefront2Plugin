@@ -11,17 +11,14 @@ declare(strict_types=1);
 namespace Tests\BitBag\SyliusVueStorefront2Plugin\Integration\DataGenerator;
 
 use ApiTestCase\JsonApiTestCase;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\TaxonRepository;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\TaxonRepositoryInterface;
 
 final class TaxonRepositoryTest extends JsonApiTestCase
 {
     public function test_getting_main_taxon(): void
     {
-        $this->loadFixturesFromFile('DataGenerator/taxon_repository.yml');
-
-        /** @var TaxonRepository $repository */
-        $repository = $this->getContainer()
-            ->get('bitbag.sylius_vue_storefront2_plugin.data_generator.repository.taxon_repository');
+        $this->loadFixtures();
+        $repository = $this->getRepository();
 
         $mainTaxon = $repository->getMainTaxon();
 
@@ -36,11 +33,8 @@ final class TaxonRepositoryTest extends JsonApiTestCase
         $maxTaxonLevel = 3;
         $maxChildrenPerTaxonLevel = 2;
 
-        $this->loadFixturesFromFile('DataGenerator/taxon_repository.yml');
-
-        /** @var TaxonRepository $repository */
-        $repository = $this->getContainer()
-            ->get('bitbag.sylius_vue_storefront2_plugin.data_generator.repository.taxon_repository');
+        $this->loadFixtures();
+        $repository = $this->getRepository();
 
         $eligibleParents = $repository->findEligibleParents($maxTaxonLevel, $maxChildrenPerTaxonLevel);
 
@@ -65,11 +59,8 @@ final class TaxonRepositoryTest extends JsonApiTestCase
         $maxChildrenPerTaxonLevel = 3;
         $limit = 2;
 
-        $this->loadFixturesFromFile('DataGenerator/taxon_repository.yml');
-
-        /** @var TaxonRepository $repository */
-        $repository = $this->getContainer()
-            ->get('bitbag.sylius_vue_storefront2_plugin.data_generator.repository.taxon_repository');
+        $this->loadFixtures();
+        $repository = $this->getRepository();
 
         $eligibleParents = $repository->findEligibleParents($maxTaxonLevel, $maxChildrenPerTaxonLevel, $limit);
 
@@ -87,14 +78,82 @@ final class TaxonRepositoryTest extends JsonApiTestCase
         $maxTaxonLevel = 1;
         $maxChildrenPerTaxonLevel = 1;
 
-        $this->loadFixturesFromFile('DataGenerator/taxon_repository.yml');
-
-        /** @var TaxonRepository $repository */
-        $repository = $this->getContainer()
-            ->get('bitbag.sylius_vue_storefront2_plugin.data_generator.repository.taxon_repository');
+        $this->loadFixtures();
+        $repository = $this->getRepository();
 
         $eligibleParents = $repository->findEligibleParents($maxTaxonLevel, $maxChildrenPerTaxonLevel);
 
         $this->assertCount(0, $eligibleParents);
+    }
+
+    public function test_find_batch_with_limit(): void
+    {
+        $this->loadFixtures();
+        $repository = $this->getRepository();
+
+        $taxons = $repository->findBatch(2);
+
+        $this->assertCount(2, $taxons);
+
+        $this->assertSame('MAIN', $taxons[0]->getCode());
+        $this->assertSame('CHILD1', $taxons[1]->getCode());
+    }
+
+    public function test_find_batch_with_offset(): void
+    {
+        $this->loadFixtures();
+        $repository = $this->getRepository();
+
+        $taxons = $repository->findBatch(null, 5);
+
+        $this->assertCount(2, $taxons);
+
+        $this->assertSame('CHILD2', $taxons[0]->getCode());
+        $this->assertSame('CHILD3', $taxons[1]->getCode());
+    }
+
+    public function test_find_batch_with_limit_and_offset(): void
+    {
+        $this->loadFixtures();
+        $repository = $this->getRepository();
+
+        $taxons = $repository->findBatch(3, 2);
+
+        $this->assertCount(3, $taxons);
+
+        $this->assertSame('CHILD11', $taxons[0]->getCode());
+        $this->assertSame('CHILD111', $taxons[1]->getCode());
+        $this->assertSame('CHILD12', $taxons[2]->getCode());
+    }
+
+    public function test_find_batch_with_offset_exceeded(): void
+    {
+        $this->loadFixtures();
+        $repository = $this->getRepository();
+
+        $taxons = $repository->findBatch(2, 20);
+
+        $this->assertCount(0, $taxons);
+    }
+
+    public function test_getting_entity_count(): void
+    {
+        $this->loadFixtures();
+        $repository = $this->getRepository();
+
+        $entityCount = $repository->getEntityCount();
+
+        $this->assertEquals(7, $entityCount);
+    }
+
+    private function loadFixtures(): void
+    {
+        $this->loadFixturesFromFile('DataGenerator/taxon_repository.yml');
+    }
+
+    private function getRepository(): TaxonRepositoryInterface
+    {
+        return $this->getContainer()
+            ->get('bitbag.sylius_vue_storefront2_plugin.data_generator.repository.taxon_repository');
     }
 }
