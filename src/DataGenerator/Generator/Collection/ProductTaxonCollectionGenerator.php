@@ -15,7 +15,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\Produ
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\ProductRepositoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ProductTaxonFactoryInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer\IntegerGenerator;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer\IntegerGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\TaxonInterface;
 
@@ -27,13 +27,13 @@ final class ProductTaxonCollectionGenerator implements ProductTaxonCollectionGen
 
     private EntityManagerInterface $entityManager;
 
-    private IntegerGenerator $integerGenerator;
+    private IntegerGeneratorInterface $integerGenerator;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
         ProductTaxonFactoryInterface $productTaxonFactory,
         EntityManagerInterface $entityManager,
-        IntegerGenerator $integerGenerator,
+        IntegerGeneratorInterface $integerGenerator,
     ) {
         $this->productRepository = $productRepository;
         $this->productTaxonFactory = $productTaxonFactory;

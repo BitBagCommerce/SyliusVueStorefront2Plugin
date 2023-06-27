@@ -14,7 +14,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterfac
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\WishlistProductGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\ProductRepositoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer\IntegerGenerator;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer\IntegerGeneratorInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,13 +27,13 @@ final class WishlistProductCollectionGenerator implements WishlistProductCollect
 
     private EntityManagerInterface $entityManager;
 
-    private IntegerGenerator $integerGenerator;
+    private IntegerGeneratorInterface $integerGenerator;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
         WishlistProductFactoryInterface $wishlistProductFactory,
         EntityManagerInterface $entityManager,
-        IntegerGenerator $integerGenerator,
+        IntegerGeneratorInterface $integerGenerator,
     ) {
         $this->productRepository = $productRepository;
         $this->wishlistProductFactory = $wishlistProductFactory;

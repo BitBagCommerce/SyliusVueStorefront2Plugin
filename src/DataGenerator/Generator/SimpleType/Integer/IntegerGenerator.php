@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer;
 
-class IntegerGenerator implements IntegerGeneratorInterface
+final class IntegerGenerator implements IntegerGeneratorInterface
 {
     private RandInterface $rand;
 

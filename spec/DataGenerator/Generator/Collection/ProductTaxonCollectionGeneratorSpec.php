@@ -16,7 +16,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\ProductR
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ProductTaxonFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Collection\ProductTaxonCollectionGenerator;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer\IntegerGenerator;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer\IntegerGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Core\Model\ChannelInterface;
@@ -30,7 +30,7 @@ final class ProductTaxonCollectionGeneratorSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         ProductTaxonFactoryInterface $productTaxonFactory,
         EntityManagerInterface $entityManager,
-        IntegerGenerator $integerGenerator,
+        IntegerGeneratorInterface $integerGenerator,
     ): void {
         $this->beConstructedWith($productRepository, $productTaxonFactory, $entityManager, $integerGenerator);
     }
@@ -43,7 +43,7 @@ final class ProductTaxonCollectionGeneratorSpec extends ObjectBehavior
     public function it_generates_product_taxon_collection(
         ProductRepositoryInterface $productRepository,
         ProductTaxonFactoryInterface $productTaxonFactory,
-        IntegerGenerator $integerGenerator,
+        IntegerGeneratorInterface $integerGenerator,
         ChannelInterface $channel,
         TaxonInterface $taxon,
         ProductTaxonGeneratorContextInterface $context,
@@ -108,7 +108,7 @@ final class ProductTaxonCollectionGeneratorSpec extends ObjectBehavior
 
     public function it_does_nothing_if_product_taxon_exists(
         ProductRepositoryInterface $productRepository,
-        IntegerGenerator $integerGenerator,
+        IntegerGeneratorInterface $integerGenerator,
         ChannelInterface $channel,
         TaxonInterface $taxon,
         ProductTaxonGeneratorContextInterface $context,

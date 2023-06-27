@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer;
 
-class Rand implements RandInterface
+final class Rand implements RandInterface
 {
     public function rand(
         int $min = null,

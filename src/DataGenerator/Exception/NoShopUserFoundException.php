@@ -12,6 +12,6 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception;
 
 use ApiPlatform\Core\Exception\RuntimeException;
 
-class NoShopUserFoundException extends RuntimeException
+final class NoShopUserFoundException extends RuntimeException
 {
 }

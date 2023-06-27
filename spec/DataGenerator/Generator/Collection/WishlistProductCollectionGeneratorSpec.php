@@ -15,7 +15,7 @@ use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\Wishl
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\ProductRepositoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Collection\WishlistProductCollectionGenerator;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer\IntegerGenerator;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer\IntegerGeneratorInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistInterface;
 use BitBag\SyliusWishlistPlugin\Entity\WishlistProductInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistProductFactoryInterface;
@@ -30,7 +30,7 @@ final class WishlistProductCollectionGeneratorSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         WishlistProductFactoryInterface $wishlistProductFactory,
         EntityManagerInterface $entityManager,
-        IntegerGenerator $integerGenerator,
+        IntegerGeneratorInterface $integerGenerator,
     ): void {
         $this->beConstructedWith($productRepository, $wishlistProductFactory, $entityManager, $integerGenerator);
     }
@@ -43,7 +43,7 @@ final class WishlistProductCollectionGeneratorSpec extends ObjectBehavior
     public function it_generates_wishlist_product_collection(
         ProductRepositoryInterface $productRepository,
         WishlistProductFactoryInterface $wishlistProductFactory,
-        IntegerGenerator $integerGenerator,
+        IntegerGeneratorInterface $integerGenerator,
         ChannelInterface $channel,
         WishlistInterface $wishlist,
         WishlistProductGeneratorContextInterface $context,
@@ -107,7 +107,7 @@ final class WishlistProductCollectionGeneratorSpec extends ObjectBehavior
 
     public function it_does_nothing_if_wishlist_product_exists(
         ProductRepositoryInterface $productRepository,
-        IntegerGenerator $integerGenerator,
+        IntegerGeneratorInterface $integerGenerator,
         ChannelInterface $channel,
         WishlistInterface $wishlist,
         WishlistProductGeneratorContextInterface $context,
