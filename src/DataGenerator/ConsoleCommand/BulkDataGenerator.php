@@ -81,9 +81,9 @@ Products                    A number of products to generate
 Taxons                      A number of taxons to generate
 Wishlists                   A number of wishlists to generate
 Taxon max depth             Maximum level of nested taxons
-Taxon children per level    Maximum number of children taxons a taxon can have (excluding main taxon)
-Max products per taxon      Maximum number of products related to a single taxon. The number is random
-Max products per wishlist   Maximum number of products related to a single wishlist. The number is random
+Taxon children per level    Maximum number of children taxons a parent taxon can have (excluding main taxon)
+Max products per taxon      Maximum number of products related to a single taxon. Final number of relations will be random
+Max products per wishlist   Maximum number of products related to a single wishlist. Final number of relations will be random
 Stress                      The probability of creating the number of relations between the entities to be greater than 80% of the given max
 HELP;
 
