@@ -13,8 +13,11 @@ namespace Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Context\Shop;
 use ApiPlatform\Core\Api\IriConverterInterface;
 use Behat\Behat\Context\Context;
 use BitBag\SyliusVueStorefront2Plugin\Factory\ShopUserTokenFactoryInterface;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Behat\Service\SharedStorageInterface;
 use Sylius\Component\Core\Model\ShopUserInterface;
+use Sylius\Component\Locale\Model\LocaleInterface;
 use Sylius\Component\User\Repository\UserRepositoryInterface;
 use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClient;
 use Tests\BitBag\SyliusVueStorefront2Plugin\Behat\Client\GraphqlClientInterface;
@@ -32,18 +35,33 @@ final class CustomerContext implements Context
 
     private IriConverterInterface $iriConverter;
 
+    private EntityManagerInterface $entityManager;
+
     public function __construct(
         GraphqlClientInterface $client,
         SharedStorageInterface $sharedStorage,
         UserRepositoryInterface $userRepository,
         ShopUserTokenFactoryInterface $tokenFactory,
         IriConverterInterface $iriConverter,
+        EntityManagerInterface $entityManager,
     ) {
         $this->client = $client;
         $this->sharedStorage = $sharedStorage;
         $this->userRepository = $userRepository;
         $this->tokenFactory = $tokenFactory;
         $this->iriConverter = $iriConverter;
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function purgeDatabase()
+    {
+        $this->entityManager->getConnection()->getConfiguration()->setSQLLogger(null);
+        $purger = new ORMPurger($this->entityManager);
+        $purger->purge();
+        $this->entityManager->clear();
     }
 
     /**
@@ -156,6 +174,61 @@ final class CustomerContext implements Context
         $operation = $this->client->prepareOperation('shop_refreshShopUserToken', $expectedData);
         $refreshToken = (string) $this->sharedStorage->get('refreshToken');
         $operation->addVariable('refreshToken', $refreshToken);
+        $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
+    }
+
+    /**
+     * @Given I prepare password reset request operation for user :email
+     */
+    public function iPreparePasswordResetRequestOperation(string $email): void
+    {
+        $mutationBody = '
+        customer {
+            id
+        }';
+
+        /** @var LocaleInterface $locale */
+        $locale = $this->sharedStorage->get('locale');
+
+        $operation = $this->client->prepareOperation('shop_send_reset_password_emailCustomer', $mutationBody);
+        $operation->addVariable('email', $email);
+        $operation->addVariable('localeCode', $locale->getCode());
+        $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
+    }
+
+    /**
+     * @Given /^user "([^"]*)" should have reset password token set$/
+     */
+    public function userShouldHaveResetPasswordTokenSet(string $email)
+    {
+        $user = $this->userRepository->findOneByEmail($email);
+        Assert::notNull($user->getPasswordResetToken());
+    }
+
+    /**
+     * @Given /^I prepare check reset password token operation for user's "([^"]*)" token$/
+     */
+    public function iPrepareCheckResetPasswordTokenOperationForUserSToken(string $email)
+    {
+        $user = $this->userRepository->findOneByEmail($email);
+        $token = "\"" . $user->getPasswordResetToken() . "\"";
+        $queryBody = 'username';
+        $operation = $this->client->prepareQuery('password_reset_tokenUser', $queryBody);
+
+        $operation->addFilter('passwordResetToken', $token);
+        $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
+    }
+
+    /**
+     * @Given /^I prepare check reset password token operation for invalid token$/
+     */
+    public function iPrepareCheckResetPasswordTokenOperationForUserSInvalidToken()
+    {
+        $token = "\"invalid-token\"";
+        $queryBody = 'username';
+        $operation = $this->client->prepareQuery('password_reset_tokenUser', $queryBody);
+
+        $operation->addFilter('passwordResetToken', $token);
         $this->sharedStorage->set(GraphqlClient::GRAPHQL_OPERATION, $operation);
     }
 }

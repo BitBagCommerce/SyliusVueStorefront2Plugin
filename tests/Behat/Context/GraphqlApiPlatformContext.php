@@ -303,4 +303,13 @@ final class GraphqlApiPlatformContext implements Context
         $value = $this->castToType($value, $type);
         $operation->addFilter($filterName, $value);
     }
+
+    /**
+     * @Then This response should contain pattern :pattern
+     */
+    public  function responseShouldContainPattern(string $pattern): void{
+        $response = $this->client->getLastResponse();
+        $data = stripslashes($response->getContent());
+        Assert::true((bool)preg_match($pattern, $data));
+    }
 }
