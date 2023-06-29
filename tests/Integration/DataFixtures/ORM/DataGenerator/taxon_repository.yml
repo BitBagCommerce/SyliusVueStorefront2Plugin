@@ -1,0 +1,43 @@
+Sylius\Component\Core\Model\Taxon:
+    main:
+        parent: null
+        code: "MAIN"
+        left: 1
+        right: 14
+        enabled: true
+    child1:
+        parent: "@main"
+        code: "CHILD1"
+        left: 2
+        right: 9
+        enabled: true
+    child11:
+        parent: "@child1"
+        code: "CHILD11"
+        left: 3
+        right: 6
+        enabled: true
+    child111:
+        parent: "@child11"
+        code: "CHILD111"
+        left: 4
+        right: 5
+        enabled: true
+    child12:
+        parent: "@child1"
+        code: "CHILD12"
+        left: 7
+        right: 8
+        enabled: true
+    child2:
+        parent: "@main"
+        code: "CHILD2"
+        left: 10
+        right: 11
+        enabled: true
+    child3:
+        parent: "@main"
+        code: "CHILD3"
+        left: 12
+        right: 13
+        enabled: true

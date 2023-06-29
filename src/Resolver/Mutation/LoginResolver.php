@@ -10,10 +10,11 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation;
 
-use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
+use ApiPlatform\GraphQl\Resolver\MutationResolverInterface;
 use BitBag\SyliusVueStorefront2Plugin\Factory\ShopUserTokenFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserTokenInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -97,7 +98,7 @@ final class LoginResolver implements MutationResolverInterface
         $currentChannel = $this->channelContext->getChannel();
 
         if ($currentChannel->isAccountVerificationRequired() && $user->isVerified() === false) {
-            throw new \Exception('User verification required.');
+            throw new Exception('User verification required.');
         }
         if ($encoder->isPasswordValid($userPassword, $password, $userSalt)) {
             $refreshToken = $this->tokenFactory->getRefreshToken($user, $rememberMe);
@@ -110,7 +111,7 @@ final class LoginResolver implements MutationResolverInterface
             return $shopUserToken;
         }
 
-        throw new \Exception('Wrong credentials.');
+        throw new Exception('Wrong credentials.');
     }
 
     private function applyOrder(array $input, ShopUserInterface $user): void

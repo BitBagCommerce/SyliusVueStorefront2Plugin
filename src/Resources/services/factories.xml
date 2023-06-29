@@ -21,6 +21,5 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="string">%env(APP_REFRESH_TOKEN_TTL)%</argument>
             <argument type="string">%env(APP_REFRESH_TOKEN_EXTENDED_TTL)%</argument>
         </service>
-
     </services>
 </container>
