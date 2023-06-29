@@ -28,12 +28,13 @@ final class DataGeneratorCommandContextFactorySpec extends ObjectBehavior
         ChannelInterface $channel,
         DataGeneratorCommandContextInterface $commandContext,
     ): void {
-        $defaultInt = 100;
+        $defaultInt = 70;
 
         $this
             ->fromInput(
                 $io->getWrappedObject(),
                 $channel->getWrappedObject(),
+                $defaultInt,
                 $defaultInt,
                 $defaultInt,
                 $defaultInt,

@@ -27,6 +27,7 @@ final class DataGeneratorCommandContextFactory implements DataGeneratorCommandCo
         int $maxTaxonLevel,
         int $maxChildrenPerTaxonLevel,
         int $productsPerWishlistQty,
+        int $stress,
     ): DataGeneratorCommandContextInterface {
         return new DataGeneratorCommandContext(
             $io,
@@ -38,6 +39,7 @@ final class DataGeneratorCommandContextFactory implements DataGeneratorCommandCo
             $maxTaxonLevel,
             $maxChildrenPerTaxonLevel,
             $productsPerWishlistQty,
+            $stress,
         );
     }
 }

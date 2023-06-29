@@ -31,6 +31,8 @@ final class DataGeneratorCommandContextSpec extends ObjectBehavior
 
     private const PRODUCTS_PER_WISHLIST_QTY = 700;
 
+    private const STRESS = 25;
+
     public function let(
         SymfonyStyle $io,
         ChannelInterface $channel,
@@ -45,6 +47,7 @@ final class DataGeneratorCommandContextSpec extends ObjectBehavior
             self::MAX_TAXON_LEVEL,
             self::MAX_CHILDREN_PER_TAXON_LEVEL,
             self::PRODUCTS_PER_WISHLIST_QTY,
+            self::STRESS,
         );
     }
 
@@ -96,5 +99,10 @@ final class DataGeneratorCommandContextSpec extends ObjectBehavior
     public function it_returns_products_per_wishlist_qty(): void
     {
         $this->getProductsPerWishlistQty()->shouldReturn(self::PRODUCTS_PER_WISHLIST_QTY);
+    }
+
+    public function it_returns_stress(): void
+    {
+        $this->getStress()->shouldReturn(self::STRESS);
     }
 }

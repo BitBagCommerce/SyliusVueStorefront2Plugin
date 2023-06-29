@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\EntityContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\WishlistContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\WishlistGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\UserRepositoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\WishlistFactoryInterface;
@@ -39,7 +39,7 @@ final class WishlistGeneratorSpec extends ObjectBehavior
     public function it_generates_wishlist(
         WishlistFactoryInterface $wishlistFactory,
         UserRepositoryInterface $userRepository,
-        WishlistContextInterface $context,
+        WishlistGeneratorContextInterface $context,
         ChannelInterface $channel,
         ShopUserInterface $shopUser,
         WishlistInterface $wishlist,
@@ -59,7 +59,7 @@ final class WishlistGeneratorSpec extends ObjectBehavior
         $this->generate($context)->shouldReturn($wishlist);
     }
 
-    public function it_throws_exception_on_invalid_context(EntityContextInterface $context): void
+    public function it_throws_exception_on_invalid_context(GeneratorContextInterface $context): void
     {
         $this->shouldThrow(InvalidContextException::class)
             ->during('generate', [$context]);

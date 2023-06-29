@@ -20,12 +20,11 @@ final class TaxonRepository extends BaseTaxonRepository implements TaxonReposito
         return $this->createQueryBuilder('taxon')
             ->where('taxon.parent IS NULL')
             ->getQuery()
-            ->getSingleResult()
-        ;
+            ->getSingleResult();
     }
 
     /**
-     * @return array<TaxonInterface>
+     * @return TaxonInterface[]
      */
     public function findEligibleParents(
         int $maxTaxonLevel,
@@ -44,7 +43,28 @@ final class TaxonRepository extends BaseTaxonRepository implements TaxonReposito
             ->setParameter('maxTaxonLevel', $maxTaxonLevel)
             ->setParameter('maxChildrenPerTaxonLevel', $maxChildrenPerTaxonLevel)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
+    }
+
+    /**
+     * @return TaxonInterface[]
+     */
+    public function findBatch(
+        int $limit = null,
+        int $offset = null,
+    ): array {
+        return $this->createQueryBuilder('taxon')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getEntityCount(): int
+    {
+        $queryBuilder = $this->createQueryBuilder('taxon')
+            ->select('COUNT(taxon)');
+
+        return (int)$queryBuilder->getQuery()->getSingleScalarResult();
     }
 }

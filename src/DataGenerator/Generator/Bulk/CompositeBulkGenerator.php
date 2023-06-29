@@ -13,19 +13,19 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\ContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context\BulkGeneratorContextFactoryInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context\GeneratorContextFactoryInterface;
 
 final class CompositeBulkGenerator implements BulkGeneratorInterface
 {
     /** @var iterable|BulkGeneratorInterface[] */
     private iterable $generators;
 
-    private BulkGeneratorContextFactoryInterface $bulkGeneratorContextFactory;
+    private GeneratorContextFactoryInterface $bulkGeneratorContextFactory;
 
     /** @param iterable|BulkGeneratorInterface[] $generators */
     public function __construct(
         iterable $generators,
-        BulkGeneratorContextFactoryInterface $bulkGeneratorContextFactory,
+        GeneratorContextFactoryInterface $bulkGeneratorContextFactory,
     ) {
         $this->generators = $generators;
         $this->bulkGeneratorContextFactory = $bulkGeneratorContextFactory;

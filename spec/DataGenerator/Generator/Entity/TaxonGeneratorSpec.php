@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity;
 
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\EntityContextInterface;
-use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Entity\TaxonContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\TaxonGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\TaxonRepositoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\TaxonFactoryInterface;
@@ -38,7 +38,7 @@ final class TaxonGeneratorSpec extends ObjectBehavior
     public function it_generates_taxon_with_main_taxon_as_parent(
         TaxonFactoryInterface $taxonFactory,
         TaxonRepositoryInterface $taxonRepository,
-        TaxonContextInterface $context,
+        TaxonGeneratorContextInterface $context,
         TaxonInterface $parent,
         TaxonInterface $taxon,
     ): void {
@@ -65,7 +65,7 @@ final class TaxonGeneratorSpec extends ObjectBehavior
     public function it_generates_taxon_with_random_parent(
         TaxonFactoryInterface $taxonFactory,
         TaxonRepositoryInterface $taxonRepository,
-        TaxonContextInterface $context,
+        TaxonGeneratorContextInterface $context,
         TaxonInterface $parent,
         TaxonInterface $taxon,
     ): void {
@@ -88,7 +88,7 @@ final class TaxonGeneratorSpec extends ObjectBehavior
         $this->generate($context)->shouldReturn($taxon);
     }
 
-    public function it_throws_exception_on_invalid_context(EntityContextInterface $context): void
+    public function it_throws_exception_on_invalid_context(GeneratorContextInterface $context): void
     {
         $this->shouldThrow(InvalidContextException::class)
             ->during('generate', [$context]);

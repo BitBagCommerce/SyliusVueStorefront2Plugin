@@ -73,7 +73,22 @@ final class BulkDataGenerator extends Command implements BulkDataGeneratorInterf
 
     protected function configure(): void
     {
+        $help = <<<HELP
+When you run the command, interactive questions about the parameters of the data to be generated will appear.
+If no value for a question will be provided, the suggested value will be assumed.
+Channel                     Channel on which the data should be generated. If there is only one channel in the system, it will be set by default
+Products                    A number of products to generate
+Taxons                      A number of taxons to generate
+Wishlists                   A number of wishlists to generate
+Taxon max depth             Maximum level of nested taxons
+Taxon children per level    Maximum number of children taxons a parent taxon can have (excluding main taxon)
+Max products per taxon      Maximum number of products related to a single taxon. Final number of relations will be random
+Max products per wishlist   Maximum number of products related to a single wishlist. Final number of relations will be random
+Stress                      The probability of creating the number of relations between the entities to be greater than 80% of the given max
+HELP;
+
         $this->setDescription('Generates random data by the given parameters.');
+        $this->setHelp($help);
     }
 
     private function confirmRunningCommand(): bool
@@ -145,6 +160,9 @@ final class BulkDataGenerator extends Command implements BulkDataGeneratorInterf
             );
         }
 
+        $stress = $this->askForInteger('Stress', self::DEFAULT_STRESS);
+        $stress = $stress <= 100 ? $stress : self::DEFAULT_STRESS;
+
         return $this->commandContextFactory->fromInput(
             $this->io,
             $channel,
@@ -155,6 +173,7 @@ final class BulkDataGenerator extends Command implements BulkDataGeneratorInterf
             $maxTaxonLevel,
             $maxChildrenPerTaxonLevel,
             $productsPerWishlistQty,
+            $stress,
         );
     }
 }

@@ -32,4 +32,6 @@ interface DataGeneratorCommandContextInterface extends ContextInterface
     public function getMaxChildrenPerTaxonLevel(): int;
 
     public function getProductsPerWishlistQty(): int;
+
+    public function getStress(): int;
 }
