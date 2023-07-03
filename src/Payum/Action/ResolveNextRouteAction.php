@@ -16,10 +16,18 @@ namespace BitBag\SyliusVueStorefront2Plugin\Payum\Action;
 use Payum\Core\Action\ActionInterface;
 use Sylius\Bundle\PayumBundle\Request\ResolveNextRoute;
 use Sylius\Component\Core\Model\PaymentInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Webmozart\Assert\Assert;
 
 final class ResolveNextRouteAction implements ActionInterface
 {
+    private RequestStack $requestStack;
+
+    public function __construct(RequestStack $requestStack)
+    {
+        $this->requestStack = $requestStack;
+    }
+
     public function execute($request): void
     {
         Assert::isInstanceOf($request, ResolveNextRoute::class);
@@ -33,7 +41,10 @@ final class ResolveNextRouteAction implements ActionInterface
 
         $order = $payment->getOrder();
         Assert::notNull($order);
-        $request->setRouteParameters(['orderNumber' => $order->getNumber()]);
+        $request->setRouteParameters([
+            'orderNumber' => $order->getNumber(),
+            'locale' => $this->requestStack->getCurrentRequest()?->getLocale(),
+        ]);
     }
 
     public function supports($request): bool
