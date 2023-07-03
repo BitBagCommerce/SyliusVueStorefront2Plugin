@@ -40,7 +40,7 @@ final class ThankYouPageController
             }
 
             $locale = $request->query->get('locale') ?? $request->getLocale();
-            $locale = locale_get_primary_language($locale);
+            $locale = locale_get_primary_language((string) $locale);
 
             return new RedirectResponse(sprintf(
                 '%s/%s/checkout/thank-you?order=%s',
