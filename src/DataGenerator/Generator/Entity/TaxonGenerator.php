@@ -44,7 +44,7 @@ final class TaxonGenerator implements GeneratorInterface
         }
 
         $translation = TaxonTranslationFactory::create(
-            $this->faker->sentence(3),
+            sprintf('%s %s', $this->faker->uuid, $this->faker->sentence(3)),
             $context::DEFAULT_LOCALE,
         );
 
