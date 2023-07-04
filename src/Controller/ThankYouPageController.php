@@ -39,7 +39,15 @@ final class ThankYouPageController
                 );
             }
 
-            return new RedirectResponse(sprintf('%s/checkout/thank-you?order=%s', $this->vsf2Host, (string) $orderNumber));
+            $locale = $request->query->get('locale') ?? $request->getLocale();
+            $locale = locale_get_primary_language((string) $locale);
+
+            return new RedirectResponse(sprintf(
+                '%s/%s/checkout/thank-you?order=%s',
+                $this->vsf2Host,
+                $locale,
+                (string) $orderNumber,
+            ));
         }
 
         return new RedirectResponse(
