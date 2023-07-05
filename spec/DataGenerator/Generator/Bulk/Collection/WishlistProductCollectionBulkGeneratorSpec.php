@@ -49,6 +49,7 @@ final class WishlistProductCollectionBulkGeneratorSpec extends ObjectBehavior
         $offset = 0;
         $wishlists = [$wishlist1, $wishlist2];
 
+        $context->getQuantity()->willReturn(100);
         $context->getIO()->willReturn($io);
         $context->getChannel()->willReturn($channel);
         $wishlistRepository->getEntityCount($channel)->willReturn($entityCount);
@@ -74,11 +75,19 @@ final class WishlistProductCollectionBulkGeneratorSpec extends ObjectBehavior
         $limit = 100;
         $offset = 0;
 
+        $context->getQuantity()->willReturn(100);
         $context->getIO()->willReturn($io);
         $context->getChannel()->willReturn($channel);
         $wishlistRepository->getEntityCount($channel)->willReturn($entityCount);
 
         $wishlistRepository->findByChannel($channel, $limit, $offset)->willReturn([]);
+
+        $this->generate($context);
+    }
+
+    public function it_does_nothing_if_quantity_equals_to_zero(WishlistProductGeneratorContextInterface $context): void
+    {
+        $context->getQuantity()->willReturn(0)->shouldBeCalled();
 
         $this->generate($context);
     }

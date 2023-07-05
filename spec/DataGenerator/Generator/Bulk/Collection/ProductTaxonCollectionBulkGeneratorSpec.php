@@ -47,6 +47,7 @@ final class ProductTaxonCollectionBulkGeneratorSpec extends ObjectBehavior
         $offset = 0;
         $taxons = [$taxon1, $taxon2];
 
+        $context->getQuantity()->willReturn(100);
         $context->getIO()->willReturn($io);
         $taxonRepository->getEntityCount()->willReturn($entityCount);
 
@@ -70,10 +71,18 @@ final class ProductTaxonCollectionBulkGeneratorSpec extends ObjectBehavior
         $limit = 100;
         $offset = 0;
 
+        $context->getQuantity()->willReturn(100);
         $context->getIO()->willReturn($io);
         $taxonRepository->getEntityCount()->willReturn($entityCount);
 
         $taxonRepository->findBatch($limit, $offset)->willReturn([]);
+
+        $this->generate($context);
+    }
+
+    public function it_does_nothing_if_quantity_equals_to_zero(ProductTaxonGeneratorContextInterface $context,): void
+    {
+        $context->getQuantity()->willReturn(0)->shouldBeCalled();
 
         $this->generate($context);
     }
