@@ -17,6 +17,7 @@ use Prophecy\Argument;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class ProductFactorySpec extends ObjectBehavior
@@ -36,6 +37,7 @@ final class ProductFactorySpec extends ObjectBehavior
         ProductVariantInterface $variant,
         ChannelInterface $channel,
         ProductInterface $product,
+        TaxonInterface $taxon,
     ): void {
         $productFactory->createNew()->willReturn($product);
 
@@ -48,6 +50,7 @@ final class ProductFactorySpec extends ObjectBehavior
                 $variant,
                 $channel,
                 new DateTime(),
+                $taxon,
             )
             ->shouldReturn($product);
     }

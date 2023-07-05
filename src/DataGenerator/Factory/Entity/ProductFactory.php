@@ -15,6 +15,7 @@ use Gedmo\Sluggable\Util\Urlizer;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Core\Model\TaxonInterface;
 use Sylius\Component\Resource\Factory\FactoryInterface;
 
 final class ProductFactory implements ProductFactoryInterface
@@ -34,6 +35,7 @@ final class ProductFactory implements ProductFactoryInterface
         ProductVariantInterface $variant,
         ChannelInterface $channel,
         DateTimeInterface $createdAt,
+        TaxonInterface $mainTaxon,
     ): ProductInterface {
         /** @var ProductInterface $product */
         $product = $this->productFactory->createNew();
@@ -46,6 +48,7 @@ final class ProductFactory implements ProductFactoryInterface
         $product->setCreatedAt($createdAt);
         $product->addChannel($channel);
         $product->addVariant($variant);
+        $product->setMainTaxon($mainTaxon);
 
         return $product;
     }

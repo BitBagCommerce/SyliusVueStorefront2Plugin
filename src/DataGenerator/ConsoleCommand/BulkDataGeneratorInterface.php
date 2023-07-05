@@ -14,7 +14,7 @@ interface BulkDataGeneratorInterface
 {
     const DEFAULT_TAXONS_QTY = 5000;
 
-    const DEFAULT_MAX_TAXON_LEVEL = 15;
+    const DEFAULT_MAX_TAXON_LEVEL = 14;
 
     const DEFAULT_MAX_CHILDREN_PER_TAXON_LEVEL = 5;
 

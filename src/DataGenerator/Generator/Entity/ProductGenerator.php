@@ -12,6 +12,7 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\ProductGeneratorContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\TaxonRepositoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ChannelPricingFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ProductFactoryInterface;
@@ -28,16 +29,20 @@ final class ProductGenerator implements GeneratorInterface
 
     private ChannelPricingFactoryInterface $channelPricingFactory;
 
+    private TaxonRepositoryInterface $taxonRepository;
+
     private Generator $faker;
 
     public function __construct(
         ProductFactoryInterface $productFactory,
         ProductVariantFactoryInterface $productVariantFactory,
         ChannelPricingFactoryInterface $channelPricingFactory,
+        TaxonRepositoryInterface $taxonRepository,
     ) {
         $this->productFactory = $productFactory;
         $this->productVariantFactory = $productVariantFactory;
         $this->channelPricingFactory = $channelPricingFactory;
+        $this->taxonRepository = $taxonRepository;
         $this->faker = Factory::create();
     }
 
@@ -47,9 +52,10 @@ final class ProductGenerator implements GeneratorInterface
             throw new InvalidContextException();
         }
 
+        $channel = $context->getChannel();
         $channelPricing = $this->channelPricingFactory->create(
             $this->faker->randomNumber(),
-            $context->getChannel(),
+            $channel,
         );
 
         $uuid = $this->faker->uuid;
@@ -65,8 +71,9 @@ final class ProductGenerator implements GeneratorInterface
             $this->faker->sentence(15),
             $this->faker->sentence(),
             $variant,
-            $context->getChannel(),
-            $this->faker->dateTimeBetween('-1 year')
+            $channel,
+            $this->faker->dateTimeBetween('-1 year'),
+            $this->taxonRepository->getRandomTaxon(),
         );
     }
 }
