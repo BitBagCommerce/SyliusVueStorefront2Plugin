@@ -40,5 +40,37 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="tagged" tag="api_platform.doctrine.orm.query_extension.collection" />
             <tag name="api_platform.collection_data_provider" priority="15" />
         </service>
+
+        <service
+            id="api_platform.doctrine.orm.default.collection_data_provider"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\CachedCollectionDataProvider"
+        >
+            <argument type="service" id="doctrine" />
+            <argument type="tagged" tag="api_platform.doctrine.orm.query_extension.collection" />
+            <tag name="api_platform.collection_data_provider" />
+        </service>
+
+        <service
+            id="bitbag.doctrine.orm.default.subresource_data_provider"
+            decorates="api_platform.doctrine.orm.default.subresource_data_provider"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\CompositeSubresourceDataProvider"
+        >
+            <argument type="service" id=".inner"/>
+            <argument type="tagged_iterator" tag="bitbag.subresource_restricted_provider" />
+        </service>
+
+        <service
+            id="bitbag.subresource_restricted_provider.product_image"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\Subresource\ProductImageSubresourceDataProvider"
+        >
+            <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
+            <tag name="bitbag.subresource_restricted_provider" />
+        </service>
+
+        <service id="bitbag.subresource_restricted_provider.product_attribute"
+                 class="BitBag\SyliusVueStorefront2Plugin\DataProvider\Subresource\ProductAttributeSubresourceDataProvider">
+            <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
+            <tag name="bitbag.subresource_restricted_provider" />
+        </service>
     </services>
 </container>
