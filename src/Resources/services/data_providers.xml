@@ -66,11 +66,5 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
             <tag name="bitbag.subresource_restricted_provider" />
         </service>
-
-        <service id="bitbag.subresource_restricted_provider.product_attribute"
-                 class="BitBag\SyliusVueStorefront2Plugin\DataProvider\Subresource\ProductAttributeSubresourceDataProvider">
-            <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
-            <tag name="bitbag.subresource_restricted_provider" />
-        </service>
     </services>
 </container>
