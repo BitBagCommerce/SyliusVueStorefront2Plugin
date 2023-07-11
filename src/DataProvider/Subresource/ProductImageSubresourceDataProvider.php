@@ -16,13 +16,20 @@ final class ProductImageSubresourceDataProvider implements RestrictedSubresource
     {
     }
 
-    public function supports(string $resourceClass, array $context, string $operationName = null): bool
-    {
+    public function supports(
+        string $resourceClass,
+        array $context,
+        string $operationName = null
+    ): bool {
         return is_a($resourceClass, ProductImageInterface::class, true);
     }
 
-    public function getSubresource(string $resourceClass, array $identifiers, array $context, string $operationName = null): ArrayPaginator
-    {
+    public function getSubresource(
+        string $resourceClass,
+        array $identifiers,
+        array $context,
+        string $operationName = null
+    ): ArrayPaginator {
         /** @var ProductInterface[] $data */
         $data = $this->cachedCollectionDataProvider->getCachedData();
 

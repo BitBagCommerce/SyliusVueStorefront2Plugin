@@ -10,8 +10,11 @@ final class CachedCollectionDataProvider extends CollectionDataProvider implemen
 {
     private array $cachedData = [];
 
-    public function getCollection(string $resourceClass, string $operationName = null, array $context = []): iterable
-    {
+    public function getCollection(
+        string $resourceClass,
+        string $operationName = null,
+        array $context = []
+    ): iterable {
         $collection = parent::getCollection($resourceClass, $operationName, $context);
 
         foreach ($collection as $item) {
