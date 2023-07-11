@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+
+<resources xmlns="https://api-platform.com/schema/metadata"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd"
+>
+    <resource class="Sylius\Bundle\ApiBundle\Command\SendContactRequest" shortName="RequestContact">
+        <attribute name="route_prefix">shop</attribute>
+
+        <graphql>
+            <operation name="item_query" />
+
+            <operation name="shop_send_contact_request">
+                <attribute name="method">POST</attribute>
+                <attribute name="messenger">input</attribute>
+                <attribute name="input">Sylius\Bundle\ApiBundle\Command\SendContactRequest</attribute>
+                <attribute name="args">
+                    <attribute name="email">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                    <attribute name="message">
+                        <attribute name="type">String</attribute>
+                    </attribute>
+                </attribute>
+            </operation>
+        </graphql>
+
+        <property name="email" identifier="true" readable="false" />
+        <property name="message" />
+    </resource>
+</resources>

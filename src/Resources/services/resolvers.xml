@@ -16,7 +16,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="sylius.repository.shop_user" />
             <argument type="service" id="sylius.repository.order" />
-            <argument type="service" id="security.encoder_factory" />
+            <argument type="service" id="security.password_hasher_factory" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.factory.shop_user_token_factory" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="sylius.context.channel" />
