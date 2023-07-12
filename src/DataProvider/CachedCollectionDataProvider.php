@@ -13,6 +13,7 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataProvider;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\CollectionDataProvider;
 use BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\PreFetcherInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Sylius\Component\Resource\Model\ResourceInterface;
 
 final class CachedCollectionDataProvider extends CollectionDataProvider implements CachedCollectionDataProviderInterface
 {
@@ -33,10 +34,12 @@ final class CachedCollectionDataProvider extends CollectionDataProvider implemen
         array $context = [],
     ): iterable {
         $collection = parent::getCollection($resourceClass, $operationName, $context);
-        $ids = array_map(
-            static fn ($object) => $object->getId(),
-            (array)$collection->getIterator(),
-        );
+
+        $ids = [];
+        /** @var ResourceInterface $item */
+        foreach ($collection as $item) {
+            $ids[] = $item->getId();
+        }
 
         $this->compositePreFetcher->preFetchData($ids, $context);
 
