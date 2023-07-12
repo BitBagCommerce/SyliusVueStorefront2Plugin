@@ -45,6 +45,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             id="api_platform.doctrine.orm.default.collection_data_provider"
             class="BitBag\SyliusVueStorefront2Plugin\DataProvider\CachedCollectionDataProvider"
         >
+            <argument type="service" id="api_platform.doctrine.orm.default.prefetcher" />
             <argument type="service" id="doctrine" />
             <argument type="tagged" tag="api_platform.doctrine.orm.query_extension.collection" />
             <tag name="api_platform.collection_data_provider" />
@@ -57,6 +58,21 @@ We are hiring developers from all over the world. Join us and start your new, ex
         >
             <argument type="service" id=".inner"/>
             <argument type="tagged_iterator" tag="bitbag.subresource_restricted_provider" />
+        </service>
+
+        <service
+            id="api_platform.doctrine.orm.default.prefetcher"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\CompositePreFetcher"
+        >
+            <argument type="tagged_iterator" tag="bitbag.data_provider.data_prefetcher"/>
+        </service>
+
+        <service
+            id="api_platform.data_provider.data_prefetcher.product_image"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\Product\ProductImagePreFetcher"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.product_image"/>
+            <tag name="bitbag.data_provider.data_prefetcher" />
         </service>
 
         <service

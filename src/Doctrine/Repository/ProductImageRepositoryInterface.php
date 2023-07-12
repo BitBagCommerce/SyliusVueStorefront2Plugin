@@ -8,15 +8,12 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataProvider\Subresource;
+namespace BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository;
 
-use ApiPlatform\Core\DataProvider\SubresourceDataProviderInterface;
-
-interface RestrictedSubresourceDataProviderInterface extends SubresourceDataProviderInterface
+interface ProductImageRepositoryInterface
 {
-    public function supports(
-        string $resourceClass,
+    public function findByProductIds(
+        array $productIds,
         array $context,
-        string $operationName = null
-    ): bool;
+    ): array;
 }

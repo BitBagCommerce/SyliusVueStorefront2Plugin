@@ -8,15 +8,17 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\DataProvider\Subresource;
+namespace BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher;
 
-use ApiPlatform\Core\DataProvider\SubresourceDataProviderInterface;
-
-interface RestrictedSubresourceDataProviderInterface extends SubresourceDataProviderInterface
+interface PreFetcherInterface
 {
-    public function supports(
-        string $resourceClass,
+    public function preFetchData(
+        array $parentIds,
         array $context,
-        string $operationName = null
-    ): bool;
+    ): void;
+
+    public function getPreFetchedData(
+        string $identifier,
+        ?array $context = [],
+    ): array;
 }

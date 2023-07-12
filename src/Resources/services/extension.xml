@@ -18,13 +18,5 @@ We are hiring developers from all over the world. Join us and start your new, ex
         >
             <tag name="api_platform.doctrine.orm.query_extension.collection" />
         </service>
-
-        <service
-            id="bitbag.api.doctrine.query_collection_extension.products"
-            class="BitBag\SyliusVueStorefront2Plugin\Doctrine\Orm\Extension\ProductQueryCollectionExtension"
-            public="false"
-        >
-            <tag name="api_platform.doctrine.orm.query_extension.collection" />
-        </service>
     </services>
 </container>
