@@ -32,7 +32,7 @@ final class ProductAttributeValueRepository extends EntityRepository implements 
     ): array {
         $locale = $context[ContextKeys::LOCALE_CODE] ?? 'en_US';
 
-         return $this->decoratedRepository->createQueryBuilder('value')
+         return $this->createQueryBuilder('value')
              ->leftJoin('value.attribute', 'attribute')
              ->leftJoin('attribute.translations', 'translation')
              ->leftJoin('value.subject', 'product')

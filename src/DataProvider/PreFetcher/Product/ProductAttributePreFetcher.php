@@ -32,7 +32,7 @@ class ProductAttributePreFetcher implements RestrictedPreFetcherInterface
     ): void {
         /** @var ProductAttributeValueInterface $result */
         foreach ($this->repository->findByProductIds($parentIds, $context) as $result) {
-            $this->preFetchedData[$result->getProduct()->getCode()][] = $result;
+            $this->preFetchedData[$result->getProduct()?->getCode()][] = $result;
         }
     }
 
