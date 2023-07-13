@@ -10,11 +10,12 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\Resolver\Mutation;
 
-use ApiPlatform\Core\GraphQl\Resolver\MutationResolverInterface;
+use ApiPlatform\GraphQl\Resolver\MutationResolverInterface;
 use BitBag\SyliusVueStorefront2Plugin\Factory\ShopUserTokenFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\Model\RefreshToken;
 use BitBag\SyliusVueStorefront2Plugin\Model\RefreshTokenInterface;
 use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserTokenInterface;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ObjectRepository;
@@ -61,8 +62,7 @@ final class RefreshTokenResolver implements MutationResolverInterface
         $this->refreshTokenExtendedTTL = $refreshTokenExtendedTTL;
     }
 
-    /**
-     * @param ShopUserTokenInterface|object|null $item */
+    /** @param ShopUserTokenInterface|object|null $item */
     public function __invoke($item, array $context): ?ShopUserTokenInterface
     {
         if (!isset($context['args']['input'])) {
@@ -84,7 +84,7 @@ final class RefreshTokenResolver implements MutationResolverInterface
         /** @var ShopUserInterface $user */
         $user = $this->userRepository->findOneBy(['username' => $refreshToken->getUsername()]);
 
-        $refreshTokenExpirationDate = new \DateTime(true === $refreshToken->isRememberMe() ? $this->refreshTokenExtendedTTL : $this->refreshTokenTTL);
+        $refreshTokenExpirationDate = new DateTime(true === $refreshToken->isRememberMe() ? $this->refreshTokenExtendedTTL : $this->refreshTokenTTL);
         $refreshToken->setValid($refreshTokenExpirationDate);
         $this->entityManager->flush();
 

@@ -1,0 +1,38 @@
+Sylius\Component\Core\Model\Product:
+    p1:
+        code: "product_1"
+        channels: ['@ch1']
+    p2:
+        code: "product_2"
+        channels: ['@ch1']
+    p3:
+        code: "product_3"
+        channels: ['@ch1']
+    p4:
+        code: "product_4"
+        channels: ['@ch2']
+    p5:
+        code: "product_5"
+        channels: ['@ch1']
+
+Sylius\Component\Core\Model\Channel:
+    ch1:
+        code: "channel_1"
+        name: "channel_1"
+        tax_calculation_strategy: "order_items_based"
+        default_locale: "@l1"
+        base_currency: "@c1"
+    ch2:
+        code: "channel_2"
+        name: "channel_2"
+        tax_calculation_strategy: "order_items_based"
+        default_locale: "@l1"
+        base_currency: "@c1"
+
+Sylius\Component\Locale\Model\Locale:
+    l1:
+        code: "en_US"
+
+Sylius\Component\Currency\Model\Currency:
+    c1:
+        code: "USD"

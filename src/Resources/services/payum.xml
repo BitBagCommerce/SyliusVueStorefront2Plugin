@@ -14,10 +14,12 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <defaults autowire="false" autoconfigure="false" public="false" />
 
         <service id="sylius.payum_action.resolve_next_route" class="BitBag\SyliusVueStorefront2Plugin\Payum\Action\ResolveNextRouteAction" public="true">
+            <argument type="service" id="request_stack"/>
             <tag name="payum.action" all="true" alias="sylius.resolve_next_route" />
         </service>
 
         <service id="sylius.payum_action.offline.resolve_next_route" class="BitBag\SyliusVueStorefront2Plugin\Payum\Action\ResolveNextRouteAction" public="true">
+            <argument type="service" id="request_stack"/>
             <tag name="payum.action" factory="offline" alias="sylius.offline.resolve_next_route" />
         </service>
     </services>

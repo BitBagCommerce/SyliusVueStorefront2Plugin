@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ This file was created by developers working at BitBag
+  ~ Do you need more information about us and what we do? Visit our https://bitbag.io website!
+  ~ We are hiring developers from all over the world. Join us and start your new, exciting adventure and become part of us: https://bitbag.io/career
+  -->
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults autowire="false" autoconfigure="false" public="false" />
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_generator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\ProductGenerator"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.product_factory" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.product_variant_factory" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.channel_pricing_factory" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.taxon_generator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\TaxonGenerator"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.taxon_factory" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.repository.taxon_repository" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_generator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity\WishlistGenerator"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.wishlist_factory" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.repository.user_repository" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_bulk_generator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity\ProductBulkGenerator"
+        >
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_generator" />
+            <tag name="data_generator.bulk_generator" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.taxon_bulk_generator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity\TaxonBulkGenerator"
+        >
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.taxon_generator" />
+            <tag name="data_generator.bulk_generator" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_bulk_generator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Entity\WishlistBulkGenerator"
+        >
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_generator" />
+            <tag name="data_generator.bulk_generator" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_taxon_collection_generator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Collection\ProductTaxonCollectionGenerator"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.repository.product_repository" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.product_taxon_factory" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.integer" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_taxon_collection_bulk_generator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Collection\ProductTaxonCollectionBulkGenerator"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.repository.taxon_repository" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.product_taxon_collection_generator" />
+            <tag name="data_generator.bulk_generator" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_product_collection_generator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Collection\WishlistProductCollectionGenerator"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.repository.product_repository" />
+            <argument type="service" id="bitbag_sylius_wishlist_plugin.factory.wishlist_product" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.integer" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_product_collection_bulk_generator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Collection\WishlistProductCollectionBulkGenerator"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.repository.wishlist_repository" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.wishlist_product_collection_generator" />
+            <tag name="data_generator.bulk_generator" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.composite_bulk_generator"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\CompositeBulkGenerator"
+        >
+            <argument type="tagged_iterator" tag="data_generator.bulk_generator"/>
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.generator_context_factory" />
+        </service>
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.rand"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer\Rand"
+        />
+
+        <service
+            id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.integer"
+            class="BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\SimpleType\Integer\IntegerGenerator"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.generator.rand"/>
+        </service>
+
+    </services>
+</container>

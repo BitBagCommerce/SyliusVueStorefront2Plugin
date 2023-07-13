@@ -36,6 +36,7 @@ class AddressInput extends InputObjectType
                 'city' => Type::string(),
                 'company' => Type::string(),
                 'postcode' => Type::string(),
+                'provinceName' => Type::string(),
             ],
         ];
         parent::__construct($config);
