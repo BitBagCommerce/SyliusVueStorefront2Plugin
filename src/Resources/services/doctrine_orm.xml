@@ -38,8 +38,14 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.product_image"
-                 class="BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\ProductImageRepository" >
+                 class="BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\Product\ProductImageRepository" >
             <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+
+        <service id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.product_attribute_value"
+                 class="BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\Product\ProductAttributeValueRepository"
+                 decorates="sylius.repository.product_attribute_value">
+            <argument type="service" id=".inner" />
         </service>
 
     </services>

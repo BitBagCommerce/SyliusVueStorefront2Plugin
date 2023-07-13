@@ -8,7 +8,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository;
+namespace BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\Product;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Component\Core\Model\ProductImageInterface;

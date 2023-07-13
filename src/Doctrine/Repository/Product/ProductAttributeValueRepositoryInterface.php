@@ -8,9 +8,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository;
+namespace BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\Product;
 
-interface ProductImageRepositoryInterface
+use Sylius\Component\Product\Repository\ProductAttributeValueRepositoryInterface as BaseProductAttributeValueRepositoryInterface;
+
+interface ProductAttributeValueRepositoryInterface extends BaseProductAttributeValueRepositoryInterface
 {
     public function findByProductIds(
         array $productIds,
