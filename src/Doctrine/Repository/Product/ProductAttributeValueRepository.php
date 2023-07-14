@@ -40,6 +40,7 @@ final class ProductAttributeValueRepository extends EntityRepository implements 
              ->addSelect('translation')
              ->andWhere('product.id IN (:productIds)')
              ->andWhere('translation.locale = :locale')
+             ->andWhere('value.localeCode = :locale')
              ->setParameter('productIds', $productIds)
              ->setParameter('locale', $locale)
              ->getQuery()
