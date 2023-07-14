@@ -26,7 +26,11 @@ class CompositePreFetcher implements PreFetcherInterface
         array $parentIds,
         array $context,
     ): void {
-        $attributes = $this->gatherAttributesToPreFetch($context['attributes']);
+        $attributes = $context['attributes'] ?? null;
+        if ($attributes === null) {
+            return;
+        }
+        $attributes = $this->gatherAttributesToPreFetch($attributes);
 
         foreach (array_keys($attributes) as $attribute) {
             /** @var RestrictedPreFetcherInterface $preFetcher */

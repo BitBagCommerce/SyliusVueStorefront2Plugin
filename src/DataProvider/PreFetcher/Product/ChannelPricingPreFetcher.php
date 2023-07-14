@@ -11,17 +11,17 @@ declare(strict_types=1);
 namespace BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\Product;
 
 use BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\RestrictedPreFetcherInterface;
-use BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\Product\ProductImageRepositoryInterface;
-use Sylius\Component\Core\Model\ProductImageInterface;
+use BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\Product\ChannelPricingRepositoryInterface;
+use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 
-class ProductImagePreFetcher implements RestrictedPreFetcherInterface
+class ChannelPricingPreFetcher implements RestrictedPreFetcherInterface
 {
-    private ProductImageRepositoryInterface $repository;
+    private ChannelPricingRepositoryInterface $repository;
 
     private array $preFetchedData = [];
 
-    public function __construct(ProductImageRepositoryInterface $repository)
+    public function __construct(ChannelPricingRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
@@ -30,8 +30,9 @@ class ProductImagePreFetcher implements RestrictedPreFetcherInterface
         array $parentIds,
         array $context,
     ): void {
+        /** @var ChannelPricingInterface $result */
         foreach ($this->repository->findByProductIds($parentIds, $context) as $result) {
-            $this->preFetchedData[$result['code']][] = $result[0];
+            $this->preFetchedData[$result->getProductVariant()?->getCode()][] = $result;
         }
     }
 
@@ -48,7 +49,7 @@ class ProductImagePreFetcher implements RestrictedPreFetcherInterface
     ): bool {
         $resourceClass = $context['resource_class'];
 
-        return is_a($resourceClass, ProductImageInterface::class, true)
-            || ($attribute === 'images' && is_a($resourceClass, ProductInterface::class, true));
+        return is_a($resourceClass, ChannelPricingInterface::class, true)
+            || ($attribute === 'channelPricings' && is_a($resourceClass, ProductInterface::class, true));
     }
 }

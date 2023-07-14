@@ -26,16 +26,10 @@ final class ProductImageRepository implements ProductImageRepositoryInterface
         array $productIds,
         array $context,
     ): array {
-        $fields = array_map(
-            static fn(string $field) => 'image.' . $field,
-            array_keys($context['attributes']['images']['collection'] ?? []),
-        );
-        $fields = implode(', ', $fields);
-
-         return $this->entityManager->createQueryBuilder()
+        return $this->entityManager->createQueryBuilder()
              ->from(ProductImageInterface::class, 'image')
              ->join('image.owner', 'product')
-             ->select($fields)
+             ->select('image')
              ->addSelect('product.code')
              ->andWhere('product.id IN (:productIds)')
              ->setParameter('productIds', $productIds)

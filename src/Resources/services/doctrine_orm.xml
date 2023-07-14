@@ -58,5 +58,10 @@ We are hiring developers from all over the world. Join us and start your new, ex
                 </service>
             </argument>
         </service>
+
+        <service id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.channel_pricing"
+                 class="BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\Product\ChannelPricingRepository" >
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
     </services>
 </container>

@@ -114,5 +114,21 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
             <tag name="bitbag.subresource_restricted_provider" />
         </service>
+
+        <service
+            id="api_platform.data_provider.data_prefetcher.channel_pricing"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\Product\ChannelPricingPreFetcher"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.channel_pricing"/>
+            <tag name="bitbag.data_provider.data_prefetcher" />
+        </service>
+
+        <service
+            id="bitbag.subresource_restricted_provider.channel_pricing"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\Subresource\ChannelPricingSubresourceDataProvider"
+        >
+            <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
+            <tag name="bitbag.subresource_restricted_provider" />
+        </service>
     </services>
 </container>
