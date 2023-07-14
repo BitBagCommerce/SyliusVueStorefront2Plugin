@@ -44,4 +44,35 @@ final class ProductVariantRepository extends EntityRepository implements Product
              ->getQuery()
              ->getResult();
     }
+
+    public function findOptionsByProductIds(
+        array $productIds,
+        array $context,
+    ): array {
+        $locale = $context[ContextKeys::LOCALE_CODE] ?? 'en_US';
+        $channel = $context[ContextKeys::CHANNEL];
+        Assert::isInstanceOf($channel, ChannelInterface::class);
+
+        return $this->createQueryBuilder('variant')
+            ->leftJoin('variant.product', 'product')
+            ->leftJoin('product.options', 'productOption')
+            ->leftJoin('variant.optionValues', 'optionValue')
+            ->leftJoin('optionValue.translations', 'optionValueTranslation')
+            ->leftJoin('optionValue.option', 'option')
+            ->leftJoin('option.translations', 'optionTranslation')
+            ->addSelect('product')
+            ->addSelect('productOption')
+            ->addSelect('optionValue')
+            ->addSelect('optionValueTranslation')
+            ->addSelect('option')
+            ->addSelect('optionTranslation')
+            ->andWhere('product.id IN (:productIds)')
+            ->andWhere('optionValueTranslation.locale = :locale')
+            ->andWhere(':channel MEMBER OF product.channels')
+            ->setParameter('productIds', $productIds)
+            ->setParameter('locale', $locale)
+            ->setParameter('channel', $channel)
+            ->getQuery()
+            ->getResult();
+    }
 }

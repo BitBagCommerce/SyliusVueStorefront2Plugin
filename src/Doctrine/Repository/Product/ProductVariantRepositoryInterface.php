@@ -16,4 +16,9 @@ interface ProductVariantRepositoryInterface
         array $productIds,
         array $context,
     ): array;
+
+    public function findOptionsByProductIds(
+        array $productIds,
+        array $context,
+    ): array;
 }

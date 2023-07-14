@@ -30,6 +30,9 @@ class CompositePreFetcher implements PreFetcherInterface
         if ($attributes === null) {
             return;
         }
+
+        # todo: make it an array of keys in case of duplicated names;
+        # todo: the array should be nested according to the query/model structure, so the keys could be recognized in ->supports
         $attributes = $this->gatherAttributesToPreFetch($attributes);
 
         foreach (array_keys($attributes) as $attribute) {
@@ -57,22 +60,46 @@ class CompositePreFetcher implements PreFetcherInterface
 
     private function gatherAttributesToPreFetch(array $attributes): array
     {
-        $attributes = array_filter(
-            $attributes,
-            static fn($attr) => is_array($attr['collection'] ?? null)
-        );
+        $filteredAttributes = $this->filterAttributes($attributes);
 
-        foreach ($attributes as $attribute => $fields) {
-            $nestedAttributes = $this->gatherAttributesToPreFetch($fields['collection']);
-            if (count($nestedAttributes) > 0) {
-                foreach (array_keys($nestedAttributes) as $nestedAttribute) {
-                    unset($attributes[$attribute]['collection'][$nestedAttribute]);
-                }
+        foreach ($filteredAttributes as $attribute => $fields) {
+            $isCollection = is_array($fields['collection'] ?? null);
+
+            if ($isCollection) {
+                $nestedAttributes = $this->gatherAttributesToPreFetch($fields['collection']);
+            } else {
+                $nestedAttributes = $this->gatherAttributesToPreFetch($fields['edges']['node']);
             }
 
-            $attributes = array_merge($attributes, $nestedAttributes);
+            $this->removeNestedAttributes($filteredAttributes, $nestedAttributes, $attribute, $isCollection);
+            $filteredAttributes = array_merge($filteredAttributes, $nestedAttributes);
         }
 
-        return $attributes;
+        return $filteredAttributes;
+    }
+
+    private function filterAttributes(array $attributes): array
+    {
+        return array_filter(
+            $attributes,
+            static fn($attr) => is_array($attr['collection'] ?? $attr['edges'] ?? null)
+        );
+    }
+
+    private function removeNestedAttributes(
+        array &$attributes,
+        array $nestedAttributes,
+        string $attribute,
+        bool $isCollection,
+    ): void {
+        if (count($nestedAttributes) > 0) {
+            foreach (array_keys($nestedAttributes) as $nestedAttribute) {
+                if ($isCollection) {
+                    unset($attributes[$attribute]['collection'][$nestedAttribute]);
+                } else {
+                    unset($attributes[$attribute]['edges']['node'][$nestedAttribute]);
+                }
+            }
+        }
     }
 }
