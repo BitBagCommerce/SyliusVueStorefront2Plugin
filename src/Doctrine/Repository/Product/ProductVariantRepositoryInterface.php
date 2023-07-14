@@ -10,9 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\Product;
 
-use Sylius\Component\Product\Repository\ProductVariantRepositoryInterface as BaseProductVariantRepositoryInterface;
-
-interface ProductVariantRepositoryInterface extends BaseProductVariantRepositoryInterface
+interface ProductVariantRepositoryInterface
 {
     public function findByProductIds(
         array $productIds,

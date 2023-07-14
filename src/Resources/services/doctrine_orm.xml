@@ -49,9 +49,14 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.product_variant"
-                 class="BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\Product\ProductVariantRepository"
-                 decorates="sylius.repository.product_variant">
-            <argument type="service" id=".inner" />
+                 class="BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\Product\ProductVariantRepository">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service">
+                <service class="Doctrine\ORM\Mapping\ClassMetadata">
+                    <argument>%sylius.model.product_variant.class%</argument>
+                    <factory service="doctrine.orm.entity_manager" method="getClassMetadata"/>
+                </service>
+            </argument>
         </service>
     </services>
 </container>
