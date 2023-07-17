@@ -74,7 +74,7 @@ class ProductVariantOptionPreFetcher implements RestrictedPreFetcherInterface, P
 
         return is_a($resourceClass, ProductOptionInterface::class, true)
             || is_a($resourceClass, ProductOptionValueInterface::class, true)
-            || (in_array($attribute, self::ELIGIBLE_ATTRIBUTES)
+            || (in_array($attribute, self::ELIGIBLE_ATTRIBUTES, true)
                 && is_a($resourceClass, ProductInterface::class, true));
     }
 
@@ -82,14 +82,14 @@ class ProductVariantOptionPreFetcher implements RestrictedPreFetcherInterface, P
     {
         foreach ($variant->getOptionValues() as $optionValue) {
             $option = $optionValue->getOption();
-            $this->productOptions[$variant->getProduct()->getCode()][$option->getCode()] = $option;
+            $this->productOptions[$variant->getProduct()?->getCode()][$option?->getCode()] = $option;
         }
     }
 
     private function prepareOptionValues(ProductVariantInterface $variant): void
     {
         foreach ($variant->getOptionValues() as $optionValue) {
-            $this->optionValues[$optionValue->getOption()->getCode()][$optionValue->getCode()] = $optionValue;
+            $this->optionValues[$optionValue->getOption()?->getCode()][$optionValue?->getCode()] = $optionValue;
         }
     }
 
