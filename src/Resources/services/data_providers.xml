@@ -48,7 +48,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="api_platform.doctrine.orm.default.prefetcher" />
             <argument type="service" id="doctrine" />
             <argument type="tagged" tag="api_platform.doctrine.orm.query_extension.collection" />
-            <tag name="api_platform.collection_data_provider" />
+            <tag name="api_platform.collection_data_provider" priority="10" />
         </service>
 
         <service
