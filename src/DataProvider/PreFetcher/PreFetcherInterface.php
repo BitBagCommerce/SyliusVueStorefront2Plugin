@@ -19,6 +19,6 @@ interface PreFetcherInterface
 
     public function getPreFetchedData(
         string $identifier,
-        ?array $context = [],
+        array $context,
     ): array;
 }

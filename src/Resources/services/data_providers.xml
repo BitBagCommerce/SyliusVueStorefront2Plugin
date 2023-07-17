@@ -132,7 +132,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service
-            id="api_platform.data_provider.data_prefetcher.product_option"
+            id="api_platform.data_provider.data_prefetcher.product_option_value"
             class="BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\Product\ProductVariantOptionPreFetcher"
         >
             <argument type="service" id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.product_variant"/>
@@ -140,8 +140,16 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service
-            id="bitbag.subresource_restricted_provider.product_option"
+            id="bitbag.subresource_restricted_provider.product_option_value"
             class="BitBag\SyliusVueStorefront2Plugin\DataProvider\Subresource\ProductVariantOptionSubresourceDataProvider"
+        >
+            <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
+            <tag name="bitbag.subresource_restricted_provider" />
+        </service>
+
+        <service
+            id="bitbag.subresource_restricted_provider.product_option"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\Subresource\ProductOptionSubresourceDataProvider"
         >
             <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
             <tag name="bitbag.subresource_restricted_provider" />

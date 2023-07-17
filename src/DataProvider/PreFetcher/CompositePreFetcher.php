@@ -31,8 +31,6 @@ class CompositePreFetcher implements PreFetcherInterface
             return;
         }
 
-        # todo: make it an array of keys in case of duplicated names;
-        # todo: the array should be nested according to the query/model structure, so the keys could be recognized in ->supports
         $attributes = $this->gatherAttributesToPreFetch($attributes);
 
         foreach (array_keys($attributes) as $attribute) {
@@ -40,6 +38,8 @@ class CompositePreFetcher implements PreFetcherInterface
             foreach ($this->preFetchers as $preFetcher) {
                 if ($preFetcher->supports($context, $attribute)) {
                     $preFetcher->preFetchData($parentIds, $context);
+
+                    break;
                 }
             }
         }
@@ -47,11 +47,11 @@ class CompositePreFetcher implements PreFetcherInterface
 
     public function getPreFetchedData(
         string $identifier,
-        ?array $context = [],
+        array $context,
     ): array {
         foreach ($this->preFetchers as $preFetcher) {
             if ($preFetcher->supports($context)) {
-                return $preFetcher->getPreFetchedData($identifier);
+                return $preFetcher->getPreFetchedData($identifier, $context);
             }
         }
 
@@ -71,7 +71,6 @@ class CompositePreFetcher implements PreFetcherInterface
                 $nestedAttributes = $this->gatherAttributesToPreFetch($fields['edges']['node']);
             }
 
-            $this->removeNestedAttributes($filteredAttributes, $nestedAttributes, $attribute, $isCollection);
             $filteredAttributes = array_merge($filteredAttributes, $nestedAttributes);
         }
 
@@ -84,22 +83,5 @@ class CompositePreFetcher implements PreFetcherInterface
             $attributes,
             static fn($attr) => is_array($attr['collection'] ?? $attr['edges'] ?? null)
         );
-    }
-
-    private function removeNestedAttributes(
-        array &$attributes,
-        array $nestedAttributes,
-        string $attribute,
-        bool $isCollection,
-    ): void {
-        if (count($nestedAttributes) > 0) {
-            foreach (array_keys($nestedAttributes) as $nestedAttribute) {
-                if ($isCollection) {
-                    unset($attributes[$attribute]['collection'][$nestedAttribute]);
-                } else {
-                    unset($attributes[$attribute]['edges']['node'][$nestedAttribute]);
-                }
-            }
-        }
     }
 }
