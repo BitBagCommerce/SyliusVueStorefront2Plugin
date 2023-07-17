@@ -54,10 +54,10 @@ We are hiring developers from all over the world. Join us and start your new, ex
         <service
             id="bitbag.doctrine.orm.default.subresource_data_provider"
             decorates="api_platform.doctrine.orm.default.subresource_data_provider"
-            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\CompositeSubresourceDataProvider"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\SubresourceDataProvider"
         >
             <argument type="service" id=".inner"/>
-            <argument type="tagged_iterator" tag="bitbag.subresource_restricted_provider" />
+            <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
         </service>
 
         <service
@@ -76,27 +76,11 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service
-            id="bitbag.subresource_restricted_provider.product_image"
-            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\Subresource\ProductImageSubresourceDataProvider"
-        >
-            <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
-            <tag name="bitbag.subresource_restricted_provider" />
-        </service>
-
-        <service
             id="api_platform.data_provider.data_prefetcher.product_attribute_value"
             class="BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\Product\ProductAttributePreFetcher"
         >
             <argument type="service" id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.product_attribute_value"/>
             <tag name="bitbag.data_provider.data_prefetcher" />
-        </service>
-
-        <service
-            id="bitbag.subresource_restricted_provider.product_attribute_value"
-            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\Subresource\ProductAttributeSubresourceDataProvider"
-        >
-            <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
-            <tag name="bitbag.subresource_restricted_provider" />
         </service>
 
         <service
@@ -108,14 +92,6 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service
-            id="bitbag.subresource_restricted_provider.product_variant"
-            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\Subresource\ProductVariantSubresourceDataProvider"
-        >
-            <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
-            <tag name="bitbag.subresource_restricted_provider" />
-        </service>
-
-        <service
             id="api_platform.data_provider.data_prefetcher.channel_pricing"
             class="BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\Product\ChannelPricingPreFetcher"
         >
@@ -124,35 +100,11 @@ We are hiring developers from all over the world. Join us and start your new, ex
         </service>
 
         <service
-            id="bitbag.subresource_restricted_provider.channel_pricing"
-            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\Subresource\ChannelPricingSubresourceDataProvider"
-        >
-            <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
-            <tag name="bitbag.subresource_restricted_provider" />
-        </service>
-
-        <service
             id="api_platform.data_provider.data_prefetcher.product_option_value"
             class="BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\Product\ProductVariantOptionPreFetcher"
         >
             <argument type="service" id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.product_variant"/>
             <tag name="bitbag.data_provider.data_prefetcher" />
-        </service>
-
-        <service
-            id="bitbag.subresource_restricted_provider.product_option_value"
-            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\Subresource\ProductVariantOptionSubresourceDataProvider"
-        >
-            <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
-            <tag name="bitbag.subresource_restricted_provider" />
-        </service>
-
-        <service
-            id="bitbag.subresource_restricted_provider.product_option"
-            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\Subresource\ProductOptionSubresourceDataProvider"
-        >
-            <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
-            <tag name="bitbag.subresource_restricted_provider" />
         </service>
     </services>
 </container>
