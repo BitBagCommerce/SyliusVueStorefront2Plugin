@@ -89,7 +89,7 @@ class ProductVariantOptionPreFetcher implements RestrictedPreFetcherInterface, P
     private function prepareOptionValues(ProductVariantInterface $variant): void
     {
         foreach ($variant->getOptionValues() as $optionValue) {
-            $this->optionValues[$optionValue->getOption()?->getCode()][$optionValue?->getCode()] = $optionValue;
+            $this->optionValues[$optionValue->getOption()?->getCode()][$optionValue->getCode()] = $optionValue;
         }
     }
 
