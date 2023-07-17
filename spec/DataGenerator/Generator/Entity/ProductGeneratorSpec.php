@@ -12,6 +12,7 @@ namespace spec\BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Entity;
 
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\ProductGeneratorContextInterface;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\TaxonRepositoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\InvalidContextException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ChannelPricingFactoryInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Entity\ProductFactoryInterface;
@@ -24,6 +25,7 @@ use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ChannelPricingInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Core\Model\TaxonInterface;
 
 final class ProductGeneratorSpec extends ObjectBehavior
 {
@@ -31,8 +33,9 @@ final class ProductGeneratorSpec extends ObjectBehavior
         ProductFactoryInterface $productFactory,
         ProductVariantFactoryInterface $productVariantFactory,
         ChannelPricingFactoryInterface $channelPricingFactory,
+        TaxonRepositoryInterface $taxonRepository,
     ): void {
-        $this->beConstructedWith($productFactory, $productVariantFactory, $channelPricingFactory);
+        $this->beConstructedWith($productFactory, $productVariantFactory, $channelPricingFactory, $taxonRepository);
     }
 
     public function it_is_initializable(): void
@@ -49,6 +52,8 @@ final class ProductGeneratorSpec extends ObjectBehavior
         ProductVariantInterface $productVariant,
         ProductGeneratorContextInterface $context,
         ProductInterface $product,
+        TaxonRepositoryInterface $taxonRepository,
+        TaxonInterface $taxon,
     ): void {
         $context->getChannel()->willReturn($channel);
         $channel->getCode()->willReturn(Argument::type('string'));
@@ -61,11 +66,12 @@ final class ProductGeneratorSpec extends ObjectBehavior
             ->create(
                 Argument::type('string'),
                 Argument::type('string'),
-                $channelPricing->getWrappedObject()
+                $channelPricing
             )
             ->willReturn($productVariant);
 
-        $context->getChannel()->willReturn($channel->getWrappedObject());
+        $context->getChannel()->willReturn($channel);
+        $taxonRepository->getRandomTaxon()->willReturn($taxon);
 
         $productFactory
             ->create(
@@ -73,9 +79,10 @@ final class ProductGeneratorSpec extends ObjectBehavior
                 Argument::type('string'),
                 Argument::type('string'),
                 Argument::type('string'),
-                $productVariant->getWrappedObject(),
-                $channel->getWrappedObject(),
+                $productVariant,
+                $channel,
                 Argument::type(DateTime::class),
+                $taxon,
             )
             ->willReturn($product);
 

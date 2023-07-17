@@ -18,6 +18,7 @@
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.product_factory" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.product_variant_factory" />
             <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.factory.channel_pricing_factory" />
+            <argument type="service" id="bitbag.sylius_vue_storefront2_plugin.data_generator.repository.taxon_repository" />
         </service>
 
         <service

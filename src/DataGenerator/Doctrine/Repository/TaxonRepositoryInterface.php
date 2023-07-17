@@ -36,4 +36,6 @@ interface TaxonRepositoryInterface
     ): array;
 
     public function getEntityCount(): int;
+
+    public function getRandomTaxon(): TaxonInterface;
 }

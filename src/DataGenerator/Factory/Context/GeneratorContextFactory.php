@@ -13,10 +13,14 @@ namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Factory\Context;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\DataGeneratorCommandContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\GeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\ProductGeneratorContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\ProductGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\ProductTaxonGeneratorContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\ProductTaxonGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\TaxonGeneratorContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\TaxonGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\WishlistGeneratorContext;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\WishlistProductGeneratorContext;
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\ContextModel\Generator\WishlistProductGeneratorContextInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\UnknownBulkDataGeneratorException;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\BulkGeneratorInterface;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Generator\Bulk\Collection\ProductTaxonCollectionBulkGeneratorInterface;
@@ -53,7 +57,7 @@ final class GeneratorContextFactory implements GeneratorContextFactoryInterface
 
     private function productGeneratorContext(
         DataGeneratorCommandContextInterface $commandContext,
-    ): ProductGeneratorContext {
+    ): ProductGeneratorContextInterface {
         return new ProductGeneratorContext(
             $commandContext->getIO(),
             $commandContext->getProductsQty(),
@@ -63,7 +67,7 @@ final class GeneratorContextFactory implements GeneratorContextFactoryInterface
 
     private function taxonGeneratorContext(
         DataGeneratorCommandContextInterface $commandContext,
-    ): TaxonGeneratorContext {
+    ): TaxonGeneratorContextInterface {
         return new TaxonGeneratorContext(
             $commandContext->getIO(),
             $commandContext->getTaxonsQty(),
@@ -84,7 +88,7 @@ final class GeneratorContextFactory implements GeneratorContextFactoryInterface
 
     private function productTaxonGeneratorContext(
         DataGeneratorCommandContextInterface $commandContext,
-    ): ProductTaxonGeneratorContext {
+    ): ProductTaxonGeneratorContextInterface {
         return new ProductTaxonGeneratorContext(
             $commandContext->getIO(),
             $commandContext->getProductsPerTaxonQty(),
@@ -95,7 +99,7 @@ final class GeneratorContextFactory implements GeneratorContextFactoryInterface
 
     private function wishlistProductGeneratorContext(
         DataGeneratorCommandContextInterface $commandContext,
-    ): WishlistProductGeneratorContext {
+    ): WishlistProductGeneratorContextInterface {
         return new WishlistProductGeneratorContext(
             $commandContext->getIO(),
             $commandContext->getProductsPerWishlistQty(),

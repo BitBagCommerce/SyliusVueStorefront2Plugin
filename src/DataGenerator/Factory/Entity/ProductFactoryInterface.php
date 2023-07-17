@@ -14,6 +14,7 @@ use DateTimeInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
+use Sylius\Component\Core\Model\TaxonInterface;
 
 interface ProductFactoryInterface
 {
@@ -25,5 +26,6 @@ interface ProductFactoryInterface
         ProductVariantInterface $variant,
         ChannelInterface $channel,
         DateTimeInterface $createdAt,
+        TaxonInterface $mainTaxon,
     ): ProductInterface;
 }

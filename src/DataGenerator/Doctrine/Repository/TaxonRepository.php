@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository;
 
+use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Exception\NoTaxonFoundException;
 use Sylius\Bundle\TaxonomyBundle\Doctrine\ORM\TaxonRepository as BaseTaxonRepository;
 use Sylius\Component\Core\Model\TaxonInterface;
 
@@ -63,8 +64,27 @@ final class TaxonRepository extends BaseTaxonRepository implements TaxonReposito
     public function getEntityCount(): int
     {
         $queryBuilder = $this->createQueryBuilder('taxon')
+            ->andWhere('taxon.enabled = true')
             ->select('COUNT(taxon)');
 
         return (int)$queryBuilder->getQuery()->getSingleScalarResult();
+    }
+
+    public function getRandomTaxon(): TaxonInterface
+    {
+        $randomOffset = max(0, rand(0, $this->getEntityCount() - 1));
+
+        $result = $this->createQueryBuilder('taxon')
+            ->where('taxon.enabled = true')
+            ->setFirstResult($randomOffset)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if ($result instanceof TaxonInterface) {
+            return $result;
+        }
+
+        throw new NoTaxonFoundException();
     }
 }

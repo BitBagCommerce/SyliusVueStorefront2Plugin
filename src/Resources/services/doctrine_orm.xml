@@ -21,6 +21,7 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="logger" on-invalid="ignore" />
             <argument key="$nameConverter" type="service" id="api_platform.name_converter" on-invalid="ignore" />
         </service>
+
         <service id="BitBag\SyliusVueStorefront2Plugin\Doctrine\Orm\Filter\AttributeFilter"
                  alias="bitbag.sylius_vue_storefront2.doctrine.orm.attribute_filter" />
 
@@ -30,9 +31,37 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="service" id="security.helper" />
             <tag name="api_platform.doctrine.orm.query_extension.collection"/>
         </service>
+
         <service id="BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\TaxonRepository"
                  decorates="sylius.repository.taxon">
             <argument type="service" id=".inner" />
+        </service>
+
+        <service id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.product_image"
+                 class="BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\Product\ProductImageRepository" >
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+        </service>
+
+        <service id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.product_attribute_value"
+                 class="BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\Product\ProductAttributeValueRepository"
+                 decorates="sylius.repository.product_attribute_value">
+            <argument type="service" id=".inner" />
+        </service>
+
+        <service id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.product_variant"
+                 class="BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\Product\ProductVariantRepository">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service">
+                <service class="Doctrine\ORM\Mapping\ClassMetadata">
+                    <argument>%sylius.model.product_variant.class%</argument>
+                    <factory service="doctrine.orm.entity_manager" method="getClassMetadata"/>
+                </service>
+            </argument>
+        </service>
+
+        <service id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.channel_pricing"
+                 class="BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\Product\ChannelPricingRepository" >
+            <argument type="service" id="doctrine.orm.entity_manager"/>
         </service>
     </services>
 </container>

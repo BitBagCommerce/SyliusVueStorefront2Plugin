@@ -12,7 +12,6 @@ namespace BitBag\SyliusVueStorefront2Plugin\EventListener;
 
 use BitBag\SyliusVueStorefront2Plugin\Model\ShopUserTokenInterface;
 use BitBag\SyliusWishlistPlugin\Factory\WishlistFactoryInterface;
-use BitBag\SyliusWishlistPlugin\Repository\WishlistRepository;
 use BitBag\SyliusWishlistPlugin\Repository\WishlistRepositoryInterface;
 use BitBag\SyliusWishlistPlugin\Resolver\WishlistCookieTokenResolverInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
@@ -27,7 +26,7 @@ final class AttachDefaultWishlistEventListener
         private WishlistRepositoryInterface $wishlistRepository,
         private WishlistFactoryInterface $wishlistFactory,
         private WishlistCookieTokenResolverInterface $wishlistCookieTokenResolver,
-        private ChannelContextInterface $channelContext
+        private ChannelContextInterface $channelContext,
     ) {
 
     }

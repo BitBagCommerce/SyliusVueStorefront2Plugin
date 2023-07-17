@@ -40,5 +40,71 @@ We are hiring developers from all over the world. Join us and start your new, ex
             <argument type="tagged" tag="api_platform.doctrine.orm.query_extension.collection" />
             <tag name="api_platform.collection_data_provider" priority="15" />
         </service>
+
+        <service
+            id="api_platform.doctrine.orm.default.collection_data_provider"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\CachedCollectionDataProvider"
+        >
+            <argument type="service" id="api_platform.doctrine.orm.default.prefetcher" />
+            <argument type="service" id="doctrine" />
+            <argument type="tagged" tag="api_platform.doctrine.orm.query_extension.collection" />
+            <tag name="api_platform.collection_data_provider" priority="10" />
+        </service>
+
+        <service
+            id="bitbag.doctrine.orm.default.subresource_data_provider"
+            decorates="api_platform.doctrine.orm.default.subresource_data_provider"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\SubresourceDataProvider"
+        >
+            <argument type="service" id=".inner"/>
+            <argument type="service" id="api_platform.doctrine.orm.default.collection_data_provider"/>
+        </service>
+
+        <service
+            id="api_platform.doctrine.orm.default.prefetcher"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\CompositePreFetcher"
+        >
+            <argument type="tagged_iterator" tag="bitbag.data_provider.data_prefetcher"/>
+        </service>
+
+        <service
+            id="api_platform.data_provider.data_prefetcher.product_image"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\Product\ProductImagePreFetcher"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.product_image"/>
+            <tag name="bitbag.data_provider.data_prefetcher" />
+        </service>
+
+        <service
+            id="api_platform.data_provider.data_prefetcher.product_attribute_value"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\Product\ProductAttributePreFetcher"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.product_attribute_value"/>
+            <tag name="bitbag.data_provider.data_prefetcher" />
+        </service>
+
+        <service
+            id="api_platform.data_provider.data_prefetcher.product_variant"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\Product\ProductVariantPreFetcher"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.product_variant"/>
+            <tag name="bitbag.data_provider.data_prefetcher" />
+        </service>
+
+        <service
+            id="api_platform.data_provider.data_prefetcher.channel_pricing"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\Product\ChannelPricingPreFetcher"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.channel_pricing"/>
+            <tag name="bitbag.data_provider.data_prefetcher" />
+        </service>
+
+        <service
+            id="api_platform.data_provider.data_prefetcher.product_option_value"
+            class="BitBag\SyliusVueStorefront2Plugin\DataProvider\PreFetcher\Product\ProductVariantOptionPreFetcher"
+        >
+            <argument type="service" id="bitbag.sylius_vue_storefront2.doctrine.orm.repository.product_variant"/>
+            <tag name="bitbag.data_provider.data_prefetcher" />
+        </service>
     </services>
 </container>

@@ -37,6 +37,6 @@ final class IntegerGenerator implements IntegerGeneratorInterface
             return $this->rand->rand($topValuesThreshold, $max);
         }
 
-        return $this->rand->rand($min, $topValuesThreshold - 1);
+        return $this->rand->rand($min, max(0, $topValuesThreshold - 1));
     }
 }

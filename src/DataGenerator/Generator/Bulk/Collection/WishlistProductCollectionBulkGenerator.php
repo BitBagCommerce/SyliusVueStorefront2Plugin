@@ -37,6 +37,10 @@ final class WishlistProductCollectionBulkGenerator implements WishlistProductCol
             throw new InvalidContextException();
         }
 
+        if ($context->getQuantity() === 0) {
+            return;
+        }
+
         $io = $context->getIO();
 
         $io->info(sprintf(

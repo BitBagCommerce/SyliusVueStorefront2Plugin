@@ -12,6 +12,7 @@ namespace Tests\BitBag\SyliusVueStorefront2Plugin\Integration\DataGenerator;
 
 use ApiTestCase\JsonApiTestCase;
 use BitBag\SyliusVueStorefront2Plugin\DataGenerator\Doctrine\Repository\TaxonRepositoryInterface;
+use Sylius\Component\Core\Model\TaxonInterface;
 
 final class TaxonRepositoryTest extends JsonApiTestCase
 {
@@ -134,6 +135,17 @@ final class TaxonRepositoryTest extends JsonApiTestCase
         $taxons = $repository->findBatch(2, 20);
 
         $this->assertCount(0, $taxons);
+    }
+
+    public function test_getting_random_shop_user(): void
+    {
+        $this->loadFixtures();
+
+        $repository = $this->getContainer()
+            ->get('bitbag.sylius_vue_storefront2_plugin.data_generator.repository.taxon_repository');
+
+        $taxon = $repository->getRandomTaxon();
+        $this->assertInstanceOf(TaxonInterface::class, $taxon);
     }
 
     public function test_getting_entity_count(): void

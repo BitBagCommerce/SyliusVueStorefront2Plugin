@@ -74,11 +74,9 @@ final class RefreshTokenResolver implements MutationResolverInterface
         Assert::keyExists($input, 'refreshToken');
         $refreshTokenString = (string) $input['refreshToken'];
 
+        /** @var RefreshTokenInterface|null $refreshToken */
         $refreshToken = $this->refreshTokenRepository->findOneBy(['refreshToken' => $refreshTokenString]);
-
         Assert::notNull($refreshToken);
-
-        /** @var RefreshTokenInterface $refreshToken */
         $this->validateRefreshToken($refreshToken, $refreshTokenString);
 
         /** @var ShopUserInterface $user */
