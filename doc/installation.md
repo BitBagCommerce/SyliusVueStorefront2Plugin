@@ -11,19 +11,22 @@
 
     ```php
         return [
-         ...
-        
+            // ...
             BitBag\SyliusVueStorefront2Plugin\BitBagSyliusVueStorefront2Plugin::class => ['all' => true],
             BitBag\SyliusWishlistPlugin\BitBagSyliusWishlistPlugin::class => ['all' => true],
         ];
     ```
 ![Step](/doc/images/Step2.png)
 
-3. Enable API
+3. Add plugin config and enable API
     In `config/packages/_sylius.yaml`
     ```yaml
-        sylius_api:
-            enabled: true
+    imports:
+    # ...
+        - { resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/config.yml" }
+    
+    sylius_api:
+        enabled: true
     ```
 ![Step3](/doc/images/Step3.png)
 
@@ -56,7 +59,7 @@
     
     imports:
         - { resource: "@BitBagSyliusVueStorefront2Plugin/Resources/config/services.xml" }
-    ```    
+    ```
    
     There are 2 plugin parameters that You can adjust:
    
@@ -65,6 +68,15 @@
         test_endpoint: 'http://127.0.0.1:8080/api/v2/graphql' #that its default value
     ```
 ![Step6](/doc/images/Step6.png)
+
+7. Import required config by adding  `config/packages/bitbag_sylius_vue_storefront2_plugin.yaml` file:
+
+    ```yaml
+    # config/packages/gesdinet_jwt_refresh_token.yaml
+    
+    gesdinet_jwt_refresh_token:
+        refresh_token_class: BitBag\SyliusVueStorefront2Plugin\Model\RefreshToken
+    ```
 
 7. Add doctrine mapping to your `config/packages/doctrine.yaml` file:
 
@@ -81,17 +93,6 @@
     ```
 ![Step7](/doc/images/Step7.png)
 
-8. In _sylius.yaml add mappings for product attribute and taxonomy repository so graphql can see them properly
-
-    ```yml
-    sylius_taxonomy:
-       resources:
-          taxon:
-             classes:
-                repository: BitBag\SyliusVueStorefront2Plugin\Doctrine\Repository\TaxonRepository
-    ```
-![Step8](/doc/images/Step8.png)
-
 9. If you're already extending Sylius' `ProductAttributeValue` entity, please use our trait - `BitBag\SyliusVueStorefront2Plugin\Model\ProductAttributeValueTrait`, inside your own `ProductAttributeValue` entity. If you're not extending `ProductAttributeValue`, please create an entity, which uses the trait and setup the Sylius resource in _sylius.yaml:
 
 ```yml
@@ -102,7 +103,7 @@
                 subject: Sylius\Component\Core\Model\Product
                 attribute_value:
                     classes:
-                        model: App\Entity\ProductAttributeValue
+                        model: App\Entity\Product\ProductAttributeValue
 ```
 
 10. Please add the Doctrine mapping configuration into your project:
@@ -128,14 +129,27 @@ If you are using xml mapping:
 
 **Please change the `name` attribute to fit your entity name. If you've already the `ProductAttributeValue` mapping in your project, just add there the `<index>` part of mapping above.**
 
-If you are using annotations:
+You can also use annotations. Additionally use ProductAttributeValueTrait.
 
-```
+```php
+namespace App\Entity\Product;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
+use Sylius\Component\Product\Model\ProductAttributeValue as BaseProductAttributeValue;
+use BitBag\SyliusVueStorefront2Plugin\Model\ProductAttributeValueTrait;
+
 /**
  * @ORM\Entity
- * @ORM\Table(name="sylius_product_attribute_value",indexes={@Index(name="locale_code", columns={"locale_code"})})
+ * @ORM\Table(name="sylius_product_attribute_value")
+ * @ORM\Table(name="sylius_product_attribute_value", indexes={@Index(name="locale_code", columns={"locale_code"})})
  */
+class ProductAttributeValue extends BaseProductAttributeValue
+{
+    use ProductAttributeValueTrait;
+}
 ```
+
 ![Step10](/doc/images/Step9-10.png)
     
 11. Import routing in `config/routes.yaml`
